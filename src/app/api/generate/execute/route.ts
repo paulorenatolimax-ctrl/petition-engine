@@ -6,6 +6,25 @@ import path from 'path';
 const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
 const QUALITY_PATH = '/Users/paulo1844/Documents/Aqui OBSIDIAN/Aspectos Gerais da Vida/PROEX/Pareceres da Qualidade - Apontamentos (insumos para agente de qualidade).md';
 const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
+const GENERATIONS_FILE = path.join(process.cwd(), 'data', 'generations.json');
+
+function readGenerations(): any[] {
+  if (!existsSync(GENERATIONS_FILE)) return [];
+  try { return JSON.parse(readFileSync(GENERATIONS_FILE, 'utf-8')); } catch { return []; }
+}
+
+function writeGenerations(gens: any[]) {
+  const { writeFileSync: wfs } = require('fs');
+  wfs(GENERATIONS_FILE, JSON.stringify(gens, null, 2), 'utf-8');
+}
+
+function upsertGeneration(gen: any) {
+  const gens = readGenerations();
+  const idx = gens.findIndex((g: any) => g.id === gen.id);
+  if (idx >= 0) gens[idx] = { ...gens[idx], ...gen };
+  else gens.push(gen);
+  writeGenerations(gens);
+}
 
 // Resolve absolute path to claude binary (cached)
 let _claudeBin: string | null = null;
@@ -82,6 +101,7 @@ export async function POST(req: NextRequest) {
   const { prompt_file, client_name, doc_type, client_id } = body;
   const encoder = new TextEncoder();
   const startTime = Date.now();
+  const genId = `gen_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
   // Resolve output directory
   let clientBaseDir = '';
@@ -135,6 +155,23 @@ export async function POST(req: NextRequest) {
         return;
       }
 
+      // Record generation start
+      upsertGeneration({
+        id: genId,
+        client_id: client_id || null,
+        client_name: client_name || 'Desconhecido',
+        doc_type: doc_type || 'unknown',
+        prompt_file,
+        status: 'processing',
+        started_at: new Date(startTime).toISOString(),
+        completed_at: null,
+        output_path: outputDir,
+        output_files: [],
+        error_message: null,
+        duration_seconds: null,
+        stages: [],
+      });
+
       // ═══ PHASE 1: GENERATION ═══
       send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERACAO DO DOCUMENTO' });
       send('stage', { stage: 'loading', phase: 1, message: `Instrucao: ${prompt_file.split('/').pop()}` });
@@ -172,6 +209,7 @@ export async function POST(req: NextRequest) {
         const foundFiles = findNewDocx(outputDir, startTime).concat(findNewDocx(clientBaseDir, startTime));
         if (foundFiles.length > 0) {
           send('stage', { stage: 'warning', phase: 1, message: `Processo falhou mas encontrou ${foundFiles.length} .docx criado(s)` });
+          upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: `Exit ${gen.code} — docx parcial`, output_files: foundFiles.map(f => f.split('/').pop()) });
           send('complete', {
             success: false,
             partial: true,
@@ -182,6 +220,7 @@ export async function POST(req: NextRequest) {
             stdout_tail: gen.stdout.slice(-500),
           });
         } else {
+          upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: `Geracao falhou (exit ${gen.code})` });
           send('complete', {
             success: false,
             error: `Geracao falhou (exit ${gen.code}) — nenhum .docx criado`,
@@ -201,6 +240,7 @@ export async function POST(req: NextRequest) {
         send('stage', { stage: 'error', phase: 1, message: 'claude -p retornou 0 mas NENHUM .docx foi criado no disco' });
         send('stage', { stage: 'error', phase: 1, message: `Pasta verificada: ${outputDir}` });
         send('stage', { stage: 'info', phase: 1, message: `stdout (ultimos 300 chars): ${gen.stdout.slice(-300)}` });
+        upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: 'Exit 0 mas nenhum .docx criado' });
         send('complete', {
           success: false,
           error: 'Processo completou mas nao gerou .docx — a instrucao pode ser generica demais para o sistema',
@@ -243,6 +283,14 @@ export async function POST(req: NextRequest) {
       }
 
       // ═══ FINAL — HONEST RESULT ═══
+      upsertGeneration({
+        id: genId,
+        status: 'completed',
+        completed_at: new Date().toISOString(),
+        duration_seconds: totalDuration,
+        output_files: newDocx.concat(reviewedFiles).map(f => f.split('/').pop()),
+        error_message: null,
+      });
       send('complete', {
         success: true,
         output_path: outputDir,
