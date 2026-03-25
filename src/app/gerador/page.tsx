@@ -256,12 +256,12 @@ export default function GeradorPage() {
       </div>
 
       {selectedClient && !hasProfile && (
-        <div className="bg-[#ff4757]/10 border border-[#ff4757]/30 rounded-xl p-5 flex items-start gap-4 shadow-[0_0_20px_rgba(255,71,87,0.1)]">
-          <AlertCircle className="w-6 h-6 text-[#ff4757] flex-shrink-0 animate-pulse" />
-          <div className="flex flex-col gap-1">
-            <h4 className="text-[#ff4757] font-bold text-sm tracking-wide">PERFIL NÃO EXTRAÍDO</h4>
-            <p className="text-[#ff4757] opacity-80 text-xs font-mono">
-              O prompt será gerado sem baselines ricas. Execute a extração de perfil no painel de clientes primeiro.
+        <div className="bg-[#ffa502]/5 border border-[#ffa502]/20 rounded-xl p-4 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-[#ffa502] flex-shrink-0 mt-0.5" />
+          <div className="flex flex-col gap-0.5">
+            <h4 className="text-[#ffa502] font-bold text-xs tracking-wide font-mono">SEM PERFIL EXTRAIDO</h4>
+            <p className="text-[#ffa502]/70 text-[11px] font-mono">
+              Geracao disponivel. O prompt usara apenas os documentos da pasta do cliente.
             </p>
           </div>
         </div>

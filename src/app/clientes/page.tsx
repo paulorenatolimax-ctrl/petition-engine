@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Search, Filter, Mail, Briefcase, FileSignature, AlertCircle, RefreshCw, X, FolderOpen } from 'lucide-react';
+import { Search, Filter, Mail, Briefcase, FileSignature, AlertCircle, RefreshCw, X, FolderOpen, Trash2 } from 'lucide-react';
 
 interface Client {
   id: string;
@@ -58,6 +58,16 @@ export default function ClientesPage() {
       console.error('Erro ao carregar clientes:', err);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleDelete(id: string, name: string) {
+    if (!confirm(`Excluir ${name}? Esta acao nao pode ser desfeita.`)) return;
+    try {
+      const res = await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+      if (res.ok) fetchClients();
+    } catch (err) {
+      console.error('Erro ao excluir:', err);
     }
   }
 
@@ -173,20 +183,28 @@ export default function ClientesPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-3">
                   <div className="px-3 py-1 rounded-md border border-[rgba(255,255,255,0.05)] bg-[#101e30] flex items-center gap-2">
                     <FileSignature className="w-3 h-3 text-[rgba(255,255,255,0.4)]" />
                     <span className="text-[11px] font-mono tracking-widest font-bold" style={{ color: VISA_COLORS[client.visa_type] || '#00eaff' }}>
                       {client.visa_type}
                     </span>
                   </div>
-                  
+
                   <div className="px-3 py-1 rounded-full border bg-[#03060a] flex items-center gap-2" style={{ borderColor: status.border }}>
                     <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: status.color, boxShadow: `0 0 10px ${status.color}` }} />
                     <span className="text-[10px] font-mono tracking-widest font-bold" style={{ color: status.color }}>
                       {status.label}
                     </span>
                   </div>
+
+                  <button
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(client.id, client.name); }}
+                    className="p-2 rounded-lg text-[#4b6584] hover:text-[#ff4757] hover:bg-[#ff4757]/10 transition-all opacity-0 group-hover:opacity-100"
+                    title="Excluir cliente"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               </Link>
             );
