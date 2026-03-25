@@ -259,6 +259,49 @@ export async function POST(req: NextRequest) {
         send('stage', { stage: 'info', phase: 1, message: `${newDocx.length} arquivos .docx encontrados no total` });
       }
 
+      // ═══ PHASE 1.5: QUALITY GATE (LOCAL) ═══
+      send('stage', { stage: 'phase', phase: 1.5, message: 'FASE 1.5: QUALITY GATE — Validacao automatica' });
+
+      try {
+        const { runQualityLocal } = await import('@/agents/quality-local');
+        // Extract text from DOCX for quality check
+        let docText = '';
+        try {
+          docText = execSync(
+            `python3 -c "from docx import Document; doc=Document('${mainDocx}'); print('\\n'.join(p.text for p in doc.paragraphs))"`,
+            { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 }
+          );
+        } catch {
+          send('stage', { stage: 'warning', phase: 1.5, message: 'Nao foi possivel extrair texto do DOCX para quality check' });
+        }
+
+        if (docText) {
+          const qualityResult = await runQualityLocal({
+            documentText: docText,
+            docType: doc_type || 'unknown',
+            clientName: client_name || '',
+          });
+
+          send('stage', { stage: 'quality_result', phase: 1.5, message: `Score: ${qualityResult.score}/100 — ${qualityResult.passed ? 'APROVADO' : 'REPROVADO'}` });
+
+          if (qualityResult.autoFixes.length > 0) {
+            send('stage', { stage: 'info', phase: 1.5, message: `${qualityResult.autoFixes.length} auto-fixes aplicados: ${qualityResult.autoFixes.map(f => f.description).join(', ')}` });
+          }
+
+          if (qualityResult.violations.length > 0) {
+            for (const v of qualityResult.violations.slice(0, 5)) {
+              send('stage', { stage: 'violation', phase: 1.5, message: `[${v.severity.toUpperCase()}] ${v.rule}: ${v.match}` });
+            }
+          }
+
+          if (!qualityResult.passed) {
+            send('stage', { stage: 'warning', phase: 1.5, message: `Quality gate REPROVADO (${qualityResult.score}/100). Documento entregue com ressalvas.` });
+          }
+        }
+      } catch (qErr: any) {
+        send('stage', { stage: 'warning', phase: 1.5, message: `Quality agent erro: ${qErr.message?.slice(0, 200)}` });
+      }
+
       // ═══ PHASE 2: SEPARATION OF CONCERNS ═══
       send('stage', { stage: 'phase', phase: 2, message: 'FASE 2: REVISAO CRUZADA — Separation of Concerns' });
       send('stage', { stage: 'review_init', phase: 2, message: 'Iniciando sessao limpa para revisao cruzada...' });
