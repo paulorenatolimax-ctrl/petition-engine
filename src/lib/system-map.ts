@@ -44,12 +44,13 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
   business_plan: {
     name: 'Business Plan',
     symlinkDir: 'business-plan',
-    preferredModel: 'claude-opus-4',
+    preferredModel: 'claude-sonnet-4',
     requiresProfile: true,
-    requiresDeepResearch: false,
+    requiresDeepResearch: true,
     outputFormat: 'docx',
-    estimatedTokens: 120000,
+    estimatedTokens: 200000,
     multiAgent: false,
+    sequentialPrompts: 6,
   },
   methodology: {
     name: 'Metodologia',
@@ -142,6 +143,16 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     requiresDeepResearch: false,
     outputFormat: 'docx',
     estimatedTokens: 150000,
+    multiAgent: false,
+  },
+  resume_eb2_niw: {
+    name: 'Résumé EB-2 NIW',
+    symlinkDir: 'resume-eb2-niw',
+    preferredModel: 'claude-sonnet-4',
+    requiresProfile: true,
+    requiresDeepResearch: false,
+    outputFormat: 'docx',
+    estimatedTokens: 40000,
     multiAgent: false,
   },
 };

@@ -79,12 +79,12 @@ export default function QualidadePage() {
          <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-3 gap-4 z-10 pl-8 md:border-l border-[rgba(0,234,255,0.06)]">
             {[
               { label: 'Documentos', value: stats?.total_documents || 0, icon: FileText, color: '#a1b1cc' },
-              { label: 'Aprovados', value: stats?.passed || 0, icon: CheckCircle2, color: '#2ed573', glow: 'rgba(46,213,115,0.3)' },
-              { label: 'Falhas/Rejeitados', value: stats?.failed || 0, icon: XCircle, color: '#ff4757', glow: 'rgba(255,71,87,0.3)' },
+              { label: 'Aprovados', value: stats?.passed || 0, icon: CheckCircle2, color: '#2ed573', glow: 'rgba(46,213,115,0.4)' },
+              { label: 'Falhas/Rejeitados', value: stats?.failed || 0, icon: XCircle, color: '#ff4757', glow: 'rgba(255,71,87,0.4)' },
             ].map((stat, i) => (
-              <div key={i} className="bg-[#101e30] border border-[#ffffff0a] rounded-lg p-5 flex flex-col gap-4">
+              <div key={i} className="bg-[#101e30] border border-[#ffffff0a] rounded-lg p-5 flex flex-col gap-4 hover:bg-[#132438] transition-colors" style={{ borderBottom: `2px solid ${stat.color}` }}>
                   <div className="flex items-center gap-2 text-[#4b6584]">
-                      <stat.icon className="w-4 h-4" />
+                      <stat.icon className="w-4 h-4" style={{ color: stat.color, filter: stat.glow ? `drop-shadow(0 0 8px ${stat.glow})` : 'none' }} />
                       <span className="text-[11px] uppercase tracking-[2px] font-bold font-mono">{stat.label}</span>
                   </div>
                   <div className="text-3xl font-black font-mono tracking-tight" style={{ color: stat.color, textShadow: stat.glow ? `0 0 15px ${stat.glow}` : 'none' }}>
@@ -110,8 +110,8 @@ export default function QualidadePage() {
                   return (
                       <div key={type} className="flex flex-col gap-2 relative group/bar">
                          <div className="flex justify-between items-center text-xs font-mono">
-                            <span className="font-bold tracking-wider text-[#e2e8f0] uppercase">{DOC_TYPE_LABELS[type] || type}</span>
-                            <span className="font-bold text-sm drop-shadow-md" style={{ color }}>{pct}% PASS</span>
+                            <span className="font-bold tracking-wider text-[#e2e8f0] uppercase" style={{ color, textShadow: `0 0 8px ${color}80` }}>{DOC_TYPE_LABELS[type] || type}</span>
+                            <span className="font-bold text-sm drop-shadow-md" style={{ color, textShadow: `0 0 10px ${color}80` }}>{pct}% PASS</span>
                          </div>
                          <div className="h-2 w-full bg-[#101e30] rounded-full overflow-hidden border border-[#ffffff05]">
                             <div className="h-full rounded-full transition-all duration-1000 ease-out relative" style={{ width: `${pct}%`, backgroundColor: color, boxShadow: `0 0 15px ${color}` }}>

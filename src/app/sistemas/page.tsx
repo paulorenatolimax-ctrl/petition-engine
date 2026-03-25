@@ -78,10 +78,10 @@ export default function SistemasPage() {
           { label: 'Engine Central', value: 'PRO', color: '#ff4757', glow: 'rgba(255,71,87,0.2)' },
           { label: 'Extrator', value: 'IMPACT', color: '#ffa502', glow: 'rgba(255,165,2,0.2)' }
         ].map((stat, i) => (
-          <div key={i} className="v2-card relative overflow-hidden group cursor-default p-5 flex flex-col justify-between" style={{ borderLeft: `2px solid ${stat.color}` }}>
+          <div key={i} className="v2-card relative overflow-hidden group cursor-default p-5 flex flex-col justify-between" style={{ borderBottom: `3px solid ${stat.color}` }}>
              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-10" style={{ backgroundColor: stat.color }} />
              <span className="text-[10px] text-[#4b6584] font-mono tracking-[2px] font-bold uppercase z-10">{stat.label}</span>
-             <span className="text-2xl font-black font-mono text-[#e2e8f0] z-10 mt-2 tracking-tight group-hover:text-white transition-colors v2-kpi" style={{ textShadow: `0 0 15px ${stat.glow}` }}>{loading ? '--' : stat.value}</span>
+             <span className="text-2xl font-black font-mono text-[#e2e8f0] z-10 mt-2 tracking-tight group-hover:text-white transition-colors" style={{ textShadow: `0 0 20px ${stat.color}80` }}>{loading ? '--' : stat.value}</span>
           </div>
         ))}
       </div>

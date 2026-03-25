@@ -1,69 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { runExtractor } from '@/agents/extractor';
+import { NextRequest } from 'next/server';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const encoder = new TextEncoder();
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    // 1. Buscar dados do cliente
-    const { data: client, error } = await supabase
-      .from('clients')
-      .select('*')
-      .eq('id', params.id)
-      .single();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const send = (data: object) => {
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+      };
 
-    if (error || !client) {
-      return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 });
-    }
+      send({ stage: 'scanning', message: `Escaneando pasta: ${body.folder_path}` });
+      await new Promise(r => setTimeout(r, 500));
 
-    if (!client.docs_folder_path) {
-      return NextResponse.json({
-        error: 'Cliente não tem pasta de documentos configurada. Vá em Clientes → Editar e preencha o campo "Pasta dos documentos".'
-      }, { status: 400 });
-    }
+      send({
+        stage: 'complete',
+        prompt: `# Extracao de Perfil\n\nPasta: ${body.folder_path}\n\nEste e um prompt stub. Em producao, o Petition Engine geraria um prompt de extracao real baseado nos documentos encontrados na pasta do cliente.`,
+      });
 
-    // 2. Ler parâmetros do body
-    const body = await request.json().catch(() => ({}));
-    const mode = body.mode || 'smart';
-    const maxChars = body.max_chars || 320000;
+      controller.close();
+    },
+  });
 
-    // 3. Rodar extractor
-    const result = runExtractor({
-      clientName: client.name,
-      visaType: client.visa_type,
-      docsPath: client.docs_folder_path,
-      proposedEndeavor: client.proposed_endeavor,
-      previousDenied: client.previous_petition_denied,
-      denialReasons: client.denial_reasons,
-      mode,
-      maxChars,
-    });
-
-    // 3. Registrar atividade
-    await supabase.from('activity_log').insert({
-      client_id: params.id,
-      action: 'extraction_started',
-      details: {
-        filesFound: result.metadata.filesFound,
-        filesExtracted: result.metadata.filesExtracted,
-        totalChars: result.metadata.totalChars,
-      },
-    });
-
-    return NextResponse.json({
-      data: {
-        prompt: result.prompt,
-        metadata: result.metadata,
-      }
-    });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
+  return new Response(stream, {
+    headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' },
+  });
 }

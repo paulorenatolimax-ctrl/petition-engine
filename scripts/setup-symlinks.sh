@@ -31,6 +31,7 @@ link_system "estrategia-eb1" "$BASE/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRA
 link_system "localizacao" "$BASE/_PROEX (A COMPLEMENTAR)/PROMPTs/LOCALIZAÇÃO - PROMPT"
 link_system "quality-notes" "$BASE/Aqui OBSIDIAN/PROEX/Pareceres da Qualidade"
 link_system "satellite-letters" "$BASE/_PROEX (A COMPLEMENTAR)/PROMPTs/_2. MEUS CASOS"
+link_system "resume-eb2-niw" "$BASE/_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema résumé auto/EB2_NIW_RESUME_SYSTEM"
 
 echo ""
 echo "Setup concluído!"

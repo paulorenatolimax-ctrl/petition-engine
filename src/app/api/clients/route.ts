@@ -1,50 +1,62 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
-import { apiError, apiSuccess } from '@/lib/api-helpers';
-import { createClientSchema } from '@/lib/schemas';
+
+const MOCK_CLIENTS = [
+  {
+    id: 'c1',
+    name: 'Deni Ruben Moreira',
+    email: 'deni@drmsolutions.com',
+    visa_type: 'EB-2-NIW',
+    status: 'active',
+    company_name: 'DRM Solutions LLC',
+    created_at: '2026-03-15T10:00:00Z',
+    client_profiles: { extracted_at: '2026-03-16T10:00:00Z' },
+  },
+  {
+    id: 'c2',
+    name: 'Rafael Almeida Santos',
+    email: 'rafael@example.com',
+    visa_type: 'EB-2-NIW',
+    status: 'completed',
+    company_name: 'Tech Solutions Inc',
+    created_at: '2025-11-10T10:00:00Z',
+    client_profiles: { extracted_at: '2025-11-12T10:00:00Z' },
+  },
+  {
+    id: 'c3',
+    name: 'Renato Silveira dos Reis',
+    email: 'renato@example.com',
+    visa_type: 'EB-1A',
+    status: 'active',
+    company_name: null,
+    created_at: '2025-09-05T10:00:00Z',
+    client_profiles: { extracted_at: '2025-09-06T10:00:00Z' },
+  },
+];
 
 export async function GET(req: NextRequest) {
-  const supabase = createServerClient();
   const { searchParams } = new URL(req.url);
+  const search = searchParams.get('search')?.toLowerCase() || '';
+  const visaType = searchParams.get('visa_type') || '';
 
-  const status = searchParams.get('status');
-  const visa_type = searchParams.get('visa_type');
-  const search = searchParams.get('search');
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '20');
-  const offset = (page - 1) * limit;
+  let filtered = MOCK_CLIENTS;
+  if (search) {
+    filtered = filtered.filter(c => c.name.toLowerCase().includes(search) || c.email.toLowerCase().includes(search));
+  }
+  if (visaType) {
+    filtered = filtered.filter(c => c.visa_type === visaType);
+  }
 
-  let query = supabase.from('clients').select('*, client_profiles(*)', { count: 'exact' });
-
-  if (status) query = query.eq('status', status);
-  if (visa_type) query = query.eq('visa_type', visa_type);
-  if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%,company_name.ilike.%${search}%`);
-
-  const { data, count, error } = await query.order('created_at', { ascending: false }).range(offset, offset + limit - 1);
-
-  if (error) return apiError(error.message);
-  return NextResponse.json({ data: data || [], total: count || 0, page, totalPages: Math.ceil((count || 0) / limit) });
+  return NextResponse.json({ data: filtered });
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = createServerClient();
   const body = await req.json();
-
-  const parsed = createClientSchema.safeParse(body);
-  if (!parsed.success) return apiError(JSON.stringify(parsed.error.flatten()), 400);
-
-  // Strip fields that may not exist in the Supabase clients table yet
-  const { case_number, previous_petition_denied, denial_reasons, priority, ...clientData } = parsed.data;
-  const { data, error } = await supabase.from('clients').insert(clientData).select().single();
-  if (error) return apiError(error.message);
-
-  await supabase.from('client_profiles').insert({ client_id: data.id });
-
-  await supabase.from('activity_log').insert({
-    client_id: data.id,
-    action: 'client_created',
-    details: { visa_type: data.visa_type },
-  });
-
-  return apiSuccess(data, 201);
+  const newClient = {
+    id: `c${Date.now()}`,
+    ...body,
+    status: 'active',
+    created_at: new Date().toISOString(),
+    client_profiles: null,
+  };
+  return NextResponse.json({ data: newClient }, { status: 201 });
 }

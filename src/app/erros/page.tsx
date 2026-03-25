@@ -94,10 +94,10 @@ export default function ErrosPage() {
           { label: 'Falhas Críticas', value: criticalCount, color: '#ff4757', glow: 'rgba(255,71,87,0.2)' },
           { label: 'Fontes: AI / HUMANO', value: `${autoCount} / ${manualCount}`, color: '#a1b1cc', glow: 'rgba(161,177,204,0.2)' }
         ].map((stat, i) => (
-          <div key={i} className="v2-card relative overflow-hidden group hover:-translate-y-1 transition-transform cursor-default p-5 flex flex-col justify-between" style={{ borderLeft: `2px solid ${stat.color}` }}>
+          <div key={i} className="v2-card relative overflow-hidden group hover:-translate-y-1 transition-transform cursor-default p-5 flex flex-col justify-between" style={{ borderBottom: `3px solid ${stat.color}` }}>
              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-10" style={{ backgroundColor: stat.color }} />
              <span className="text-[10px] text-[#4b6584] font-mono tracking-[2px] font-bold uppercase z-10">{stat.label}</span>
-             <span className="text-3xl font-black font-mono text-[#e2e8f0] z-10 mt-2 tracking-tight group-hover:text-white transition-colors v2-kpi" style={{ textShadow: `0 0 15px ${stat.glow}` }}>{loading ? '--' : stat.value}</span>
+             <span className="text-3xl font-black font-mono text-[#e2e8f0] z-10 mt-2 tracking-tight group-hover:text-white transition-colors" style={{ textShadow: `0 0 20px ${stat.color}80` }}>{loading ? '--' : stat.value}</span>
           </div>
         ))}
       </div>
@@ -166,7 +166,7 @@ export default function ErrosPage() {
                 return (
                   <div key={rule.id} className={`grid grid-cols-[16px_100px_1fr_100px_80px_60px_80px] gap-6 px-6 py-4 border-b border-[#ffffff05] items-center group transition-colors ${i % 2 === 0 ? 'bg-[#0a1320]' : 'bg-[#080d16]'} hover:bg-[#101e30]`}>
                      <div className="flex items-center justify-center shrink-0">
-                        <SevIcon className="w-4 h-4" style={{ color: sev.color, filter: `drop-shadow(0 0 5px ${sev.glow})` }} />
+                        <SevIcon className="w-4 h-4" style={{ color: sev.color, filter: `drop-shadow(0 0 8px ${sev.color}80)` }} />
                      </div>
                      <div className="text-[11px] font-mono text-[#a1b1cc] truncate bg-[#101e30] px-2 py-1 rounded inline-block w-fit tracking-wider">
                         {rule.rule_type}
@@ -175,7 +175,7 @@ export default function ErrosPage() {
                         {rule.rule_description}
                      </div>
                      <div>
-                        <span className="px-2.5 py-1 rounded text-[10px] font-bold font-mono tracking-widest border" style={{ color: action.color, backgroundColor: `${action.color}10`, borderColor: `${action.color}30` }}>
+                        <span className="px-2.5 py-1 rounded text-[10px] font-bold font-mono tracking-widest border" style={{ color: action.color, backgroundColor: `${action.color}10`, borderColor: `${action.color}50`, textShadow: `0 0 10px ${action.color}80`, boxShadow: `0 0 10px ${action.color}30` }}>
                           {action.label}
                         </span>
                      </div>

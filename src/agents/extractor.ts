@@ -72,14 +72,14 @@ function extractFileContent(filePath: string): string {
     if (ext === '.pdf') {
       const result = execSync(
         `python3 scripts/extract_pdf.py "${filePath.replace(/"/g, '\\"')}"`,
-        { encoding: 'utf-8', timeout: 30000, maxBuffer: 10 * 1024 * 1024 }
+        { encoding: 'utf-8', timeout: 120000, maxBuffer: 10 * 1024 * 1024 }
       );
       return result.slice(0, 50000);
     }
     if (ext === '.docx' || ext === '.doc') {
       const result = execSync(
         `python3 scripts/extract_docx.py "${filePath.replace(/"/g, '\\"')}"`,
-        { encoding: 'utf-8', timeout: 30000, maxBuffer: 10 * 1024 * 1024 }
+        { encoding: 'utf-8', timeout: 120000, maxBuffer: 10 * 1024 * 1024 }
       );
       return result.slice(0, 50000);
     }

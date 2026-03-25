@@ -1,33 +1,26 @@
-import { NextRequest } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
-import { apiError, apiSuccess } from '@/lib/api-helpers';
+import { NextRequest, NextResponse } from 'next/server';
+
+const MOCK_RULES = [
+  { id: 'r1', rule_type: 'forbidden_term', doc_type: null, rule_description: 'Nunca usar "I believe" ou "we believe" em documentos', rule_pattern: '\\b(I|we)\\s+believe\\b', rule_action: 'block', severity: 'critical', source: 'quality_notes', active: true, times_triggered: 127, created_at: '2026-01-15T10:00:00Z' },
+  { id: 'r2', rule_type: 'forbidden_term', doc_type: null, rule_description: 'Nunca usar "we think" ou "I think"', rule_pattern: '\\b(I|we)\\s+think\\b', rule_action: 'block', severity: 'high', source: 'quality_notes', active: true, times_triggered: 84, created_at: '2026-01-15T10:00:00Z' },
+  { id: 'r3', rule_type: 'logic', doc_type: 'cover_letter_eb1a', rule_description: 'Nunca citar Dhanasar em cover letter EB-1A (exclusivo de EB-2 NIW)', rule_pattern: null, rule_action: 'block', severity: 'critical', source: 'quality_notes', active: true, times_triggered: 23, created_at: '2026-01-15T10:00:00Z' },
+  { id: 'r4', rule_type: 'terminology', doc_type: null, rule_description: 'Usar "proposed endeavor" (nao "proposed venture" ou "proposed business")', rule_pattern: 'proposed\\s+(venture|business)', rule_action: 'auto_fix', severity: 'medium', source: 'quality_notes', active: true, times_triggered: 56, created_at: '2026-01-15T10:00:00Z' },
+  { id: 'r5', rule_type: 'formatting', doc_type: null, rule_description: 'Headings devem ser bold e com capitalizacao correta', rule_pattern: null, rule_action: 'warn', severity: 'low', source: 'manual', active: true, times_triggered: 12, created_at: '2026-02-01T10:00:00Z' },
+  { id: 'r6', rule_type: 'forbidden_term', doc_type: null, rule_description: 'Nunca usar "in conclusion" ou "to summarize"', rule_pattern: '\\b(in conclusion|to summarize)\\b', rule_action: 'block', severity: 'high', source: 'quality_notes', active: true, times_triggered: 38, created_at: '2026-01-15T10:00:00Z' },
+  { id: 'r7', rule_type: 'legal', doc_type: 'cover_letter_eb2_niw', rule_description: 'Citar os 3 prongs de Dhanasar com precisao juridica', rule_pattern: null, rule_action: 'warn', severity: 'critical', source: 'quality_notes', active: true, times_triggered: 15, created_at: '2026-01-15T10:00:00Z' },
+  { id: 'r8', rule_type: 'content', doc_type: null, rule_description: 'Evidence blocks devem ter thumbnails de evidencia quando disponiveis', rule_pattern: null, rule_action: 'warn', severity: 'medium', source: 'manual', active: true, times_triggered: 9, created_at: '2026-03-10T10:00:00Z' },
+];
 
 export async function GET(req: NextRequest) {
-  const supabase = createServerClient();
   const { searchParams } = new URL(req.url);
-
-  let query = supabase.from('error_rules').select('*');
-
+  const ruleType = searchParams.get('rule_type') || '';
+  const severity = searchParams.get('severity') || '';
   const active = searchParams.get('active');
-  if (active !== null) query = query.eq('active', active === 'true');
 
-  const rule_type = searchParams.get('rule_type');
-  if (rule_type) query = query.eq('rule_type', rule_type);
+  let filtered = [...MOCK_RULES];
+  if (ruleType) filtered = filtered.filter(r => r.rule_type === ruleType);
+  if (severity) filtered = filtered.filter(r => r.severity === severity);
+  if (active === 'true') filtered = filtered.filter(r => r.active);
 
-  const severity = searchParams.get('severity');
-  if (severity) query = query.eq('severity', severity);
-
-  const { data, error } = await query.order('created_at', { ascending: false });
-  if (error) return apiError(error.message);
-  return apiSuccess(data);
-}
-
-export async function POST(req: NextRequest) {
-  const supabase = createServerClient();
-  const body = await req.json();
-
-  const { data, error } = await supabase.from('error_rules').insert({ ...body, source: 'manual' }).select().single();
-  if (error) return apiError(error.message);
-
-  return apiSuccess(data, 201);
+  return NextResponse.json({ data: filtered });
 }

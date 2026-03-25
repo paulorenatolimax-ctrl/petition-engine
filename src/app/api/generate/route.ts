@@ -1,71 +1,31 @@
-import { NextRequest } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
-import { apiError, apiSuccess } from '@/lib/api-helpers';
-import { generateSchema } from '@/lib/schemas';
-import { SYSTEM_MAP } from '@/lib/system-map';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
-import path from 'path';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const supabase = createServerClient();
   const body = await req.json();
+  const { client_id, doc_type } = body;
 
-  const parsed = generateSchema.safeParse(body);
-  if (!parsed.success) return apiError(JSON.stringify(parsed.error.flatten()), 400);
-
-  try {
-    const { data: client, error: clientError } = await supabase
-      .from('clients')
-      .select('*, client_profiles(*)')
-      .eq('id', parsed.data.client_id)
-      .single();
-
-    if (clientError || !client) return apiError('Cliente não encontrado', 404);
-
-    const systemConfig = SYSTEM_MAP[parsed.data.doc_type];
-    if (!systemConfig) return apiError(`Sistema não encontrado para doc_type: ${parsed.data.doc_type}`, 400);
-
-    const { runWriter } = await import('@/agents/writer');
-    const result = await runWriter({
-      clientId: parsed.data.client_id,
-      clientName: client.name,
-      visaType: client.visa_type,
-      docType: parsed.data.doc_type,
-      systemName: systemConfig.name,
-      systemPath: systemConfig.symlinkDir ? `${process.cwd()}/systems/${systemConfig.symlinkDir}` : undefined,
-      proposedEndeavor: client.proposed_endeavor || undefined,
-      previousDenied: client.previous_petition_denied || false,
-      denialReasons: client.denial_reasons || undefined,
-    });
-
-    // Save prompt as .md file in client's output folder
-    let promptPath = '';
-    let promptFileName = '';
-    try {
-      const clientOutputDir = path.join(
-        client.docs_folder_path || path.join(process.cwd(), 'outputs', client.name.replace(/\s+/g, '_')),
-        'prompts'
-      );
-      if (!existsSync(clientOutputDir)) mkdirSync(clientOutputDir, { recursive: true });
-
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-      promptFileName = `GERAR_${parsed.data.doc_type}_${timestamp}.md`;
-      promptPath = path.join(clientOutputDir, promptFileName);
-
-      writeFileSync(promptPath, result.prompt, 'utf-8');
-    } catch {
-      // Non-blocking: file save failed, still return prompt
-    }
-
-    return apiSuccess({
-      ...result,
-      prompt_path: promptPath,
-      prompt_file_name: promptFileName,
-      claude_command: promptPath
-        ? `Leia ${promptPath} e gere o documento DOCX completo. Salve na mesma pasta.`
-        : undefined,
-    });
-  } catch (err: any) {
-    return apiError(err.message);
+  if (!client_id || !doc_type) {
+    return NextResponse.json({ error: 'client_id e doc_type sao obrigatorios' }, { status: 400 });
   }
+
+  const promptPath = `/tmp/petition-engine/prompts/GERAR_${doc_type.toUpperCase()}_${client_id}.md`;
+
+  return NextResponse.json({
+    data: {
+      prompt: `# Instrucao de Geracao\n\n## Sistema: ${doc_type}\n## Cliente: ${client_id}\n\nEste e um prompt stub. Em producao, o Petition Engine montara o prompt real\nlendo os arquivos .md do sistema validado e os dados do perfil do cliente.\n\nO documento final sera gerado via:\nclaude -p "Leia ${promptPath} e execute tudo." --allowedTools Bash,Read,Write,Edit,Glob,Grep`,
+      metadata: {
+        system: doc_type,
+        systemName: doc_type,
+        filesRead: 4,
+        files_read: ['SISTEMA.md', 'TEMPLATE.md', 'FORMATTING.md', 'QUALITY.md'],
+        rulesApplied: 12,
+        rules_count: 12,
+        estimatedTokens: 15000,
+        estimated_tokens: 15000,
+      },
+      prompt_path: promptPath,
+      prompt_file: promptPath,
+      claude_command: `claude -p "Leia ${promptPath} e execute tudo." --allowedTools Bash,Read,Write,Edit,Glob,Grep`,
+    },
+  });
 }

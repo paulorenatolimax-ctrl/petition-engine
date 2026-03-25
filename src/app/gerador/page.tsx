@@ -31,6 +31,8 @@ const SYSTEM_TO_ENUM: Record<string, string> = {
   'Photographic Report': 'photographic_report',
   'Relatório Fotográfico': 'photographic_report',
   'RFE Response': 'rfe_response',
+  'Résumé EB-2 NIW': 'resume_eb2_niw',
+  'Resume EB-2 NIW': 'resume_eb2_niw',
 };
 
 interface SystemVersion {
@@ -64,6 +66,8 @@ const SYSTEM_LABELS: Record<string, string> = {
   'estrategia-eb1': 'Estratégia EB-1A',
   'estrategia-eb2': 'Estratégia EB-2 NIW',
   'satellite-letters': 'Cartas Satélite',
+  'resume-eb2-niw': 'Résumé EB-2 NIW',
+  'Résumé EB-2 NIW': 'Résumé EB-2 NIW',
   'anteprojeto': 'Anteprojeto',
 };
 
@@ -82,6 +86,9 @@ export default function GeradorPage() {
   const [commandCopied, setCommandCopied] = useState(false);
   const [error, setError] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const [executing, setExecuting] = useState(false);
+  const [executionStages, setExecutionStages] = useState<{ stage: string; message?: string; text?: string }[]>([]);
+  const [executionResult, setExecutionResult] = useState<any>(null);
 
   useEffect(() => {
     Promise.all([
@@ -102,6 +109,9 @@ export default function GeradorPage() {
     setError('');
     setGenerating(false);
     setCopied(false);
+    setExecuting(false);
+    setExecutionStages([]);
+    setExecutionResult(null);
     setShowModal(true);
   }
 
@@ -132,11 +142,68 @@ export default function GeradorPage() {
       setGeneratedPrompt(result.prompt);
       setPromptMetadata(result.metadata);
       setClaudeCommand(result.claude_command || '');
-      setPromptPath(result.prompt_path || '');
+      setPromptPath(result.prompt_path || result.prompt_file || '');
+
+      // AUTO-EXECUTE: call Claude Code automatically
+      const pFile = result.prompt_path || result.prompt_file;
+      if (pFile) {
+        setGenerating(false);
+        handleExecute(pFile, selectedClientData?.name || 'Cliente', SYSTEM_TO_ENUM[selectedSystem.system_name] || selectedSystem.system_name);
+        return;
+      }
     } catch (err: any) {
       setError(err.message || 'Erro de conexão');
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function handleExecute(promptFile: string, clientName: string, docType: string) {
+    setExecuting(true);
+    setExecutionStages([]);
+    setExecutionResult(null);
+
+    try {
+      const res = await fetch('/api/generate/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt_file: promptFile, client_name: clientName, doc_type: docType }),
+      });
+
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const text = decoder.decode(value);
+          const events = text.split('\n\n').filter(Boolean);
+
+          for (const event of events) {
+            try {
+              const lines = event.split('\n');
+              const eventLine = lines.find(l => l.startsWith('event:'));
+              const dataLine = lines.find(l => l.startsWith('data:'));
+
+              if (eventLine && dataLine) {
+                const eventType = eventLine.replace('event: ', '');
+                const data = JSON.parse(dataLine.replace('data: ', ''));
+
+                if (eventType === 'complete') {
+                  setExecutionResult(data);
+                } else {
+                  setExecutionStages(prev => [...prev, data]);
+                }
+              }
+            } catch { /* parse error */ }
+          }
+        }
+      }
+    } catch (err: any) {
+      setExecutionStages(prev => [...prev, { stage: 'error', message: `Erro de conexão: ${err.message}` }]);
+    } finally {
+      setExecuting(false);
     }
   }
 
@@ -208,13 +275,13 @@ export default function GeradorPage() {
             <div
               key={sys.id}
               onClick={() => selectedClient ? openGenModal(sys) : null}
-              className={`p-6 rounded-xl border ${selectedClient ? 'bg-[#0a1320] border-[rgba(0,234,255,0.06)] hover:border-[rgba(0,234,255,0.4)] hover:shadow-[0_0_30px_rgba(0,234,255,0.15)] cursor-pointer' : 'bg-[#080d16] border-[rgba(255,255,255,0.02)] opacity-50 cursor-not-allowed'} relative overflow-hidden transition-all group`}
+              className={`p-6 relative overflow-hidden group transition-all ${selectedClient ? 'v2-card cursor-pointer' : 'bg-[#080d16] border border-[rgba(255,255,255,0.02)] rounded-xl opacity-50 cursor-not-allowed'}`}
             >
               <div className="absolute top-0 right-0 p-4 opacity-50"><FileText className="w-16 h-16 text-[#ffffff05]" /></div>
               
               <div className="flex flex-col h-full relative z-10">
-                <div className="w-10 h-10 rounded-lg bg-[#ffffff05] border border-[#ffffff0a] flex items-center justify-center mb-5 group-hover:bg-[#00eaff]/10 group-hover:border-[#00eaff]/30 transition-colors">
-                  <Sparkles className="w-5 h-5 text-[#00eaff]" />
+                <div className="w-10 h-10 rounded-lg bg-[#ffffff05] border border-[#ffffff0a] flex items-center justify-center mb-5 transition-colors group-hover:bg-[rgba(255,171,0,0.1)] group-hover:border-[rgba(255,171,0,0.3)]">
+                  <Sparkles className="w-5 h-5 text-[#00eaff] group-hover:text-[#ffab00] transition-colors" />
                 </div>
                 
                 <h3 className="text-[15px] font-bold text-[#e2e8f0] tracking-wide mb-1 leading-tight h-10">
@@ -264,8 +331,8 @@ export default function GeradorPage() {
                                 </div>
                             </div>
 
-                            <button onClick={handleGenerate} className="w-full py-4 rounded-lg bg-[rgba(0,234,255,0.1)] border border-[rgba(0,234,255,0.3)] hover:bg-[#00eaff] hover:text-[#03060a] text-[#00eaff] font-mono font-bold tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(0,234,255,0.1)] group">
-                                <Zap className="w-5 h-5 group-hover:scale-110" /> INITIATE GENERATION
+                            <button onClick={handleGenerate} className="w-full py-4 rounded-lg bg-[rgba(255,171,0,0.08)] border border-[rgba(255,171,0,0.3)] hover:bg-[#ffab00] hover:text-[#03060a] text-[#ffab00] font-mono font-bold tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(255,171,0,0.15)] hover:shadow-[0_0_40px_rgba(255,171,0,0.4)] group">
+                                <Zap className="w-5 h-5 group-hover:scale-110" style={{ filter: 'drop-shadow(0 0 8px rgba(255,171,0,0.8))' }} /> INITIATE GENERATION
                             </button>
                         </div>
                     )}
@@ -286,61 +353,123 @@ export default function GeradorPage() {
                     )}
 
                     {generatedPrompt && (
-                        <div className="flex flex-col gap-4">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            {/* Success header */}
+                            <div style={{ textAlign: 'center', padding: '12px 0' }}>
+                                <div style={{ color: '#22c55e', fontSize: '36px', marginBottom: '8px' }}>✓</div>
+                                <h3 style={{ color: '#00eaff', fontSize: '18px', fontWeight: 700, margin: 0, textShadow: '0 0 10px rgba(0,234,255,0.3)' }}>
+                                    PROMPT MONTADO COM SUCESSO
+                                </h3>
+                                <p style={{ color: '#4b6584', fontSize: '13px', margin: '4px 0 0' }}>
+                                    {promptMetadata?.system || promptMetadata?.systemName} — {selectedClientData?.name}
+                                </p>
+                            </div>
+
                             {/* Stats */}
-                            <div className="grid grid-cols-4 gap-3">
-                                <div className="bg-[rgba(0,234,255,0.05)] border border-[rgba(0,234,255,0.15)] rounded-lg p-4 text-center">
-                                    <div className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest font-bold">Target Context</div>
-                                    <div className="text-xl md:text-2xl font-black font-mono text-[#e2e8f0] mt-2 v2-kpi">{promptMetadata?.system || promptMetadata?.systemName || 'N/A'}</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+                                {[
+                                    { label: 'Target', value: promptMetadata?.system || promptMetadata?.systemName || 'N/A', color: '#e2e8f0', size: '14px' },
+                                    { label: 'Chunks', value: promptMetadata?.filesRead || promptMetadata?.files_read?.length || 0, color: '#e2e8f0', size: '20px' },
+                                    { label: 'Rules', value: promptMetadata?.rulesApplied || promptMetadata?.rules_count || 0, color: '#e2e8f0', size: '20px' },
+                                    { label: 'Tokens', value: `~${(promptMetadata?.estimatedTokens || promptMetadata?.estimated_tokens || 0).toLocaleString()}`, color: '#00eaff', size: '20px' },
+                                ].map((s, i) => (
+                                    <div key={i} style={{ background: '#0d1117', border: '1px solid rgba(0,234,255,0.15)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
+                                        <div style={{ color: '#4b6584', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>{s.label}</div>
+                                        <div style={{ color: s.color, fontSize: s.size, fontWeight: 700, fontFamily: 'monospace', marginTop: '4px' }}>{s.value}</div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* 3 STEPS */}
+                            <div style={{ background: '#0d1117', border: '1px solid rgba(0,234,255,0.2)', borderRadius: '12px', padding: '20px' }}>
+                                <h4 style={{ color: '#00eaff', fontSize: '13px', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 16px' }}>
+                                    PRÓXIMOS PASSOS
+                                </h4>
+
+                                {/* Step 1 */}
+                                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', marginBottom: '16px' }}>
+                                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#22c55e', fontSize: '14px', fontWeight: 700, flexShrink: 0 }}>✓</div>
+                                    <div>
+                                        <div style={{ color: '#f5f5f5', fontSize: '14px', fontWeight: 600 }}>Prompt salvo automaticamente</div>
+                                        <div style={{ color: '#4b6584', fontSize: '11px', marginTop: '2px', fontFamily: 'monospace', wordBreak: 'break-all' }}>{promptPath}</div>
+                                    </div>
                                 </div>
-                                <div className="bg-[rgba(0,234,255,0.05)] border border-[rgba(0,234,255,0.15)] rounded-lg p-4 text-center">
-                                    <div className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest font-bold">Chunks Read</div>
-                                    <div className="text-xl md:text-2xl font-black font-mono text-[#e2e8f0] mt-2 v2-kpi">{promptMetadata?.filesRead || promptMetadata?.files_read?.length || 0}</div>
-                                </div>
-                                <div className="bg-[rgba(0,234,255,0.05)] border border-[rgba(0,234,255,0.15)] rounded-lg p-4 text-center">
-                                    <div className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest font-bold">Rules</div>
-                                    <div className="text-xl md:text-2xl font-black font-mono text-[#e2e8f0] mt-2 v2-kpi">{promptMetadata?.rulesApplied || promptMetadata?.rules_count || 0}</div>
-                                </div>
-                                <div className="bg-[rgba(0,234,255,0.05)] border border-[rgba(0,234,255,0.15)] rounded-lg p-4 text-center">
-                                    <div className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest font-bold">Tokens</div>
-                                    <div className="text-xl md:text-2xl font-black font-mono text-[#00eaff] mt-2 v2-kpi">~{(promptMetadata?.estimatedTokens || promptMetadata?.estimated_tokens || 0).toLocaleString()}</div>
+
+                                {/* Step 2 — Auto execution */}
+                                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                                    <div style={{
+                                      width: '28px', height: '28px', borderRadius: '50%',
+                                      background: executing ? 'rgba(0,234,255,0.15)' : executionResult?.success ? 'rgba(34,197,94,0.15)' : executionResult ? 'rgba(239,68,68,0.15)' : 'rgba(0,234,255,0.15)',
+                                      border: `1px solid ${executing ? 'rgba(0,234,255,0.3)' : executionResult?.success ? 'rgba(34,197,94,0.3)' : executionResult ? 'rgba(239,68,68,0.3)' : 'rgba(0,234,255,0.3)'}`,
+                                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                      color: executing ? '#00eaff' : executionResult?.success ? '#22c55e' : executionResult ? '#ef4444' : '#00eaff',
+                                      fontSize: '14px', fontWeight: 700, flexShrink: 0,
+                                    }}>
+                                      {executing ? '⚡' : executionResult?.success ? '✓' : executionResult ? '!' : '2'}
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ color: '#f5f5f5', fontSize: '14px', fontWeight: 600 }}>
+                                          {executing ? 'Claude Code gerando documento...' : executionResult?.success ? 'Documento gerado com sucesso!' : executionResult ? 'Erro na geração' : 'Executando Claude Code...'}
+                                        </div>
+
+                                        {/* Execution log */}
+                                        {executionStages.length > 0 && (
+                                          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                            {executionStages.map((s, i) => (
+                                              <div key={i} style={{ fontSize: '12px', fontFamily: 'monospace', color: s.stage === 'error' ? '#ef4444' : s.stage === 'warning' ? '#eab308' : s.stage === 'complete' ? '#22c55e' : '#64748b' }}>
+                                                {s.stage === 'error' ? '✗' : s.stage === 'complete' ? '✓' : '→'} {s.message || s.text?.slice(0, 100)}
+                                              </div>
+                                            ))}
+                                            {executing && (
+                                              <div style={{ fontSize: '12px', color: '#00eaff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⟳</span> Aguarde...
+                                              </div>
+                                            )}
+                                          </div>
+                                        )}
+
+                                        {/* Success result */}
+                                        {executionResult?.success && (
+                                          <div style={{ marginTop: '12px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
+                                            <div style={{ color: '#22c55e', fontSize: '14px', fontWeight: 600 }}>Documento salvo na pasta do cliente!</div>
+                                          </div>
+                                        )}
+
+                                        {/* Fallback: manual command (only on failure) */}
+                                        {executionResult && !executionResult.success && claudeCommand && (
+                                          <div style={{ marginTop: '12px' }}>
+                                            <div style={{ color: '#64748b', fontSize: '12px', marginBottom: '6px' }}>Comando manual (fallback):</div>
+                                            <div
+                                              onClick={() => { navigator.clipboard.writeText(claudeCommand); setCommandCopied(true); setTimeout(() => setCommandCopied(false), 2000); }}
+                                              style={{ background: '#000', border: '1px solid rgba(255,171,0,0.4)', borderRadius: '8px', padding: '10px 14px', fontFamily: 'monospace', fontSize: '12px', color: '#ffab00', textShadow: '0 0 10px rgba(255,171,0,0.3)', cursor: 'pointer', wordBreak: 'break-all', transition: 'all 0.3s' }}
+                                            >
+                                              <span style={{ opacity: 0.5 }}>$ </span>{claudeCommand}
+                                            </div>
+                                            <div style={{ color: '#ffab00', fontSize: '11px', marginTop: '4px', opacity: 0.8 }}>Clique para copiar → Cole no terminal do Claude Code</div>
+                                          </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Button Claude Code */}
-                            <button
-                                onClick={() => {
-                                    navigator.clipboard.writeText(claudeCommand);
-                                    setCommandCopied(true);
-                                    setTimeout(() => setCommandCopied(false), 3000);
-                                }}
-                                className={`w-full py-5 mt-2 rounded-xl border font-mono font-bold tracking-widest flex items-center justify-center gap-3 transition-all ${commandCopied ? 'bg-[#2ed573]/20 border-[#2ed573] text-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.4)]' : 'bg-[#00eaff]/10 border-[#00eaff]/30 text-[#00eaff] hover:bg-[#00eaff] hover:text-[#03060a] shadow-[0_0_20px_rgba(0,234,255,0.2)] hover:shadow-[0_0_30px_rgba(0,234,255,0.6)]'}`}
-                            >
-                                <Zap className="w-5 h-5" /> 
-                                {commandCopied ? 'COMANDO COPIADO PARA O CLIPBOARD!' : '⚡ PROMPT SALVO — COPIAR COMANDO CLAUDE CODE'}
-                            </button>
-
-                            {/* Collapsible: ver prompt completo */}
-                            <details className="mt-2 group">
-                                <summary className="text-[#a1b1cc] font-mono text-xs cursor-pointer flex items-center gap-2 hover:text-[#00eaff] transition-colors p-3 rounded-lg hover:bg-[#ffffff05] outline-none">
-                                    <ChevronRight className="w-4 h-4 group-open:rotate-90 transition-transform" />
+                            {/* Collapsible prompt */}
+                            <details style={{ background: '#0d1117', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
+                                <summary style={{ padding: '12px 16px', cursor: 'pointer', color: '#4b6584', fontSize: '13px', listStyle: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <ChevronRight size={14} style={{ transition: 'transform 0.2s' }} />
                                     Visualizar Prompt Cru ({(promptMetadata?.estimatedTokens || promptMetadata?.estimated_tokens || 0).toLocaleString()} tokens)
                                 </summary>
-                                <div className="mt-2 relative">
-                                    <textarea
-                                        readOnly
-                                        value={generatedPrompt}
-                                        className="w-full h-[250px] bg-[#03060a] border border-[#ffffff10] rounded-xl p-5 font-mono text-[11px] text-[#4b6584] outline-none resize-none focus:border-[#00eaff]/30 focus:shadow-[0_0_15px_rgba(0,234,255,0.1)] transition-all"
-                                    />
-                                    <button
-                                        onClick={copyPrompt}
-                                        className="absolute top-4 right-4 bg-[#101e30] border border-[#ffffff10] text-[#a1b1cc] rounded-md px-3 py-1.5 text-[10px] font-mono hover:text-[#00eaff] hover:border-[#00eaff]/30 transition-all flex items-center gap-2 shadow-lg"
-                                    >
-                                        {copied ? <Check className="w-3 h-3 text-[#2ed573]"/> : <Copy className="w-3 h-3"/>}
-                                        {copied ? 'COPIADO' : 'COPIAR RAW'}
+                                <div style={{ padding: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', maxHeight: '300px', overflow: 'auto', position: 'relative' }}>
+                                    <pre style={{ fontFamily: 'monospace', fontSize: '11px', color: '#64748b', whiteSpace: 'pre-wrap', wordBreak: 'break-word', margin: 0 }}>{generatedPrompt}</pre>
+                                    <button onClick={copyPrompt} style={{ position: 'absolute', top: '20px', right: '20px', background: copied ? 'rgba(34,197,94,0.15)' : '#101e30', border: `1px solid ${copied ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.08)'}`, color: copied ? '#22c55e' : '#a1b1cc', borderRadius: '6px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer', fontFamily: 'monospace' }}>
+                                        {copied ? '✓ Copiado' : 'Copiar'}
                                     </button>
                                 </div>
                             </details>
+
+                            {/* Close */}
+                            <button onClick={() => setShowModal(false)} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#4b6584', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', alignSelf: 'center' }}>
+                                Fechar
+                            </button>
                         </div>
                     )}
                 </div>

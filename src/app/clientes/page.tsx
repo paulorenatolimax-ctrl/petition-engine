@@ -146,17 +146,18 @@ export default function ClientesPage() {
         <div className="flex flex-col gap-3">
           {clients.map((client, i) => {
             const status = STATUS_MAP[client.status] || STATUS_MAP.on_hold;
+            const clientColor = VISA_COLORS[client.visa_type] || '#00eaff';
             return (
               <Link
                 key={client.id}
                 href={`/clientes/${client.id}`}
                 className="group relative v2-card p-5 animate-in fade-in flex items-center gap-6 cursor-pointer overflow-hidden"
-                style={{ animationDelay: `${i * 0.05}s` }}
+                style={{ animationDelay: `${i * 0.05}s`, borderLeft: `2px solid ${clientColor}` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[rgba(0,234,255,0.05)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                <div className="absolute inset-0 to-transparent opacity-0 group-hover:opacity-[0.08] transition-opacity pointer-events-none" style={{ backgroundImage: `linear-gradient(to right, ${clientColor}, transparent)` }} />
                 
                 <div className="flex-1 flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-full bg-[#101e30] border border-[rgba(0,234,255,0.1)] flex items-center justify-center text-lg font-black font-mono text-[#00eaff] drop-shadow-[0_0_8px_rgba(0,234,255,0.5)] group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-[#101e30] border flex items-center justify-center text-lg font-black font-mono transition-transform group-hover:scale-110" style={{ color: clientColor, borderColor: `${clientColor}40`, filter: `drop-shadow(0 0 8px ${clientColor}80)` }}>
                     {client.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex flex-col gap-1.5">

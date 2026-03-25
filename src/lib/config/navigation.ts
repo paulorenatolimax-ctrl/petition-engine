@@ -1,10 +1,10 @@
-import { LayoutDashboard, Users, Zap, CheckCircle, Bug, Settings } from "lucide-react";
+import { Activity, Orbit, Cpu, ShieldCheck, TerminalSquare, SlidersHorizontal } from 'lucide-react';
 
 export const APP_NAV_ITEMS = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
-  { icon: Users, label: 'Clientes', href: '/clientes' },
-  { icon: Zap, label: 'Gerador', href: '/gerador' },
-  { icon: CheckCircle, label: 'Qualidade', href: '/qualidade' },
-  { icon: Bug, label: 'Erros', href: '/erros' },
-  { icon: Settings, label: 'Sistemas', href: '/sistemas' },
+  { icon: Activity, label: 'Dashboard', href: '/' },
+  { icon: Orbit, label: 'Clientes', href: '/clientes' },
+  { icon: Cpu, label: 'Gerador', href: '/gerador' },
+  { icon: ShieldCheck, label: 'Qualidade', href: '/qualidade' },
+  { icon: TerminalSquare, label: 'Erros', href: '/erros' },
+  { icon: SlidersHorizontal, label: 'Sistemas', href: '/sistemas' },
 ];
