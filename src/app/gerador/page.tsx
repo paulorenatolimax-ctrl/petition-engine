@@ -446,56 +446,78 @@ export default function GeradorPage() {
                                   </div>
                                 )}
 
-                                {/* Final Result — with SoC review summary */}
+                                {/* FAILURE Result */}
+                                {executionResult && !executionResult.success && (
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <div style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: '10px', padding: '16px' }}>
+                                      <div style={{ color: '#ef4444', fontSize: '14px', fontWeight: 700, marginBottom: '8px', fontFamily: 'monospace' }}>
+                                        GERACAO FALHOU
+                                      </div>
+                                      <div style={{ color: '#ef4444', fontSize: '12px', fontFamily: 'monospace', opacity: 0.9 }}>
+                                        {executionResult.error}
+                                      </div>
+                                      {executionResult.hint && (
+                                        <div style={{ color: '#ffa502', fontSize: '11px', fontFamily: 'monospace', marginTop: '10px', padding: '8px 12px', background: 'rgba(255,165,2,0.06)', border: '1px solid rgba(255,165,2,0.15)', borderRadius: '6px' }}>
+                                          Dica: {executionResult.hint}
+                                        </div>
+                                      )}
+                                      {executionResult.stdout_tail && (
+                                        <details style={{ marginTop: '10px' }}>
+                                          <summary style={{ color: '#4b6584', fontSize: '11px', cursor: 'pointer', fontFamily: 'monospace' }}>Ver saida do claude -p</summary>
+                                          <pre style={{ color: '#64748b', fontSize: '10px', fontFamily: 'monospace', whiteSpace: 'pre-wrap', marginTop: '6px', maxHeight: '150px', overflow: 'auto', background: 'rgba(0,0,0,0.3)', padding: '8px', borderRadius: '4px' }}>{executionResult.stdout_tail}</pre>
+                                        </details>
+                                      )}
+                                      <div style={{ color: '#4b6584', fontSize: '10px', fontFamily: 'monospace', marginTop: '8px' }}>
+                                        Duracao: {executionResult.duration_seconds || 0}s
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* SUCCESS Result */}
                                 {executionResult?.success && (
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                    {/* Review Verdict */}
+                                    {/* Review Status */}
                                     <div style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.25)', borderRadius: '10px', padding: '16px' }}>
                                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                           <Shield size={18} style={{ color: '#a855f7', filter: 'drop-shadow(0 0 8px rgba(168,85,247,0.6))' }} />
-                                          <span style={{ color: '#a855f7', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '2px' }}>SEPARATION OF CONCERNS</span>
+                                          <span style={{ color: '#a855f7', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '2px' }}>RESULTADO</span>
                                         </div>
-                                        <span style={{ color: executionResult.review_summary?.blocking > 0 ? '#ef4444' : executionResult.review_summary?.score >= 90 ? '#22c55e' : '#eab308', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700, padding: '3px 10px', borderRadius: '6px', background: executionResult.review_summary?.blocking > 0 ? 'rgba(239,68,68,0.1)' : executionResult.review_summary?.score >= 90 ? 'rgba(34,197,94,0.1)' : 'rgba(234,179,8,0.1)', border: `1px solid ${executionResult.review_summary?.blocking > 0 ? 'rgba(239,68,68,0.3)' : executionResult.review_summary?.score >= 90 ? 'rgba(34,197,94,0.3)' : 'rgba(234,179,8,0.3)'}` }}>
+                                        <span style={{ color: executionResult.review_verdict === 'REVISADO' ? '#22c55e' : '#eab308', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700, padding: '3px 10px', borderRadius: '6px', background: executionResult.review_verdict === 'REVISADO' ? 'rgba(34,197,94,0.1)' : 'rgba(234,179,8,0.1)', border: `1px solid ${executionResult.review_verdict === 'REVISADO' ? 'rgba(34,197,94,0.3)' : 'rgba(234,179,8,0.3)'}` }}>
                                           {executionResult.review_verdict}
                                         </span>
                                       </div>
 
-                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
                                         {[
-                                          { label: 'Score', value: `${executionResult.review_summary?.score || 0}/100`, color: '#a855f7' },
-                                          { label: 'Bloqueantes', value: executionResult.review_summary?.blocking || 0, color: executionResult.review_summary?.blocking > 0 ? '#ef4444' : '#22c55e' },
-                                          { label: 'Criticos', value: executionResult.review_summary?.critical || 0, color: '#ef4444' },
-                                          { label: 'Altos', value: executionResult.review_summary?.high || 0, color: '#eab308' },
-                                          { label: 'Medios', value: executionResult.review_summary?.medium || 0, color: '#a1b1cc' },
+                                          { label: 'Geracao', value: `${executionResult.phases?.generation?.duration || 0}s`, color: executionResult.phases?.generation?.docx_found ? '#22c55e' : '#ef4444' },
+                                          { label: 'Revisao', value: `${executionResult.phases?.review?.duration || 0}s`, color: executionResult.phases?.review?.reviewed_docx_found ? '#a855f7' : '#4b6584' },
+                                          { label: 'Total', value: `${executionResult.duration_seconds || 0}s`, color: '#00eaff' },
                                         ].map((item, i) => (
-                                          <div key={i} style={{ textAlign: 'center', padding: '8px 4px', background: 'rgba(0,0,0,0.3)', borderRadius: '6px' }}>
+                                          <div key={i} style={{ textAlign: 'center', padding: '10px 4px', background: 'rgba(0,0,0,0.3)', borderRadius: '6px' }}>
                                             <div style={{ fontSize: '9px', color: '#4b6584', fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}>{item.label}</div>
-                                            <div style={{ fontSize: '16px', fontWeight: 700, fontFamily: 'monospace', color: item.color, marginTop: '2px' }}>{item.value}</div>
+                                            <div style={{ fontSize: '18px', fontWeight: 700, fontFamily: 'monospace', color: item.color, marginTop: '2px' }}>{item.value}</div>
                                           </div>
                                         ))}
                                       </div>
-
-                                      <div style={{ marginTop: '10px', display: 'flex', gap: '8px', fontSize: '10px', fontFamily: 'monospace', color: '#4b6584' }}>
-                                        <span>4 personas</span>
-                                        <span>|</span>
-                                        <span>{((executionResult.phases?.review?.tokens || 0) / 1000).toFixed(0)}K tokens</span>
-                                        <span>|</span>
-                                        <span>{executionResult.phases?.review?.duration || 0}s</span>
-                                      </div>
                                     </div>
 
-                                    {/* Document saved */}
+                                    {/* Files found */}
                                     <div style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '8px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                       <div style={{ color: '#22c55e', fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        <Check size={16} /> Documento REVISADO salvo na pasta do cliente
+                                        <Check size={16} /> Arquivos gerados
                                       </div>
-                                      <div style={{ fontSize: '11px', fontFamily: 'monospace', color: '#4b6584' }}>
-                                        DOCX: {executionResult.docx_reviewed?.split('/').pop() || 'documento_REVIEWED.docx'}
-                                      </div>
-                                      <div style={{ fontSize: '11px', fontFamily: 'monospace', color: '#4b6584' }}>
-                                        Relatorio: {executionResult.review_report?.split('/').pop() || 'REVIEW_REPORT.md'}
-                                      </div>
+                                      {executionResult.all_files?.map((f: string, i: number) => (
+                                        <div key={i} style={{ fontSize: '11px', fontFamily: 'monospace', color: '#a1b1cc' }}>
+                                          {f}
+                                        </div>
+                                      ))}
+                                      {!executionResult.all_files?.length && (
+                                        <div style={{ fontSize: '11px', fontFamily: 'monospace', color: '#4b6584' }}>
+                                          DOCX: {executionResult.docx_original?.split('/').pop() || '—'}
+                                        </div>
+                                      )}
                                       <div style={{ fontSize: '10px', fontFamily: 'monospace', color: '#4b6584', marginTop: '4px' }}>
                                         Total: {((executionResult.tokens_used || 0) / 1000).toFixed(0)}K tokens | {executionResult.duration_seconds || 0}s
                                       </div>

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { spawn } from 'child_process';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync, mkdirSync, statSync } from 'fs';
 import path from 'path';
 
 const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
@@ -12,17 +12,34 @@ function readClients(): any[] {
   return JSON.parse(readFileSync(CLIENTS_FILE, 'utf-8'));
 }
 
-function runClaude(promptFile: string): Promise<{ code: number; stdout: string; stderr: string }> {
+// Scan directory for .docx files created after a given timestamp
+function findNewDocx(dir: string, afterMs: number): string[] {
+  if (!existsSync(dir)) return [];
+  try {
+    return readdirSync(dir)
+      .filter(f => f.endsWith('.docx'))
+      .map(f => path.join(dir, f))
+      .filter(f => { try { return statSync(f).mtimeMs > afterMs; } catch { return false; } });
+  } catch { return []; }
+}
+
+function runClaude(
+  instruction: string,
+  onStdout?: (chunk: string) => void,
+): Promise<{ code: number; stdout: string; stderr: string }> {
   return new Promise((resolve) => {
     const proc = spawn('claude', [
-      '-p',
-      `Leia ${promptFile} e execute tudo.`,
+      '-p', instruction,
       '--allowedTools', 'Bash,Read,Write,Edit,Glob,Grep',
     ], { shell: true, env: { ...process.env, PATH: process.env.PATH } });
 
     let stdout = '';
     let stderr = '';
-    proc.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+    proc.stdout.on('data', (d: Buffer) => {
+      const chunk = d.toString();
+      stdout += chunk;
+      if (onStdout) onStdout(chunk);
+    });
     proc.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
     proc.on('close', (code: number | null) => resolve({ code: code ?? 1, stdout, stderr }));
     proc.on('error', (err: Error) => resolve({ code: 1, stdout: '', stderr: err.message }));
@@ -35,7 +52,7 @@ export async function POST(req: NextRequest) {
   const encoder = new TextEncoder();
   const startTime = Date.now();
 
-  // Resolve client docs_folder_path → _Forjado por Petition Engine/
+  // Resolve output directory
   let clientBaseDir = '';
   if (client_id) {
     const clients = readClients();
@@ -53,79 +70,148 @@ export async function POST(req: NextRequest) {
         controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`));
       };
 
-      // ═══ PHASE 1: GENERATION ═══
-      send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERACAO DO DOCUMENTO' });
-
+      // ═══ PRE-FLIGHT CHECKS ═══
       if (!prompt_file) {
-        send('stage', { stage: 'error', phase: 1, message: 'Erro: prompt_file nao fornecido' });
+        send('stage', { stage: 'error', phase: 0, message: 'prompt_file nao fornecido' });
         send('complete', { success: false, error: 'prompt_file obrigatorio' });
         controller.close();
         return;
       }
 
-      send('stage', { stage: 'loading', phase: 1, message: `Instrucao: ${prompt_file.split('/').pop()}` });
-      send('stage', { stage: 'generating', phase: 1, message: `Executando claude -p (${doc_type || 'documento'})...` });
+      if (!existsSync(prompt_file)) {
+        send('stage', { stage: 'error', phase: 0, message: `Arquivo nao encontrado: ${prompt_file}` });
+        send('complete', { success: false, error: `Instrucao nao existe: ${prompt_file}` });
+        controller.close();
+        return;
+      }
 
-      const gen = await runClaude(prompt_file);
+      // Create output dir if needed
+      try {
+        if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
+      } catch (err: any) {
+        send('stage', { stage: 'error', phase: 0, message: `Nao foi possivel criar pasta: ${err.message}` });
+        send('complete', { success: false, error: `Falha ao criar ${outputDir}` });
+        controller.close();
+        return;
+      }
+
+      // ═══ PHASE 1: GENERATION ═══
+      send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERACAO DO DOCUMENTO' });
+      send('stage', { stage: 'loading', phase: 1, message: `Instrucao: ${prompt_file.split('/').pop()}` });
+      send('stage', { stage: 'loading', phase: 1, message: `Output: ${outputDir}` });
+      send('stage', { stage: 'generating', phase: 1, message: `Executando: claude -p "Leia ${prompt_file.split('/').pop()} e execute tudo."` });
+      send('stage', { stage: 'info', phase: 1, message: 'Aguarde — geracao real pode levar varios minutos...' });
+
+      const instruction = `Leia ${prompt_file} e execute tudo.`;
+      let lastChunkTime = Date.now();
+
+      const gen = await runClaude(instruction, (chunk) => {
+        // Send heartbeat with stdout progress every 10s
+        const now = Date.now();
+        if (now - lastChunkTime > 10000) {
+          const preview = chunk.trim().slice(0, 120);
+          if (preview) {
+            send('stage', { stage: 'stdout', phase: 1, message: preview });
+          }
+          lastChunkTime = now;
+        }
+      });
+
       const genDuration = Math.round((Date.now() - startTime) / 1000);
 
+      // Report exit code honestly
       if (gen.code !== 0) {
-        send('stage', { stage: 'error', phase: 1, message: `Claude Code retornou codigo ${gen.code}` });
-        if (gen.stderr) send('stage', { stage: 'error', phase: 1, message: gen.stderr.slice(0, 500) });
+        send('stage', { stage: 'error', phase: 1, message: `claude -p saiu com codigo ${gen.code}` });
+        if (gen.stderr) {
+          send('stage', { stage: 'error', phase: 1, message: `stderr: ${gen.stderr.slice(0, 500)}` });
+        }
+        // Even on error, check if any .docx was created (partial success)
+        const foundFiles = findNewDocx(outputDir, startTime).concat(findNewDocx(clientBaseDir, startTime));
+        if (foundFiles.length > 0) {
+          send('stage', { stage: 'warning', phase: 1, message: `Processo falhou mas encontrou ${foundFiles.length} .docx criado(s)` });
+          send('complete', {
+            success: false,
+            partial: true,
+            error: `Exit ${gen.code} — docx parcial encontrado`,
+            files_found: foundFiles.map(f => f.split('/').pop()),
+            output_path: outputDir,
+            duration_seconds: genDuration,
+            stdout_tail: gen.stdout.slice(-500),
+          });
+        } else {
+          send('complete', {
+            success: false,
+            error: `Geracao falhou (exit ${gen.code}) — nenhum .docx criado`,
+            stderr: gen.stderr.slice(0, 1000),
+            stdout_tail: gen.stdout.slice(-500),
+            duration_seconds: genDuration,
+          });
+        }
+        controller.close();
+        return;
+      }
+
+      // ═══ POST-FLIGHT: Check if .docx was actually created ═══
+      const newDocx = findNewDocx(outputDir, startTime).concat(findNewDocx(clientBaseDir, startTime));
+
+      if (newDocx.length === 0) {
+        send('stage', { stage: 'error', phase: 1, message: 'claude -p retornou 0 mas NENHUM .docx foi criado no disco' });
+        send('stage', { stage: 'error', phase: 1, message: `Pasta verificada: ${outputDir}` });
+        send('stage', { stage: 'info', phase: 1, message: `stdout (ultimos 300 chars): ${gen.stdout.slice(-300)}` });
         send('complete', {
           success: false,
-          error: `Geracao falhou (exit ${gen.code})`,
-          stderr: gen.stderr.slice(0, 1000),
+          error: 'Processo completou mas nao gerou .docx — a instrucao pode ser generica demais para o sistema',
+          hint: 'Cover Letters e BPs precisam de instrucoes especificas de 4 partes (veja GERAR_COVER_EB1A_GUSTAVO_NELSON.md como exemplo)',
+          stdout_tail: gen.stdout.slice(-500),
           duration_seconds: genDuration,
+          output_dir_checked: outputDir,
         });
         controller.close();
         return;
       }
 
-      const clientSlug = (client_name || 'doc').replace(/\s+/g, '_');
-      const docxPath = `${outputDir}${doc_type}_${clientSlug}.docx`;
-
-      send('stage', { stage: 'gen_complete', phase: 1, message: `Fase 1 concluida em ${genDuration}s` });
+      const mainDocx = newDocx[0];
+      send('stage', { stage: 'gen_complete', phase: 1, message: `Documento criado: ${mainDocx.split('/').pop()} (${genDuration}s)` });
+      if (newDocx.length > 1) {
+        send('stage', { stage: 'info', phase: 1, message: `${newDocx.length} arquivos .docx encontrados no total` });
+      }
 
       // ═══ PHASE 2: SEPARATION OF CONCERNS ═══
       send('stage', { stage: 'phase', phase: 2, message: 'FASE 2: REVISAO CRUZADA — Separation of Concerns' });
+      send('stage', { stage: 'review_init', phase: 2, message: 'Iniciando sessao limpa para revisao cruzada...' });
 
-      const reviewPrompt = `Leia ${SOC_PATH} secao 'PROTOCOLO DE REVISAO' e execute a revisao completa do documento: ${docxPath}. Use os padroes de qualidade em: ${QUALITY_PATH}`;
+      const reviewInstruction = `Leia ${SOC_PATH} secao 'PROTOCOLO DE REVISAO' e execute a revisao completa do documento: ${mainDocx}. Use os padroes de qualidade em: ${QUALITY_PATH}`;
 
-      send('stage', { stage: 'review_init', phase: 2, message: 'Sessao limpa: 4 personas revisando...' });
-
-      const review = await runClaude(SOC_PATH);
+      const review = await runClaude(reviewInstruction);
       const totalDuration = Math.round((Date.now() - startTime) / 1000);
+      const reviewDuration = totalDuration - genDuration;
 
-      const reviewedDocx = docxPath.replace('.docx', '_REVIEWED.docx');
-      const reviewReport = docxPath.replace('.docx', '_REVIEW_REPORT.md');
+      // Check if reviewed .docx was created
+      const reviewedFiles = findNewDocx(outputDir, startTime + genDuration * 1000);
+      const reviewedDocx = reviewedFiles.find(f => f.includes('REVIEWED')) || null;
+      const reviewReport = reviewedFiles.find(f => f.includes('REVIEW')) || null;
 
-      if (review.code === 0) {
-        send('stage', { stage: 'review_complete', phase: 2, message: `Revisao concluida em ${totalDuration - genDuration}s` });
+      if (review.code === 0 && reviewedDocx) {
+        send('stage', { stage: 'review_complete', phase: 2, message: `Revisao concluida: ${reviewedDocx.split('/').pop()} (${reviewDuration}s)` });
+      } else if (review.code === 0) {
+        send('stage', { stage: 'warning', phase: 2, message: `Revisao executou mas nao gerou _REVIEWED.docx (${reviewDuration}s)` });
       } else {
-        send('stage', { stage: 'warning', phase: 2, message: `Revisao retornou codigo ${review.code} — documento bruto disponivel` });
+        send('stage', { stage: 'warning', phase: 2, message: `Revisao falhou (exit ${review.code}) — documento bruto disponivel` });
       }
 
-      // ═══ FINAL ═══
+      // ═══ FINAL — HONEST RESULT ═══
       send('complete', {
         success: true,
         output_path: outputDir,
-        docx_original: docxPath,
-        docx_reviewed: review.code === 0 ? reviewedDocx : null,
-        review_report: review.code === 0 ? reviewReport : null,
-        review_verdict: review.code === 0 ? 'REVISADO' : 'SEM REVISAO (erro na fase 2)',
-        review_summary: {
-          total_issues: 0,
-          blocking: 0,
-          critical: 0,
-          high: 0,
-          medium: 0,
-          score: review.code === 0 ? 90 : 0,
-        },
+        docx_original: mainDocx,
+        docx_reviewed: reviewedDocx,
+        review_report: reviewReport,
+        all_files: newDocx.concat(reviewedFiles).map(f => f.split('/').pop()),
+        review_verdict: reviewedDocx ? 'REVISADO' : review.code === 0 ? 'REVISAO PARCIAL' : 'SEM REVISAO',
         duration_seconds: totalDuration,
         phases: {
-          generation: { duration: genDuration },
-          review: { duration: totalDuration - genDuration },
+          generation: { duration: genDuration, exit_code: gen.code, docx_found: true },
+          review: { duration: reviewDuration, exit_code: review.code, reviewed_docx_found: !!reviewedDocx },
         },
       });
 
