@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { spawn } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import { readFileSync, existsSync, readdirSync, mkdirSync, statSync } from 'fs';
 import path from 'path';
 
@@ -7,12 +7,33 @@ const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_
 const QUALITY_PATH = '/Users/paulo1844/Documents/Aqui OBSIDIAN/Aspectos Gerais da Vida/PROEX/Pareceres da Qualidade - Apontamentos (insumos para agente de qualidade).md';
 const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
 
+// Resolve absolute path to claude binary (cached)
+let _claudeBin: string | null = null;
+function findClaudeBin(): string | null {
+  if (_claudeBin) return _claudeBin;
+  const candidates = [
+    '/Users/paulo1844/.npm-global/bin/claude',
+    `${process.env.HOME}/.npm-global/bin/claude`,
+    '/usr/local/bin/claude',
+    '/opt/homebrew/bin/claude',
+    `${process.env.HOME}/.claude/bin/claude`,
+  ];
+  for (const p of candidates) {
+    if (existsSync(p)) { _claudeBin = p; return p; }
+  }
+  // Fallback: try which
+  try {
+    const resolved = execSync('which claude', { encoding: 'utf-8' }).trim();
+    if (resolved && existsSync(resolved)) { _claudeBin = resolved; return resolved; }
+  } catch {}
+  return null;
+}
+
 function readClients(): any[] {
   if (!existsSync(CLIENTS_FILE)) return [];
   return JSON.parse(readFileSync(CLIENTS_FILE, 'utf-8'));
 }
 
-// Scan directory for .docx files created after a given timestamp
 function findNewDocx(dir: string, afterMs: number): string[] {
   if (!existsSync(dir)) return [];
   try {
@@ -24,14 +45,20 @@ function findNewDocx(dir: string, afterMs: number): string[] {
 }
 
 function runClaude(
+  claudeBin: string,
   instruction: string,
   onStdout?: (chunk: string) => void,
+  onStderr?: (chunk: string) => void,
 ): Promise<{ code: number; stdout: string; stderr: string }> {
   return new Promise((resolve) => {
-    const proc = spawn('claude', [
+    const proc = spawn(claudeBin, [
       '-p', instruction,
       '--allowedTools', 'Bash,Read,Write,Edit,Glob,Grep',
-    ], { shell: true, env: { ...process.env, PATH: process.env.PATH } });
+    ], {
+      shell: false,
+      env: { ...process.env },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
 
     let stdout = '';
     let stderr = '';
@@ -40,9 +67,13 @@ function runClaude(
       stdout += chunk;
       if (onStdout) onStdout(chunk);
     });
-    proc.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+    proc.stderr.on('data', (d: Buffer) => {
+      const chunk = d.toString();
+      stderr += chunk;
+      if (onStderr) onStderr(chunk);
+    });
     proc.on('close', (code: number | null) => resolve({ code: code ?? 1, stdout, stderr }));
-    proc.on('error', (err: Error) => resolve({ code: 1, stdout: '', stderr: err.message }));
+    proc.on('error', (err: Error) => resolve({ code: 1, stdout: '', stderr: `spawn error: ${err.message}` }));
   });
 }
 
@@ -71,6 +102,16 @@ export async function POST(req: NextRequest) {
       };
 
       // ═══ PRE-FLIGHT CHECKS ═══
+      const claudeBin = findClaudeBin();
+      if (!claudeBin) {
+        send('stage', { stage: 'error', phase: 0, message: 'Binario claude nao encontrado no sistema' });
+        send('stage', { stage: 'error', phase: 0, message: 'Tentei: ~/.npm-global/bin/claude, /usr/local/bin/claude, /opt/homebrew/bin/claude, which claude' });
+        send('complete', { success: false, error: 'claude CLI nao encontrado — instale com: npm install -g @anthropic-ai/claude-code' });
+        controller.close();
+        return;
+      }
+      send('stage', { stage: 'info', phase: 0, message: `claude: ${claudeBin}` });
+
       if (!prompt_file) {
         send('stage', { stage: 'error', phase: 0, message: 'prompt_file nao fornecido' });
         send('complete', { success: false, error: 'prompt_file obrigatorio' });
@@ -85,7 +126,6 @@ export async function POST(req: NextRequest) {
         return;
       }
 
-      // Create output dir if needed
       try {
         if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
       } catch (err: any) {
@@ -99,23 +139,26 @@ export async function POST(req: NextRequest) {
       send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERACAO DO DOCUMENTO' });
       send('stage', { stage: 'loading', phase: 1, message: `Instrucao: ${prompt_file.split('/').pop()}` });
       send('stage', { stage: 'loading', phase: 1, message: `Output: ${outputDir}` });
-      send('stage', { stage: 'generating', phase: 1, message: `Executando: claude -p "Leia ${prompt_file.split('/').pop()} e execute tudo."` });
+      send('stage', { stage: 'generating', phase: 1, message: `Executando: ${claudeBin.split('/').pop()} -p "Leia ... e execute tudo."` });
       send('stage', { stage: 'info', phase: 1, message: 'Aguarde — geracao real pode levar varios minutos...' });
 
       const instruction = `Leia ${prompt_file} e execute tudo.`;
       let lastChunkTime = Date.now();
 
-      const gen = await runClaude(instruction, (chunk) => {
-        // Send heartbeat with stdout progress every 10s
-        const now = Date.now();
-        if (now - lastChunkTime > 10000) {
-          const preview = chunk.trim().slice(0, 120);
-          if (preview) {
-            send('stage', { stage: 'stdout', phase: 1, message: preview });
+      const gen = await runClaude(claudeBin, instruction,
+        (chunk) => {
+          const now = Date.now();
+          if (now - lastChunkTime > 5000) {
+            const preview = chunk.trim().slice(0, 150).replace(/\n/g, ' ');
+            if (preview) send('stage', { stage: 'stdout', phase: 1, message: preview });
+            lastChunkTime = now;
           }
-          lastChunkTime = now;
-        }
-      });
+        },
+        (chunk) => {
+          const preview = chunk.trim().slice(0, 150);
+          if (preview) send('stage', { stage: 'stderr', phase: 1, message: preview });
+        },
+      );
 
       const genDuration = Math.round((Date.now() - startTime) / 1000);
 
@@ -182,7 +225,7 @@ export async function POST(req: NextRequest) {
 
       const reviewInstruction = `Leia ${SOC_PATH} secao 'PROTOCOLO DE REVISAO' e execute a revisao completa do documento: ${mainDocx}. Use os padroes de qualidade em: ${QUALITY_PATH}`;
 
-      const review = await runClaude(reviewInstruction);
+      const review = await runClaude(claudeBin, reviewInstruction);
       const totalDuration = Math.round((Date.now() - startTime) / 1000);
       const reviewDuration = totalDuration - genDuration;
 
