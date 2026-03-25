@@ -37,12 +37,10 @@ export default function ClientesPage() {
   const [filterVisa, setFilterVisa] = useState('');
   const [showNewModal, setShowNewModal] = useState(false);
   const [newClient, setNewClient] = useState({
-    name: '', email: '', visa_type: 'EB-2-NIW', company_name: '',
-    proposed_endeavor: '', location_city: '', location_state: '',
-    docs_folder_path: '', case_number: '', previous_petition_denied: false,
-    denial_reasons: '', priority: 'normal',
+    name: '', email: '', visa_type: 'EB-2-NIW', company_name: '', docs_folder_path: '',
   });
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   useEffect(() => { fetchClients(); }, [filterVisa, search]);
 
@@ -64,20 +62,26 @@ export default function ClientesPage() {
   }
 
   async function handleCreate() {
+    if (!newClient.name.trim()) { setSaveError('Nome e obrigatorio'); return; }
     setSaving(true);
+    setSaveError('');
     try {
       const res = await fetch('/api/clients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newClient),
       });
-      if (res.ok) {
-        setShowNewModal(false);
-        setNewClient({ name: '', email: '', visa_type: 'EB-2-NIW', company_name: '', proposed_endeavor: '', location_city: '', location_state: '', docs_folder_path: '', case_number: '', previous_petition_denied: false, denial_reasons: '', priority: 'normal' });
-        fetchClients();
+      const json = await res.json();
+      if (!res.ok) {
+        setSaveError(json.error || `Erro ${res.status}: falha ao salvar cliente`);
+        return;
       }
-    } catch (err) {
-      console.error('Erro ao criar cliente:', err);
+      setShowNewModal(false);
+      setSaveError('');
+      setNewClient({ name: '', email: '', visa_type: 'EB-2-NIW', company_name: '', docs_folder_path: '' });
+      fetchClients();
+    } catch (err: any) {
+      setSaveError(`Erro de conexao: ${err.message}`);
     } finally {
       setSaving(false);
     }
@@ -190,79 +194,76 @@ export default function ClientesPage() {
         </div>
       )}
 
-      {/* Novo Cliente Modal — Unificado (React + Antigravity visual) */}
+      {/* Novo Cliente Modal */}
       {showNewModal && (
-        <div className="fixed inset-0 bg-[#03060a]/90 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-          <div className="bg-[#080d16] border border-[rgba(0,234,255,0.2)] shadow-[0_0_50px_rgba(0,234,255,0.1)] rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="fixed inset-0 bg-[#03060a]/90 backdrop-blur-sm z-[9999] flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowNewModal(false); }}>
+          <div className="bg-[#080d16] border border-[rgba(0,234,255,0.2)] shadow-[0_0_50px_rgba(0,234,255,0.1)] rounded-xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
             <div className="px-6 py-5 border-b border-[rgba(0,234,255,0.06)] flex justify-between items-center bg-[#0a1320]">
               <h2 className="section-title v2-section-header text-lg font-bold w-max">Novo Cliente</h2>
-              <button onClick={() => setShowNewModal(false)} className="text-[#4b6584] hover:text-[#00eaff] transition-colors"><X className="w-5 h-5" /></button>
+              <button onClick={() => { setShowNewModal(false); setSaveError(''); }} className="text-[#4b6584] hover:text-[#00eaff] transition-colors"><X className="w-5 h-5" /></button>
             </div>
 
             <div className="p-6 overflow-y-auto flex flex-col gap-5">
-                {/* Nome + Email */}
-                <div className="grid grid-cols-2 gap-5">
-                    <div>
-                        <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Nome completo *</label>
-                        <input type="text" placeholder="Nome do peticionario" value={newClient.name} onChange={(e) => setNewClient({ ...newClient, name: e.target.value })} className={inputStyle} />
-                    </div>
-                    <div>
-                        <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Email</label>
-                        <input type="email" placeholder="email@exemplo.com" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} className={inputStyle} />
-                    </div>
-                </div>
+                {/* Erro visivel */}
+                {saveError && (
+                  <div className="bg-[#ff4757]/10 border border-[#ff4757]/30 rounded-lg px-4 py-3 flex items-center gap-3">
+                    <AlertCircle className="w-4 h-4 text-[#ff4757] flex-shrink-0" />
+                    <span className="text-[#ff4757] text-xs font-mono">{saveError}</span>
+                  </div>
+                )}
 
-                {/* Visto + Empresa */}
-                <div className="grid grid-cols-2 gap-5">
-                    <div>
-                        <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Tipo de visto *</label>
-                        <select value={newClient.visa_type} onChange={(e) => setNewClient({ ...newClient, visa_type: e.target.value })} className={inputStyle}>
-                          <option value="EB-1A">EB-1A (Extraordinary Ability)</option>
-                          <option value="EB-2-NIW">EB-2 NIW (National Interest Waiver)</option>
-                          <option value="O-1">O-1 (Extraordinary Ability)</option>
-                          <option value="L-1">L-1 (Intracompany Transfer)</option>
-                          <option value="EB-1C">EB-1C (Multinational Manager)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Empresa</label>
-                        <input type="text" placeholder="Nome da empresa LLC/Inc" value={newClient.company_name} onChange={(e) => setNewClient({ ...newClient, company_name: e.target.value })} className={inputStyle} />
-                    </div>
-                </div>
-
-                {/* Proposed Endeavor */}
+                {/* Nome * */}
                 <div>
-                    <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Proposed Endeavor</label>
-                    <input type="text" placeholder="Ex: Solucoes Integradas de Transformacao Digital para PMEs Americanas" value={newClient.proposed_endeavor} onChange={(e) => setNewClient({ ...newClient, proposed_endeavor: e.target.value })} className={inputStyle} />
+                    <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Nome completo *</label>
+                    <input type="text" placeholder="Nome do peticionario" value={newClient.name} onChange={(e) => { setNewClient({ ...newClient, name: e.target.value }); setSaveError(''); }} className={inputStyle} autoFocus />
                 </div>
 
-                {/* Localização */}
-                <div className="grid grid-cols-2 gap-5">
-                    <div>
-                        <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Cidade (EUA)</label>
-                        <input type="text" placeholder="Ex: Dallas-Fort Worth" value={newClient.location_city} onChange={(e) => setNewClient({ ...newClient, location_city: e.target.value })} className={inputStyle} />
-                    </div>
-                    <div>
-                        <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Estado</label>
-                        <input type="text" placeholder="Ex: TX" value={newClient.location_state} onChange={(e) => setNewClient({ ...newClient, location_state: e.target.value })} className={inputStyle} />
-                    </div>
+                {/* Tipo de Visto * */}
+                <div>
+                    <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold">Tipo de visto *</label>
+                    <select value={newClient.visa_type} onChange={(e) => setNewClient({ ...newClient, visa_type: e.target.value })} className={inputStyle}>
+                      <option value="EB-1A">EB-1A (Extraordinary Ability)</option>
+                      <option value="EB-2-NIW">EB-2 NIW (National Interest Waiver)</option>
+                      <option value="O-1">O-1 (Extraordinary Ability)</option>
+                      <option value="L-1">L-1 (Intracompany Transfer)</option>
+                      <option value="EB-1C">EB-1C (Multinational Manager)</option>
+                    </select>
                 </div>
 
-                {/* Pasta dos documentos */}
+                {/* Pasta dos Documentos * */}
                 <div>
                     <label className="text-[10px] text-[#00eaff] font-mono uppercase tracking-widest block mb-2 font-bold flex items-center gap-2">
-                      <FolderOpen className="w-3.5 h-3.5" /> Pasta dos documentos (caminho local)
+                      <FolderOpen className="w-3.5 h-3.5" /> Pasta dos documentos *
                     </label>
-                    <input type="text" placeholder="/Users/paulo1844/Documents/_PROEX/_2. MEUS CASOS/2026/Nome do Cliente/" value={newClient.docs_folder_path} onChange={(e) => setNewClient({ ...newClient, docs_folder_path: e.target.value })} className={inputStyle} />
-                    <p className="text-[9px] text-[#4b6584] font-mono mt-1.5">Caminho absoluto para a pasta do caso. Documentos gerados serao salvos aqui.</p>
+                    <input type="text" placeholder="/Users/paulo1844/Documents/_PROEX/_2. MEUS CASOS/2026/Nome/" value={newClient.docs_folder_path} onChange={(e) => setNewClient({ ...newClient, docs_folder_path: e.target.value })} className={inputStyle} />
+                    <p className="text-[9px] text-[#4b6584] font-mono mt-1.5">Caminho absoluto. Documentos gerados serao salvos aqui.</p>
+                </div>
+
+                {/* Separador — Opcionais */}
+                <div className="flex items-center gap-3 mt-1">
+                  <div className="h-px flex-1 bg-[rgba(0,234,255,0.08)]" />
+                  <span className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">Opcionais</span>
+                  <div className="h-px flex-1 bg-[rgba(0,234,255,0.08)]" />
+                </div>
+
+                {/* Email + Empresa (opcionais) */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="text-[10px] text-[#4b6584] font-mono uppercase tracking-widest block mb-2 font-bold">Email</label>
+                        <input type="email" placeholder="email@exemplo.com" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} className={inputStyle} />
+                    </div>
+                    <div>
+                        <label className="text-[10px] text-[#4b6584] font-mono uppercase tracking-widest block mb-2 font-bold">Empresa</label>
+                        <input type="text" placeholder="Nome da empresa LLC" value={newClient.company_name} onChange={(e) => setNewClient({ ...newClient, company_name: e.target.value })} className={inputStyle} />
+                    </div>
                 </div>
             </div>
 
             <div className="px-6 py-4 border-t border-[rgba(0,234,255,0.06)] bg-[#0a1320] flex justify-end gap-3">
-              <button onClick={() => setShowNewModal(false)} className="px-5 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-widest text-[#4b6584] hover:text-white transition-colors border border-transparent hover:border-[#ffffff10] bg-transparent">CANCELAR</button>
+              <button onClick={() => { setShowNewModal(false); setSaveError(''); }} className="px-5 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-widest text-[#4b6584] hover:text-white transition-colors border border-transparent hover:border-[#ffffff10] bg-transparent">CANCELAR</button>
               <button
                 onClick={handleCreate}
-                disabled={!newClient.name || saving}
+                disabled={!newClient.name.trim() || saving}
                 className="px-6 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-widest bg-[#00eaff]/10 text-[#00eaff] border border-[#00eaff]/30 hover:bg-[#00eaff] hover:text-[#03060a] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(0,234,255,0.2)]"
               >
                 {saving ? 'SALVANDO...' : 'COMMIT ->'}

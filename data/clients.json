@@ -1,0 +1,41 @@
+[
+  {
+    "id": "c1",
+    "name": "Deni Ruben Moreira",
+    "email": "deni@drmsolutions.com",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "DRM Solutions LLC",
+    "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Deni Rubens (Direto)/",
+    "created_at": "2026-03-15T10:00:00Z",
+    "client_profiles": {
+      "extracted_at": "2026-03-16T10:00:00Z"
+    }
+  },
+  {
+    "id": "c2",
+    "name": "Rafael Almeida Santos",
+    "email": "rafael@example.com",
+    "visa_type": "EB-2-NIW",
+    "status": "completed",
+    "company_name": "Tech Solutions Inc",
+    "docs_folder_path": "",
+    "created_at": "2025-11-10T10:00:00Z",
+    "client_profiles": {
+      "extracted_at": "2025-11-12T10:00:00Z"
+    }
+  },
+  {
+    "id": "c3",
+    "name": "Renato Silveira dos Reis",
+    "email": "renato@example.com",
+    "visa_type": "EB-1A",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "",
+    "created_at": "2025-09-05T10:00:00Z",
+    "client_profiles": {
+      "extracted_at": "2025-09-06T10:00:00Z"
+    }
+  }
+]
