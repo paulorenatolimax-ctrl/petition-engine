@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Zap, Copy, Check, X, ChevronRight, AlertTriangle, User, Loader2, Sparkles, AlertCircle, Shield, Eye } from 'lucide-react';
+import Link from 'next/link';
+import { FileText, Zap, Copy, Check, X, ChevronRight, AlertTriangle, User, Loader2, Sparkles, AlertCircle, Shield, Eye, Activity } from 'lucide-react';
 
 // Mapa: system_name (EXATO como vem do banco) → doc_type enum (esperado pela API)
 const SYSTEM_TO_ENUM: Record<string, string> = {
@@ -229,8 +230,11 @@ export default function GeradorPage() {
 
   return (
     <div className="flex flex-col gap-6 p-6 md:p-8 w-full animate-in fade-in duration-500 max-w-[1400px]">
-      <div className="flex flex-col gap-1 mb-2">
+      <div className="flex justify-between items-end mb-2">
         <h1 className="section-title text-[#e2e8f0] text-lg">Gerador de Prompts</h1>
+        <Link href="/gerador/status" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#101e30] border border-[rgba(45,212,191,0.15)] text-[#2dd4bf] text-xs font-mono font-bold tracking-widest uppercase hover:bg-[rgba(45,212,191,0.1)] transition-colors">
+          <Activity className="w-3.5 h-3.5" /> STATUS
+        </Link>
       </div>
 
       <div className="bg-[#0a1320] border border-[rgba(0,234,255,0.06)] rounded-xl p-8 relative overflow-hidden group">
@@ -380,27 +384,60 @@ export default function GeradorPage() {
                                 ))}
                             </div>
 
-                            {/* PIPELINE: 2 Phases Visual Indicator */}
-                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
-                              {(() => {
-                                const phase1Done = executionStages.some((s: any) => s.stage === 'gen_complete');
-                                const phase2Active = executionStages.some((s: any) => s.phase === 2);
-                                const phase2Done = executionResult?.success;
-                                return (
-                                  <>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', borderRadius: '8px', background: phase1Done ? 'rgba(34,197,94,0.1)' : executing ? 'rgba(0,234,255,0.1)' : 'rgba(255,255,255,0.03)', border: `1px solid ${phase1Done ? 'rgba(34,197,94,0.3)' : executing && !phase2Active ? 'rgba(0,234,255,0.3)' : 'rgba(255,255,255,0.06)'}`, transition: 'all 0.3s' }}>
-                                      <Zap size={14} style={{ color: phase1Done ? '#22c55e' : '#00eaff' }} />
-                                      <span style={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '1px', color: phase1Done ? '#22c55e' : '#00eaff' }}>GERAÇÃO</span>
-                                    </div>
-                                    <div style={{ width: '24px', height: '2px', background: phase1Done ? 'linear-gradient(90deg, #22c55e, #a855f7)' : 'rgba(255,255,255,0.1)', borderRadius: '1px', transition: 'all 0.5s' }} />
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', borderRadius: '8px', background: phase2Done ? 'rgba(168,85,247,0.1)' : phase2Active ? 'rgba(168,85,247,0.08)' : 'rgba(255,255,255,0.03)', border: `1px solid ${phase2Done ? 'rgba(168,85,247,0.4)' : phase2Active ? 'rgba(168,85,247,0.3)' : 'rgba(255,255,255,0.06)'}`, transition: 'all 0.3s' }}>
-                                      <Shield size={14} style={{ color: phase2Done ? '#a855f7' : phase2Active ? '#a855f7' : '#4b6584' }} />
-                                      <span style={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '1px', color: phase2Done ? '#a855f7' : phase2Active ? '#a855f7' : '#4b6584' }}>REVISÃO CRUZADA</span>
-                                    </div>
-                                  </>
-                                );
-                              })()}
-                            </div>
+                            {/* PIPELINE TIMELINE — 5 Steps */}
+                            {(() => {
+                              const hasStages = executionStages.length > 0;
+                              const phase1Active = hasStages && !executionStages.some((s: any) => s.stage === 'gen_complete') && !executionResult;
+                              const phase1Done = executionStages.some((s: any) => s.stage === 'gen_complete');
+                              const phase2Active = executionStages.some((s: any) => s.phase === 2) && !executionResult;
+                              const phase2Done = executionResult?.success && executionResult?.review_verdict;
+                              const failed = executionResult && !executionResult.success;
+                              const allDone = executionResult?.success;
+
+                              const steps = [
+                                { label: 'Prompt', status: generatedPrompt ? 'done' : 'active' },
+                                { label: 'Geração', status: phase1Done ? 'done' : phase1Active ? 'active' : hasStages ? 'active' : 'pending' },
+                                { label: 'Consolidação', status: phase1Done && !phase2Active && !allDone ? 'active' : allDone ? 'done' : phase1Done ? 'done' : 'pending' },
+                                { label: 'Revisão SoC', status: phase2Done ? 'done' : phase2Active ? 'active' : 'pending' },
+                                { label: 'Documento Final', status: allDone ? 'done' : failed ? 'error' : 'pending' },
+                              ];
+
+                              const colors: Record<string, { bg: string; border: string; text: string; dot: string }> = {
+                                done:    { bg: 'rgba(34,197,94,0.1)',  border: 'rgba(34,197,94,0.4)',  text: '#22c55e', dot: '#22c55e' },
+                                active:  { bg: 'rgba(45,212,191,0.1)', border: 'rgba(45,212,191,0.4)', text: '#2dd4bf', dot: '#2dd4bf' },
+                                pending: { bg: 'rgba(255,255,255,0.02)', border: 'rgba(255,255,255,0.08)', text: '#4b6584', dot: '#2a3f5f' },
+                                error:   { bg: 'rgba(239,68,68,0.1)',  border: 'rgba(239,68,68,0.4)',  text: '#ef4444', dot: '#ef4444' },
+                              };
+
+                              return (
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0', marginBottom: '8px' }}>
+                                  {steps.map((step, i) => {
+                                    const c = colors[step.status];
+                                    return (
+                                      <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', minWidth: '70px' }}>
+                                          <div style={{
+                                            width: '24px', height: '24px', borderRadius: '50%',
+                                            background: c.bg, border: `2px solid ${c.border}`,
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            fontSize: '11px', fontWeight: 700, color: c.text,
+                                            fontFamily: 'monospace',
+                                            boxShadow: step.status === 'active' ? `0 0 12px ${c.border}` : 'none',
+                                            transition: 'all 0.4s',
+                                          }}>
+                                            {step.status === 'done' ? '✓' : step.status === 'error' ? '✗' : step.status === 'active' ? '⟳' : i + 1}
+                                          </div>
+                                          <span style={{ fontSize: '9px', fontFamily: 'monospace', fontWeight: 600, color: c.text, letterSpacing: '0.5px', textAlign: 'center', lineHeight: '1.1' }}>{step.label}</span>
+                                        </div>
+                                        {i < steps.length - 1 && (
+                                          <div style={{ width: '20px', height: '2px', background: steps[i + 1].status !== 'pending' ? `linear-gradient(90deg, ${c.dot}, ${colors[steps[i+1].status].dot})` : 'rgba(255,255,255,0.06)', borderRadius: '1px', marginBottom: '16px', transition: 'all 0.5s' }} />
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            })()}
 
                             {/* Execution Progress */}
                             <div style={{ background: '#0d1117', border: '1px solid rgba(0,234,255,0.2)', borderRadius: '12px', padding: '20px' }}>
