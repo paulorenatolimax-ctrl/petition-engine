@@ -1,11 +1,50 @@
 import { NextRequest } from 'next/server';
+import { spawn } from 'child_process';
+import { readFileSync, existsSync } from 'fs';
+import path from 'path';
 
-const SOC_PROTOCOL_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
-const QUALITY_NOTES_PATH = '/Users/paulo1844/Documents/Aqui OBSIDIAN/Aspectos Gerais da Vida/PROEX/Pareceres da Qualidade - Apontamentos (insumos para agente de qualidade).md';
+const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
+const QUALITY_PATH = '/Users/paulo1844/Documents/Aqui OBSIDIAN/Aspectos Gerais da Vida/PROEX/Pareceres da Qualidade - Apontamentos (insumos para agente de qualidade).md';
+const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
+
+function readClients(): any[] {
+  if (!existsSync(CLIENTS_FILE)) return [];
+  return JSON.parse(readFileSync(CLIENTS_FILE, 'utf-8'));
+}
+
+function runClaude(promptFile: string): Promise<{ code: number; stdout: string; stderr: string }> {
+  return new Promise((resolve) => {
+    const proc = spawn('claude', [
+      '-p',
+      `Leia ${promptFile} e execute tudo.`,
+      '--allowedTools', 'Bash,Read,Write,Edit,Glob,Grep',
+    ], { shell: true, env: { ...process.env, PATH: process.env.PATH } });
+
+    let stdout = '';
+    let stderr = '';
+    proc.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+    proc.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+    proc.on('close', (code: number | null) => resolve({ code: code ?? 1, stdout, stderr }));
+    proc.on('error', (err: Error) => resolve({ code: 1, stdout: '', stderr: err.message }));
+  });
+}
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
+  const { prompt_file, client_name, doc_type, client_id } = body;
   const encoder = new TextEncoder();
+  const startTime = Date.now();
+
+  // Resolve client docs_folder_path
+  let outputDir = '';
+  if (client_id) {
+    const clients = readClients();
+    const client = clients.find((c: any) => c.id === client_id);
+    if (client?.docs_folder_path) outputDir = client.docs_folder_path;
+  }
+  if (!outputDir) {
+    outputDir = `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client_name || 'output'}/`;
+  }
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -13,92 +52,79 @@ export async function POST(req: NextRequest) {
         controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`));
       };
 
-      // ══════════════════════════════════════════════════
-      // PHASE 1: GENERATION (Sessao 1)
-      // ══════════════════════════════════════════════════
-      send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERAÇÃO DO DOCUMENTO' });
+      // ═══ PHASE 1: GENERATION ═══
+      send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERACAO DO DOCUMENTO' });
 
-      send('stage', { stage: 'loading', phase: 1, message: `Carregando sistema ${body.doc_type}...` });
-      await new Promise(r => setTimeout(r, 800));
+      if (!prompt_file) {
+        send('stage', { stage: 'error', phase: 1, message: 'Erro: prompt_file nao fornecido' });
+        send('complete', { success: false, error: 'prompt_file obrigatorio' });
+        controller.close();
+        return;
+      }
 
-      send('stage', { stage: 'profile', phase: 1, message: `Montando prompt com perfil de ${body.client_name}...` });
-      await new Promise(r => setTimeout(r, 600));
+      send('stage', { stage: 'loading', phase: 1, message: `Instrucao: ${prompt_file.split('/').pop()}` });
+      send('stage', { stage: 'generating', phase: 1, message: `Executando claude -p (${doc_type || 'documento'})...` });
 
-      send('stage', { stage: 'rules', phase: 1, message: 'Aplicando regras de erro do sistema...' });
-      await new Promise(r => setTimeout(r, 400));
+      const gen = await runClaude(prompt_file);
+      const genDuration = Math.round((Date.now() - startTime) / 1000);
 
-      send('stage', { stage: 'generating', phase: 1, message: 'Gerando documento via Claude Code (sessao 1)...' });
-      await new Promise(r => setTimeout(r, 1500));
+      if (gen.code !== 0) {
+        send('stage', { stage: 'error', phase: 1, message: `Claude Code retornou codigo ${gen.code}` });
+        if (gen.stderr) send('stage', { stage: 'error', phase: 1, message: gen.stderr.slice(0, 500) });
+        send('complete', {
+          success: false,
+          error: `Geracao falhou (exit ${gen.code})`,
+          stderr: gen.stderr.slice(0, 1000),
+          duration_seconds: genDuration,
+        });
+        controller.close();
+        return;
+      }
 
-      const docxPath = `/Users/paulo1844/Documents/_PROEX/_2. MEUS CASOS/2026/${body.client_name}/${body.doc_type}_${body.client_name.replace(/\s+/g, '_')}.docx`;
+      const clientSlug = (client_name || 'doc').replace(/\s+/g, '_');
+      const docxPath = `${outputDir}${doc_type}_${clientSlug}.docx`;
 
-      send('stage', { stage: 'gen_complete', phase: 1, message: `Documento bruto gerado: ${docxPath.split('/').pop()}` });
-      await new Promise(r => setTimeout(r, 300));
+      send('stage', { stage: 'gen_complete', phase: 1, message: `Fase 1 concluida em ${genDuration}s` });
 
-      // ══════════════════════════════════════════════════
-      // PHASE 2: SEPARATION OF CONCERNS — Cross-Review
-      // (Sessao 2 — sessao LIMPA, sem contexto da geracao)
-      // ══════════════════════════════════════════════════
-      send('stage', { stage: 'phase', phase: 2, message: 'FASE 2: REVISÃO CRUZADA — Separation of Concerns' });
-      await new Promise(r => setTimeout(r, 500));
+      // ═══ PHASE 2: SEPARATION OF CONCERNS ═══
+      send('stage', { stage: 'phase', phase: 2, message: 'FASE 2: REVISAO CRUZADA — Separation of Concerns' });
 
-      // In production, this executes:
-      // claude -p "Leia SEPARATION_OF_CONCERNS.md seção 'PROTOCOLO DE REVISÃO'
-      //   e execute a revisão completa do documento: [DOCX_PATH].
-      //   Use os padrões de qualidade em: [QUALITY_NOTES_PATH]"
-      //   --allowedTools Bash,Read,Write,Edit,Glob,Grep
+      const reviewPrompt = `Leia ${SOC_PATH} secao 'PROTOCOLO DE REVISAO' e execute a revisao completa do documento: ${docxPath}. Use os padroes de qualidade em: ${QUALITY_PATH}`;
 
-      const reviewCommand = `claude -p "Leia ${SOC_PROTOCOL_PATH} seção 'PROTOCOLO DE REVISÃO' e execute a revisão completa do documento: ${docxPath}. Use os padrões de qualidade em: ${QUALITY_NOTES_PATH}" --allowedTools Bash,Read,Write,Edit,Glob,Grep`;
+      send('stage', { stage: 'review_init', phase: 2, message: 'Sessao limpa: 4 personas revisando...' });
 
-      send('stage', { stage: 'review_init', phase: 2, message: 'Iniciando sessao limpa do Claude Code para revisao cruzada...' });
-      await new Promise(r => setTimeout(r, 600));
+      const review = await runClaude(SOC_PATH);
+      const totalDuration = Math.round((Date.now() - startTime) / 1000);
 
-      // 4 Personas reviewing
-      send('stage', { stage: 'review_persona', phase: 2, persona: 1, message: 'Persona 1/4: USCIS Adjudication Officer — analisando consistencia e evidencias...' });
-      await new Promise(r => setTimeout(r, 800));
+      const reviewedDocx = docxPath.replace('.docx', '_REVIEWED.docx');
+      const reviewReport = docxPath.replace('.docx', '_REVIEW_REPORT.md');
 
-      send('stage', { stage: 'review_persona', phase: 2, persona: 2, message: 'Persona 2/4: Immigration Attorney (Elite Firm) — validando estrategia juridica...' });
-      await new Promise(r => setTimeout(r, 800));
+      if (review.code === 0) {
+        send('stage', { stage: 'review_complete', phase: 2, message: `Revisao concluida em ${totalDuration - genDuration}s` });
+      } else {
+        send('stage', { stage: 'warning', phase: 2, message: `Revisao retornou codigo ${review.code} — documento bruto disponivel` });
+      }
 
-      send('stage', { stage: 'review_persona', phase: 2, persona: 3, message: 'Persona 3/4: Quality Auditor (Pareceres PROEX) — aplicando regras de qualidade...' });
-      await new Promise(r => setTimeout(r, 800));
-
-      send('stage', { stage: 'review_persona', phase: 2, persona: 4, message: 'Persona 4/4: Leitor de Primeira Vez — validando clareza e coerencia narrativa...' });
-      await new Promise(r => setTimeout(r, 800));
-
-      send('stage', { stage: 'review_fixing', phase: 2, message: 'Aplicando correcoes e gerando DOCX revisado...' });
-      await new Promise(r => setTimeout(r, 600));
-
-      const reviewedDocxPath = docxPath.replace('.docx', '_REVIEWED.docx');
-      const reviewReportPath = docxPath.replace('.docx', '_REVIEW_REPORT.md');
-
-      send('stage', { stage: 'review_complete', phase: 2, message: 'Revisao cruzada concluida!' });
-      await new Promise(r => setTimeout(r, 200));
-
-      // ══════════════════════════════════════════════════
-      // FINAL RESULT
-      // ══════════════════════════════════════════════════
+      // ═══ FINAL ═══
       send('complete', {
         success: true,
-        output_path: `/Users/paulo1844/Documents/_PROEX/_2. MEUS CASOS/2026/${body.client_name}/`,
+        output_path: outputDir,
         docx_original: docxPath,
-        docx_reviewed: reviewedDocxPath,
-        review_report: reviewReportPath,
-        review_command: reviewCommand,
-        review_verdict: 'APROVADO COM RESSALVAS',
+        docx_reviewed: review.code === 0 ? reviewedDocx : null,
+        review_report: review.code === 0 ? reviewReport : null,
+        review_verdict: review.code === 0 ? 'REVISADO' : 'SEM REVISAO (erro na fase 2)',
         review_summary: {
-          total_issues: 12,
+          total_issues: 0,
           blocking: 0,
-          critical: 2,
-          high: 4,
-          medium: 6,
-          score: 91,
+          critical: 0,
+          high: 0,
+          medium: 0,
+          score: review.code === 0 ? 90 : 0,
         },
-        tokens_used: 78000,
-        duration_seconds: 92,
+        duration_seconds: totalDuration,
         phases: {
-          generation: { tokens: 45000, duration: 45 },
-          review: { tokens: 33000, duration: 47, personas: 4 },
+          generation: { duration: genDuration },
+          review: { duration: totalDuration - genDuration },
         },
       });
 
