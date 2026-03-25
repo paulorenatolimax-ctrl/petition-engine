@@ -153,5 +153,53 @@
     "recommended_model": "claude-sonnet-4",
     "doc_type": "eb1_letters",
     "created_at": "2026-03-24T10:00:00Z"
+  },
+  {
+    "id": "15",
+    "system_name": "Anteprojeto EB-2 NIW",
+    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
+    "version_tag": "1.0",
+    "file_count": 9,
+    "is_active": true,
+    "recommended_model": "claude-opus-4",
+    "doc_type": "anteprojeto_eb2_niw",
+    "note": "9 prompts sequenciais. Anteprojeto = execucao parcial (prompts 1-3) gerando 3 endeavors + 3 codigos SOC. Projeto-base = execucao completa (prompts 1-9) apos selecao de endeavor.",
+    "created_at": "2026-03-25T17:00:00Z"
+  },
+  {
+    "id": "16",
+    "system_name": "Anteprojeto EB-1A",
+    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/",
+    "version_tag": "1.0",
+    "file_count": 10,
+    "is_active": true,
+    "recommended_model": "claude-opus-4",
+    "doc_type": "anteprojeto_eb1a",
+    "note": "4 prompts sequenciais (Kortix). Anteprojeto = prompts 1-3 gerando mapeamento + analise de criterios + 3 codigos SOC. Projeto-base = prompt 4 (relatorio estrategico completo).",
+    "created_at": "2026-03-25T17:00:00Z"
+  },
+  {
+    "id": "17",
+    "system_name": "Projeto-Base EB-2 NIW",
+    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
+    "version_tag": "1.0",
+    "file_count": 9,
+    "is_active": true,
+    "recommended_model": "claude-opus-4",
+    "doc_type": "projeto_base_eb2_niw",
+    "note": "Execucao completa dos 9 prompts APOS selecao de endeavor e codigo SOC pelo cliente. Requer anteprojeto aprovado.",
+    "created_at": "2026-03-25T17:00:00Z"
+  },
+  {
+    "id": "18",
+    "system_name": "Projeto-Base EB-1A",
+    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/",
+    "version_tag": "1.0",
+    "file_count": 10,
+    "is_active": true,
+    "recommended_model": "claude-opus-4",
+    "doc_type": "projeto_base_eb1a",
+    "note": "Execucao completa dos 4 prompts Kortix APOS selecao de endeavor e codigo SOC. Requer anteprojeto aprovado.",
+    "created_at": "2026-03-25T17:00:00Z"
   }
 ]

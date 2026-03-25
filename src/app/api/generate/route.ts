@@ -54,7 +54,113 @@ const DOC_TYPE_PATTERNS: Record<string, string[]> = {
   strategy_eb1: ['GERAR_ESTRATEGIA_EB1_'],
   strategy_eb2: ['GERAR_ESTRATEGIA_EB2_'],
   eb1_letters: ['GERAR_CARTAS_EB1_'],
+  anteprojeto_eb2_niw: ['GERAR_ANTEPROJETO_EB2_'],
+  anteprojeto_eb1a: ['GERAR_ANTEPROJETO_EB1_'],
+  projeto_base_eb2_niw: ['GERAR_PROJETO_BASE_EB2_'],
+  projeto_base_eb1a: ['GERAR_PROJETO_BASE_EB1_'],
 };
+
+const RAGS_EB1 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-1/';
+const RAGS_EB2 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs/';
+const BENCHMARK_THAYSE = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/LILIAN/Thayse/';
+const BENCHMARK_THIAGO = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/';
+
+function buildAnteprojetoInstruction(client: any, system: any, docType: string, outputDir: string, rulesSection: string, selectedEndeavor?: string, selectedSocCode?: string): string {
+  const isEB1 = docType.includes('eb1');
+  const isProjetoBase = docType.includes('projeto_base');
+  const ragsPath = isEB1 ? RAGS_EB1 : RAGS_EB2;
+  const benchmarkPath = isEB1 ? BENCHMARK_THIAGO : BENCHMARK_THAYSE;
+
+  const lines = [
+    `# ${isProjetoBase ? 'PROJETO-BASE' : 'ANTEPROJETO'} ${isEB1 ? 'EB-1A' : 'EB-2 NIW'}`,
+    `## Cliente: ${client.name}`,
+    `## Visto: ${client.visa_type}`,
+    '',
+    '## REGRAS ABSOLUTAS',
+    '- Output SEMPRE em .md (para Obsidian). NUNCA .docx para anteprojeto/projeto-base.',
+    '- 100% em PORTUGUES. Nunca misturar ingles com portugues.',
+    '- NUNCA usar a palavra "PROMPT" no output. E termo interno.',
+    '- NUNCA mencionar PROEX, Kortix, nomes de outros clientes.',
+    '- NUNCA usar codigos SOC que exigem validacao de diploma nos EUA (advogado 23-1011, medico 29-1069, engenheiro 17-201X, contador 13-2011). Usar alternativas.',
+    '- NUNCA propor endeavors genericos como "consultoria" ou "assessoria". USCIS tende a negar.',
+    '- Verificar compatibilidade educacional do codigo SOC com formacao do peticionario.',
+    '',
+    '## SISTEMA DE GERACAO',
+    `Leia TODOS os arquivos .md em: ${system.system_path}`,
+    `Versao: ${system.version_tag}`,
+    '',
+    '## RAGs OBRIGATORIOS (LEIA ANTES DE GERAR)',
+    `Leia TODOS os arquivos em: ${ragsPath}`,
+  ];
+
+  if (!isEB1) {
+    lines.push('Atencao especial para:');
+    lines.push('- "II - (EB-2 NIW) - Analise Abrangente da Adjudicacao" — padroes de negacao');
+    lines.push('- "O Adjudicador Algoritmico - 2026.pdf" — como AI do USCIS avalia peticoes');
+    lines.push('- "Construindo o Caso EB-2 NIW para 2026" — guia de arquitetura de prova');
+  } else {
+    lines.push('Atencao especial para:');
+    lines.push('- "Analise Aprofundada dos Criterios de Aprovacao e Negacao" — estatisticas por criterio');
+    lines.push('- "O que os Oficiais de Imigracao Esperam Ver" — expectativas dos oficiais');
+    lines.push('- "Pesquisas do que os outros escritorios estao fazendo" — inteligencia competitiva');
+  }
+
+  lines.push('');
+  lines.push('## BENCHMARK (leia como referencia de qualidade)');
+  if (!isEB1) {
+    lines.push(`Anteprojeto Thayse: ${benchmarkPath}Anteprojeto Thayse.pdf`);
+    lines.push(`Projeto-Base Thayse: ${benchmarkPath}Projeto-Base Completo - Thayse Sopper Boti Cei - EB-2 NIW.pdf`);
+  } else {
+    lines.push(`Anteprojeto Thiago: ${benchmarkPath}ANTEPROJETO_EB1A_v3.pdf`);
+    lines.push(`Projeto Estrategico Thiago: ${benchmarkPath}PROJETO_ESTRATEGICO_EB1A_Continuidade_do_Trabalho.md`);
+  }
+
+  lines.push('');
+  lines.push('## DADOS DO CLIENTE');
+  lines.push(`Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`);
+  lines.push('Leia TODOS os documentos do cliente (CV, certificados, evidencias) ANTES de gerar.');
+
+  if (isProjetoBase) {
+    lines.push('');
+    lines.push('## ENDEAVOR E CODIGO SELECIONADOS');
+    lines.push(`Endeavor escolhido: ${selectedEndeavor || '[NAO SELECIONADO — PERGUNTAR AO PAULO]'}`);
+    lines.push(`Codigo SOC escolhido: ${selectedSocCode || '[NAO SELECIONADO — PERGUNTAR AO PAULO]'}`);
+    lines.push('Execute TODOS os prompts do sistema (1-9 para EB-2 ou 1-4 para EB-1) focando EXCLUSIVAMENTE neste endeavor.');
+  } else {
+    lines.push('');
+    lines.push('## MODO ANTEPROJETO (EXECUCAO PARCIAL)');
+    if (!isEB1) {
+      lines.push('Execute APENAS os prompts 1-3 do sistema EB-2 NIW.');
+      lines.push('O output deve conter:');
+      lines.push('1. Quadro-resumo comparativo com 3 endeavors distintos');
+      lines.push('2. Para cada endeavor: descricao tecnica, publico-alvo, modelo de receita, projecao Y1/Y2');
+      lines.push('3. 3 codigos SOC/BLS para cada endeavor (com validacao de compatibilidade educacional)');
+      lines.push('4. Analise de risco de negacao pelo USCIS para cada endeavor');
+      lines.push('5. Alinhamento com politicas federais');
+    } else {
+      lines.push('Execute APENAS os prompts 1-3 do sistema EB-1A (Kortix).');
+      lines.push('O output deve conter:');
+      lines.push('1. Mapeamento completo do perfil (10 categorias)');
+      lines.push('2. Analise detalhada dos 10 criterios EB-1A (forca: ROBUSTA/PROMISSORA/EM DESENVOLVIMENTO)');
+      lines.push('3. 3 codigos SOC/BLS alternativos com validacao');
+      lines.push('4. Quadro-resumo com endeavor proposto e criterios mais fortes');
+    }
+  }
+
+  lines.push('');
+  lines.push('## OUTPUT');
+  lines.push(`Salve o arquivo .md em: ${outputDir}`);
+  const prefix = isProjetoBase ? 'Projeto_Base' : 'Anteprojeto';
+  const suffix = isEB1 ? 'EB1A' : 'EB2_NIW';
+  const slug = client.name.replace(/\s+/g, '_');
+  lines.push(`Nome: ${prefix}_${suffix}_${slug}.md`);
+
+  if (rulesSection) {
+    lines.push(rulesSection);
+  }
+
+  return lines.join('\n');
+}
 
 // Search for an existing specific instruction file for this client + doc_type
 function findExistingInstruction(clientName: string, docType: string, clientDocsPath: string): string | null {
@@ -134,6 +240,48 @@ export async function POST(req: NextRequest) {
   let prompt: string;
 
   const rulesSection = buildRulesSection(doc_type);
+  const { selected_endeavor, selected_soc_code } = body;
+
+  // Special handling for anteprojeto/projeto-base
+  const isAnteprojeto = doc_type.startsWith('anteprojeto_') || doc_type.startsWith('projeto_base_');
+  if (isAnteprojeto) {
+    const specialPrompt = buildAnteprojetoInstruction(client, system, doc_type, outputDir, rulesSection, selected_endeavor, selected_soc_code);
+    const promptFileName = `GERAR_${doc_type.toUpperCase()}_${clientSlug}.md`;
+    if (!existsSync(PROMPTS_DIR)) mkdirSync(PROMPTS_DIR, { recursive: true });
+    const specialPromptPath = path.join(PROMPTS_DIR, promptFileName);
+    writeFileSync(specialPromptPath, specialPrompt, 'utf-8');
+
+    const claudeCommand = `claude -p "Leia ${specialPromptPath} e execute tudo." --allowedTools Bash,Read,Write,Edit,Glob,Grep`;
+
+    return NextResponse.json({
+      data: {
+        prompt: specialPrompt,
+        metadata: {
+          system: system.system_name,
+          systemName: system.system_name,
+          doc_type: system.doc_type,
+          client_name: client.name,
+          client_id: client.id,
+          system_path: system.system_path,
+          output_dir: outputDir,
+          filesRead: system.file_count,
+          recommended_model: system.recommended_model,
+          estimatedTokens: system.file_count * 5000,
+          instruction_source: 'anteprojeto_generator',
+          instruction_path: specialPromptPath,
+          rulesInjected: readRules().filter((r: any) => r.active && (!r.doc_type || r.doc_type === doc_type)).length,
+          selected_endeavor: selected_endeavor || null,
+          selected_soc_code: selected_soc_code || null,
+          rags_path: doc_type.includes('eb1') ? RAGS_EB1 : RAGS_EB2,
+          pipeline: ['anteprojeto_generation', 'separation_of_concerns'],
+          soc_enabled: true,
+        },
+        prompt_path: specialPromptPath,
+        prompt_file: specialPromptPath,
+        claude_command: claudeCommand,
+      },
+    });
+  }
 
   if (existingInstruction) {
     // Use the existing real instruction file (written by Paulo/Cowork)

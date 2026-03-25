@@ -34,6 +34,10 @@ const SYSTEM_TO_ENUM: Record<string, string> = {
   'RFE Response': 'rfe_response',
   'Résumé EB-2 NIW': 'resume_eb2_niw',
   'Resume EB-2 NIW': 'resume_eb2_niw',
+  'Anteprojeto EB-2 NIW': 'anteprojeto_eb2_niw',
+  'Anteprojeto EB-1A': 'anteprojeto_eb1a',
+  'Projeto-Base EB-2 NIW': 'projeto_base_eb2_niw',
+  'Projeto-Base EB-1A': 'projeto_base_eb1a',
 };
 
 interface SystemVersion {
@@ -70,6 +74,10 @@ const SYSTEM_LABELS: Record<string, string> = {
   'resume-eb2-niw': 'Résumé EB-2 NIW',
   'Résumé EB-2 NIW': 'Résumé EB-2 NIW',
   'anteprojeto': 'Anteprojeto',
+  'anteprojeto-eb2-niw': 'Anteprojeto EB-2 NIW',
+  'anteprojeto-eb1a': 'Anteprojeto EB-1A',
+  'projeto-base-eb2-niw': 'Projeto-Base EB-2 NIW',
+  'projeto-base-eb1a': 'Projeto-Base EB-1A',
 };
 
 export default function GeradorPage() {
