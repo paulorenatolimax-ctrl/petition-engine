@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Zap, Copy, Check, X, ChevronRight, AlertTriangle, User, Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { FileText, Zap, Copy, Check, X, ChevronRight, AlertTriangle, User, Loader2, Sparkles, AlertCircle, Shield, Eye } from 'lucide-react';
 
 // Mapa: system_name (EXATO como vem do banco) → doc_type enum (esperado pela API)
 const SYSTEM_TO_ENUM: Record<string, string> = {
@@ -380,13 +380,31 @@ export default function GeradorPage() {
                                 ))}
                             </div>
 
-                            {/* 3 STEPS */}
-                            <div style={{ background: '#0d1117', border: '1px solid rgba(0,234,255,0.2)', borderRadius: '12px', padding: '20px' }}>
-                                <h4 style={{ color: '#00eaff', fontSize: '13px', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                                    PRÓXIMOS PASSOS
-                                </h4>
+                            {/* PIPELINE: 2 Phases Visual Indicator */}
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
+                              {(() => {
+                                const phase1Done = executionStages.some((s: any) => s.stage === 'gen_complete');
+                                const phase2Active = executionStages.some((s: any) => s.phase === 2);
+                                const phase2Done = executionResult?.success;
+                                return (
+                                  <>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', borderRadius: '8px', background: phase1Done ? 'rgba(34,197,94,0.1)' : executing ? 'rgba(0,234,255,0.1)' : 'rgba(255,255,255,0.03)', border: `1px solid ${phase1Done ? 'rgba(34,197,94,0.3)' : executing && !phase2Active ? 'rgba(0,234,255,0.3)' : 'rgba(255,255,255,0.06)'}`, transition: 'all 0.3s' }}>
+                                      <Zap size={14} style={{ color: phase1Done ? '#22c55e' : '#00eaff' }} />
+                                      <span style={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '1px', color: phase1Done ? '#22c55e' : '#00eaff' }}>GERAÇÃO</span>
+                                    </div>
+                                    <div style={{ width: '24px', height: '2px', background: phase1Done ? 'linear-gradient(90deg, #22c55e, #a855f7)' : 'rgba(255,255,255,0.1)', borderRadius: '1px', transition: 'all 0.5s' }} />
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 14px', borderRadius: '8px', background: phase2Done ? 'rgba(168,85,247,0.1)' : phase2Active ? 'rgba(168,85,247,0.08)' : 'rgba(255,255,255,0.03)', border: `1px solid ${phase2Done ? 'rgba(168,85,247,0.4)' : phase2Active ? 'rgba(168,85,247,0.3)' : 'rgba(255,255,255,0.06)'}`, transition: 'all 0.3s' }}>
+                                      <Shield size={14} style={{ color: phase2Done ? '#a855f7' : phase2Active ? '#a855f7' : '#4b6584' }} />
+                                      <span style={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '1px', color: phase2Done ? '#a855f7' : phase2Active ? '#a855f7' : '#4b6584' }}>REVISÃO CRUZADA</span>
+                                    </div>
+                                  </>
+                                );
+                              })()}
+                            </div>
 
-                                {/* Step 1 */}
+                            {/* Execution Progress */}
+                            <div style={{ background: '#0d1117', border: '1px solid rgba(0,234,255,0.2)', borderRadius: '12px', padding: '20px' }}>
+                                {/* Step 1 — Prompt saved */}
                                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', marginBottom: '16px' }}>
                                     <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#22c55e', fontSize: '14px', fontWeight: 700, flexShrink: 0 }}>✓</div>
                                     <div>
@@ -395,61 +413,109 @@ export default function GeradorPage() {
                                     </div>
                                 </div>
 
-                                {/* Step 2 — Auto execution */}
-                                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                                    <div style={{
-                                      width: '28px', height: '28px', borderRadius: '50%',
-                                      background: executing ? 'rgba(0,234,255,0.15)' : executionResult?.success ? 'rgba(34,197,94,0.15)' : executionResult ? 'rgba(239,68,68,0.15)' : 'rgba(0,234,255,0.15)',
-                                      border: `1px solid ${executing ? 'rgba(0,234,255,0.3)' : executionResult?.success ? 'rgba(34,197,94,0.3)' : executionResult ? 'rgba(239,68,68,0.3)' : 'rgba(0,234,255,0.3)'}`,
-                                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                      color: executing ? '#00eaff' : executionResult?.success ? '#22c55e' : executionResult ? '#ef4444' : '#00eaff',
-                                      fontSize: '14px', fontWeight: 700, flexShrink: 0,
-                                    }}>
-                                      {executing ? '⚡' : executionResult?.success ? '✓' : executionResult ? '!' : '2'}
-                                    </div>
-                                    <div style={{ flex: 1 }}>
-                                        <div style={{ color: '#f5f5f5', fontSize: '14px', fontWeight: 600 }}>
-                                          {executing ? 'Claude Code gerando documento...' : executionResult?.success ? 'Documento gerado com sucesso!' : executionResult ? 'Erro na geração' : 'Executando Claude Code...'}
+                                {/* Execution log — Phase 1 & Phase 2 stages */}
+                                {executionStages.length > 0 && (
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
+                                    {executionStages.map((s: any, i: number) => {
+                                      const isPhaseHeader = s.stage === 'phase';
+                                      const isPhase2 = s.phase === 2;
+                                      const isPersona = s.stage === 'review_persona';
+                                      const isReviewComplete = s.stage === 'review_complete';
+                                      const isGenComplete = s.stage === 'gen_complete';
+
+                                      if (isPhaseHeader) {
+                                        return (
+                                          <div key={i} style={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '2px', color: isPhase2 ? '#a855f7' : '#00eaff', textShadow: `0 0 10px ${isPhase2 ? 'rgba(168,85,247,0.5)' : 'rgba(0,234,255,0.5)'}`, padding: '8px 0 4px', borderTop: i > 0 ? `1px solid ${isPhase2 ? 'rgba(168,85,247,0.15)' : 'rgba(0,234,255,0.1)'}` : 'none', marginTop: i > 0 ? '8px' : '0' }}>
+                                            {isPhase2 ? '🔬' : '⚡'} {s.message}
+                                          </div>
+                                        );
+                                      }
+
+                                      return (
+                                        <div key={i} style={{ fontSize: '12px', fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: '6px', color: isReviewComplete || isGenComplete ? '#22c55e' : isPersona ? '#c084fc' : s.stage === 'error' ? '#ef4444' : isPhase2 ? '#a1b1cc' : '#64748b', paddingLeft: isPersona ? '12px' : '0' }}>
+                                          <span>{isReviewComplete || isGenComplete ? '✓' : isPersona ? '👁' : s.stage === 'error' ? '✗' : '→'}</span>
+                                          <span>{s.message || (s as any).text?.slice(0, 120)}</span>
                                         </div>
+                                      );
+                                    })}
+                                    {executing && (
+                                      <div style={{ fontSize: '12px', color: '#00eaff', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⟳</span> Processando...
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
 
-                                        {/* Execution log */}
-                                        {executionStages.length > 0 && (
-                                          <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                            {executionStages.map((s, i) => (
-                                              <div key={i} style={{ fontSize: '12px', fontFamily: 'monospace', color: s.stage === 'error' ? '#ef4444' : s.stage === 'warning' ? '#eab308' : s.stage === 'complete' ? '#22c55e' : '#64748b' }}>
-                                                {s.stage === 'error' ? '✗' : s.stage === 'complete' ? '✓' : '→'} {s.message || s.text?.slice(0, 100)}
-                                              </div>
-                                            ))}
-                                            {executing && (
-                                              <div style={{ fontSize: '12px', color: '#00eaff', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>⟳</span> Aguarde...
-                                              </div>
-                                            )}
-                                          </div>
-                                        )}
+                                {/* Final Result — with SoC review summary */}
+                                {executionResult?.success && (
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {/* Review Verdict */}
+                                    <div style={{ background: 'rgba(168,85,247,0.06)', border: '1px solid rgba(168,85,247,0.25)', borderRadius: '10px', padding: '16px' }}>
+                                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                          <Shield size={18} style={{ color: '#a855f7', filter: 'drop-shadow(0 0 8px rgba(168,85,247,0.6))' }} />
+                                          <span style={{ color: '#a855f7', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '2px' }}>SEPARATION OF CONCERNS</span>
+                                        </div>
+                                        <span style={{ color: executionResult.review_summary?.blocking > 0 ? '#ef4444' : executionResult.review_summary?.score >= 90 ? '#22c55e' : '#eab308', fontSize: '12px', fontFamily: 'monospace', fontWeight: 700, padding: '3px 10px', borderRadius: '6px', background: executionResult.review_summary?.blocking > 0 ? 'rgba(239,68,68,0.1)' : executionResult.review_summary?.score >= 90 ? 'rgba(34,197,94,0.1)' : 'rgba(234,179,8,0.1)', border: `1px solid ${executionResult.review_summary?.blocking > 0 ? 'rgba(239,68,68,0.3)' : executionResult.review_summary?.score >= 90 ? 'rgba(34,197,94,0.3)' : 'rgba(234,179,8,0.3)'}` }}>
+                                          {executionResult.review_verdict}
+                                        </span>
+                                      </div>
 
-                                        {/* Success result */}
-                                        {executionResult?.success && (
-                                          <div style={{ marginTop: '12px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
-                                            <div style={{ color: '#22c55e', fontSize: '14px', fontWeight: 600 }}>Documento salvo na pasta do cliente!</div>
+                                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
+                                        {[
+                                          { label: 'Score', value: `${executionResult.review_summary?.score || 0}/100`, color: '#a855f7' },
+                                          { label: 'Bloqueantes', value: executionResult.review_summary?.blocking || 0, color: executionResult.review_summary?.blocking > 0 ? '#ef4444' : '#22c55e' },
+                                          { label: 'Criticos', value: executionResult.review_summary?.critical || 0, color: '#ef4444' },
+                                          { label: 'Altos', value: executionResult.review_summary?.high || 0, color: '#eab308' },
+                                          { label: 'Medios', value: executionResult.review_summary?.medium || 0, color: '#a1b1cc' },
+                                        ].map((item, i) => (
+                                          <div key={i} style={{ textAlign: 'center', padding: '8px 4px', background: 'rgba(0,0,0,0.3)', borderRadius: '6px' }}>
+                                            <div style={{ fontSize: '9px', color: '#4b6584', fontFamily: 'monospace', letterSpacing: '1px', textTransform: 'uppercase' }}>{item.label}</div>
+                                            <div style={{ fontSize: '16px', fontWeight: 700, fontFamily: 'monospace', color: item.color, marginTop: '2px' }}>{item.value}</div>
                                           </div>
-                                        )}
+                                        ))}
+                                      </div>
 
-                                        {/* Fallback: manual command (only on failure) */}
-                                        {executionResult && !executionResult.success && claudeCommand && (
-                                          <div style={{ marginTop: '12px' }}>
-                                            <div style={{ color: '#64748b', fontSize: '12px', marginBottom: '6px' }}>Comando manual (fallback):</div>
-                                            <div
-                                              onClick={() => { navigator.clipboard.writeText(claudeCommand); setCommandCopied(true); setTimeout(() => setCommandCopied(false), 2000); }}
-                                              style={{ background: '#000', border: '1px solid rgba(255,171,0,0.4)', borderRadius: '8px', padding: '10px 14px', fontFamily: 'monospace', fontSize: '12px', color: '#ffab00', textShadow: '0 0 10px rgba(255,171,0,0.3)', cursor: 'pointer', wordBreak: 'break-all', transition: 'all 0.3s' }}
-                                            >
-                                              <span style={{ opacity: 0.5 }}>$ </span>{claudeCommand}
-                                            </div>
-                                            <div style={{ color: '#ffab00', fontSize: '11px', marginTop: '4px', opacity: 0.8 }}>Clique para copiar → Cole no terminal do Claude Code</div>
-                                          </div>
-                                        )}
+                                      <div style={{ marginTop: '10px', display: 'flex', gap: '8px', fontSize: '10px', fontFamily: 'monospace', color: '#4b6584' }}>
+                                        <span>4 personas</span>
+                                        <span>|</span>
+                                        <span>{((executionResult.phases?.review?.tokens || 0) / 1000).toFixed(0)}K tokens</span>
+                                        <span>|</span>
+                                        <span>{executionResult.phases?.review?.duration || 0}s</span>
+                                      </div>
                                     </div>
-                                </div>
+
+                                    {/* Document saved */}
+                                    <div style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '8px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                      <div style={{ color: '#22c55e', fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <Check size={16} /> Documento REVISADO salvo na pasta do cliente
+                                      </div>
+                                      <div style={{ fontSize: '11px', fontFamily: 'monospace', color: '#4b6584' }}>
+                                        DOCX: {executionResult.docx_reviewed?.split('/').pop() || 'documento_REVIEWED.docx'}
+                                      </div>
+                                      <div style={{ fontSize: '11px', fontFamily: 'monospace', color: '#4b6584' }}>
+                                        Relatorio: {executionResult.review_report?.split('/').pop() || 'REVIEW_REPORT.md'}
+                                      </div>
+                                      <div style={{ fontSize: '10px', fontFamily: 'monospace', color: '#4b6584', marginTop: '4px' }}>
+                                        Total: {((executionResult.tokens_used || 0) / 1000).toFixed(0)}K tokens | {executionResult.duration_seconds || 0}s
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Fallback: manual command (only on failure) */}
+                                {executionResult && !executionResult.success && claudeCommand && (
+                                  <div style={{ marginTop: '12px' }}>
+                                    <div style={{ color: '#64748b', fontSize: '12px', marginBottom: '6px' }}>Comando manual (fallback):</div>
+                                    <div
+                                      onClick={() => { navigator.clipboard.writeText(claudeCommand); setCommandCopied(true); setTimeout(() => setCommandCopied(false), 2000); }}
+                                      style={{ background: '#000', border: '1px solid rgba(255,171,0,0.4)', borderRadius: '8px', padding: '10px 14px', fontFamily: 'monospace', fontSize: '12px', color: '#ffab00', textShadow: '0 0 10px rgba(255,171,0,0.3)', cursor: 'pointer', wordBreak: 'break-all', transition: 'all 0.3s' }}
+                                    >
+                                      <span style={{ opacity: 0.5 }}>$ </span>{claudeCommand}
+                                    </div>
+                                    <div style={{ color: '#ffab00', fontSize: '11px', marginTop: '4px', opacity: 0.8 }}>Clique para copiar → Cole no terminal do Claude Code</div>
+                                  </div>
+                                )}
                             </div>
 
                             {/* Collapsible prompt */}
