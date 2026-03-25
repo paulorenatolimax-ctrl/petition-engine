@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
   if (!existsSync(PROMPTS_DIR)) mkdirSync(PROMPTS_DIR, { recursive: true });
   const promptPath = path.join(PROMPTS_DIR, promptFileName);
 
-  const outputDir = client.docs_folder_path || `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client.name}/`;
+  const clientBaseDir = client.docs_folder_path || `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client.name}/`;
+  const outputDir = path.join(clientBaseDir, '_Forjado por Petition Engine') + '/';
 
   const instruction = [
     `# Instrucao de Geracao: ${system.system_name}`,
@@ -58,6 +59,7 @@ export async function POST(req: NextRequest) {
     `Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.`,
     '',
     '## OUTPUT',
+    `Crie a pasta se nao existir: ${outputDir}`,
     `Gere o documento .docx final e salve em: ${outputDir}`,
     `Naming: ${doc_type}_${clientSlug}.docx`,
     '',

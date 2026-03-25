@@ -35,16 +35,17 @@ export async function POST(req: NextRequest) {
   const encoder = new TextEncoder();
   const startTime = Date.now();
 
-  // Resolve client docs_folder_path
-  let outputDir = '';
+  // Resolve client docs_folder_path → _Forjado por Petition Engine/
+  let clientBaseDir = '';
   if (client_id) {
     const clients = readClients();
     const client = clients.find((c: any) => c.id === client_id);
-    if (client?.docs_folder_path) outputDir = client.docs_folder_path;
+    if (client?.docs_folder_path) clientBaseDir = client.docs_folder_path;
   }
-  if (!outputDir) {
-    outputDir = `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client_name || 'output'}/`;
+  if (!clientBaseDir) {
+    clientBaseDir = `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client_name || 'output'}/`;
   }
+  const outputDir = path.join(clientBaseDir, '_Forjado por Petition Engine') + '/';
 
   const stream = new ReadableStream({
     async start(controller) {
