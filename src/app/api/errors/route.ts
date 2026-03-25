@@ -1,15 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
-const MOCK_RULES = [
-  { id: 'r1', rule_type: 'forbidden_term', doc_type: null, rule_description: 'Nunca usar "I believe" ou "we believe" em documentos', rule_pattern: '\\b(I|we)\\s+believe\\b', rule_action: 'block', severity: 'critical', source: 'quality_notes', active: true, times_triggered: 127, created_at: '2026-01-15T10:00:00Z' },
-  { id: 'r2', rule_type: 'forbidden_term', doc_type: null, rule_description: 'Nunca usar "we think" ou "I think"', rule_pattern: '\\b(I|we)\\s+think\\b', rule_action: 'block', severity: 'high', source: 'quality_notes', active: true, times_triggered: 84, created_at: '2026-01-15T10:00:00Z' },
-  { id: 'r3', rule_type: 'logic', doc_type: 'cover_letter_eb1a', rule_description: 'Nunca citar Dhanasar em cover letter EB-1A (exclusivo de EB-2 NIW)', rule_pattern: null, rule_action: 'block', severity: 'critical', source: 'quality_notes', active: true, times_triggered: 23, created_at: '2026-01-15T10:00:00Z' },
-  { id: 'r4', rule_type: 'terminology', doc_type: null, rule_description: 'Usar "proposed endeavor" (nao "proposed venture" ou "proposed business")', rule_pattern: 'proposed\\s+(venture|business)', rule_action: 'auto_fix', severity: 'medium', source: 'quality_notes', active: true, times_triggered: 56, created_at: '2026-01-15T10:00:00Z' },
-  { id: 'r5', rule_type: 'formatting', doc_type: null, rule_description: 'Headings devem ser bold e com capitalizacao correta', rule_pattern: null, rule_action: 'warn', severity: 'low', source: 'manual', active: true, times_triggered: 12, created_at: '2026-02-01T10:00:00Z' },
-  { id: 'r6', rule_type: 'forbidden_term', doc_type: null, rule_description: 'Nunca usar "in conclusion" ou "to summarize"', rule_pattern: '\\b(in conclusion|to summarize)\\b', rule_action: 'block', severity: 'high', source: 'quality_notes', active: true, times_triggered: 38, created_at: '2026-01-15T10:00:00Z' },
-  { id: 'r7', rule_type: 'legal', doc_type: 'cover_letter_eb2_niw', rule_description: 'Citar os 3 prongs de Dhanasar com precisao juridica', rule_pattern: null, rule_action: 'warn', severity: 'critical', source: 'quality_notes', active: true, times_triggered: 15, created_at: '2026-01-15T10:00:00Z' },
-  { id: 'r8', rule_type: 'content', doc_type: null, rule_description: 'Evidence blocks devem ter thumbnails de evidencia quando disponiveis', rule_pattern: null, rule_action: 'warn', severity: 'medium', source: 'manual', active: true, times_triggered: 9, created_at: '2026-03-10T10:00:00Z' },
-];
+const ERROR_RULES_PATH = path.join(process.cwd(), 'data', 'error_rules.json');
+
+function readRules(): any[] {
+  try {
+    const raw = fs.readFileSync(ERROR_RULES_PATH, 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function writeRules(rules: any[]): void {
+  fs.writeFileSync(ERROR_RULES_PATH, JSON.stringify(rules, null, 2), 'utf-8');
+}
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -17,10 +23,35 @@ export async function GET(req: NextRequest) {
   const severity = searchParams.get('severity') || '';
   const active = searchParams.get('active');
 
-  let filtered = [...MOCK_RULES];
+  let filtered = readRules();
   if (ruleType) filtered = filtered.filter(r => r.rule_type === ruleType);
   if (severity) filtered = filtered.filter(r => r.severity === severity);
   if (active === 'true') filtered = filtered.filter(r => r.active);
 
   return NextResponse.json({ data: filtered });
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json();
+
+    if (!body.id) {
+      return NextResponse.json({ error: 'id is required' }, { status: 400 });
+    }
+
+    const rules = readRules();
+    const index = rules.findIndex((r: any) => r.id === body.id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: 'Rule not found' }, { status: 404 });
+    }
+
+    const updatedRule = { ...rules[index], ...body };
+    rules[index] = updatedRule;
+    writeRules(rules);
+
+    return NextResponse.json({ success: true, data: updatedRule });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }
