@@ -4,9 +4,37 @@ import path from 'path';
 
 const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
 const SYSTEMS_FILE = path.join(process.cwd(), 'data', 'systems.json');
+const RULES_FILE = path.join(process.cwd(), 'data', 'error_rules.json');
 const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts');
 const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
 const CP_DIR = '/Users/paulo1844/Documents/Claude/Projects/C.P.';
+
+function readRules(): any[] {
+  try { return JSON.parse(readFileSync(RULES_FILE, 'utf-8')); }
+  catch { return []; }
+}
+
+function buildRulesSection(docType: string): string {
+  const rules = readRules().filter((r: any) => r.active);
+  const global = rules.filter((r: any) => !r.doc_type);
+  const specific = rules.filter((r: any) => r.doc_type === docType);
+  const all = [...global, ...specific];
+  if (all.length === 0) return '';
+
+  const lines = [
+    '',
+    '## REGRAS DE ERRO ATIVAS (AUTO-LEARNING)',
+    `Total: ${all.length} regras (${global.length} globais + ${specific.length} especificas para ${docType})`,
+    'RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.',
+    '',
+  ];
+  for (const r of all) {
+    const prefix = r.rule_action === 'block' ? 'BLOCK' : r.rule_action === 'auto_fix' ? 'AUTO-FIX' : 'WARN';
+    lines.push(`- [${r.severity.toUpperCase()}/${prefix}] ${r.rule_description}${r.rule_pattern ? ` (regex: ${r.rule_pattern})` : ''}`);
+  }
+  lines.push('');
+  return lines.join('\n');
+}
 
 function readJson(file: string): any[] {
   if (!existsSync(file)) return [];
@@ -105,11 +133,17 @@ export async function POST(req: NextRequest) {
   let instructionSource: 'existing' | 'generated';
   let prompt: string;
 
+  const rulesSection = buildRulesSection(doc_type);
+
   if (existingInstruction) {
     // Use the existing real instruction file (written by Paulo/Cowork)
     promptPath = existingInstruction;
     instructionSource = 'existing';
     prompt = readFileSync(existingInstruction, 'utf-8');
+    // Inject active error rules at the end of existing instruction
+    if (rulesSection) {
+      prompt += '\n' + rulesSection;
+    }
   } else {
     // Generate a fallback instruction
     instructionSource = 'generated';
@@ -145,6 +179,7 @@ export async function POST(req: NextRequest) {
       'Apos gerar o documento, NAO considere finalizado.',
       'O documento DEVE passar por revisao cruzada em SESSAO LIMPA.',
       `Instrucao: ${SOC_PATH}`,
+      rulesSection,
     ].filter(Boolean).join('\n');
 
     writeFileSync(promptPath, prompt, 'utf-8');
@@ -168,6 +203,7 @@ export async function POST(req: NextRequest) {
         estimatedTokens: system.file_count * 3000,
         instruction_source: instructionSource,
         instruction_path: promptPath,
+        rulesInjected: readRules().filter((r: any) => r.active && (!r.doc_type || r.doc_type === doc_type)).length,
         pipeline: ['generation', 'separation_of_concerns'],
         soc_enabled: true,
       },
