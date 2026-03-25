@@ -10,6 +10,11 @@ import {
   Power,
   Bot,
   User,
+  Plus,
+  MessageSquare,
+  Check,
+  X,
+  Send,
 } from 'lucide-react';
 
 interface ErrorRule {
@@ -48,6 +53,12 @@ export default function ErrosPage() {
   const [typeFilter, setTypeFilter] = useState('');
   const [severityFilter, setSeverityFilter] = useState('');
   const [activeOnly, setActiveOnly] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
+  const [feedbackDocType, setFeedbackDocType] = useState('');
+  const [feedbackSeverity, setFeedbackSeverity] = useState('high');
+  const [submitting, setSubmitting] = useState(false);
+  const [feedbackResult, setFeedbackResult] = useState<string | null>(null);
 
   const fetchRules = () => {
     const params = new URLSearchParams();
@@ -68,11 +79,42 @@ export default function ErrosPage() {
 
   const toggleRule = async (id: string, active: boolean) => {
     await fetch(`/api/errors/${id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ active: !active }),
     });
     fetchRules();
+  };
+
+  const submitFeedback = async () => {
+    if (!feedbackText.trim()) return;
+    setSubmitting(true);
+    setFeedbackResult(null);
+    try {
+      const res = await fetch('/api/errors/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          error_description: feedbackText,
+          doc_type: feedbackDocType || undefined,
+          severity: feedbackSeverity,
+        }),
+      });
+      if (res.ok) {
+        setFeedbackResult('Regra criada com sucesso. O sistema aprendeu.');
+        setFeedbackText('');
+        setFeedbackDocType('');
+        setFeedbackSeverity('high');
+        fetchRules();
+        setTimeout(() => setFeedbackResult(null), 4000);
+      } else {
+        const err = await res.json();
+        setFeedbackResult(`Erro: ${err.error || 'falha ao salvar'}`);
+      }
+    } catch {
+      setFeedbackResult('Erro de conexao');
+    }
+    setSubmitting(false);
   };
 
   const totalTriggers = rules.reduce((s, r) => s + r.times_triggered, 0);
@@ -134,6 +176,78 @@ export default function ErrosPage() {
         >
           <Power className="w-3.5 h-3.5" /> {activeOnly ? 'ON ONLY' : 'ALL RULES'}
         </button>
+      </div>
+
+      {/* FEEDBACK PANEL */}
+      <div className="v2-card p-6 relative overflow-hidden">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <MessageSquare className="w-5 h-5 text-[#00eaff]" style={{ filter: 'drop-shadow(0 0 8px rgba(0,234,255,0.5))' }} />
+            <h2 className="text-[#e2e8f0] font-bold text-sm tracking-wide">Feedback e Auto-Aprendizado</h2>
+          </div>
+          <button
+            onClick={() => setShowFeedback(!showFeedback)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono tracking-widest uppercase font-bold bg-[rgba(0,234,255,0.1)] text-[#00eaff] border border-[rgba(0,234,255,0.2)] hover:bg-[rgba(0,234,255,0.2)] transition-all"
+          >
+            <Plus className="w-3.5 h-3.5" /> NOVA REGRA
+          </button>
+        </div>
+        <p className="text-[#4b6584] text-xs font-mono mb-4">
+          Rejeite um resultado ou aponte um erro. O sistema cria uma regra automaticamente e aplica nas proximas geracoes.
+        </p>
+
+        {showFeedback && (
+          <div className="flex flex-col gap-4 p-4 bg-[#03060a] rounded-xl border border-[rgba(0,234,255,0.1)] mt-2">
+            <textarea
+              value={feedbackText}
+              onChange={(e) => setFeedbackText(e.target.value)}
+              placeholder="Descreva o erro ou o que precisa mudar. Ex: 'Nunca usar codigo SOC de dentista para clientes EB-1A' ou 'Evidence blocks precisam de heading Description & Impact separado'"
+              className="w-full h-24 bg-[#0a1320] border border-[rgba(0,234,255,0.1)] rounded-lg p-3 text-sm text-[#e2e8f0] placeholder-[#4b6584] resize-none focus:outline-none focus:border-[#00eaff] transition-colors"
+            />
+            <div className="flex gap-4 items-end">
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">Tipo de Documento</label>
+                <select
+                  value={feedbackDocType}
+                  onChange={(e) => setFeedbackDocType(e.target.value)}
+                  className="bg-[#0a1320] border border-[rgba(0,234,255,0.1)] rounded px-3 py-2 text-xs text-[#a1b1cc] font-mono"
+                >
+                  <option value="">Global (todos)</option>
+                  <option value="resume_eb1a">Resume EB-1A</option>
+                  <option value="resume_eb2_niw">Resume EB-2 NIW</option>
+                  <option value="cover_letter_eb1a">Cover Letter EB-1A</option>
+                  <option value="cover_letter_eb2_niw">Cover Letter EB-2 NIW</option>
+                  <option value="business_plan">Business Plan</option>
+                </select>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">Severidade</label>
+                <select
+                  value={feedbackSeverity}
+                  onChange={(e) => setFeedbackSeverity(e.target.value)}
+                  className="bg-[#0a1320] border border-[rgba(0,234,255,0.1)] rounded px-3 py-2 text-xs text-[#a1b1cc] font-mono"
+                >
+                  <option value="critical">CRITICAL (bloqueia)</option>
+                  <option value="high">HIGH (alerta forte)</option>
+                  <option value="medium">MEDIUM (aviso)</option>
+                  <option value="low">LOW (sugestao)</option>
+                </select>
+              </div>
+              <button
+                onClick={submitFeedback}
+                disabled={submitting || !feedbackText.trim()}
+                className="flex items-center gap-2 px-6 py-2 rounded-lg text-xs font-mono tracking-widest uppercase font-bold bg-[#00eaff] text-[#03060a] hover:bg-[#33eeff] transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(0,234,255,0.3)]"
+              >
+                <Send className="w-3.5 h-3.5" /> {submitting ? 'SALVANDO...' : 'ENSINAR AO ENGINE'}
+              </button>
+            </div>
+            {feedbackResult && (
+              <div className={`text-xs font-mono px-4 py-2 rounded-lg ${feedbackResult.startsWith('Erro') ? 'bg-[#ff475710] text-[#ff4757] border border-[#ff475730]' : 'bg-[#2ed57310] text-[#2ed573] border border-[#2ed57330]'}`}>
+                {feedbackResult}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="v2-card overflow-hidden">
