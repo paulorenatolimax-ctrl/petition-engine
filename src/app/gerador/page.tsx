@@ -6,8 +6,8 @@ import { FileText, Zap, Copy, Check, X, ChevronRight, AlertTriangle, User, Loade
 
 // Mapa: system_name (EXATO como vem do banco) → doc_type enum (esperado pela API)
 const SYSTEM_TO_ENUM: Record<string, string> = {
-  'Résumé EB-1A': 'resume',
-  'Resume EB-1A': 'resume',
+  'Résumé EB-1A': 'resume_eb1a',
+  'Resume EB-1A': 'resume_eb1a',
   'Cover Letter EB-1A': 'cover_letter_eb1a',
   'Cover Letter EB-2 NIW': 'cover_letter_eb2_niw',
   'Cover Letter O-1': 'cover_letter_o1',
