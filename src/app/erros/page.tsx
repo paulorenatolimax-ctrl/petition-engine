@@ -126,7 +126,7 @@ export default function ErrosPage() {
     <div className="flex flex-col gap-6 p-6 md:p-8 w-full animate-in fade-in duration-500 max-w-[1400px]">
       <div className="flex flex-col gap-1 mb-2">
         <h1 className="section-title v2-section-header text-[#e2e8f0] text-lg w-max">Regras de Erro</h1>
-        <p className="text-[#a1b1cc] font-mono text-xs mt-2">Sistema de auto-aprendizado · O Engine incorpora novas restrições</p>
+        <p className="text-[#a1b1cc] font-mono text-xs mt-2">Sistema de auto-aprendizado · O Engine incorpora novas restrições automaticamente</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
@@ -193,7 +193,7 @@ export default function ErrosPage() {
           </button>
         </div>
         <p className="text-[#4b6584] text-xs font-mono mb-4">
-          Rejeite um resultado ou aponte um erro. O sistema cria uma regra automaticamente e aplica nas proximas geracoes.
+          Rejeite um resultado ou aponte um erro. O sistema cria uma regra automaticamente e aplica nas próximas gerações.
         </p>
 
         {showFeedback && (
