@@ -65,6 +65,7 @@ export default function DocumentosPage() {
   const [uploadPath, setUploadPath] = useState('');
   const [uploadDocType, setUploadDocType] = useState('business_plan');
   const [uploadClientName, setUploadClientName] = useState('');
+  const [uploadNotes, setUploadNotes] = useState('');
   const [feedbackMode, setFeedbackMode] = useState<'cirurgico' | 'cascalho'>('cirurgico');
 
   useEffect(() => {
@@ -137,40 +138,85 @@ export default function DocumentosPage() {
     if (!uploadPath.trim()) return;
     setSubmitting(true);
     try {
-      const res = await fetch('/api/documents', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          file_path: uploadPath,
-          doc_type: uploadDocType,
-          client_name: uploadClientName || 'Documento Externo',
-          source: 'external_import',
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        // Add to local list
-        setGenerations(prev => [{
-          id: `ext_${Date.now()}`,
-          client_id: '',
-          client_name: uploadClientName || 'Documento Externo',
-          doc_type: uploadDocType,
-          prompt_file: '',
-          status: 'completed',
-          started_at: new Date().toISOString(),
-          completed_at: new Date().toISOString(),
-          output_path: uploadPath,
-          output_files: [uploadPath.split('/').pop() || ''],
-          error_message: null,
-          duration_seconds: null,
-        }, ...prev]);
-        setUploadPath('');
-        setUploadClientName('');
-        setShowUpload(false);
-        setFeedbackResult('Documento importado com sucesso. Clique nele para revisar.');
-        setTimeout(() => setFeedbackResult(null), 4000);
+      // 1. If there are notes, create error rules from them FIRST
+      if (uploadNotes.trim()) {
+        const noteLines = uploadNotes.split('\n').filter(l => l.trim());
+        for (const note of noteLines) {
+          await fetch('/api/errors/report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              error_description: `[Importação ${uploadClientName || 'Externo'}] ${note.trim()}`,
+              doc_type: uploadDocType,
+              severity: 'high',
+            }),
+          });
+        }
       }
-    } catch {}
+
+      // 2. Register the document
+      const genId = `ext_${Date.now()}`;
+      const newGen: Generation = {
+        id: genId,
+        client_id: '',
+        client_name: uploadClientName || 'Documento Externo',
+        doc_type: uploadDocType,
+        prompt_file: '',
+        status: 'completed',
+        started_at: new Date().toISOString(),
+        completed_at: new Date().toISOString(),
+        output_path: uploadPath,
+        output_files: [uploadPath.split('/').pop() || ''],
+        error_message: null,
+        duration_seconds: null,
+      };
+
+      // Save to generations.json via API
+      try {
+        await fetch('/api/documents', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            file_path: uploadPath,
+            doc_type: uploadDocType,
+            client_name: uploadClientName || 'Documento Externo',
+            source: 'external_import',
+            notes: uploadNotes,
+          }),
+        });
+      } catch {}
+
+      // Add to local list
+      setGenerations(prev => [newGen, ...prev]);
+
+      // Track initial notes as feedbacks
+      if (uploadNotes.trim()) {
+        setFeedbacks(prev => ({
+          ...prev,
+          [genId]: uploadNotes.split('\n').filter(l => l.trim()).map(note => ({
+            section: '',
+            page: '',
+            description: note.trim(),
+            timestamp: new Date().toISOString(),
+            status: 'pending' as const,
+          })),
+        }));
+      }
+
+      const rulesCreated = uploadNotes.trim() ? uploadNotes.split('\n').filter(l => l.trim()).length : 0;
+      setUploadPath('');
+      setUploadClientName('');
+      setUploadNotes('');
+      setShowUpload(false);
+      setFeedbackResult(
+        rulesCreated > 0
+          ? `Documento importado + ${rulesCreated} consideração(ões) registrada(s) como regras no Engine.`
+          : 'Documento importado com sucesso. Clique nele para revisar.'
+      );
+      setTimeout(() => setFeedbackResult(null), 5000);
+    } catch {
+      setFeedbackResult('Erro ao importar documento');
+    }
     setSubmitting(false);
   };
 
@@ -239,15 +285,34 @@ export default function DocumentosPage() {
                   <option value="other">Outro</option>
                 </select>
               </div>
-              <div className="flex items-end">
-                <button
-                  onClick={importDocument}
-                  disabled={submitting || !uploadPath.trim()}
-                  className="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-mono tracking-widest uppercase font-bold bg-[#8b5cf6] text-white hover:bg-[#9d6ff7] transition-all disabled:opacity-30 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
-                >
-                  <Upload className="w-3.5 h-3.5" /> {submitting ? 'IMPORTANDO...' : 'IMPORTAR'}
-                </button>
-              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">
+                Considerações e apontamentos iniciais (cada linha vira uma regra no Engine)
+              </label>
+              <textarea
+                value={uploadNotes}
+                onChange={e => setUploadNotes(e.target.value)}
+                placeholder={"Descreva os problemas que você já identificou, um por linha. Exemplos:\nSeção 2.3 — dados de mercado desatualizados, usar fonte BLS 2025\nTabelas sem parágrafos de contexto antes e depois\nTom inconsistente entre seções 3 e 4\nFalta de notas de rodapé com fontes verificáveis"}
+                className="w-full h-28 bg-[#03060a] border border-[rgba(139,92,246,0.15)] rounded-lg p-3 text-sm text-[#e2e8f0] placeholder-[#4b6584] resize-none focus:outline-none focus:border-[#8b5cf6]"
+              />
+              <p className="text-[9px] text-[#4b6584] font-mono mt-1">
+                Cada linha será convertida em uma regra de qualidade ativa no Engine e será aplicada automaticamente nas próximas gerações.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <button
+                onClick={importDocument}
+                disabled={submitting || !uploadPath.trim()}
+                className="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-mono tracking-widest uppercase font-bold bg-[#8b5cf6] text-white hover:bg-[#9d6ff7] transition-all disabled:opacity-30 shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+              >
+                <Upload className="w-3.5 h-3.5" /> {submitting ? 'IMPORTANDO...' : 'IMPORTAR E REGISTRAR REGRAS'}
+              </button>
+              {uploadNotes.trim() && (
+                <span className="text-[10px] text-[#8b5cf6] font-mono">
+                  {uploadNotes.split('\n').filter(l => l.trim()).length} regra(s) serão criadas
+                </span>
+              )}
             </div>
           </div>
         </div>
