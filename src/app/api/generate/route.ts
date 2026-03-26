@@ -210,7 +210,7 @@ function findExistingInstruction(clientName: string, docType: string, clientDocs
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { client_id, doc_type } = body;
+  const { client_id, doc_type, generation_instructions } = body;
 
   if (!client_id || !doc_type) {
     return NextResponse.json({ error: 'client_id e doc_type sao obrigatorios' }, { status: 400 });
@@ -245,7 +245,10 @@ export async function POST(req: NextRequest) {
   // Special handling for anteprojeto/projeto-base
   const isAnteprojeto = doc_type.startsWith('anteprojeto_') || doc_type.startsWith('projeto_base_');
   if (isAnteprojeto) {
-    const specialPrompt = buildAnteprojetoInstruction(client, system, doc_type, outputDir, rulesSection, selected_endeavor, selected_soc_code);
+    let specialPrompt = buildAnteprojetoInstruction(client, system, doc_type, outputDir, rulesSection, selected_endeavor, selected_soc_code);
+    if (generation_instructions) {
+      specialPrompt += '\n\n## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO\n' + generation_instructions + '\n';
+    }
     const promptFileName = `GERAR_${doc_type.toUpperCase()}_${clientSlug}.md`;
     if (!existsSync(PROMPTS_DIR)) mkdirSync(PROMPTS_DIR, { recursive: true });
     const specialPromptPath = path.join(PROMPTS_DIR, promptFileName);
@@ -288,6 +291,10 @@ export async function POST(req: NextRequest) {
     promptPath = existingInstruction;
     instructionSource = 'existing';
     prompt = readFileSync(existingInstruction, 'utf-8');
+    // Inject generation-specific instructions
+    if (generation_instructions) {
+      prompt += '\n\n## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO\n' + generation_instructions + '\n';
+    }
     // Inject active error rules at the end of existing instruction
     if (rulesSection) {
       prompt += '\n' + rulesSection;
@@ -327,6 +334,7 @@ export async function POST(req: NextRequest) {
       'Apos gerar o documento, NAO considere finalizado.',
       'O documento DEVE passar por revisao cruzada em SESSAO LIMPA.',
       `Instrucao: ${SOC_PATH}`,
+      generation_instructions ? `\n## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO\n${generation_instructions}\n` : null,
       rulesSection,
     ].filter(Boolean).join('\n');
 

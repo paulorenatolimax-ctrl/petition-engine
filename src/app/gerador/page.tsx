@@ -98,6 +98,7 @@ export default function GeradorPage() {
   const [executing, setExecuting] = useState(false);
   const [executionStages, setExecutionStages] = useState<{ stage: string; message?: string; text?: string }[]>([]);
   const [executionResult, setExecutionResult] = useState<any>(null);
+  const [generationInstructions, setGenerationInstructions] = useState<string>('');
 
   useEffect(() => {
     Promise.all([
@@ -121,6 +122,7 @@ export default function GeradorPage() {
     setExecuting(false);
     setExecutionStages([]);
     setExecutionResult(null);
+    setGenerationInstructions('');
     setShowModal(true);
   }
 
@@ -137,6 +139,7 @@ export default function GeradorPage() {
         body: JSON.stringify({
           client_id: selectedClient,
           doc_type: SYSTEM_TO_ENUM[selectedSystem.system_name] || selectedSystem.system_name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+          generation_instructions: generationInstructions.trim() || undefined,
         }),
       });
 
@@ -341,6 +344,24 @@ export default function GeradorPage() {
                                     <span className="text-sm font-bold text-[#e2e8f0]">{selectedClientData?.name}</span>
                                     <span className="text-xs font-mono text-[#4b6584]">{selectedClientData?.visa_type} {hasProfile ? '· Baseline OK' : '· Sem Baseline'}</span>
                                 </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <label className="text-[10px] text-[#a855f7] font-mono uppercase tracking-widest font-bold flex items-center gap-2">
+                                    <FileText className="w-3.5 h-3.5" /> Instruções para esta geração (opcional)
+                                </label>
+                                <textarea
+                                    value={generationInstructions}
+                                    onChange={(e) => setGenerationInstructions(e.target.value)}
+                                    placeholder="Ex: Cliente escolheu opção 2 (consultoria em ESG). Usar o endeavor do Anteprojeto seção 3.1. Focar em impacto nacional via sustentabilidade corporativa..."
+                                    rows={4}
+                                    className="w-full bg-[#080d16] border border-[rgba(168,85,247,0.2)] rounded-lg px-4 py-3 text-[#e2e8f0] text-sm font-mono outline-none focus:border-[#a855f7] focus:shadow-[0_0_20px_rgba(168,85,247,0.15)] transition-all resize-none placeholder:text-[#2a3f5f]"
+                                />
+                                {generationInstructions.trim() && (
+                                    <span className="text-[10px] text-[#a855f7]/70 font-mono">
+                                        Estas instruções serão injetadas no prompt antes da geração
+                                    </span>
+                                )}
                             </div>
 
                             <button onClick={handleGenerate} className="w-full py-4 rounded-lg bg-[rgba(255,171,0,0.08)] border border-[rgba(255,171,0,0.3)] hover:bg-[#ffab00] hover:text-[#03060a] text-[#ffab00] font-mono font-bold tracking-widest flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(255,171,0,0.15)] hover:shadow-[0_0_40px_rgba(255,171,0,0.4)] group">
