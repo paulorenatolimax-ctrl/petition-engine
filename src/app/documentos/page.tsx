@@ -139,14 +139,15 @@ export default function DocumentosPage() {
     setSubmitting(true);
     try {
       // 1. If there are notes, create error rules from them FIRST
+      // Only lines with 30+ chars are real rules (skip fragments from textarea wrapping)
       if (uploadNotes.trim()) {
-        const noteLines = uploadNotes.split('\n').filter(l => l.trim());
+        const noteLines = uploadNotes.split('\n').filter(l => l.trim().length >= 30);
         for (const note of noteLines) {
           await fetch('/api/errors/report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              error_description: `[Importação ${uploadClientName || 'Externo'}] ${note.trim()}`,
+              error_description: note.trim(),
               doc_type: uploadDocType,
               severity: 'high',
             }),
@@ -189,11 +190,12 @@ export default function DocumentosPage() {
       // Add to local list
       setGenerations(prev => [newGen, ...prev]);
 
-      // Track initial notes as feedbacks
+      // Track initial notes as feedbacks (only real lines, not fragments)
       if (uploadNotes.trim()) {
+        const realNotes = uploadNotes.split('\n').filter(l => l.trim().length >= 30);
         setFeedbacks(prev => ({
           ...prev,
-          [genId]: uploadNotes.split('\n').filter(l => l.trim()).map(note => ({
+          [genId]: realNotes.map(note => ({
             section: '',
             page: '',
             description: note.trim(),
@@ -203,7 +205,7 @@ export default function DocumentosPage() {
         }));
       }
 
-      const rulesCreated = uploadNotes.trim() ? uploadNotes.split('\n').filter(l => l.trim()).length : 0;
+      const rulesCreated = uploadNotes.trim() ? uploadNotes.split('\n').filter(l => l.trim().length >= 30).length : 0;
       setUploadPath('');
       setUploadClientName('');
       setUploadNotes('');
@@ -310,7 +312,7 @@ export default function DocumentosPage() {
               </button>
               {uploadNotes.trim() && (
                 <span className="text-[10px] text-[#8b5cf6] font-mono">
-                  {uploadNotes.split('\n').filter(l => l.trim()).length} regra(s) serão criadas
+                  {uploadNotes.split('\n').filter(l => l.trim().length >= 30).length} regra(s) serão criadas
                 </span>
               )}
             </div>
