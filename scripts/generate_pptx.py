@@ -14,6 +14,7 @@ import os
 import sys
 import argparse
 import re
+import glob as globmod
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
@@ -21,6 +22,9 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.oxml.ns import qn
 from datetime import datetime
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ICONS_DIR = os.path.join(SCRIPT_DIR, 'icons')
 
 # ============================================================
 # DESIGN SYSTEM — Cerbasi DNA
@@ -241,15 +245,15 @@ def build_content_slide(prs, title, body_paragraphs, client_name, doc_label,
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    # Title
-    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.6))
-    add_text(tf_title, title, size=Pt(24), color=NAVY, bold=True,
+    # Title — positioned with room below
+    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.55))
+    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True,
              font_name=FONT_TITLE)
 
-    # Gold accent under title
-    add_gold_accent_line(slide, Inches(1.0), Inches(1.5))
+    # Gold accent under title — clear of text
+    add_gold_accent_line(slide, Inches(1.05), Inches(1.5))
 
-    # Body text
+    # Body text — starts below the gold line
     y_body = Inches(1.2)
     body_w = CONTENT_W
     if highlight_box:
@@ -505,6 +509,253 @@ def build_closing_slide(prs, client_name, doc_label, message="Thank you"):
 
 
 # ============================================================
+# PHOTO & ICON HELPERS
+# ============================================================
+def find_client_photo(client_docs_path):
+    """Search client folder for a profile photo. Returns path or None."""
+    if not client_docs_path or not os.path.exists(client_docs_path):
+        return None
+    # Common photo patterns
+    patterns = ['**/foto*', '**/photo*', '**/profile*', '**/headshot*',
+                '**/retrato*', '**/*perfil*', '**/*passport*']
+    extensions = ['.jpg', '.jpeg', '.png', '.webp']
+    for pat in patterns:
+        for ext in extensions:
+            matches = globmod.glob(os.path.join(client_docs_path, pat + ext), recursive=True)
+            if matches:
+                return matches[0]
+    # Fallback: any image in root
+    for ext in extensions:
+        matches = globmod.glob(os.path.join(client_docs_path, '*' + ext))
+        if matches:
+            return matches[0]
+    return None
+
+def get_icon_path(icon_name):
+    """Get path to an icon PNG. Falls back to methodology icon."""
+    path = os.path.join(ICONS_DIR, f"{icon_name}.png")
+    if os.path.exists(path):
+        return path
+    # Try to generate it
+    try:
+        from pptx_icons import get_icon
+        return get_icon(icon_name)
+    except:
+        pass
+    # Fallback
+    fallback = os.path.join(ICONS_DIR, "methodology.png")
+    return fallback if os.path.exists(fallback) else None
+
+
+# ============================================================
+# VISUAL SLIDE BUILDERS (Gamma-level)
+# ============================================================
+def build_process_flow_slide(prs, title, steps, client_name, doc_label):
+    """Process flow with chevron arrows — like Dabus Challenge→Solution→Impact."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    set_slide_bg(slide, WHITE)
+
+    # Title
+    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
+    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
+
+    add_gold_accent_line(slide, Inches(0.95), Inches(1.5))
+
+    num_steps = min(len(steps), 5)
+    step_w = CONTENT_W / num_steps
+    y_chevron = Inches(1.3)
+    chevron_h = Inches(0.5)
+
+    for i, step in enumerate(steps[:5]):
+        x = M_LEFT + (i * step_w)
+
+        # Chevron arrow shape
+        shape = slide.shapes.add_shape(
+            MSO_SHAPE.CHEVRON, int(x), int(y_chevron),
+            int(step_w - Inches(0.05)), int(chevron_h)
+        )
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = LIGHT_GRAY
+        shape.line.fill.background()
+
+        # Icon above chevron (if available)
+        icon_name = step.get('icon', 'process')
+        icon_path = get_icon_path(icon_name)
+        if icon_path:
+            try:
+                slide.shapes.add_picture(
+                    icon_path, int(x + step_w/2 - Inches(0.25)),
+                    int(y_chevron - Inches(0.6)), Inches(0.5), Inches(0.5)
+                )
+            except:
+                pass
+
+        # Step title (below chevron)
+        tf_step = add_textbox(slide, x, y_chevron + chevron_h + Inches(0.15),
+                             step_w - Inches(0.1), Inches(0.35))
+        add_text(tf_step, step.get('title', ''), size=Pt(11), color=NAVY,
+                 bold=True, font_name=FONT_BODY, alignment=PP_ALIGN.CENTER)
+
+        # Step description
+        tf_desc = add_textbox(slide, x, y_chevron + chevron_h + Inches(0.5),
+                             step_w - Inches(0.1), Inches(1.5))
+        add_text(tf_desc, step.get('description', ''), size=Pt(9), color=DARK_GRAY,
+                 font_name=FONT_BODY, alignment=PP_ALIGN.CENTER, space_after=Pt(3))
+
+    add_footer(slide, client_name, doc_label)
+    return slide
+
+
+def build_icon_grid_slide(prs, title, items, client_name, doc_label, intro_text=None):
+    """3-column grid with icons — like Dabus pillars (S.I.N.E.R.G.I.A.)."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    set_slide_bg(slide, WHITE)
+
+    # Title
+    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
+    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
+
+    y_start = Inches(1.1)
+
+    # Optional intro paragraph
+    if intro_text:
+        tf_intro = add_textbox(slide, M_LEFT, y_start, CONTENT_W, Inches(0.5))
+        add_text(tf_intro, intro_text, size=Pt(10), color=DARK_GRAY, font_name=FONT_BODY)
+        y_start += Inches(0.55)
+
+    cols = min(len(items), 3)
+    col_w = CONTENT_W / cols
+    icon_size = Inches(0.45)
+
+    for i, item in enumerate(items[:6]):  # max 6 items (2 rows of 3)
+        col = i % cols
+        row = i // cols
+        x = M_LEFT + (col * col_w)
+        y = y_start + (row * Inches(1.8))
+
+        # Card background
+        card_pad = Inches(0.08)
+        add_shape_rect(slide, x + card_pad, y, col_w - card_pad*2, Inches(1.6), LIGHT_GRAY)
+
+        # Icon
+        icon_name = item.get('icon', 'methodology')
+        icon_path = get_icon_path(icon_name)
+        if icon_path:
+            try:
+                slide.shapes.add_picture(
+                    icon_path, int(x + Inches(0.2)), int(y + Inches(0.15)),
+                    icon_size, icon_size
+                )
+            except:
+                pass
+
+        # Item title
+        tf_item = add_textbox(slide, x + Inches(0.15), y + Inches(0.65),
+                             col_w - Inches(0.3), Inches(0.3))
+        add_text(tf_item, item.get('title', ''), size=Pt(11), color=NAVY,
+                 bold=True, font_name=FONT_BODY)
+
+        # Item description
+        tf_item_desc = add_textbox(slide, x + Inches(0.15), y + Inches(0.95),
+                                   col_w - Inches(0.3), Inches(0.6))
+        add_text(tf_item_desc, item.get('description', ''), size=Pt(9),
+                 color=DARK_GRAY, font_name=FONT_BODY, space_after=Pt(2))
+
+    add_footer(slide, client_name, doc_label)
+    return slide
+
+
+def build_photo_content_slide(prs, title, paragraphs, photo_path, client_name, doc_label,
+                               photo_side='left'):
+    """Split slide: photo on one side, text on the other — like Dabus formation slide."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    set_slide_bg(slide, WHITE)
+
+    photo_w = Inches(4.0)
+    text_w = CONTENT_W - photo_w - Inches(0.3)
+
+    if photo_side == 'left':
+        photo_x = M_LEFT
+        text_x = M_LEFT + photo_w + Inches(0.3)
+    else:
+        text_x = M_LEFT
+        photo_x = M_LEFT + text_w + Inches(0.3)
+
+    # Photo
+    if photo_path and os.path.exists(photo_path):
+        try:
+            slide.shapes.add_picture(photo_path, int(photo_x), int(M_TOP),
+                                     photo_w, Inches(4.5))
+        except Exception as e:
+            # Fallback: gray placeholder
+            add_shape_rect(slide, photo_x, M_TOP, photo_w, Inches(4.5), LIGHT_GRAY)
+    else:
+        add_shape_rect(slide, photo_x, M_TOP, photo_w, Inches(4.5), LIGHT_GRAY)
+
+    # Title
+    tf_title = add_textbox(slide, text_x, M_TOP, text_w, Inches(0.7))
+    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
+
+    # Body text
+    tf_body = add_textbox(slide, text_x, Inches(1.3), text_w, Inches(3.5))
+    for para in paragraphs[:4]:  # max 4 paragraphs
+        add_text(tf_body, para.strip(), size=Pt(10), color=DARK_GRAY,
+                 font_name=FONT_BODY, space_after=Pt(8))
+
+    add_footer(slide, client_name, doc_label)
+    return slide
+
+
+def build_icon_list_slide(prs, title, items, client_name, doc_label, intro_text=None):
+    """Vertical list with icons on left — like Dabus legal training / digital humanization."""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    set_slide_bg(slide, WHITE)
+
+    # Title
+    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
+    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
+
+    y_start = Inches(1.1)
+
+    if intro_text:
+        tf_intro = add_textbox(slide, M_LEFT, y_start, CONTENT_W, Inches(0.4))
+        add_text(tf_intro, intro_text, size=Pt(10), color=DARK_GRAY, font_name=FONT_BODY)
+        y_start += Inches(0.5)
+
+    icon_size = Inches(0.4)
+    item_h = Inches(0.85)
+
+    for i, item in enumerate(items[:5]):  # max 5 items
+        y = y_start + (i * item_h)
+
+        # Icon
+        icon_name = item.get('icon', 'process')
+        icon_path = get_icon_path(icon_name)
+        if icon_path:
+            try:
+                slide.shapes.add_picture(
+                    icon_path, int(M_LEFT), int(y), icon_size, icon_size
+                )
+            except:
+                pass
+
+        # Title
+        tf_item = add_textbox(slide, M_LEFT + Inches(0.6), y,
+                             CONTENT_W - Inches(0.7), Inches(0.3))
+        add_text(tf_item, item.get('title', ''), size=Pt(12), color=NAVY,
+                 bold=True, font_name=FONT_BODY)
+
+        # Description
+        tf_desc = add_textbox(slide, M_LEFT + Inches(0.6), y + Inches(0.3),
+                             CONTENT_W - Inches(0.7), Inches(0.45))
+        add_text(tf_desc, item.get('description', ''), size=Pt(9),
+                 color=DARK_GRAY, font_name=FONT_BODY)
+
+    add_footer(slide, client_name, doc_label)
+    return slide
+
+
+# ============================================================
 # DOCUMENT ASSEMBLER
 # ============================================================
 def assemble_presentation(content, doc_type):
@@ -551,6 +802,12 @@ def assemble_presentation(content, doc_type):
     title = content.get("title", "Document")
     subtitle = content.get("subtitle", "")
     sections = content.get("sections", [])
+    client_docs_path = content.get("client_docs_path", "")
+
+    # Find client photo
+    client_photo = content.get("photo_path") or find_client_photo(client_docs_path)
+    if client_photo:
+        print(f"  Client photo found: {client_photo}")
 
     # 1. Cover slide
     build_cover_slide(prs, client_name, title, subtitle, doc_label, visa_type)
@@ -611,6 +868,43 @@ def assemble_presentation(content, doc_type):
                     slide_data.get("quote", ""),
                     slide_data.get("attribution", ""),
                     client_name, doc_label
+                )
+
+            elif slide_type == "process_flow":
+                build_process_flow_slide(
+                    prs,
+                    slide_data.get("title", ""),
+                    slide_data.get("steps", []),
+                    client_name, doc_label
+                )
+
+            elif slide_type == "icon_grid":
+                build_icon_grid_slide(
+                    prs,
+                    slide_data.get("title", ""),
+                    slide_data.get("items", []),
+                    client_name, doc_label,
+                    intro_text=slide_data.get("intro_text")
+                )
+
+            elif slide_type == "icon_list":
+                build_icon_list_slide(
+                    prs,
+                    slide_data.get("title", ""),
+                    slide_data.get("items", []),
+                    client_name, doc_label,
+                    intro_text=slide_data.get("intro_text")
+                )
+
+            elif slide_type == "photo_content":
+                photo_path = slide_data.get("photo_path") or client_photo
+                build_photo_content_slide(
+                    prs,
+                    slide_data.get("title", ""),
+                    slide_data.get("paragraphs", []),
+                    photo_path,
+                    client_name, doc_label,
+                    photo_side=slide_data.get("photo_side", "left")
                 )
 
     # 4. Closing slide
