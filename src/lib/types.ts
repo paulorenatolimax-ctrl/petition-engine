@@ -109,7 +109,7 @@ export interface SystemConfig {
   preferredModel: string;
   requiresProfile: boolean;
   requiresDeepResearch: boolean;
-  outputFormat: 'docx' | 'pdf' | 'md';
+  outputFormat: 'docx' | 'pdf' | 'md' | 'pptx';
   estimatedTokens: number;
   multiAgent: boolean;
   sequentialPrompts?: number;

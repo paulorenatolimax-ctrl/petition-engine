@@ -57,7 +57,7 @@ function findNewDocx(dir: string, afterMs: number): string[] {
   if (!existsSync(dir)) return [];
   try {
     return readdirSync(dir)
-      .filter(f => f.endsWith('.docx'))
+      .filter(f => f.endsWith('.docx') || f.endsWith('.pptx'))
       .map(f => path.join(dir, f))
       .filter(f => { try { return statSync(f).mtimeMs > afterMs; } catch { return false; } });
   } catch { return []; }
@@ -223,7 +223,7 @@ export async function POST(req: NextRequest) {
           upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: `Geracao falhou (exit ${gen.code})` });
           send('complete', {
             success: false,
-            error: `Geracao falhou (exit ${gen.code}) — nenhum .docx criado`,
+            error: `Geracao falhou (exit ${gen.code}) — nenhum documento criado`,
             stderr: gen.stderr.slice(0, 1000),
             stdout_tail: gen.stdout.slice(-500),
             duration_seconds: genDuration,
@@ -237,13 +237,13 @@ export async function POST(req: NextRequest) {
       const newDocx = findNewDocx(outputDir, startTime).concat(findNewDocx(clientBaseDir, startTime));
 
       if (newDocx.length === 0) {
-        send('stage', { stage: 'error', phase: 1, message: 'claude -p retornou 0 mas NENHUM .docx foi criado no disco' });
+        send('stage', { stage: 'error', phase: 1, message: 'claude -p retornou 0 mas NENHUM documento foi criado no disco' });
         send('stage', { stage: 'error', phase: 1, message: `Pasta verificada: ${outputDir}` });
         send('stage', { stage: 'info', phase: 1, message: `stdout (ultimos 300 chars): ${gen.stdout.slice(-300)}` });
-        upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: 'Exit 0 mas nenhum .docx criado' });
+        upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: 'Exit 0 mas nenhum documento criado' });
         send('complete', {
           success: false,
-          error: 'Processo completou mas nao gerou .docx — a instrucao pode ser generica demais para o sistema',
+          error: 'Processo completou mas nao gerou documento — a instrucao pode ser generica demais para o sistema',
           hint: 'Cover Letters e BPs precisam de instrucoes especificas de 4 partes (veja GERAR_COVER_EB1A_GUSTAVO_NELSON.md como exemplo)',
           stdout_tail: gen.stdout.slice(-500),
           duration_seconds: genDuration,

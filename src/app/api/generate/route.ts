@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
+import { SYSTEM_MAP } from '@/lib/system-map';
 
 const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
 const SYSTEMS_FILE = path.join(process.cwd(), 'data', 'systems.json');
@@ -8,6 +9,7 @@ const RULES_FILE = path.join(process.cwd(), 'data', 'error_rules.json');
 const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts');
 const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
 const CP_DIR = '/Users/paulo1844/Documents/Claude/Projects/C.P.';
+const PPTX_GENERATOR = path.join(process.cwd(), 'scripts', 'generate_pptx.py');
 
 function readRules(): any[] {
   try { return JSON.parse(readFileSync(RULES_FILE, 'utf-8')); }
@@ -306,37 +308,144 @@ export async function POST(req: NextRequest) {
     if (!existsSync(PROMPTS_DIR)) mkdirSync(PROMPTS_DIR, { recursive: true });
     promptPath = path.join(PROMPTS_DIR, promptFileName);
 
-    prompt = [
-      `# Instrucao de Geracao: ${system.system_name}`,
-      `## Cliente: ${client.name}`,
-      `## Visto: ${client.visa_type}`,
-      client.company_name ? `## Empresa: ${client.company_name}` : null,
-      '',
-      '## REGRAS ABSOLUTAS',
-      '- Output SEMPRE .docx (python-docx). NUNCA .md, NUNCA texto puro.',
-      '- Leia TODOS os arquivos de sistema ANTES de escrever codigo.',
-      '- Instrucoes estrategicas — NAO invente parametrizacoes.',
-      '',
-      '## SISTEMA DE GERACAO',
-      `Leia TODOS os arquivos .md em: ${system.system_path}`,
-      `Versao: ${system.version_tag} | Modelo recomendado: ${system.recommended_model}`,
-      '',
-      '## DADOS DO CLIENTE',
-      `Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`,
-      'Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.',
-      '',
-      '## OUTPUT',
-      `Crie a pasta se nao existir: ${outputDir}`,
-      `Gere o documento .docx final e salve em: ${outputDir}`,
-      `Naming: ${doc_type}_${clientSlug}.docx`,
-      '',
-      '## POS-GERACAO: SEPARATION OF CONCERNS',
-      'Apos gerar o documento, NAO considere finalizado.',
-      'O documento DEVE passar por revisao cruzada em SESSAO LIMPA.',
-      `Instrucao: ${SOC_PATH}`,
-      generation_instructions ? `\n## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO\n${generation_instructions}\n` : null,
-      rulesSection,
-    ].filter(Boolean).join('\n');
+    // Check if this doc_type outputs PPTX
+    const systemMapEntry = SYSTEM_MAP[doc_type];
+    const isPptx = systemMapEntry?.outputFormat === 'pptx';
+
+    if (isPptx) {
+      // PPTX pipeline: Claude generates structured JSON → Python script builds PPTX
+      const jsonOutputPath = path.join(outputDir, `${doc_type}_${clientSlug}_content.json`);
+      const pptxOutputPath = path.join(outputDir, `${doc_type}_${clientSlug}.pptx`);
+
+      prompt = [
+        `# Instrucao de Geracao PPTX: ${system.system_name}`,
+        `## Cliente: ${client.name}`,
+        `## Visto: ${client.visa_type}`,
+        client.company_name ? `## Empresa: ${client.company_name}` : null,
+        '',
+        '## PIPELINE DE 2 ETAPAS',
+        'Etapa 1: Voce gera o conteudo estruturado como JSON.',
+        'Etapa 2: O script Python generate_pptx.py monta o PPTX profissional.',
+        '',
+        '## REGRAS ABSOLUTAS',
+        '- Leia TODOS os arquivos de sistema ANTES de gerar conteudo.',
+        '- NAO invente dados. Use APENAS informacoes do perfil e documentos do cliente.',
+        '- Cada afirmacao deve ter evidencia. Sem linguagem generica.',
+        '- 100% em INGLES para documentos USCIS.',
+        '',
+        '## SISTEMA DE GERACAO',
+        `Leia TODOS os arquivos .md em: ${system.system_path}`,
+        `Versao: ${system.version_tag} | Modelo recomendado: ${system.recommended_model}`,
+        '',
+        '## DADOS DO CLIENTE',
+        `Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`,
+        'Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.',
+        '',
+        '## ETAPA 1: GERAR JSON ESTRUTURADO',
+        `Salve o JSON em: ${jsonOutputPath}`,
+        '',
+        'O JSON DEVE seguir EXATAMENTE esta estrutura:',
+        '```json',
+        '{',
+        `  "client_name": "${client.name}",`,
+        `  "visa_type": "${client.visa_type}",`,
+        `  "doc_label": "Professional ${doc_type === 'methodology' ? 'Methodology' : 'Declaration of Intentions'} Dossier",`,
+        `  "title": "${doc_type === 'methodology' ? 'Methodology — Comprehensive Analysis' : 'Statement of Intentions — Strategic Declaration'}",`,
+        '  "subtitle": "Detailed documentation...",',
+        '  "sections": [',
+        '    {',
+        '      "title": "Section Title (short, impactful)",',
+        '      "subtitle": "One-line description for divider slide",',
+        '      "slides": [',
+        '        {',
+        '          "type": "content",',
+        '          "title": "Slide Title",',
+        '          "paragraphs": ["Paragraph 1...", "Paragraph 2..."],',
+        '          "bullets": ["Bullet 1...", "Bullet 2..."]',
+        '        },',
+        '        {',
+        '          "type": "metrics",',
+        '          "title": "Key Metrics",',
+        '          "metrics": [{"value": "500+", "label": "Clients Reached"}]',
+        '        },',
+        '        {',
+        '          "type": "table",',
+        '          "title": "Evidence Summary",',
+        '          "headers": ["Criterion", "Evidence", "Impact"],',
+        '          "rows": [["Awards", "ABRASCI Chair", "Lifetime honor"]]',
+        '        },',
+        '        {',
+        '          "type": "two_column",',
+        '          "title": "Comparison",',
+        '          "left": {"heading": "Before", "paragraphs": ["..."]},',
+        '          "right": {"heading": "After", "paragraphs": ["..."]}',
+        '        },',
+        '        {',
+        '          "type": "quote",',
+        '          "quote": "The actual quote text...",',
+        '          "attribution": "Source, Year"',
+        '        }',
+        '      ]',
+        '    }',
+        '  ],',
+        '  "closing_message": "Comprehensive Documentation Complete"',
+        '}',
+        '```',
+        '',
+        '### REGRAS DO JSON:',
+        '- Minimo 5 sections, cada section com 2-4 slides',
+        '- Total esperado: 20-35 slides de conteudo',
+        '- Cada section COMECA com section divider (automatico) e TEM slides de conteudo',
+        '- Varie os tipos de slide: content, metrics, table, two_column, quote',
+        '- Paragrafos devem ter 2-4 frases densas (nao uma frase so)',
+        '- Metricas com numeros REAIS do perfil do cliente (nao inventar)',
+        '- Tabelas com dados concretos (evidencias, criterios, impacto)',
+        '',
+        '## ETAPA 2: GERAR PPTX',
+        `Apos salvar o JSON, execute:`,
+        `python3 ${PPTX_GENERATOR} --content "${jsonOutputPath}" --output "${pptxOutputPath}" --type ${doc_type === 'methodology' ? 'methodology' : 'declaration'}`,
+        '',
+        '## POS-GERACAO: SEPARATION OF CONCERNS',
+        'Apos gerar, NAO considere finalizado.',
+        'Revisao cruzada obrigatoria em SESSAO LIMPA.',
+        `Instrucao: ${SOC_PATH}`,
+        generation_instructions ? `\n## INSTRUCOES ESPECIFICAS\n${generation_instructions}\n` : null,
+        rulesSection,
+      ].filter(Boolean).join('\n');
+    } else {
+      // Standard DOCX pipeline
+      prompt = [
+        `# Instrucao de Geracao: ${system.system_name}`,
+        `## Cliente: ${client.name}`,
+        `## Visto: ${client.visa_type}`,
+        client.company_name ? `## Empresa: ${client.company_name}` : null,
+        '',
+        '## REGRAS ABSOLUTAS',
+        '- Output SEMPRE .docx (python-docx). NUNCA .md, NUNCA texto puro.',
+        '- Leia TODOS os arquivos de sistema ANTES de escrever codigo.',
+        '- Instrucoes estrategicas — NAO invente parametrizacoes.',
+        '',
+        '## SISTEMA DE GERACAO',
+        `Leia TODOS os arquivos .md em: ${system.system_path}`,
+        `Versao: ${system.version_tag} | Modelo recomendado: ${system.recommended_model}`,
+        '',
+        '## DADOS DO CLIENTE',
+        `Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`,
+        'Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.',
+        '',
+        '## OUTPUT',
+        `Crie a pasta se nao existir: ${outputDir}`,
+        `Gere o documento .docx final e salve em: ${outputDir}`,
+        `Naming: ${doc_type}_${clientSlug}.docx`,
+        '',
+        '## POS-GERACAO: SEPARATION OF CONCERNS',
+        'Apos gerar o documento, NAO considere finalizado.',
+        'O documento DEVE passar por revisao cruzada em SESSAO LIMPA.',
+        `Instrucao: ${SOC_PATH}`,
+        generation_instructions ? `\n## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO\n${generation_instructions}\n` : null,
+        rulesSection,
+      ].filter(Boolean).join('\n');
+    }
 
     writeFileSync(promptPath, prompt, 'utf-8');
   }
