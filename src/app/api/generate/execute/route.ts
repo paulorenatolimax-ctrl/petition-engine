@@ -173,6 +173,7 @@ export async function POST(req: NextRequest) {
       });
 
       // ═══ PHASE 1: GENERATION ═══
+      upsertGeneration({ id: genId, current_phase: 'phase_1', current_phase_label: 'Gerando documento...' });
       send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: GERACAO DO DOCUMENTO' });
       send('stage', { stage: 'loading', phase: 1, message: `Instrucao: ${prompt_file.split('/').pop()}` });
       send('stage', { stage: 'loading', phase: 1, message: `Output: ${outputDir}` });
@@ -260,6 +261,7 @@ export async function POST(req: NextRequest) {
       }
 
       // ═══ PHASE 1.5: QUALITY GATE (LOCAL) ═══
+      upsertGeneration({ id: genId, current_phase: 'phase_1.5', current_phase_label: 'Quality Gate — Validacao automatica' });
       send('stage', { stage: 'phase', phase: 1.5, message: 'FASE 1.5: QUALITY GATE — Validacao automatica' });
 
       try {
@@ -303,6 +305,7 @@ export async function POST(req: NextRequest) {
       }
 
       // ═══ PHASE 2: SEPARATION OF CONCERNS ═══
+      upsertGeneration({ id: genId, current_phase: 'phase_2', current_phase_label: 'Separation of Concerns — Revisao cruzada' });
       send('stage', { stage: 'phase', phase: 2, message: 'FASE 2: REVISAO CRUZADA — Separation of Concerns' });
       send('stage', { stage: 'review_init', phase: 2, message: 'Iniciando sessao limpa para revisao cruzada...' });
 

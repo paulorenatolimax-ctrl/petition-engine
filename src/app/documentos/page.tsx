@@ -29,6 +29,8 @@ interface Generation {
   output_files: string[];
   error_message: string | null;
   duration_seconds: number | null;
+  current_phase?: string;
+  current_phase_label?: string;
 }
 
 interface Feedback {
@@ -45,10 +47,24 @@ const DOC_TYPE_LABELS: Record<string, string> = {
   cover_letter_eb1a: 'Cover Letter EB-1A',
   cover_letter_eb2_niw: 'Cover Letter EB-2 NIW',
   business_plan: 'Business Plan',
+  methodology: 'Metodologia',
+  declaration_of_intentions: 'Declaração de Intenções',
   anteprojeto_eb1a: 'Anteprojeto EB-1A',
   anteprojeto_eb2_niw: 'Anteprojeto EB-2 NIW',
   projeto_base_eb1a: 'Projeto-Base EB-1A',
   projeto_base_eb2_niw: 'Projeto-Base EB-2 NIW',
+  impacto_report: 'IMPACTO',
+  strategy_eb1: 'Estratégia EB-1A',
+  strategy_eb2: 'Estratégia EB-2 NIW',
+  rfe_response: 'Resposta a RFE',
+};
+
+const PHASE_LABELS: Record<string, string> = {
+  'phase_1': 'Gerando documento...',
+  'phase_1.5': 'Quality Gate — Validação automática',
+  'phase_2': 'Separation of Concerns — Revisão cruzada',
+  'completed': 'Concluído',
+  'failed': 'Falhou',
 };
 
 export default function DocumentosPage() {
@@ -68,7 +84,7 @@ export default function DocumentosPage() {
   const [uploadNotes, setUploadNotes] = useState('');
   const [feedbackMode, setFeedbackMode] = useState<'cirurgico' | 'cascalho'>('cirurgico');
 
-  useEffect(() => {
+  const fetchGenerations = () => {
     fetch('/api/documents')
       .then(r => r.json())
       .then(d => setGenerations((d.data || []).sort((a: Generation, b: Generation) =>
@@ -76,6 +92,13 @@ export default function DocumentosPage() {
       )))
       .catch(() => setGenerations([]))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchGenerations();
+    // Auto-refresh every 10s to catch updates from running generations
+    const interval = setInterval(fetchGenerations, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const submitFeedback = async (genId: string, docType: string) => {
@@ -282,8 +305,11 @@ export default function DocumentosPage() {
                   <option value="cover_letter_eb2_niw">Cover Letter EB-2 NIW</option>
                   <option value="resume_eb1a">Résumé EB-1A</option>
                   <option value="resume_eb2_niw">Résumé EB-2 NIW</option>
+                  <option value="methodology">Metodologia</option>
+                  <option value="declaration_of_intentions">Declaração de Intenções</option>
                   <option value="anteprojeto_eb1a">Anteprojeto EB-1A</option>
                   <option value="anteprojeto_eb2_niw">Anteprojeto EB-2 NIW</option>
+                  <option value="rfe_response">Resposta a RFE</option>
                   <option value="other">Outro</option>
                 </select>
               </div>
@@ -321,11 +347,26 @@ export default function DocumentosPage() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
         <div className="v2-card p-5" style={{ borderBottom: '3px solid #8b5cf6' }}>
           <span className="text-[10px] text-[#4b6584] font-mono tracking-[2px] font-bold uppercase">Total Gerados</span>
           <div className="text-3xl font-black font-mono text-[#e2e8f0] mt-2" style={{ textShadow: '0 0 20px #8b5cf680' }}>
             {loading ? '--' : generations.length}
+          </div>
+        </div>
+        <div className="v2-card p-5" style={{ borderBottom: '3px solid #00eaff' }}>
+          <span className="text-[10px] text-[#4b6584] font-mono tracking-[2px] font-bold uppercase">Em Andamento</span>
+          <div className="text-3xl font-black font-mono text-[#00eaff] mt-2 flex items-center gap-2" style={{ textShadow: '0 0 20px #00eaff80' }}>
+            {loading ? '--' : generations.filter(g => g.status === 'processing').length}
+            {!loading && generations.some(g => g.status === 'processing') && (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            )}
+          </div>
+        </div>
+        <div className="v2-card p-5" style={{ borderBottom: '3px solid #ffa502' }}>
+          <span className="text-[10px] text-[#4b6584] font-mono tracking-[2px] font-bold uppercase">Pendentes Revisao</span>
+          <div className="text-3xl font-black font-mono text-[#e2e8f0] mt-2" style={{ textShadow: '0 0 20px #ffa50280' }}>
+            {loading ? '--' : generations.filter(g => g.status === 'completed').length}
           </div>
         </div>
         <div className="v2-card p-5" style={{ borderBottom: '3px solid #2ed573' }}>
@@ -334,13 +375,31 @@ export default function DocumentosPage() {
             {loading ? '--' : generations.filter(g => g.status === 'accepted').length}
           </div>
         </div>
-        <div className="v2-card p-5" style={{ borderBottom: '3px solid #ffa502' }}>
-          <span className="text-[10px] text-[#4b6584] font-mono tracking-[2px] font-bold uppercase">Pendentes Revisão</span>
-          <div className="text-3xl font-black font-mono text-[#e2e8f0] mt-2" style={{ textShadow: '0 0 20px #ffa50280' }}>
-            {loading ? '--' : generations.filter(g => g.status === 'completed').length}
+      </div>
+
+      {/* Active generation banner */}
+      {generations.some(g => g.status === 'processing') && (
+        <div className="v2-card p-4 border border-[#00eaff30] bg-[#00eaff05]">
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 rounded-full bg-[#00eaff] animate-pulse shadow-[0_0_10px_#00eaff]" />
+            <div className="flex flex-col">
+              <span className="text-sm font-mono text-[#00eaff]">
+                Geracao em andamento — {generations.filter(g => g.status === 'processing').map(g =>
+                  `${g.client_name} (${DOC_TYPE_LABELS[g.doc_type] || g.doc_type})`
+                ).join(', ')}
+              </span>
+              {generations.filter(g => g.status === 'processing').map(g => g.current_phase_label).filter(Boolean).map((label, i) => (
+                <span key={i} className="text-[10px] font-mono text-[#4b6584] mt-1">
+                  Fase atual: {label}
+                </span>
+              ))}
+            </div>
+            <span className="text-[10px] font-mono text-[#4b6584] ml-auto">
+              Auto-refresh a cada 10s
+            </span>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Document List */}
       <div className="v2-card overflow-hidden">
@@ -394,17 +453,30 @@ export default function DocumentosPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className={`px-2 py-1 rounded text-[9px] font-bold font-mono tracking-wider ${
-                        gen.status === 'completed' ? 'bg-[#ffa50210] text-[#ffa502] border border-[#ffa50230]' :
-                        gen.status === 'accepted' ? 'bg-[#2ed57310] text-[#2ed573] border border-[#2ed57330]' :
-                        gen.status === 'failed' ? 'bg-[#ff475710] text-[#ff4757] border border-[#ff475730]' :
-                        'bg-[#00eaff10] text-[#00eaff] border border-[#00eaff30]'
-                      }`}>
-                        {gen.status === 'completed' ? 'PENDENTE REVISÃO' :
-                         gen.status === 'accepted' ? 'ACEITO' :
-                         gen.status === 'failed' ? 'FALHOU' :
-                         gen.status?.toUpperCase() || 'DESCONHECIDO'}
-                      </span>
+                      {gen.status === 'processing' ? (
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-0.5">
+                            <div className="w-2 h-2 rounded-full bg-[#00eaff] animate-pulse" />
+                            <div className="w-2 h-2 rounded-full bg-[#00eaff40]" />
+                            <div className="w-2 h-2 rounded-full bg-[#00eaff20]" />
+                          </div>
+                          <span className="px-2 py-1 rounded text-[9px] font-bold font-mono tracking-wider bg-[#00eaff10] text-[#00eaff] border border-[#00eaff30] animate-pulse">
+                            GERANDO...
+                          </span>
+                        </div>
+                      ) : (
+                        <span className={`px-2 py-1 rounded text-[9px] font-bold font-mono tracking-wider ${
+                          gen.status === 'completed' ? 'bg-[#ffa50210] text-[#ffa502] border border-[#ffa50230]' :
+                          gen.status === 'accepted' ? 'bg-[#2ed57310] text-[#2ed573] border border-[#2ed57330]' :
+                          gen.status === 'failed' ? 'bg-[#ff475710] text-[#ff4757] border border-[#ff475730]' :
+                          'bg-[#00eaff10] text-[#00eaff] border border-[#00eaff30]'
+                        }`}>
+                          {gen.status === 'completed' ? 'PENDENTE REVISAO' :
+                           gen.status === 'accepted' ? 'ACEITO' :
+                           gen.status === 'failed' ? 'FALHOU' :
+                           gen.status?.toUpperCase() || 'DESCONHECIDO'}
+                        </span>
+                      )}
                       {isExpanded ? <ChevronUp className="w-4 h-4 text-[#4b6584]" /> : <ChevronDown className="w-4 h-4 text-[#4b6584]" />}
                     </div>
                   </div>
@@ -412,6 +484,77 @@ export default function DocumentosPage() {
                   {/* Expanded Panel */}
                   {isExpanded && (
                     <div className="px-6 pb-6 bg-[#03060a] border-t border-[rgba(0,234,255,0.06)]">
+                      {/* Progress phases for processing/completed */}
+                      <div className="mt-4 mb-4">
+                        <h3 className="text-xs font-mono text-[#4b6584] tracking-widest uppercase mb-3">
+                          Pipeline de Execucao
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          {[
+                            { key: 'phase_1', label: 'Geracao', icon: '1' },
+                            { key: 'phase_1.5', label: 'Quality Gate', icon: '2' },
+                            { key: 'phase_2', label: 'SOC Review', icon: '3' },
+                          ].map((phase, pi) => {
+                            const isProcessing = gen.status === 'processing';
+                            const isComplete = gen.status === 'completed' || gen.status === 'accepted';
+                            const isFailed = gen.status === 'failed';
+                            const phaseOrder = ['phase_1', 'phase_1.5', 'phase_2'];
+                            const currentIdx = gen.current_phase ? phaseOrder.indexOf(gen.current_phase) : -1;
+                            const phaseComplete = isComplete || (isProcessing && pi < currentIdx);
+                            const phaseActive = isProcessing && pi === currentIdx;
+                            return (
+                              <div key={phase.key} className="flex items-center gap-2 flex-1">
+                                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold font-mono ${
+                                  phaseComplete ? 'bg-[#2ed573] text-[#03060a]' :
+                                  phaseActive ? 'bg-[#00eaff] text-[#03060a] animate-pulse' :
+                                  isFailed && pi === 0 ? 'bg-[#ff4757] text-white' :
+                                  'bg-[#1a2a3a] text-[#4b6584]'
+                                }`}>
+                                  {phaseComplete ? '\u2713' : phase.icon}
+                                </div>
+                                <span className={`text-[10px] font-mono ${
+                                  phaseComplete ? 'text-[#2ed573]' :
+                                  phaseActive ? 'text-[#00eaff]' :
+                                  'text-[#4b6584]'
+                                }`}>{phase.label}</span>
+                                {pi < 2 && <div className={`flex-1 h-px ${phaseComplete ? 'bg-[#2ed573]' : 'bg-[#1a2a3a]'}`} />}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Output files */}
+                      {gen.output_files && gen.output_files.length > 0 && (
+                        <div className="mb-4 p-3 rounded-lg bg-[#0a1320] border border-[#ffffff08]">
+                          <h3 className="text-[10px] font-mono text-[#2ed573] tracking-widest uppercase mb-2 flex items-center gap-2">
+                            <FileText className="w-3 h-3" /> Arquivos Gerados ({gen.output_files.length})
+                          </h3>
+                          <div className="flex flex-col gap-1">
+                            {gen.output_files.map((f, fi) => (
+                              <div key={fi} className="flex items-center gap-2 text-xs font-mono text-[#a1b1cc]">
+                                <span className="text-[#4b6584]">{fi + 1}.</span>
+                                <span>{f}</span>
+                                {f.endsWith('.pptx') && <span className="px-1.5 py-0.5 rounded text-[8px] bg-[#8b5cf610] text-[#8b5cf6] border border-[#8b5cf620]">PPTX</span>}
+                                {f.includes('REVIEWED') && <span className="px-1.5 py-0.5 rounded text-[8px] bg-[#2ed57310] text-[#2ed573] border border-[#2ed57320]">REVISADO</span>}
+                              </div>
+                            ))}
+                          </div>
+                          {gen.output_path && (
+                            <p className="text-[9px] font-mono text-[#4b6584] mt-2">
+                              Pasta: {gen.output_path}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Error message */}
+                      {gen.error_message && (
+                        <div className="mb-4 p-3 rounded-lg bg-[#ff475710] border border-[#ff475730]">
+                          <p className="text-xs font-mono text-[#ff4757]">{gen.error_message}</p>
+                        </div>
+                      )}
+
                       {/* Previous feedbacks */}
                       {genFeedbacks.length > 0 && (
                         <div className="mt-4 mb-4">
