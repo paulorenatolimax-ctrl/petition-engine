@@ -13,9 +13,33 @@ function writeGenerations(gens: any[]) {
   writeFileSync(GENERATIONS_FILE, JSON.stringify(gens, null, 2), 'utf-8');
 }
 
+const STALE_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+function cleanStaleGenerations(gens: any[]): boolean {
+  let changed = false;
+  const now = Date.now();
+  for (const g of gens) {
+    if (g.status === 'processing') {
+      const started = new Date(g.started_at).getTime();
+      if (now - started > STALE_TIMEOUT_MS) {
+        g.status = 'failed';
+        g.error_message = 'Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.';
+        g.completed_at = new Date().toISOString();
+        changed = true;
+      }
+    }
+  }
+  return changed;
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   let gens = readGenerations();
+
+  // Auto-clean stale processing entries
+  if (cleanStaleGenerations(gens)) {
+    writeGenerations(gens);
+  }
 
   const client_id = searchParams.get('client_id');
   if (client_id) gens = gens.filter((g: any) => g.client_id === client_id);

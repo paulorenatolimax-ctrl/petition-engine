@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "gen_1774523043534_6f8yfo",
+    "client_id": null,
+    "client_name": "Rafaella Cristina Telles de Oliveira",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Rafaella_Cristina_Telles_de_Oliveira.md",
+    "status": "failed",
+    "started_at": "2026-03-26T11:04:03.534Z",
+    "completed_at": "2026-03-29T19:22:29.443355Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Rafaella Cristina Telles de Oliveira/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Processo Claude morreu sem gerar arquivo. O servidor ou a sessão foram fechados durante a geração.",
+    "duration_seconds": null,
+    "stages": []
+  },
+  {
+    "id": "gen_1774541484772_k1fmyu",
+    "client_id": null,
+    "client_name": "Rafaella Cristina Telles de Oliveira",
+    "doc_type": "resume_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB1A_Rafaella_Cristina_Telles_de_Oliveira.md",
+    "status": "failed",
+    "started_at": "2026-03-26T16:11:24.772Z",
+    "completed_at": "2026-03-26T16:53:30.897Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Rafaella Cristina Telles de Oliveira/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Exit 0 mas nenhum .docx criado",
+    "duration_seconds": 2526,
+    "stages": []
+  },
+  {
+    "id": "gen_1774563175987_lphv0p",
+    "client_id": null,
+    "client_name": "Maria Amália Vita",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/AMÁLIA/BP Amália/MEGA_PROMPT_CLAUDE_CODE_V2.md",
+    "status": "failed",
+    "started_at": "2026-03-26T22:12:55.987Z",
+    "completed_at": "2026-03-26T22:43:17.420Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Maria Amália Vita/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Exit 0 mas nenhum .docx criado",
+    "duration_seconds": 1821,
+    "stages": []
+  },
+  {
+    "id": "gen_1774811118152_7j7vq3",
+    "client_id": null,
+    "client_name": "Flávio Geres de Jesus",
+    "doc_type": "methodology",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_METHODOLOGY_Flávio_Geres_de_Jesus.md",
+    "status": "failed",
+    "started_at": "2026-03-29T19:05:18.152Z",
+    "completed_at": "2026-03-29T19:22:29.443571Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Flávio Geres de Jesus/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Processo Claude morreu sem gerar arquivo. O servidor ou a sessão foram fechados durante a geração.",
+    "duration_seconds": null,
+    "stages": []
+  }
+]
