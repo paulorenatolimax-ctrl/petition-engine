@@ -179,7 +179,7 @@ export default function GeradorPage() {
       const res = await fetch('/api/generate/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt_file: promptFile, client_name: clientName, doc_type: docType }),
+        body: JSON.stringify({ prompt_file: promptFile, client_name: clientName, doc_type: docType, client_id: selectedClient }),
       });
 
       const reader = res.body?.getReader();

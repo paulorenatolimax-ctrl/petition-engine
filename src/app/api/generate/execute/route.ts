@@ -234,8 +234,28 @@ export async function POST(req: NextRequest) {
         return;
       }
 
-      // ═══ POST-FLIGHT: Check if .docx was actually created ═══
-      const newDocx = findNewDocx(outputDir, startTime).concat(findNewDocx(clientBaseDir, startTime));
+      // ═══ POST-FLIGHT: Check if document was actually created ═══
+      // Also check the docs_folder_path directly (Claude may save there instead of _Forjado)
+      const altOutputDir = clientBaseDir.replace(/\/_Forjado por Petition Engine\/?$/, '');
+      const searchDirs = [outputDir, clientBaseDir];
+      // Also search the docs_folder_path from client record
+      if (client_id) {
+        try {
+          const cs = readClients();
+          const cl = cs.find((c: any) => c.id === client_id);
+          if (cl?.docs_folder_path) {
+            const forjado = cl.docs_folder_path + '/_Forjado por Petition Engine/';
+            if (!searchDirs.includes(forjado)) searchDirs.push(forjado);
+            if (!searchDirs.includes(cl.docs_folder_path)) searchDirs.push(cl.docs_folder_path);
+          }
+        } catch {}
+      }
+      let newDocx: string[] = [];
+      for (const dir of searchDirs) {
+        newDocx = newDocx.concat(findNewDocx(dir, startTime));
+      }
+      // Deduplicate
+      newDocx = newDocx.filter((v, i, a) => a.indexOf(v) === i);
 
       if (newDocx.length === 0) {
         send('stage', { stage: 'error', phase: 1, message: 'claude -p retornou 0 mas NENHUM documento foi criado no disco' });
