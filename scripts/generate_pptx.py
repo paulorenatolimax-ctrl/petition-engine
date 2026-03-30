@@ -199,18 +199,26 @@ def build_toc_slide(prs, sections, client_name, doc_label):
         col = 0 if i < items_per_col else 1
         row = i if col == 0 else i - items_per_col
         x = M_LEFT + (col * col_w)
-        y = y_start + Inches(row * 0.35)
+        y = y_start + Inches(row * 0.45)
 
-        # Roman numeral
-        tf_num = add_textbox(slide, x, y, Inches(0.4), Inches(0.3))
-        add_text(tf_num, romans[i] if i < len(romans) else str(i+1),
-                 size=Pt(20), color=GOLD, bold=True, font_name=FONT_TITLE,
-                 alignment=PP_ALIGN.CENTER)
-
-        # Section title
-        tf_sec = add_textbox(slide, x + Inches(0.5), y, col_w - Inches(0.6), Inches(0.3))
-        add_text(tf_sec, sec.get("title", f"Section {i+1}"),
-                 size=Pt(14), color=NAVY, bold=True, font_name=FONT_BODY)
+        # Roman numeral + section title in ONE textbox to prevent overlap
+        tf_entry = add_textbox(slide, x, y, col_w - Inches(0.1), Inches(0.4))
+        p = tf_entry.paragraphs[0]
+        p.alignment = PP_ALIGN.LEFT
+        # Roman numeral run
+        run_num = p.add_run()
+        run_num.text = (romans[i] if i < len(romans) else str(i+1)) + "   "
+        run_num.font.size = Pt(16)
+        run_num.font.color.rgb = GOLD
+        run_num.font.bold = True
+        run_num.font.name = FONT_TITLE
+        # Section title run
+        run_title = p.add_run()
+        run_title.text = sec.get("title", f"Section {i+1}")
+        run_title.font.size = Pt(12)
+        run_title.font.color.rgb = NAVY
+        run_title.font.bold = True
+        run_title.font.name = FONT_BODY
 
     add_footer(slide, client_name, doc_label)
     return slide
@@ -299,60 +307,34 @@ def build_content_slide(prs, title, body_paragraphs, client_name, doc_label,
 
 
 def build_key_metrics_slide(prs, title, metrics, client_name, doc_label):
-    """Metrics slide — big numbers with labels (like Cerbasi's 2,000+ / 60+)."""
+    """Metrics slide — big numbers with labels. Each metric in its own card, no overlap."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    # Title
-    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.6))
-    add_text(tf_title, title, size=Pt(24), color=NAVY, bold=True,
-             font_name=FONT_TITLE)
-
+    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
+    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
     add_gold_accent_line(slide, Inches(1.0), Inches(1.5))
 
-    # Metrics grid (up to 4 in a row)
-    num_metrics = len(metrics)
-    col_w = CONTENT_W / min(num_metrics, 4)
-    y_metrics = Inches(1.6)
+    num = min(len(metrics), 4)
+    col_w = CONTENT_W / num
+    gap = Inches(0.15)
+    card_w = col_w - gap * 2
+    y_card = Inches(1.4)
+    card_h = Inches(2.5)
 
     for i, metric in enumerate(metrics[:4]):
-        col = i % 4
-        x = M_LEFT + (col * col_w)
-
-        # Background card
-        card_w = col_w - Inches(0.2)
-        add_shape_rect(slide, x + Inches(0.1), y_metrics, card_w, Inches(2.2), LIGHT_GRAY)
-
-        # Big number
-        tf_num = add_textbox(slide, x + Inches(0.1), y_metrics + Inches(0.3),
-                             card_w, Inches(1.0))
-        add_text(tf_num, str(metric.get("value", "N/A")), size=Pt(36), color=GOLD,
+        x = M_LEFT + (i * col_w) + gap
+        # Card background
+        add_shape_rect(slide, x, y_card, card_w, card_h, LIGHT_GRAY)
+        # Big number — centered in card
+        tf_num = add_textbox(slide, x, y_card + Inches(0.4), card_w, Inches(0.8))
+        add_text(tf_num, str(metric.get("value", "N/A")), size=Pt(40), color=GOLD,
                  bold=True, font_name=FONT_TITLE, alignment=PP_ALIGN.CENTER)
-
-        # Label
-        tf_label = add_textbox(slide, x + Inches(0.1), y_metrics + Inches(1.3),
-                               card_w, Inches(0.8))
-        add_text(tf_label, metric.get("label", ""), size=Pt(11), color=NAVY,
+        # Label — below number
+        tf_label = add_textbox(slide, x + Inches(0.1), y_card + Inches(1.4),
+                               card_w - Inches(0.2), Inches(0.9))
+        add_text(tf_label, metric.get("label", ""), size=Pt(10), color=NAVY,
                  bold=True, font_name=FONT_BODY, alignment=PP_ALIGN.CENTER)
-
-    # Second row if > 4
-    if num_metrics > 4:
-        y_row2 = y_metrics + Inches(2.5)
-        for i, metric in enumerate(metrics[4:8]):
-            col = i % 4
-            x = M_LEFT + (col * col_w)
-            card_w = col_w - Inches(0.2)
-            add_shape_rect(slide, x + Inches(0.1), y_row2, card_w, Inches(1.5), LIGHT_GRAY)
-
-            tf_num = add_textbox(slide, x + Inches(0.1), y_row2 + Inches(0.2),
-                                 card_w, Inches(0.6))
-            add_text(tf_num, str(metric.get("value", "")), size=Pt(28), color=GOLD,
-                     bold=True, font_name=FONT_TITLE, alignment=PP_ALIGN.CENTER)
-
-            tf_label = add_textbox(slide, x + Inches(0.1), y_row2 + Inches(0.8),
-                                   card_w, Inches(0.5))
-            add_text(tf_label, metric.get("label", ""), size=Pt(10), color=NAVY,
-                     bold=True, font_name=FONT_BODY, alignment=PP_ALIGN.CENTER)
 
     add_footer(slide, client_name, doc_label)
     return slide
@@ -551,54 +533,52 @@ def get_icon_path(icon_name):
 # VISUAL SLIDE BUILDERS (Gamma-level)
 # ============================================================
 def build_process_flow_slide(prs, title, steps, client_name, doc_label):
-    """Process flow with chevron arrows — like Dabus Challenge→Solution→Impact."""
+    """Process flow with chevron arrows — strict column isolation to prevent overlap."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    # Title
     tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
     add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
-
-    add_gold_accent_line(slide, Inches(0.95), Inches(1.5))
+    add_gold_accent_line(slide, Inches(1.0), Inches(1.5))
 
     num_steps = min(len(steps), 5)
-    step_w = CONTENT_W / num_steps
-    y_chevron = Inches(1.3)
-    chevron_h = Inches(0.5)
+    gap = Inches(0.1)
+    step_w = (CONTENT_W - gap * (num_steps - 1)) / num_steps
+    y_icon = Inches(1.3)
+    icon_sz = Inches(0.45)
+    y_chevron = Inches(1.9)
+    chevron_h = Inches(0.45)
+    y_title = Inches(2.5)
+    y_desc = Inches(2.9)
 
     for i, step in enumerate(steps[:5]):
-        x = M_LEFT + (i * step_w)
+        x = M_LEFT + i * (step_w + gap)
 
-        # Chevron arrow shape
+        # Icon centered above chevron
+        icon_name = step.get('icon', 'process')
+        icon_path = get_icon_path(icon_name)
+        if icon_path:
+            try:
+                ix = x + (step_w - icon_sz) / 2
+                slide.shapes.add_picture(icon_path, int(ix), int(y_icon), icon_sz, icon_sz)
+            except:
+                pass
+
+        # Chevron shape — exact width, no bleed
         shape = slide.shapes.add_shape(
-            MSO_SHAPE.CHEVRON, int(x), int(y_chevron),
-            int(step_w - Inches(0.05)), int(chevron_h)
+            MSO_SHAPE.CHEVRON, int(x), int(y_chevron), int(step_w), int(chevron_h)
         )
         shape.fill.solid()
         shape.fill.fore_color.rgb = LIGHT_GRAY
         shape.line.fill.background()
 
-        # Icon above chevron (if available)
-        icon_name = step.get('icon', 'process')
-        icon_path = get_icon_path(icon_name)
-        if icon_path:
-            try:
-                slide.shapes.add_picture(
-                    icon_path, int(x + step_w/2 - Inches(0.25)),
-                    int(y_chevron - Inches(0.6)), Inches(0.5), Inches(0.5)
-                )
-            except:
-                pass
-
-        # Step title (below chevron)
-        tf_step = add_textbox(slide, x, y_chevron + chevron_h + Inches(0.15),
-                             step_w - Inches(0.1), Inches(0.35))
-        add_text(tf_step, step.get('title', ''), size=Pt(11), color=NAVY,
+        # Step title — STRICTLY within column width
+        tf_step = add_textbox(slide, x, y_title, step_w, Inches(0.35))
+        add_text(tf_step, step.get('title', ''), size=Pt(10), color=NAVY,
                  bold=True, font_name=FONT_BODY, alignment=PP_ALIGN.CENTER)
 
-        # Step description
-        tf_desc = add_textbox(slide, x, y_chevron + chevron_h + Inches(0.5),
-                             step_w - Inches(0.1), Inches(1.5))
+        # Description — STRICTLY within column width
+        tf_desc = add_textbox(slide, x, y_desc, step_w, Inches(1.8))
         add_text(tf_desc, step.get('description', ''), size=Pt(9), color=DARK_GRAY,
                  font_name=FONT_BODY, alignment=PP_ALIGN.CENTER, space_after=Pt(3))
 
@@ -607,58 +587,54 @@ def build_process_flow_slide(prs, title, steps, client_name, doc_label):
 
 
 def build_icon_grid_slide(prs, title, items, client_name, doc_label, intro_text=None):
-    """3-column grid with icons — like Dabus pillars (S.I.N.E.R.G.I.A.)."""
+    """3-column grid with icons — strict column isolation."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    # Title
     tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
     add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
 
     y_start = Inches(1.1)
-
-    # Optional intro paragraph
     if intro_text:
-        tf_intro = add_textbox(slide, M_LEFT, y_start, CONTENT_W, Inches(0.5))
+        tf_intro = add_textbox(slide, M_LEFT, y_start, CONTENT_W, Inches(0.45))
         add_text(tf_intro, intro_text, size=Pt(10), color=DARK_GRAY, font_name=FONT_BODY)
-        y_start += Inches(0.55)
+        y_start += Inches(0.5)
 
     cols = min(len(items), 3)
-    col_w = CONTENT_W / cols
-    icon_size = Inches(0.45)
+    gap = Inches(0.15)
+    col_w = (CONTENT_W - gap * (cols - 1)) / cols
+    icon_sz = Inches(0.4)
+    card_h = Inches(1.5)
 
-    for i, item in enumerate(items[:6]):  # max 6 items (2 rows of 3)
+    for i, item in enumerate(items[:6]):
         col = i % cols
         row = i // cols
-        x = M_LEFT + (col * col_w)
-        y = y_start + (row * Inches(1.8))
+        x = M_LEFT + col * (col_w + gap)
+        y = y_start + row * (card_h + Inches(0.15))
 
-        # Card background
-        card_pad = Inches(0.08)
-        add_shape_rect(slide, x + card_pad, y, col_w - card_pad*2, Inches(1.6), LIGHT_GRAY)
+        # Card background — exact width, no bleed
+        add_shape_rect(slide, x, y, col_w, card_h, LIGHT_GRAY)
 
-        # Icon
+        # Icon — top-left of card
         icon_name = item.get('icon', 'methodology')
         icon_path = get_icon_path(icon_name)
         if icon_path:
             try:
-                slide.shapes.add_picture(
-                    icon_path, int(x + Inches(0.2)), int(y + Inches(0.15)),
-                    icon_size, icon_size
-                )
+                slide.shapes.add_picture(icon_path, int(x + Inches(0.12)),
+                                         int(y + Inches(0.12)), icon_sz, icon_sz)
             except:
                 pass
 
-        # Item title
-        tf_item = add_textbox(slide, x + Inches(0.15), y + Inches(0.65),
-                             col_w - Inches(0.3), Inches(0.3))
-        add_text(tf_item, item.get('title', ''), size=Pt(11), color=NAVY,
+        # Title — within card bounds
+        tf_item = add_textbox(slide, x + Inches(0.1), y + Inches(0.6),
+                             col_w - Inches(0.2), Inches(0.25))
+        add_text(tf_item, item.get('title', ''), size=Pt(10), color=NAVY,
                  bold=True, font_name=FONT_BODY)
 
-        # Item description
-        tf_item_desc = add_textbox(slide, x + Inches(0.15), y + Inches(0.95),
-                                   col_w - Inches(0.3), Inches(0.6))
-        add_text(tf_item_desc, item.get('description', ''), size=Pt(9),
+        # Description — within card bounds
+        tf_desc = add_textbox(slide, x + Inches(0.1), y + Inches(0.85),
+                             col_w - Inches(0.2), Inches(0.55))
+        add_text(tf_desc, item.get('description', ''), size=Pt(8.5),
                  color=DARK_GRAY, font_name=FONT_BODY, space_after=Pt(2))
 
     add_footer(slide, client_name, doc_label)
