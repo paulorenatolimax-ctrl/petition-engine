@@ -201,5 +201,27 @@
     "doc_type": "projeto_base_eb1a",
     "note": "Execucao completa dos 4 prompts Kortix APOS selecao de endeavor e codigo SOC. Requer anteprojeto aprovado.",
     "created_at": "2026-03-25T17:00:00Z"
+  },
+  {
+    "id": "19",
+    "system_name": "Cartas Satélite EB-1A",
+    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
+    "version_tag": "3.0",
+    "file_count": 6,
+    "is_active": true,
+    "recommended_model": "claude-sonnet-4",
+    "doc_type": "satellite_letter_eb1",
+    "created_at": "2026-03-30T14:00:00Z"
+  },
+  {
+    "id": "20",
+    "system_name": "Cartas Satélite EB-2 NIW",
+    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)/eb2-niw-letters/",
+    "version_tag": "1.0",
+    "file_count": 4,
+    "is_active": true,
+    "recommended_model": "claude-sonnet-4",
+    "doc_type": "satellite_letter_eb2",
+    "created_at": "2026-03-30T14:00:00Z"
   }
 ]

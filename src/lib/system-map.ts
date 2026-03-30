@@ -103,9 +103,20 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     estimatedTokens: 200000,
     multiAgent: true,
   },
-  satellite_letter: {
-    name: 'Carta Satelite',
-    symlinkDir: 'satellite-letters',
+  satellite_letter_eb1: {
+    name: 'Cartas Satelite EB-1A',
+    symlinkDir: 'satellite-letters-eb1',
+    preferredModel: 'claude-sonnet-4',
+    requiresProfile: true,
+    requiresDeepResearch: false,
+    outputFormat: 'docx',
+    estimatedTokens: 40000,
+    multiAgent: false,
+    heterogeneity: true,
+  },
+  satellite_letter_eb2: {
+    name: 'Cartas Satelite EB-2 NIW',
+    symlinkDir: 'satellite-letters-eb2',
     preferredModel: 'claude-sonnet-4',
     requiresProfile: true,
     requiresDeepResearch: false,
@@ -113,7 +124,6 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     estimatedTokens: 30000,
     multiAgent: false,
     heterogeneity: true,
-    skillFile: 'eb2-niw-letters-skill',
   },
   strategy_eb1: {
     name: 'Estrategia EB-1A',
