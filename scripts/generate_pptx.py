@@ -43,17 +43,46 @@ FONT_TITLE    = "Georgia"
 FONT_BODY     = "Calibri"
 FONT_ACCENT   = "Georgia"
 
-# Slide dimensions (widescreen 10x5.625)
+# Slide dimensions (widescreen 10x5.625 = 720x405pt)
 SLIDE_W = Inches(10)
 SLIDE_H = Inches(5.625)
 
-# Margins
-M_LEFT   = Inches(0.6)
-M_RIGHT  = Inches(0.6)
-M_TOP    = Inches(0.5)
-M_BOTTOM = Inches(0.5)
+# ============================================================
+# LAYOUT GRID — Anti-Overlap Rules from QA
+# All measurements in Pt for precision, converted to Inches for pptx
+# Reference: 720x405pt slide, 43.2pt margins, footer at 383.4pt
+# ============================================================
+M_LEFT   = Pt(43.2)   # 0.6"
+M_RIGHT  = Pt(43.2)
+M_TOP    = Pt(36)      # 0.5"
 
-CONTENT_W = SLIDE_W - M_LEFT - M_RIGHT  # usable width
+CONTENT_W = Pt(633.6)  # usable width = 720 - 43.2*2
+USABLE_H  = Pt(339)    # usable height = 375 - 36
+
+# Title positioning
+TITLE_Y  = Pt(36)
+TITLE_H  = Pt(55)      # MUST fit 2 lines of Georgia 22pt
+LINE_Y   = Pt(95)      # decorative line BELOW title
+BODY_Y   = Pt(105)     # body starts here
+BODY_H   = Pt(270)     # body fills to ~375pt (footer at 383)
+
+# Footer
+FOOTER_Y = Pt(383.4)
+FOOTER_H = Pt(21.6)
+
+# Font size rules (MINIMUM)
+MIN_BODY_SIZE    = Pt(10)
+MIN_SUBTITLE_SIZE = Pt(11)
+MIN_SLIDE_TITLE  = Pt(14)
+TITLE_SIZE       = Pt(22)   # standard slide title
+DIVIDER_TITLE_SZ = Pt(28)   # section divider (NOT 44pt!)
+
+# Card rules
+MIN_CARD_W = Pt(149)         # minimum for 4-col
+CARD_PADDING = Pt(10)        # internal padding each side
+# Metrics: max 28pt in cards < 200pt wide
+METRIC_LARGE_SZ = Pt(36)     # for wide cards
+METRIC_SMALL_SZ = Pt(28)     # for narrow cards (<200pt)
 
 
 # ============================================================
@@ -103,14 +132,9 @@ def add_text(tf, text, size=Pt(11), color=DARK_GRAY, bold=False, italic=False,
 
 
 def add_footer(slide, client_name, doc_label):
-    """Add footer bar to bottom of slide — cream text on dark bar."""
-    # Dark bar
-    bar_h = Inches(0.3)
-    bar_top = SLIDE_H - bar_h
-    add_shape_rect(slide, Inches(0), bar_top, SLIDE_W, bar_h, NAVY)
-
-    # Footer text
-    tf = add_textbox(slide, M_LEFT, bar_top, CONTENT_W, bar_h)
+    """Add footer bar at exact position (0, 383.4pt, 720pt, 21.6pt)."""
+    add_shape_rect(slide, Pt(0), FOOTER_Y, SLIDE_W, FOOTER_H, NAVY)
+    tf = add_textbox(slide, M_LEFT, FOOTER_Y, CONTENT_W, FOOTER_H)
     tf.paragraphs[0].alignment = PP_ALIGN.CENTER
     run = tf.paragraphs[0].add_run()
     run.text = f"{client_name} | {doc_label}"
@@ -225,22 +249,22 @@ def build_toc_slide(prs, sections, client_name, doc_label):
 
 
 def build_section_divider(prs, section_title, section_subtitle, client_name, doc_label):
-    """Full-bleed section divider — gold title on dark background."""
+    """Full-bleed section divider — 28pt title (NOT 44pt), 130pt title box."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, DARK_BG)
 
     # Gold accent bar
-    add_shape_rect(slide, Inches(0.6), Inches(2.0), Inches(3), Pt(3), GOLD)
+    add_shape_rect(slide, M_LEFT, Pt(150), Pt(200), Pt(3), GOLD)
 
-    # Title — large gold
-    tf = add_textbox(slide, M_LEFT, Inches(2.2), CONTENT_W, Inches(1.0))
-    add_text(tf, section_title.upper(), size=Pt(44), color=GOLD, bold=True,
+    # Title — 28pt max, 130pt height box for 2-3 line wrap
+    tf = add_textbox(slide, M_LEFT, Pt(160), CONTENT_W, Pt(130))
+    add_text(tf, section_title.upper(), size=DIVIDER_TITLE_SZ, color=GOLD, bold=True,
              font_name=FONT_TITLE, alignment=PP_ALIGN.LEFT)
 
-    # Subtitle
+    # Subtitle below title box
     if section_subtitle:
-        tf2 = add_textbox(slide, M_LEFT, Inches(3.3), CONTENT_W, Inches(0.5))
-        add_text(tf2, section_subtitle, size=Pt(14), color=CREAM, italic=True,
+        tf2 = add_textbox(slide, M_LEFT, Pt(295), CONTENT_W, Pt(40))
+        add_text(tf2, section_subtitle, size=Pt(12), color=CREAM, italic=True,
                  font_name=FONT_BODY, alignment=PP_ALIGN.LEFT)
 
     add_footer(slide, client_name, doc_label)
@@ -249,20 +273,20 @@ def build_section_divider(prs, section_title, section_subtitle, client_name, doc
 
 def build_content_slide(prs, title, body_paragraphs, client_name, doc_label,
                         bullets=None, highlight_box=None):
-    """Standard content slide — white bg, navy title, body text."""
+    """Standard content slide — grid-aligned, no overlap."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    # Title — positioned with room below
-    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.55))
-    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True,
+    # Title at TITLE_Y with TITLE_H (55pt = 2 lines of Georgia 22pt)
+    tf_title = add_textbox(slide, M_LEFT, TITLE_Y, CONTENT_W, TITLE_H)
+    add_text(tf_title, title, size=TITLE_SIZE, color=NAVY, bold=True,
              font_name=FONT_TITLE)
 
-    # Gold accent under title — clear of text
-    add_gold_accent_line(slide, Inches(1.05), Inches(1.5))
+    # Gold accent at LINE_Y (95pt — always below title box)
+    add_gold_accent_line(slide, LINE_Y, Pt(108))
 
-    # Body text — starts below the gold line
-    y_body = Inches(1.2)
+    # Body text starts at BODY_Y (105pt), fills to footer
+    y_body = BODY_Y
     body_w = CONTENT_W
     if highlight_box:
         body_w = CONTENT_W * 0.6  # leave room for highlight
@@ -307,33 +331,39 @@ def build_content_slide(prs, title, body_paragraphs, client_name, doc_label,
 
 
 def build_key_metrics_slide(prs, title, metrics, client_name, doc_label):
-    """Metrics slide — big numbers with labels. Each metric in its own card, no overlap."""
+    """Metrics slide — grid-aligned cards with adaptive font sizes."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
-    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
-    add_gold_accent_line(slide, Inches(1.0), Inches(1.5))
+    tf_title = add_textbox(slide, M_LEFT, TITLE_Y, CONTENT_W, TITLE_H)
+    add_text(tf_title, title, size=TITLE_SIZE, color=NAVY, bold=True, font_name=FONT_TITLE)
+    add_gold_accent_line(slide, LINE_Y, Pt(108))
 
     num = min(len(metrics), 4)
-    col_w = CONTENT_W / num
-    gap = Inches(0.15)
-    card_w = col_w - gap * 2
-    y_card = Inches(1.4)
-    card_h = Inches(2.5)
+    gap = Pt(12)
+    card_w = (CONTENT_W - gap * (num - 1)) / num
+    card_h = Pt(250)  # fill most of body area
+    y_card = BODY_Y
+
+    # Adaptive metric font: 28pt if card < 200pt, else 36pt
+    metric_sz = METRIC_SMALL_SZ if card_w < Pt(200) else METRIC_LARGE_SZ
 
     for i, metric in enumerate(metrics[:4]):
-        x = M_LEFT + (i * col_w) + gap
+        x = M_LEFT + i * (card_w + gap)
+        inner_pad = CARD_PADDING
+        inner_w = card_w - inner_pad * 2
+
         # Card background
         add_shape_rect(slide, x, y_card, card_w, card_h, LIGHT_GRAY)
-        # Big number — centered in card
-        tf_num = add_textbox(slide, x, y_card + Inches(0.4), card_w, Inches(0.8))
-        add_text(tf_num, str(metric.get("value", "N/A")), size=Pt(40), color=GOLD,
+
+        # Big number — with padding, adaptive size
+        tf_num = add_textbox(slide, x + inner_pad, y_card + Pt(40), inner_w, Pt(60))
+        add_text(tf_num, str(metric.get("value", "N/A")), size=metric_sz, color=GOLD,
                  bold=True, font_name=FONT_TITLE, alignment=PP_ALIGN.CENTER)
-        # Label — below number
-        tf_label = add_textbox(slide, x + Inches(0.1), y_card + Inches(1.4),
-                               card_w - Inches(0.2), Inches(0.9))
-        add_text(tf_label, metric.get("label", ""), size=Pt(10), color=NAVY,
+
+        # Label — below number, min 10pt
+        tf_label = add_textbox(slide, x + inner_pad, y_card + Pt(120), inner_w, Pt(80))
+        add_text(tf_label, metric.get("label", ""), size=MIN_BODY_SIZE, color=NAVY,
                  bold=True, font_name=FONT_BODY, alignment=PP_ALIGN.CENTER)
 
     add_footer(slide, client_name, doc_label)
@@ -533,23 +563,23 @@ def get_icon_path(icon_name):
 # VISUAL SLIDE BUILDERS (Gamma-level)
 # ============================================================
 def build_process_flow_slide(prs, title, steps, client_name, doc_label):
-    """Process flow with chevron arrows — strict column isolation to prevent overlap."""
+    """Process flow — grid-aligned columns, no overlap."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
-    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
-    add_gold_accent_line(slide, Inches(1.0), Inches(1.5))
+    tf_title = add_textbox(slide, M_LEFT, TITLE_Y, CONTENT_W, TITLE_H)
+    add_text(tf_title, title, size=TITLE_SIZE, color=NAVY, bold=True, font_name=FONT_TITLE)
+    add_gold_accent_line(slide, LINE_Y, Pt(108))
 
     num_steps = min(len(steps), 5)
-    gap = Inches(0.1)
+    gap = Pt(8)
     step_w = (CONTENT_W - gap * (num_steps - 1)) / num_steps
-    y_icon = Inches(1.3)
-    icon_sz = Inches(0.45)
-    y_chevron = Inches(1.9)
-    chevron_h = Inches(0.45)
-    y_title = Inches(2.5)
-    y_desc = Inches(2.9)
+    icon_sz = Pt(32)
+    y_icon = BODY_Y
+    y_chevron = BODY_Y + Pt(42)
+    chevron_h = Pt(32)
+    y_title = BODY_Y + Pt(82)
+    y_desc = BODY_Y + Pt(110)
 
     for i, step in enumerate(steps[:5]):
         x = M_LEFT + i * (step_w + gap)
@@ -564,7 +594,7 @@ def build_process_flow_slide(prs, title, steps, client_name, doc_label):
             except:
                 pass
 
-        # Chevron shape — exact width, no bleed
+        # Chevron shape — exact width within column
         shape = slide.shapes.add_shape(
             MSO_SHAPE.CHEVRON, int(x), int(y_chevron), int(step_w), int(chevron_h)
         )
@@ -572,14 +602,15 @@ def build_process_flow_slide(prs, title, steps, client_name, doc_label):
         shape.fill.fore_color.rgb = LIGHT_GRAY
         shape.line.fill.background()
 
-        # Step title — STRICTLY within column width
-        tf_step = add_textbox(slide, x, y_title, step_w, Inches(0.35))
-        add_text(tf_step, step.get('title', ''), size=Pt(10), color=NAVY,
+        # Step title — min 11pt, within column
+        tf_step = add_textbox(slide, x + CARD_PADDING, y_title, step_w - CARD_PADDING*2, Pt(28))
+        add_text(tf_step, step.get('title', ''), size=MIN_SUBTITLE_SIZE, color=NAVY,
                  bold=True, font_name=FONT_BODY, alignment=PP_ALIGN.CENTER)
 
-        # Description — STRICTLY within column width
-        tf_desc = add_textbox(slide, x, y_desc, step_w, Inches(1.8))
-        add_text(tf_desc, step.get('description', ''), size=Pt(9), color=DARK_GRAY,
+        # Description — min 10pt, fill remaining space
+        tf_desc = add_textbox(slide, x + CARD_PADDING, y_desc,
+                             step_w - CARD_PADDING*2, Pt(160))
+        add_text(tf_desc, step.get('description', ''), size=MIN_BODY_SIZE, color=DARK_GRAY,
                  font_name=FONT_BODY, alignment=PP_ALIGN.CENTER, space_after=Pt(3))
 
     add_footer(slide, client_name, doc_label)
@@ -587,54 +618,54 @@ def build_process_flow_slide(prs, title, steps, client_name, doc_label):
 
 
 def build_icon_grid_slide(prs, title, items, client_name, doc_label, intro_text=None):
-    """3-column grid with icons — strict column isolation."""
+    """3-column grid with icons — grid-aligned, padded cards."""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_slide_bg(slide, WHITE)
 
-    tf_title = add_textbox(slide, M_LEFT, M_TOP, CONTENT_W, Inches(0.5))
-    add_text(tf_title, title, size=Pt(22), color=NAVY, bold=True, font_name=FONT_TITLE)
+    tf_title = add_textbox(slide, M_LEFT, TITLE_Y, CONTENT_W, TITLE_H)
+    add_text(tf_title, title, size=TITLE_SIZE, color=NAVY, bold=True, font_name=FONT_TITLE)
 
-    y_start = Inches(1.1)
+    y_start = BODY_Y
     if intro_text:
-        tf_intro = add_textbox(slide, M_LEFT, y_start, CONTENT_W, Inches(0.45))
-        add_text(tf_intro, intro_text, size=Pt(10), color=DARK_GRAY, font_name=FONT_BODY)
-        y_start += Inches(0.5)
+        tf_intro = add_textbox(slide, M_LEFT, LINE_Y, CONTENT_W, Pt(35))
+        add_text(tf_intro, intro_text, size=MIN_BODY_SIZE, color=DARK_GRAY, font_name=FONT_BODY)
+        y_start = BODY_Y + Pt(15)
 
     cols = min(len(items), 3)
-    gap = Inches(0.15)
+    gap = Pt(12)
     col_w = (CONTENT_W - gap * (cols - 1)) / cols
-    icon_sz = Inches(0.4)
-    card_h = Inches(1.5)
+    icon_sz = Pt(30)
+    card_h = Pt(120)
 
     for i, item in enumerate(items[:6]):
         col = i % cols
         row = i // cols
         x = M_LEFT + col * (col_w + gap)
-        y = y_start + row * (card_h + Inches(0.15))
+        y = y_start + row * (card_h + Pt(10))
 
-        # Card background — exact width, no bleed
+        # Card background — padded
         add_shape_rect(slide, x, y, col_w, card_h, LIGHT_GRAY)
+        pad = CARD_PADDING
+        inner_w = col_w - pad * 2
 
-        # Icon — top-left of card
+        # Icon — top-left of card with padding
         icon_name = item.get('icon', 'methodology')
         icon_path = get_icon_path(icon_name)
         if icon_path:
             try:
-                slide.shapes.add_picture(icon_path, int(x + Inches(0.12)),
-                                         int(y + Inches(0.12)), icon_sz, icon_sz)
+                slide.shapes.add_picture(icon_path, int(x + pad), int(y + pad),
+                                         icon_sz, icon_sz)
             except:
                 pass
 
-        # Title — within card bounds
-        tf_item = add_textbox(slide, x + Inches(0.1), y + Inches(0.6),
-                             col_w - Inches(0.2), Inches(0.25))
-        add_text(tf_item, item.get('title', ''), size=Pt(10), color=NAVY,
+        # Title — min 11pt, within card
+        tf_item = add_textbox(slide, x + pad, y + Pt(45), inner_w, Pt(22))
+        add_text(tf_item, item.get('title', ''), size=MIN_SUBTITLE_SIZE, color=NAVY,
                  bold=True, font_name=FONT_BODY)
 
-        # Description — within card bounds
-        tf_desc = add_textbox(slide, x + Inches(0.1), y + Inches(0.85),
-                             col_w - Inches(0.2), Inches(0.55))
-        add_text(tf_desc, item.get('description', ''), size=Pt(8.5),
+        # Description — min 10pt, within card
+        tf_desc = add_textbox(slide, x + pad, y + Pt(68), inner_w, Pt(45))
+        add_text(tf_desc, item.get('description', ''), size=MIN_BODY_SIZE,
                  color=DARK_GRAY, font_name=FONT_BODY, space_after=Pt(2))
 
     add_footer(slide, client_name, doc_label)
