@@ -139,5 +139,49 @@
     "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE",
     "created_at": "2026-03-31T16:28:34.585Z",
     "client_profiles": null
+  },
+  {
+    "id": "c1774990462503",
+    "name": "Gabriela Márcia Rodrigues",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/VALÉRIA/Gabriela Márcia Rodrigues ",
+    "created_at": "2026-03-31T20:54:22.503Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1774990737565",
+    "name": "Danielle Cecília Franco Maia",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/VALÉRIA/Danielle Cecília Franco Maia",
+    "created_at": "2026-03-31T20:58:57.565Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1774991027044",
+    "name": "Bruna Accioly",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/VALÉRIA/Bruna Accioly Pereira Peloso ",
+    "created_at": "2026-03-31T21:03:47.044Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1774992697831",
+    "name": "Gustavo Esteves",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/OMNI/Coisas Gizele",
+    "created_at": "2026-03-31T21:31:37.831Z",
+    "client_profiles": null
   }
 ]
