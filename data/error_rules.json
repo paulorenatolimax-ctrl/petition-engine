@@ -622,5 +622,18 @@
     "active": true,
     "times_triggered": 0,
     "created_at": "2026-03-30T14:00:00Z"
+  },
+  {
+    "id": "r49",
+    "rule_type": "content",
+    "doc_type": "satellite_letter_eb1",
+    "rule_description": "QUADRO DE INFORMAÇÕES OBRIGATÓRIO: Antes de gerar QUALQUER carta, DEVE existir e ser lido o Quadro de Informações do recomendador (arquivo com 'Quadro' no nome). Se não encontrar o Quadro preenchido para um recomendador específico, NÃO gere a carta desse recomendador — informe que falta o Quadro. O Quadro é a FONTE PRIMÁRIA de dados: relação com peticionário, credenciais verificadas, ângulo da carta, métricas específicas. Sem Quadro = alucinação garantida = BLOQUEADO.",
+    "rule_pattern": null,
+    "rule_action": "block",
+    "severity": "critical",
+    "source": "paulo_feedback",
+    "active": true,
+    "times_triggered": 0,
+    "created_at": "2026-03-31T10:00:00Z"
   }
 ]
