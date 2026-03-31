@@ -37,6 +37,8 @@ const SYSTEM_TO_ENUM: Record<string, string> = {
   'Cartas Satélite': 'satellite_letter_eb1',
   'Cartas Satelite EB-1A': 'satellite_letter_eb1',
   'Cartas Satélite EB-1A': 'satellite_letter_eb1',
+  'Cartas EB-1 v2.0': 'satellite_letter_eb1',
+  'Cartas EB-1': 'satellite_letter_eb1',
   'Cartas Satelite EB-2 NIW': 'satellite_letter_eb2',
   'Cartas Satélite EB-2 NIW': 'satellite_letter_eb2',
   'Photographic Report': 'photographic_report',
