@@ -64,6 +64,33 @@ function findNewDocx(dir: string, afterMs: number): string[] {
   } catch { return []; }
 }
 
+function autoVersionExisting(dir: string) {
+  /**
+   * Auto-version: if output files already exist, rename them to V1, V2, etc.
+   * So the new generation doesn't overwrite previous work.
+   */
+  if (!existsSync(dir)) return;
+  try {
+    const files = readdirSync(dir).filter(f =>
+      (f.endsWith('.docx') || f.endsWith('.pptx') || f.endsWith('.md') || f.endsWith('.json')) &&
+      !f.startsWith('REVIEW_') && !f.startsWith('.') && !f.includes('_V')
+    );
+    for (const f of files) {
+      const fullPath = path.join(dir, f);
+      const ext = path.extname(f);
+      const base = f.slice(0, -ext.length);
+      // Find next version number
+      let v = 1;
+      while (existsSync(path.join(dir, `${base}_V${v}${ext}`))) v++;
+      const versionedPath = path.join(dir, `${base}_V${v}${ext}`);
+      try {
+        const { renameSync } = require('fs');
+        renameSync(fullPath, versionedPath);
+      } catch {}
+    }
+  } catch {}
+}
+
 function runClaude(
   claudeBin: string,
   instruction: string,
@@ -73,7 +100,7 @@ function runClaude(
   return new Promise((resolve) => {
     const proc = spawn(claudeBin, [
       '-p', instruction,
-      '--allowedTools', 'Bash,Read,Write,Edit,Glob,Grep',
+      '--allowedTools', 'Bash,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch',
     ], {
       shell: false,
       env: { ...process.env },
@@ -155,6 +182,21 @@ export async function POST(req: NextRequest) {
         controller.close();
         return;
       }
+
+      // Auto-version existing files before generating new ones
+      autoVersionExisting(outputDir);
+      // Also version in the client docs_folder_path/_Forjado
+      if (client_id) {
+        try {
+          const cs = readClients();
+          const cl = cs.find((c: any) => c.id === client_id);
+          if (cl?.docs_folder_path) {
+            const forjado = path.join(cl.docs_folder_path, '_Forjado por Petition Engine');
+            if (existsSync(forjado)) autoVersionExisting(forjado);
+          }
+        } catch {}
+      }
+      send('stage', { stage: 'info', phase: 0, message: 'Arquivos anteriores versionados automaticamente (V1, V2...)' });
 
       // Record generation start
       upsertGeneration({

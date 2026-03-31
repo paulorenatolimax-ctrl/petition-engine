@@ -21,20 +21,33 @@ function buildRulesSection(docType: string): string {
   const global = rules.filter((r: any) => !r.doc_type);
   const specific = rules.filter((r: any) => r.doc_type === docType);
   const all = [...global, ...specific];
-  if (all.length === 0) return '';
 
   const lines = [
     '',
-    '## REGRAS DE ERRO ATIVAS (AUTO-LEARNING)',
-    `Total: ${all.length} regras (${global.length} globais + ${specific.length} especificas para ${docType})`,
-    'RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.',
+    '## PESQUISA WEB OBRIGATORIA',
+    'ANTES de gerar o documento, faca pesquisas na web para garantir dados ULTRA-ATUALIZADOS:',
+    '- Pesquise Executive Orders e Policy Alerts da USCIS de 2025-2026',
+    '- Pesquise dados BLS/Census mais recentes para o setor do cliente',
+    '- Pesquise politicas federais relevantes para o proposed endeavor',
+    '- Se o cliente atua em tecnologia: pesquise regulacoes de AI, GPU, chips, CISA',
+    '- Use WebSearch e WebFetch para acessar fontes oficiais (uscis.gov, bls.gov, federalregister.gov)',
+    '- Integre dados encontrados no documento com citacao de fonte e data',
+    '- Os RAGs locais sao a BASE — a pesquisa web COMPLEMENTA com dados em tempo real',
     '',
   ];
-  for (const r of all) {
-    const prefix = r.rule_action === 'block' ? 'BLOCK' : r.rule_action === 'auto_fix' ? 'AUTO-FIX' : 'WARN';
-    lines.push(`- [${r.severity.toUpperCase()}/${prefix}] ${r.rule_description}${r.rule_pattern ? ` (regex: ${r.rule_pattern})` : ''}`);
+
+  if (all.length > 0) {
+    lines.push('## REGRAS DE ERRO ATIVAS (AUTO-LEARNING)');
+    lines.push(`Total: ${all.length} regras (${global.length} globais + ${specific.length} especificas para ${docType})`);
+    lines.push('RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.');
+    lines.push('');
+    for (const r of all) {
+      const prefix = r.rule_action === 'block' ? 'BLOCK' : r.rule_action === 'auto_fix' ? 'AUTO-FIX' : 'WARN';
+      lines.push(`- [${r.severity.toUpperCase()}/${prefix}] ${r.rule_description}${r.rule_pattern ? ` (regex: ${r.rule_pattern})` : ''}`);
+    }
+    lines.push('');
   }
-  lines.push('');
+
   return lines.join('\n');
 }
 

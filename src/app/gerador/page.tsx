@@ -17,6 +17,7 @@ const SYSTEM_TO_ENUM: Record<string, string> = {
   'Declaration of Intentions': 'declaration_of_intentions',
   'Declaração de Intenções': 'declaration_of_intentions',
   'Anteprojeto': 'anteprojeto',
+  'Case Compass': 'anteprojeto',
   'Location Analysis': 'location_analysis',
   'Análise de Localização': 'location_analysis',
   'Localização': 'location_analysis',

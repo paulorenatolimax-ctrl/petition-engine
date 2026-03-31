@@ -73,7 +73,7 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     multiAgent: false,
   },
   anteprojeto: {
-    name: 'Anteprojeto (Pre-Projeto Base)',
+    name: 'Case Compass',
     symlinkDir: 'estrategia-eb2',
     preferredModel: 'claude-opus-4',
     requiresProfile: true,
