@@ -125,5 +125,54 @@
     ],
     "current_phase": "phase_2",
     "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774931420026_5qwn1y",
+    "client_id": "c1774930995401",
+    "client_name": "Leandro Borges",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Leandro_Borges.md",
+    "status": "completed",
+    "started_at": "2026-03-31T04:30:20.026Z",
+    "completed_at": "2026-03-31T05:15:00.000Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES/_Forjado por Petition Engine/",
+    "output_files": [
+      "saas_evidence_Leandro_Borges.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 2680,
+    "stages": [
+      "leitura_sistema_saas_v2",
+      "leitura_escopo_proposta",
+      "leitura_analise_viabilidade_mercado",
+      "leitura_analise_localizacao_estrategica",
+      "pesquisa_web_bls_management_analysts",
+      "pesquisa_web_sba_lending_2025_2026",
+      "pesquisa_web_fednow_adoption",
+      "pesquisa_web_treasury_saas_market",
+      "geracao_docx_python",
+      "quality_gate_error_rules",
+      "fix_prompt_waiver_violations",
+      "quality_gate_revalidacao_pass"
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774932057991_xum3q4",
+    "client_id": "c1774928555193",
+    "client_name": "André Luiz Cerbasi de Almeida",
+    "doc_type": "satellite_letter_eb1",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SATELLITE_LETTER_EB1_André_Luiz_Cerbasi_de_Almeida.md",
+    "status": "processing",
+    "started_at": "2026-03-31T04:40:57.991Z",
+    "completed_at": null,
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/ANDRÉ CERBASI (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": null,
+    "duration_seconds": null,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
   }
 ]

@@ -84,6 +84,9 @@ export default function DocumentosPage() {
   const [uploadClientName, setUploadClientName] = useState('');
   const [uploadNotes, setUploadNotes] = useState('');
   const [feedbackMode, setFeedbackMode] = useState<'cirurgico' | 'cascalho'>('cirurgico');
+  const [complementText, setComplementText] = useState('');
+  const [complementing, setComplementing] = useState(false);
+  const [showComplement, setShowComplement] = useState<string | null>(null);
 
   const fetchGenerations = () => {
     fetch('/api/documents')
@@ -156,6 +159,67 @@ export default function DocumentosPage() {
   const acceptDocument = async (genId: string) => {
     setFeedbackResult('Documento ACEITO. Regras incorporadas ao sistema.');
     setTimeout(() => setFeedbackResult(null), 5000);
+  };
+
+  const launchComplement = async (gen: Generation) => {
+    if (!complementText.trim()) return;
+    setComplementing(true);
+    setFeedbackResult(null);
+
+    try {
+      // Build complement instruction referencing existing files
+      const existingFiles = (gen.output_files || []).join(', ');
+      const outputDir = gen.output_path || '';
+
+      const instruction = [
+        '# COMPLEMENTO — Continuação de Geração Existente',
+        '',
+        '## CONTEXTO',
+        `Já existe uma geração anterior para ${gen.client_name} (${DOC_TYPE_LABELS[gen.doc_type] || gen.doc_type}).`,
+        `Arquivos já gerados: ${existingFiles}`,
+        `Pasta: ${outputDir}`,
+        '',
+        '## INSTRUÇÃO',
+        'NÃO regerar o que já existe. Leia os arquivos existentes na pasta e gere APENAS o complemento solicitado abaixo.',
+        'Salve os novos arquivos NA MESMA PASTA dos existentes.',
+        '',
+        '## O QUE COMPLEMENTAR:',
+        complementText.trim(),
+        '',
+        '## REGRAS',
+        '- Leia o documento existente ANTES de gerar o complemento',
+        '- Mantenha a mesma linguagem, tom e estilo do documento original',
+        '- NÃO duplique conteúdo que já existe',
+        '- Salve na mesma pasta: ' + outputDir,
+      ].join('\n');
+
+      // Save as prompt file
+      const res = await fetch('/api/generate/complement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          instruction,
+          client_name: gen.client_name,
+          client_id: gen.client_id,
+          doc_type: gen.doc_type,
+          output_path: outputDir,
+          original_gen_id: gen.id,
+        }),
+      });
+
+      if (res.ok) {
+        setFeedbackResult('Complemento lançado! Acompanhe o progresso nesta página (auto-refresh 10s).');
+        setComplementText('');
+        setShowComplement(null);
+        fetchGenerations();
+      } else {
+        const err = await res.json();
+        setFeedbackResult(`Erro: ${err.error || 'falha ao lançar complemento'}`);
+      }
+    } catch {
+      setFeedbackResult('Erro de conexão ao lançar complemento');
+    }
+    setComplementing(false);
   };
 
   const importDocument = async () => {
@@ -678,6 +742,38 @@ export default function DocumentosPage() {
                             'bg-[#2ed57310] text-[#2ed573] border border-[#2ed57330]'
                           }`}>
                             {feedbackResult}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* COMPLEMENT SECTION */}
+                      <div className="mt-4 p-4 bg-[#0a1320] rounded-xl border border-[rgba(168,85,247,0.15)]">
+                        <button
+                          onClick={() => setShowComplement(showComplement === gen.id ? null : gen.id)}
+                          className="flex items-center gap-2 text-xs font-mono text-[#a855f7] tracking-widest uppercase font-bold hover:text-[#c084fc] transition-all"
+                        >
+                          <GitBranch className="w-4 h-4" />
+                          {showComplement === gen.id ? 'FECHAR COMPLEMENTO' : 'COMPLEMENTAR GERACAO'}
+                        </button>
+                        <p className="text-[9px] text-[#4b6584] font-mono mt-1">
+                          Gera artefatos adicionais a partir do que já existe — sem regerar tudo.
+                        </p>
+
+                        {showComplement === gen.id && (
+                          <div className="mt-3">
+                            <textarea
+                              value={complementText}
+                              onChange={e => setComplementText(e.target.value)}
+                              placeholder={"O que gerar como complemento? Exemplos:\n- Gerar LOVABLE_BUILD_SPEC.md com as specs pro Lovable construir o SaaS\n- Gerar versão PT-BR do documento\n- Adicionar seção de análise competitiva\n- Gerar pricing_table.md separado"}
+                              className="w-full h-28 bg-[#03060a] border border-[rgba(168,85,247,0.2)] rounded-lg p-3 text-sm text-[#e2e8f0] placeholder-[#4b6584] resize-none focus:outline-none focus:border-[#a855f7]"
+                            />
+                            <button
+                              onClick={() => launchComplement(gen)}
+                              disabled={complementing || !complementText.trim()}
+                              className="mt-2 flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-mono tracking-widest uppercase font-bold bg-[#a855f7] text-white hover:bg-[#c084fc] transition-all disabled:opacity-30 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                            >
+                              <GitBranch className="w-3.5 h-3.5" /> {complementing ? 'LANCANDO...' : 'LANCAR COMPLEMENTO'}
+                            </button>
                           </div>
                         )}
                       </div>
