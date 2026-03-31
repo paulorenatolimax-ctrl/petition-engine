@@ -488,6 +488,7 @@ export async function POST(req: NextRequest) {
       ].filter(Boolean).join('\n');
     } else {
       // Standard DOCX pipeline
+      const isResume = doc_type.startsWith('resume');
       prompt = [
         `# Instrucao de Geracao: ${system.system_name}`,
         `## Cliente: ${client.name}`,
@@ -498,6 +499,22 @@ export async function POST(req: NextRequest) {
         '- Output SEMPRE .docx (python-docx). NUNCA .md, NUNCA texto puro.',
         '- Leia TODOS os arquivos de sistema ANTES de escrever codigo.',
         '- Instrucoes estrategicas — NAO invente parametrizacoes.',
+        isResume ? [
+          '',
+          '## REGRAS ESPECIFICAS PARA RESUME (CRITICO)',
+          '- BENCHMARKS: Resume do Thiago (61 imagens, 77 tabelas, 14K chars) e Andre Cerbasi (37 imagens, 48 tabelas, 12K chars)',
+          '- MINIATURAS OBRIGATORIAS: Cada evidence block DEVE ter thumbnail da 1a pagina do PDF de evidencia',
+          '  Procedimento: ler PDFs na pasta do cliente, gerar thumbnail com PyMuPDF/fitz, inserir como imagem na coluna esquerda',
+          '  Largura da miniatura: 1.2 inches, borda cinza #CCCCCC 0.5pt',
+          '  Se PDF nao encontrado: placeholder "[THUMBNAIL — Evidence X]" em italico cinza',
+          '- COR DOS TITULOS: Navy #2D4F5F (NAO preto). Headers de secao com fundo navy e texto branco',
+          '- CONCISAO: Maximo 18.000 chars de texto. Description & Impact = 2-3 paragrafos MAX (nao 5-6)',
+          '- BOXES INSTITUCIONAIS: Fundo #F5F5F5, borda #CCCCCC, texto 9.5pt italic cinza #333333',
+          '- Cada evidence block = tabela 2 colunas: miniatura (esquerda) + metadata (direita)',
+          '- NAO gerar muro de texto. O resume eh VISUAL — tabelas, imagens, blocos estruturados',
+          '- Font: Arial em todo o documento. Tamanhos: 14pt nome, 11pt secao, 10pt corpo, 9pt contact/paginacao',
+          '',
+        ].join('\n') : null,
         '',
         '## SISTEMA DE GERACAO',
         `Leia TODOS os arquivos .md em: ${system.system_path}`,

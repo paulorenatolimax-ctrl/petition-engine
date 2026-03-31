@@ -1,32 +1,43 @@
-# Instrucao de Geracao: SaaS Evidence Architect
-## Cliente: Leandro Borges
+# PROJETO-BASE EB-1A
+## Cliente: Guilherme Caldeira De Lello
 ## Visto: EB-2-NIW
-## Empresa: New Providence Financial
+
 ## REGRAS ABSOLUTAS
-- Output SEMPRE .docx (python-docx). NUNCA .md, NUNCA texto puro.
-- Leia TODOS os arquivos de sistema ANTES de escrever codigo.
-- Instrucoes estrategicas — NAO invente parametrizacoes.
+- Output SEMPRE em .md (para Obsidian). NUNCA .docx para anteprojeto/projeto-base.
+- 100% em PORTUGUES. Nunca misturar ingles com portugues.
+- NUNCA usar a palavra "PROMPT" no output. E termo interno.
+- NUNCA mencionar PROEX, Kortix, nomes de outros clientes.
+- NUNCA usar codigos SOC que exigem validacao de diploma nos EUA (advogado 23-1011, medico 29-1069, engenheiro 17-201X, contador 13-2011). Usar alternativas.
+- NUNCA propor endeavors genericos como "consultoria" ou "assessoria". USCIS tende a negar.
+- Verificar compatibilidade educacional do codigo SOC com formacao do peticionario.
+
 ## SISTEMA DE GERACAO
-Leia TODOS os arquivos .md em: /Users/paulo1844/Documents/_Z GLOBAL/Z_PROMPTS/SAAS (PROMPTS)/
-Versao: 2.0 | Modelo recomendado: claude-sonnet-4
+Leia TODOS os arquivos .md em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/
+Versao: 1.0
+
+## RAGs OBRIGATORIOS (LEIA ANTES DE GERAR)
+Leia TODOS os arquivos em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-1/
+Atencao especial para:
+- "Analise Aprofundada dos Criterios de Aprovacao e Negacao" — estatisticas por criterio
+- "O que os Oficiais de Imigracao Esperam Ver" — expectativas dos oficiais
+- "Pesquisas do que os outros escritorios estao fazendo" — inteligencia competitiva
+
+## BENCHMARK (leia como referencia de qualidade)
+Anteprojeto Thiago: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/ANTEPROJETO_EB1A_v3.pdf
+Projeto Estrategico Thiago: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/PROJETO_ESTRATEGICO_EB1A_Continuidade_do_Trabalho.md
+
 ## DADOS DO CLIENTE
-Pasta de documentos: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES
-Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.
+Pasta de documentos: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE
+Leia TODOS os documentos do cliente (CV, certificados, evidencias) ANTES de gerar.
+
+## ENDEAVOR E CODIGO SELECIONADOS
+Endeavor escolhido: [NAO SELECIONADO — PERGUNTAR AO PAULO]
+Codigo SOC escolhido: [NAO SELECIONADO — PERGUNTAR AO PAULO]
+Execute TODOS os prompts do sistema (1-9 para EB-2 ou 1-4 para EB-1) focando EXCLUSIVAMENTE neste endeavor.
+
 ## OUTPUT
-Crie a pasta se nao existir: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES/_Forjado por Petition Engine/
-Gere o documento .docx final e salve em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES/_Forjado por Petition Engine/
-Naming: saas_evidence_Leandro_Borges.docx
-## POS-GERACAO: SEPARATION OF CONCERNS
-Apos gerar o documento, NAO considere finalizado.
-O documento DEVE passar por revisao cruzada em SESSAO LIMPA.
-Instrucao: /Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md
-
-## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO
-Gerar LOVABLE_BUILD_SPEC.md — mega prompt completo pro Lovable construir o SaaS visual do Leandro Borges (New Providence        
-  Financial - Treasury Management para PMEs). Ler o saas_evidence_Leandro_Borges.docx que já existe na pasta e usar TODAS as      
-  informações de lá (módulos S1-S5, pricing, métricas, deployment model) pra montar as specs das 7 páginas (landing, dashboard, 5 
-  módulos, pricing page). Salvar como LOVABLE_BUILD_SPEC.md na mesma pasta.
-
+Salve o arquivo .md em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine/
+Nome: Projeto_Base_EB1A_Guilherme_Caldeira_De_Lello.md
 
 ## PESQUISA WEB OBRIGATORIA
 ANTES de gerar o documento, faca pesquisas na web para garantir dados ULTRA-ATUALIZADOS:
@@ -39,7 +50,7 @@ ANTES de gerar o documento, faca pesquisas na web para garantir dados ULTRA-ATUA
 - Os RAGs locais sao a BASE — a pesquisa web COMPLEMENTA com dados em tempo real
 
 ## REGRAS DE ERRO ATIVAS (AUTO-LEARNING)
-Total: 12 regras (12 globais + 0 especificas para saas_evidence)
+Total: 12 regras (12 globais + 0 especificas para projeto_base_eb1a)
 RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.
 
 - [CRITICAL/BLOCK] Nunca usar "I believe" ou "we believe" em documentos (regex: \b(I|we)\s+believe\b)

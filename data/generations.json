@@ -174,5 +174,105 @@
     "stages": [],
     "current_phase": "phase_2",
     "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774934159182_xsn6yo",
+    "client_id": "c1774930995401",
+    "client_name": "Leandro Borges",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Leandro_Borges.md",
+    "status": "completed",
+    "started_at": "2026-03-31T05:15:59.182Z",
+    "completed_at": "2026-03-31T16:45:00.000Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES/_Forjado por Petition Engine/",
+    "output_files": [
+      "LOVABLE_BUILD_SPEC.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 420,
+    "stages": [
+      "leitura_sistema_saas_v2",
+      "leitura_saas_evidence_v1_docx",
+      "pesquisa_web_sba_lending_2025_2026",
+      "pesquisa_web_fednow_2026_adoption",
+      "pesquisa_web_bls_management_analysts",
+      "pesquisa_web_treasury_saas_market",
+      "geracao_lovable_build_spec"
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774965959147_a88k6g",
+    "client_id": "c1774965915784",
+    "client_name": "FERNANDO GEORGE BREVE",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_FERNANDO_GEORGE_BREVE.md",
+    "status": "completed",
+    "started_at": "2026-03-31T14:05:59.147Z",
+    "completed_at": "2026-03-31T14:23:52.842Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/FERNANDO GEORGE BREVE/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_FERNANDO_GEORGE_BREVE.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1074,
+    "stages": [
+      "leitura_cv_pdf",
+      "leitura_prompts_1_2_3",
+      "leitura_rags_eb2_niw",
+      "leitura_benchmark_thayse",
+      "leitura_adjudicador_algoritmico",
+      "leitura_analise_abrangente_adjudicacao",
+      "pesquisa_web_uscis_policy_2025_2026",
+      "pesquisa_web_bls_data_center_jobs",
+      "pesquisa_web_ai_infrastructure_eo",
+      "pesquisa_web_data_center_market_growth",
+      "pesquisa_web_hybrid_cloud_market",
+      "pesquisa_web_disaster_recovery_market",
+      "pesquisa_web_soc_codes_bls",
+      "geracao_3_endeavors",
+      "validacao_error_rules"
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774974539243_ie0c8l",
+    "client_id": "c1774974514585",
+    "client_name": "Guilherme Caldeira De Lello",
+    "doc_type": "resume_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB1A_Guilherme_Caldeira_De_Lello.md",
+    "status": "completed",
+    "started_at": "2026-03-31T16:28:59.243Z",
+    "completed_at": "2026-03-31T16:48:43.660Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb1a_Guilherme_Caldeira_De_Lello.docx",
+      "REVISAO_EXAUSTIVA_EB1A_Guilherme_De_Lello.docx",
+      "resume_eb1a_Guilherme_Caldeira_De_Lello_REVIEWED.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1184,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774975409671_gcujhg",
+    "client_id": "c1774974514585",
+    "client_name": "Guilherme Caldeira De Lello",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Guilherme_Caldeira_De_Lello.md",
+    "status": "processing",
+    "started_at": "2026-03-31T16:43:29.671Z",
+    "completed_at": null,
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": null,
+    "duration_seconds": null,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
   }
 ]

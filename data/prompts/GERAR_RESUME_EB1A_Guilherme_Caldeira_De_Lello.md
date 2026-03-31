@@ -1,31 +1,27 @@
-# Instrucao de Geracao: SaaS Evidence Architect
-## Cliente: Leandro Borges
+# Instrucao de Geracao: Résumé EB-1A
+## Cliente: Guilherme Caldeira De Lello
 ## Visto: EB-2-NIW
-## Empresa: New Providence Financial
 ## REGRAS ABSOLUTAS
 - Output SEMPRE .docx (python-docx). NUNCA .md, NUNCA texto puro.
 - Leia TODOS os arquivos de sistema ANTES de escrever codigo.
 - Instrucoes estrategicas — NAO invente parametrizacoes.
 ## SISTEMA DE GERACAO
-Leia TODOS os arquivos .md em: /Users/paulo1844/Documents/_Z GLOBAL/Z_PROMPTS/SAAS (PROMPTS)/
-Versao: 2.0 | Modelo recomendado: claude-sonnet-4
+Leia TODOS os arquivos .md em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema résumé auto/EB1A_RESUME_SYSTEM/
+Versao: 1.0 | Modelo recomendado: claude-sonnet-4
 ## DADOS DO CLIENTE
-Pasta de documentos: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES
+Pasta de documentos: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE
 Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.
 ## OUTPUT
-Crie a pasta se nao existir: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES/_Forjado por Petition Engine/
-Gere o documento .docx final e salve em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/LEANDRO BORGES/_Forjado por Petition Engine/
-Naming: saas_evidence_Leandro_Borges.docx
+Crie a pasta se nao existir: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine/
+Gere o documento .docx final e salve em: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine/
+Naming: resume_eb1a_Guilherme_Caldeira_De_Lello.docx
 ## POS-GERACAO: SEPARATION OF CONCERNS
 Apos gerar o documento, NAO considere finalizado.
 O documento DEVE passar por revisao cruzada em SESSAO LIMPA.
 Instrucao: /Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md
 
 ## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO
-Gerar LOVABLE_BUILD_SPEC.md — mega prompt completo pro Lovable construir o SaaS visual do Leandro Borges (New Providence        
-  Financial - Treasury Management para PMEs). Ler o saas_evidence_Leandro_Borges.docx que já existe na pasta e usar TODAS as      
-  informações de lá (módulos S1-S5, pricing, métricas, deployment model) pra montar as specs das 7 páginas (landing, dashboard, 5 
-  módulos, pricing page). Salvar como LOVABLE_BUILD_SPEC.md na mesma pasta.
+Altíssima sofisticação hein!!
 
 
 ## PESQUISA WEB OBRIGATORIA
@@ -39,7 +35,7 @@ ANTES de gerar o documento, faca pesquisas na web para garantir dados ULTRA-ATUA
 - Os RAGs locais sao a BASE — a pesquisa web COMPLEMENTA com dados em tempo real
 
 ## REGRAS DE ERRO ATIVAS (AUTO-LEARNING)
-Total: 12 regras (12 globais + 0 especificas para saas_evidence)
+Total: 13 regras (12 globais + 1 especificas para resume_eb1a)
 RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.
 
 - [CRITICAL/BLOCK] Nunca usar "I believe" ou "we believe" em documentos (regex: \b(I|we)\s+believe\b)
@@ -54,3 +50,4 @@ RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.
 - [HIGH/WARN] Output SEMPRE 100% em portugues. Nunca misturar ingles com portugues no mesmo documento. Nomes proprios e termos tecnicos em ingles devem estar em italico mas o texto corrido e 100% PT-BR.
 - [HIGH/WARN] Sempre consultar RAGs ANTES de gerar qualquer secao. EB-1: RAGs em EB-1/ (3 docs). EB-2 NIW: RAGs em EB-2 NIW - RAGs/ (11 docs). Especialmente O Adjudicador Algoritmico e a Analise Abrangente de Adjudicacao.
 - [CRITICAL/BLOCK] Nunca mencionar PROEX, Carlos Avelino, nomes de outros clientes, Kortix, ou qualquer referencia interna do sistema nos documentos de saida. (regex: (PROEX|Kortix|Carlos Avelino))
+- [CRITICAL/BLOCK] Nunca usar codigo SOC de dentista (29-1023, 29-1024, 29-1029) para clientes EB-1A. Usar alternativa como 11-9111.00 Medical and Health Services Managers (regex: 29-102[3-9])
