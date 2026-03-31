@@ -57,7 +57,8 @@ function findNewDocx(dir: string, afterMs: number): string[] {
   if (!existsSync(dir)) return [];
   try {
     return readdirSync(dir)
-      .filter(f => f.endsWith('.docx') || f.endsWith('.pptx'))
+      .filter(f => f.endsWith('.docx') || f.endsWith('.pptx') || f.endsWith('.md'))
+      .filter(f => !f.startsWith('REVIEW_') && !f.startsWith('.'))
       .map(f => path.join(dir, f))
       .filter(f => { try { return statSync(f).mtimeMs > afterMs; } catch { return false; } });
   } catch { return []; }

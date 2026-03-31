@@ -45,18 +45,58 @@
     "stages": []
   },
   {
-    "id": "gen_1774811118152_7j7vq3",
+    "id": "gen_1774812338968_2tz1wg",
+    "client_id": "c1774811108419",
+    "client_name": "Flávio Geres de Jesus",
+    "doc_type": "methodology",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_METHODOLOGY_Flávio_Geres_de_Jesus.md",
+    "status": "completed",
+    "started_at": "2026-03-29T19:25:38.968Z",
+    "completed_at": "2026-03-29T19:35:35.039Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/VALÉRIA/FLÁVIO GERÊS/_Forjado por Petition Engine/",
+    "output_files": [
+      "methodology_Flávio_Geres_de_Jesus.pptx"
+    ],
+    "error_message": null,
+    "duration_seconds": 596,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1774814906804_udpjir",
     "client_id": null,
     "client_name": "Flávio Geres de Jesus",
     "doc_type": "methodology",
     "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_METHODOLOGY_Flávio_Geres_de_Jesus.md",
     "status": "failed",
-    "started_at": "2026-03-29T19:05:18.152Z",
-    "completed_at": "2026-03-29T19:22:29.443571Z",
+    "started_at": "2026-03-29T20:08:26.804Z",
+    "completed_at": "2026-03-29T20:20:27.071Z",
     "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Flávio Geres de Jesus/_Forjado por Petition Engine/",
     "output_files": [],
-    "error_message": "Processo Claude morreu sem gerar arquivo. O servidor ou a sessão foram fechados durante a geração.",
-    "duration_seconds": null,
-    "stages": []
+    "error_message": "Exit 0 mas nenhum documento criado",
+    "duration_seconds": 720,
+    "stages": [],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1774892372782_dcc06z",
+    "client_id": null,
+    "client_name": "SAMOLA DE OLIVEIRA SIMÃO",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_SAMOLA_DE_OLIVEIRA_SIMÃO.md",
+    "status": "completed",
+    "started_at": "2026-03-30T17:39:32.782Z",
+    "completed_at": "2026-03-30T14:45:00Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/SAMOLA DE OLIVEIRA SIMÃO/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_SAMOLA_DE_OLIVEIRA_SIMÃO.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 474,
+    "stages": [],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
   }
 ]
