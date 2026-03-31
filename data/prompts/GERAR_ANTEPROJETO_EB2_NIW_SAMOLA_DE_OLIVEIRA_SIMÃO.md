@@ -43,6 +43,16 @@ O output deve conter:
 Salve o arquivo .md em: /Users/paulo1844/Documents/OMNI/_CLIENTES/SAMOLA DE OLIVEIRA SIMÃO/_Forjado por Petition Engine/
 Nome: Anteprojeto_EB2_NIW_SAMOLA_DE_OLIVEIRA_SIMÃO.md
 
+## PESQUISA WEB OBRIGATORIA
+ANTES de gerar o documento, faca pesquisas na web para garantir dados ULTRA-ATUALIZADOS:
+- Pesquise Executive Orders e Policy Alerts da USCIS de 2025-2026
+- Pesquise dados BLS/Census mais recentes para o setor do cliente
+- Pesquise politicas federais relevantes para o proposed endeavor
+- Se o cliente atua em tecnologia: pesquise regulacoes de AI, GPU, chips, CISA
+- Use WebSearch e WebFetch para acessar fontes oficiais (uscis.gov, bls.gov, federalregister.gov)
+- Integre dados encontrados no documento com citacao de fonte e data
+- Os RAGs locais sao a BASE — a pesquisa web COMPLEMENTA com dados em tempo real
+
 ## REGRAS DE ERRO ATIVAS (AUTO-LEARNING)
 Total: 13 regras (12 globais + 1 especificas para anteprojeto_eb2_niw)
 RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.
@@ -60,3 +70,11 @@ RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.
 - [HIGH/WARN] Sempre consultar RAGs ANTES de gerar qualquer secao. EB-1: RAGs em EB-1/ (3 docs). EB-2 NIW: RAGs em EB-2 NIW - RAGs/ (11 docs). Especialmente O Adjudicador Algoritmico e a Analise Abrangente de Adjudicacao.
 - [CRITICAL/BLOCK] Nunca mencionar PROEX, Carlos Avelino, nomes de outros clientes, Kortix, ou qualquer referencia interna do sistema nos documentos de saida. (regex: (PROEX|Kortix|Carlos Avelino))
 - [CRITICAL/BLOCK] EB-2 NIW: Oficiais tendem a negar endeavors genericos como consultorias/assessorias. O endeavor precisa ser ESPECIFICO, com produto/servico tangivel, nao generico. Evitar: consulting, advisory, general services.
+
+
+## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO
+Refazer por COMPLETO usando novos insumos:
+  1. CV atualizado: /Users/paulo1844/Documents/OMNI/_CLIENTES/SAMOLA DE OLIVEIRA SIMÃO/curriculo_samola.pdf
+  2. Transcrição da reunião: /Users/paulo1844/Documents/OMNI/_CLIENTES/SAMOLA DE OLIVEIRA SIMÃO/Impromptu Google Meet Meeting -
+  March 30.pdf
+  Ler AMBOS antes de gerar. Incorporar detalhes profissionais do CV e contexto estratégico da reunião.

@@ -68,6 +68,7 @@ const DOC_TYPE_PATTERNS: Record<string, string[]> = {
   impacto_report: ['GERAR_IMPACTO_'],
   strategy_eb1: ['GERAR_ESTRATEGIA_EB1_'],
   strategy_eb2: ['GERAR_ESTRATEGIA_EB2_'],
+  saas_evidence: ['GERAR_SAAS_', 'GERAR_SAAS_EVIDENCE_'],
   satellite_letter_eb1: ['GERAR_CARTAS_EB1_', 'GERAR_SATELLITE_EB1_'],
   satellite_letter_eb2: ['GERAR_CARTAS_EB2_', 'GERAR_SATELLITE_EB2_', 'GERAR_CARTAS_NIW_'],
   anteprojeto_eb2_niw: ['GERAR_ANTEPROJETO_EB2_'],

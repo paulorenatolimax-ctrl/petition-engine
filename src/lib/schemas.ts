@@ -28,7 +28,7 @@ export const generateSchema = z.object({
     'resume', 'resume_eb2_niw', 'cover_letter_eb1a', 'cover_letter_eb2_niw', 'cover_letter_o1',
     'business_plan', 'methodology', 'declaration_of_intentions',
     'anteprojeto', 'location_analysis', 'impacto_report',
-    'satellite_letter', 'satellite_letter_eb1', 'satellite_letter_eb2',
+    'satellite_letter', 'satellite_letter_eb1', 'satellite_letter_eb2', 'saas_evidence',
     'photographic_report', 'rfe_response',
     'strategy_eb1', 'strategy_eb2',
   ]),

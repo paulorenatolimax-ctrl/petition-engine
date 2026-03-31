@@ -145,6 +145,16 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     estimatedTokens: 100000,
     multiAgent: false,
   },
+  saas_evidence: {
+    name: 'SaaS Evidence Architect',
+    symlinkDir: 'saas-evidence',
+    preferredModel: 'claude-sonnet-4',
+    requiresProfile: true,
+    requiresDeepResearch: true,
+    outputFormat: 'md',
+    estimatedTokens: 80000,
+    multiAgent: false,
+  },
   rfe_response: {
     name: 'Resposta a RFE',
     symlinkDir: 'cover-letter-eb1a',

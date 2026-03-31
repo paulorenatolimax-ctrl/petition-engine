@@ -98,5 +98,32 @@
     "stages": [],
     "current_phase": "phase_1",
     "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1774928054225_2vj5cy",
+    "client_id": "c1774892360326",
+    "client_name": "SAMOLA DE OLIVEIRA SIMÃO",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_SAMOLA_DE_OLIVEIRA_SIMÃO.md",
+    "status": "completed",
+    "started_at": "2026-03-31T03:34:14.225Z",
+    "completed_at": "2026-03-31T03:52:49.920Z",
+    "output_path": "/Users/paulo1844/Documents/OMNI/_CLIENTES/SAMOLA DE OLIVEIRA SIMÃO/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_SAMOLA_DE_OLIVEIRA_SIMÃO.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1116,
+    "stages": [
+      "leitura_cv",
+      "leitura_transcricao_reuniao",
+      "leitura_rags",
+      "leitura_prompts_1_2_3",
+      "pesquisa_web_bls_sba_uscis_ifa",
+      "geracao_3_endeavors",
+      "validacao_error_rules"
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
   }
 ]

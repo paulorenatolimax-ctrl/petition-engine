@@ -56,6 +56,7 @@ const DOC_TYPE_LABELS: Record<string, string> = {
   impacto_report: 'IMPACTO',
   strategy_eb1: 'Estratégia EB-1A',
   strategy_eb2: 'Estratégia EB-2 NIW',
+  saas_evidence: 'SaaS Evidence Architect',
   rfe_response: 'Resposta a RFE',
 };
 

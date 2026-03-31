@@ -22,6 +22,7 @@ const SYSTEM_TO_ENUM: Record<string, string> = {
   'Case Compass EB-1A': 'anteprojeto_eb1a',
   'Case Blueprint EB-2 NIW': 'projeto_base_eb2_niw',
   'Case Blueprint EB-1A': 'projeto_base_eb1a',
+  'SaaS Evidence Architect': 'saas_evidence',
   'Location Analysis': 'location_analysis',
   'Análise de Localização': 'location_analysis',
   'Localização': 'location_analysis',
