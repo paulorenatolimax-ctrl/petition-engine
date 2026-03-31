@@ -118,7 +118,7 @@ export default function GeradorPage() {
       const sysData = Array.isArray(sysRes.data) ? sysRes.data : sysRes.data?.data || [];
       const cliData = Array.isArray(cliRes.data) ? cliRes.data : cliRes.data?.data || [];
       setSystems(sysData);
-      setClients(cliData);
+      setClients(cliData.sort((a: Client, b: Client) => a.name.localeCompare(b.name, 'pt-BR')));
     }).catch(console.error).finally(() => setLoading(false));
   }, []);
 
