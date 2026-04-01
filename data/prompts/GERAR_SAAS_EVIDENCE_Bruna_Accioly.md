@@ -5,6 +5,18 @@
 - Output SEMPRE .docx (python-docx). NUNCA .md, NUNCA texto puro.
 - Leia TODOS os arquivos de sistema ANTES de escrever codigo.
 - Instrucoes estrategicas — NAO invente parametrizacoes.
+
+## REGRAS ESPECIFICAS PARA SAAS EVIDENCE (OBRIGATORIO)
+- Alem do .docx principal, DEVE gerar um arquivo LOVABLE_BUILD_SPEC.md na MESMA pasta.
+- O LOVABLE_BUILD_SPEC.md eh um mega prompt completo pro Lovable construir o SaaS como app web.
+- DEVE conter: tech stack, paleta de cores, tipografia, componentes globais (KPI card, sidebar, data table),
+  e 7+ paginas detalhadas (landing, dashboard, modulos do produto, settings, pricing page).
+- Adaptar CADA secao ao produto ESPECIFICO do cliente — NAO usar template generico.
+- Dados mock devem usar terminologia REAL do dominio do cliente.
+- Pricing page DEVE bater EXATAMENTE com o pricing do docx principal.
+- Visual: enterprise SaaS (Stripe, Notion, Linear). Navy #1B2A4A + Gold #B8860B.
+- SEM este arquivo o output esta INCOMPLETO. Verificar que foi salvo antes de finalizar.
+
 ## SISTEMA DE GERACAO
 Leia TODOS os arquivos .md em: /Users/paulo1844/Documents/_Z GLOBAL/Z_PROMPTS/SAAS (PROMPTS)/
 Versao: 2.0 | Modelo recomendado: claude-sonnet-4
@@ -19,6 +31,15 @@ Naming: saas_evidence_Bruna_Accioly.docx
 Apos gerar o documento, NAO considere finalizado.
 O documento DEVE passar por revisao cruzada em SESSAO LIMPA.
 Instrucao: /Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md
+
+## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO
+Ler o arquivo saas_evidence_Bruna_Accioly.docx que já existe nesta pasta. A partir do conteúdo dele, gerar LOVABLE_BUILD_SPEC.md
+   — mega prompt completo pro Lovable construir o SaaS como app web funcional. Deve conter: tech stack                            
+  (React+TS+Tailwind+Supabase), paleta de cores (navy #1B2A4A, gold #B8860B), tipografia (Inter), componentes globais (KPI card,  
+  sidebar, data table, status badge), e 7+ páginas detalhadas (landing page, dashboard, módulos específicos do produto da Bruna,  
+  settings, pricing page). Adaptar TUDO ao produto específico dela. Pricing deve bater com o que está no docx. Salvar como        
+  LOVABLE_BUILD_SPEC.md na mesma pasta.
+
 
 ## PESQUISA WEB OBRIGATORIA
 ANTES de gerar o documento, faca pesquisas na web para garantir dados ULTRA-ATUALIZADOS:

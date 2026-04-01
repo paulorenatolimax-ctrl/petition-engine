@@ -5,16 +5,29 @@
     "client_name": "Mireile Rejane Barbosa Hammes",
     "doc_type": "projeto_base_eb2_niw",
     "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Mireile_Rejane_Barbosa_Hammes.md",
-    "status": "processing",
+    "status": "completed",
     "started_at": "2026-04-01T00:45:04.533Z",
-    "completed_at": null,
+    "completed_at": "2026-03-31T23:59:00.000Z",
     "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/KARINA S./Mireile Rejane Barbosa Hammes/_Forjado por Petition Engine/",
-    "output_files": [],
+    "output_files": [
+      "Projeto_Base_EB2_NIW_Mireile_Rejane_Barbosa_Hammes.md"
+    ],
     "error_message": null,
     "duration_seconds": null,
-    "stages": [],
-    "current_phase": "phase_1",
-    "current_phase_label": "Gerando documento..."
+    "stages": [
+      "leitura_prompts_1_a_9",
+      "leitura_rags_eb2_niw",
+      "leitura_docs_cliente",
+      "leitura_benchmark_thayse",
+      "pesquisa_web_uscis_bls_sba",
+      "pesquisa_web_samhsa_hpsa_burnout",
+      "correcao_empresa_gemad",
+      "integracao_terapia_complementar",
+      "geracao_sumario_e_detalhamento",
+      "validacao_12_error_rules"
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
   },
   {
     "id": "gen_1775004261461_fpr1fi",
@@ -421,5 +434,22 @@
     "error_message": "Processo Claude morreu sem gerar arquivo. O servidor ou a sessão foram fechados durante a geração.",
     "duration_seconds": null,
     "stages": []
+  },
+  {
+    "id": "gen_1775004752058_xhd9ya",
+    "client_id": "c1774990737565",
+    "client_name": "Danielle Cecília Franco Maia",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Danielle_Cecília_Franco_Maia.md",
+    "status": "failed",
+    "started_at": "2026-04-01T00:52:32.058Z",
+    "completed_at": "2026-04-01T00:53:43.113Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/VALÉRIA/Danielle Cecília Franco Maia/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Exit 0 mas nenhum documento criado",
+    "duration_seconds": 71,
+    "stages": [],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
   }
 ]
