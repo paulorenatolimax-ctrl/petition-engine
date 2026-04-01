@@ -44,12 +44,14 @@ export async function commitToGitHub(filePath: string, content: string, message:
     await octokit.rest.git.updateRef({ owner, repo, ref: `heads/${BRANCH}`, sha: newCommit.sha });
 
     return newCommit.sha;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error('[GitHub] Commit falhou:', err.message);
     return null;
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function commitErrorRule(rule: any): Promise<string | null> {
   return commitToGitHub(
     `error-rules/${rule.rule_type}/${rule.id}.json`,

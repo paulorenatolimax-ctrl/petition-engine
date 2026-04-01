@@ -49,6 +49,7 @@ export async function POST(
       const filePath = `error-rules/${rule.rule_type}/${rule.id}.json`;
       const content = JSON.stringify({ ...rule, active: false }, null, 2);
       rollbackSha = await commitToGitHub(filePath, content, `rollback(error-rules): deactivate rule ${rule.id}`);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (gitErr: any) {
       console.error('GitHub rollback failed (rule still deactivated):', gitErr.message);
     }
@@ -57,6 +58,7 @@ export async function POST(
       message: `Rule ${id} deactivated and rollback committed`,
       rollback_commit_sha: rollbackSha,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Unexpected error: ${err.message}`, 500);
   }

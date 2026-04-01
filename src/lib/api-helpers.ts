@@ -7,6 +7,7 @@ export function apiError(message: string, status: number = 500) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function apiSuccess(data: any, status: number = 200) {
   return NextResponse.json(
     { data, timestamp: new Date().toISOString() },

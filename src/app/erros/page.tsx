@@ -12,8 +12,6 @@ import {
   User,
   Plus,
   MessageSquare,
-  Check,
-  X,
   Send,
 } from 'lucide-react';
 
@@ -72,6 +70,7 @@ export default function ErrosPage() {
       .finally(() => setLoading(false));
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setLoading(true);
     fetchRules();

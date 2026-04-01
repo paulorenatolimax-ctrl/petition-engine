@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Target, CheckCircle2, XCircle, AlertCircle, FileText } from 'lucide-react';
+import { CheckCircle2, XCircle, FileText } from 'lucide-react';
 
 interface QualityStats {
   total_documents: number;
@@ -36,7 +36,7 @@ function getBarColor(pct: number): string {
 export default function QualidadePage() {
   const [stats, setStats] = useState<QualityStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [, setError] = useState(false);
 
   useEffect(() => {
     fetch('/api/quality/stats')

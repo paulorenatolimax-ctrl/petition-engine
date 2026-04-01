@@ -2,7 +2,9 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { getSystemForDocType } from '@/lib/system-map';
 
 interface AssembleParams {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   profile: any;
   docType: string;
   docSubtype?: string;

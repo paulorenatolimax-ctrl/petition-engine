@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
       documentText = readFileSync(file_path, 'utf-8');
     } else if (file_path.endsWith('.docx')) {
       // Extract text from DOCX
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { execSync } = require('child_process');
       documentText = execSync(
         `python3 -c "from docx import Document; doc=Document('${file_path}'); print('\\n'.join(p.text for p in doc.paragraphs))"`,
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

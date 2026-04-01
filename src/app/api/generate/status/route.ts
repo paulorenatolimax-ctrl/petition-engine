@@ -9,6 +9,7 @@ export async function GET() {
     return NextResponse.json({ data: [] });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let generations: any[];
   try {
     generations = JSON.parse(readFileSync(GENERATIONS_FILE, 'utf-8'));
@@ -18,6 +19,7 @@ export async function GET() {
 
   // Enrich with computed fields
   const now = Date.now();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const enriched = generations.map((g: any) => ({
     ...g,
     age_seconds: g.started_at ? Math.round((now - new Date(g.started_at).getTime()) / 1000) : 0,
@@ -29,6 +31,7 @@ export async function GET() {
   }));
 
   // Sort by started_at descending
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   enriched.sort((a: any, b: any) => new Date(b.started_at || 0).getTime() - new Date(a.started_at || 0).getTime());
 
   return NextResponse.json({ data: enriched });

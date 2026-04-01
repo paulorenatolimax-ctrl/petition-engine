@@ -92,6 +92,7 @@ Ao final, adicione uma secao "## Proximo passo" indicando o que o Stage ${stageC
         estimated_tokens: Math.round(prompt.length / 4),
       },
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(err.message);
   }

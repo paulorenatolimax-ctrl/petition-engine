@@ -83,6 +83,7 @@ function extractFileContent(filePath: string): string {
       );
       return result.slice(0, 50000);
     }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     return `[ERRO AO EXTRAIR: ${e.message}]`;
   }

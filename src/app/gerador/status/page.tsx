@@ -42,6 +42,7 @@ function formatAge(seconds: number): string {
   return `${Math.floor(seconds / 86400)}d`;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const STATUS_CONFIG: Record<string, { icon: any; label: string; color: string; bg: string; border: string }> = {
   completed: { icon: CheckCircle, label: 'CONCLUÍDO', color: '#22c55e', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.25)' },
   failed: { icon: XCircle, label: 'ERRO', color: '#ef4444', bg: 'rgba(239,68,68,0.08)', border: 'rgba(239,68,68,0.25)' },
@@ -63,6 +64,7 @@ export default function StatusPage() {
       setLastRefresh(new Date());
       // Update selected if open
       if (selected) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const updated = (json.data || []).find((g: any) => g.id === selected.id);
         if (updated) setSelected(updated);
       }
@@ -73,6 +75,7 @@ export default function StatusPage() {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchStatus();
     const interval = setInterval(fetchStatus, 10000);

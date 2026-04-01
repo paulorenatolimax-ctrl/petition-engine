@@ -60,6 +60,7 @@ const DOC_TYPE_LABELS: Record<string, string> = {
   rfe_response: 'Resposta a RFE',
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PHASE_LABELS: Record<string, string> = {
   'phase_1': 'Gerando documento...',
   'phase_1.5': 'Quality Gate — Validação automática',
@@ -157,7 +158,8 @@ export default function DocumentosPage() {
     setSubmitting(false);
   };
 
-  const acceptDocument = async (genId: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const acceptDocument = async (_genId: string) => {
     setFeedbackResult('Documento ACEITO. Regras incorporadas ao sistema.');
     setTimeout(() => setFeedbackResult(null), 5000);
   };

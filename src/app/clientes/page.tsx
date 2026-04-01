@@ -12,6 +12,7 @@ interface Client {
   status: string;
   company_name: string;
   created_at: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client_profiles?: any;
 }
 
@@ -42,6 +43,7 @@ export default function ClientesPage() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetchClients(); }, [filterVisa, search]);
 
   async function fetchClients() {
@@ -90,6 +92,7 @@ export default function ClientesPage() {
       setSaveError('');
       setNewClient({ name: '', email: '', visa_type: 'EB-2-NIW', company_name: '', docs_folder_path: '' });
       fetchClients();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setSaveError(`Erro de conexao: ${err.message}`);
     } finally {

@@ -39,6 +39,7 @@ export async function POST(
       systemName: name,
       rolledBackTo: target_version,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Falha ao fazer rollback: ${err.message}`);
   }

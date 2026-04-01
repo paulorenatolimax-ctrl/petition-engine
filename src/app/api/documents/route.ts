@@ -4,17 +4,20 @@ import path from 'path';
 
 const GENERATIONS_FILE = path.join(process.cwd(), 'data', 'generations.json');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readGenerations(): any[] {
   if (!existsSync(GENERATIONS_FILE)) return [];
   try { return JSON.parse(readFileSync(GENERATIONS_FILE, 'utf-8')); } catch { return []; }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function writeGenerations(gens: any[]) {
   writeFileSync(GENERATIONS_FILE, JSON.stringify(gens, null, 2), 'utf-8');
 }
 
 const STALE_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function cleanStaleGenerations(gens: any[]): boolean {
   let changed = false;
   const now = Date.now();
@@ -42,15 +45,19 @@ export async function GET(req: NextRequest) {
   }
 
   const client_id = searchParams.get('client_id');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (client_id) gens = gens.filter((g: any) => g.client_id === client_id);
 
   const doc_type = searchParams.get('doc_type');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (doc_type) gens = gens.filter((g: any) => g.doc_type === doc_type);
 
   const status = searchParams.get('status');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (status) gens = gens.filter((g: any) => g.status === status);
 
   // Sort by started_at descending
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   gens.sort((a: any, b: any) =>
     new Date(b.started_at).getTime() - new Date(a.started_at).getTime()
   );

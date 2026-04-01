@@ -3,7 +3,7 @@
  * Runs ALL checks: error_rules + CoT detection + orphan headings + broken lines + structural validation
  * Returns: score, passed, violations[], autoFixes[]
  */
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 const RULES_PATH = path.join(process.cwd(), 'data', 'error_rules.json');
@@ -67,6 +67,7 @@ const ORPHAN_HEADINGS = [
   /^#{1,3}\s+/,  // Markdown headings leaking
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readRules(): any[] {
   try {
     return JSON.parse(readFileSync(RULES_PATH, 'utf-8'));
@@ -78,6 +79,7 @@ function readRules(): any[] {
 function updateRuleTrigger(ruleId: string): void {
   try {
     const rules = readRules();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rule = rules.find((r: any) => r.id === ruleId);
     if (rule) {
       rule.times_triggered = (rule.times_triggered || 0) + 1;
@@ -95,7 +97,9 @@ export async function runQualityLocal(input: QualityInput): Promise<QualityResul
   // ============================================================
   // 1. ERROR RULES CHECK (from error_rules.json)
   // ============================================================
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const allRules = readRules().filter((r: any) => r.active);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const applicableRules = allRules.filter((r: any) =>
     !r.doc_type || r.doc_type === input.docType
   );

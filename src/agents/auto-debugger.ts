@@ -68,6 +68,7 @@ export async function reportError(report: ErrorReport) {
 
   if (existing && existing.length > 0) {
     await supabase.from('error_rules')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .update({ times_triggered: ((existing[0] as any).times_triggered || 0) + 1 })
       .eq('id', existing[0].id);
 

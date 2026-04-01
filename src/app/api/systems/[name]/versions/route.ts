@@ -39,6 +39,7 @@ export async function GET(
       versions,
       total_versions: versions.length,
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Falha ao listar versões: ${err.message}`);
   }

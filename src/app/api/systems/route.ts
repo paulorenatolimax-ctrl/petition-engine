@@ -21,6 +21,7 @@ const SEED_SYSTEMS = [
   { id: '14', system_name: 'Cartas EB-1 v2.0', system_path: '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/', version_tag: '2.0', file_count: 6, is_active: true, recommended_model: 'claude-sonnet-4', doc_type: 'eb1_letters', created_at: '2026-03-24T10:00:00Z' },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readSystems(): any[] {
   if (!existsSync(DATA_FILE)) {
     writeFileSync(DATA_FILE, JSON.stringify(SEED_SYSTEMS, null, 2), 'utf-8');

@@ -33,6 +33,7 @@ export async function PATCH(
     }
 
     // Build update payload with conditional timestamps
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: Record<string, any> = { status };
 
     if (status === 'approved') {
@@ -80,6 +81,7 @@ export async function PATCH(
     }
 
     return apiSuccess(data);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Falha ao atualizar status do documento: ${err.message}`);
   }

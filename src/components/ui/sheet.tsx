@@ -6,6 +6,7 @@ export function Sheet({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SheetTrigger({ children, asChild, ...props }: { children: React.ReactNode; asChild?: boolean } & React.HTMLAttributes<HTMLDivElement>) {
   return <div {...props}>{children}</div>;
 }

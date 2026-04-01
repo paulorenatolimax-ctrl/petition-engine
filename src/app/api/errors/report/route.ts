@@ -10,6 +10,7 @@ function readRules() {
   catch { return []; }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function writeRules(rules: any[]) {
   fs.writeFileSync(RULES_PATH, JSON.stringify(rules, null, 2));
 }

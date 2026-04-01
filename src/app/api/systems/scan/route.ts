@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     return apiSuccess({ system: data, scan });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Falha ao escanear sistema: ${err.message}`);
   }

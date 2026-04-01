@@ -6,11 +6,13 @@ import path from 'path';
 const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts');
 const GENERATIONS_FILE = path.join(process.cwd(), 'data', 'generations.json');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readGenerations(): any[] {
   if (!existsSync(GENERATIONS_FILE)) return [];
   try { return JSON.parse(readFileSync(GENERATIONS_FILE, 'utf-8')); } catch { return []; }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function writeGenerations(gens: any[]) {
   writeFileSync(GENERATIONS_FILE, JSON.stringify(gens, null, 2), 'utf-8');
 }
@@ -85,14 +87,14 @@ export async function POST(req: NextRequest) {
     detached: true,
   });
 
-  let stdout = '';
-  proc.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+  proc.stdout.on('data', () => {});
   proc.stderr.on('data', () => {});
 
   proc.on('close', (code: number | null) => {
     // Update generation status when done
     try {
       const gens2 = readGenerations();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const gen = gens2.find((g: any) => g.id === genId);
       if (gen) {
         gen.status = code === 0 ? 'completed' : 'failed';
@@ -104,6 +106,7 @@ export async function POST(req: NextRequest) {
         // Try to find new files
         if (output_path && existsSync(output_path)) {
           try {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             const { readdirSync, statSync } = require('fs');
             const startMs = new Date(gen.started_at).getTime();
             const newFiles = readdirSync(output_path)

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Users, FileText, Layers, CheckCircle2, AlertCircle, Database, ShieldAlert, FileOutput, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Users, FileText, Layers, CheckCircle2, AlertCircle, Database, ShieldAlert, FileOutput, CheckCircle, XCircle } from 'lucide-react';
 
 interface DashboardStats {
   clients: { total: number; active: number; by_visa: Record<string, number> };

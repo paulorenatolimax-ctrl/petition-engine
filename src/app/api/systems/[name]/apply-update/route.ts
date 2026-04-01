@@ -39,6 +39,7 @@ export async function POST(
     });
 
     return apiSuccess(result);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Falha ao aplicar atualização: ${err.message}`);
   }

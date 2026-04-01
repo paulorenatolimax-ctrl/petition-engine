@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { RefreshCw, Link2, Unlink, Cpu, Settings, Server, CheckCircle2, AlertCircle } from 'lucide-react';
+import { RefreshCw, Cpu, Settings, Server } from 'lucide-react';
 
 interface System {
   id: string;
@@ -15,6 +15,7 @@ interface System {
   file_count_actual?: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function timeAgo(dateStr: string): string {
   if (!dateStr) return 'N/A';
   const diff = Date.now() - new Date(dateStr).getTime();

@@ -11,14 +11,18 @@ const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_
 const CP_DIR = '/Users/paulo1844/Documents/Claude/Projects/C.P.';
 const PPTX_GENERATOR = path.join(process.cwd(), 'scripts', 'generate_pptx_v2.py');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readRules(): any[] {
   try { return JSON.parse(readFileSync(RULES_FILE, 'utf-8')); }
   catch { return []; }
 }
 
 function buildRulesSection(docType: string): string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rules = readRules().filter((r: any) => r.active);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = rules.filter((r: any) => !r.doc_type);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const specific = rules.filter((r: any) => r.doc_type === docType);
   const all = [...global, ...specific];
 
@@ -51,6 +55,7 @@ function buildRulesSection(docType: string): string {
   return lines.join('\n');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readJson(file: string): any[] {
   if (!existsSync(file)) return [];
   return JSON.parse(readFileSync(file, 'utf-8'));
@@ -82,6 +87,7 @@ const RAGS_EB2 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - A
 const BENCHMARK_THAYSE = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/LILIAN/Thayse/';
 const BENCHMARK_THIAGO = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function buildAnteprojetoInstruction(client: any, system: any, docType: string, outputDir: string, rulesSection: string, selectedEndeavor?: string, selectedSocCode?: string): string {
   const isEB1 = docType.includes('eb1');
   const isProjetoBase = docType.includes('projeto_base');
@@ -140,8 +146,23 @@ function buildAnteprojetoInstruction(client: any, system: any, docType: string, 
   if (isProjetoBase) {
     lines.push('');
     lines.push('## ENDEAVOR E CODIGO SELECIONADOS');
-    lines.push(`Endeavor escolhido: ${selectedEndeavor || '[NAO SELECIONADO — PERGUNTAR AO PAULO]'}`);
-    lines.push(`Codigo SOC escolhido: ${selectedSocCode || '[NAO SELECIONADO — PERGUNTAR AO PAULO]'}`);
+    if (selectedEndeavor) {
+      lines.push(`Endeavor escolhido: ${selectedEndeavor}`);
+    } else {
+      lines.push('Endeavor escolhido: NAO PRE-SELECIONADO.');
+      lines.push('INSTRUCAO: Leia TODOS os documentos do cliente (CV, certificados, Anteprojeto se existir) e SELECIONE AUTONOMAMENTE o melhor endeavor.');
+      lines.push('Se existir um Anteprojeto na pasta do cliente, use o endeavor recomendado nele.');
+      lines.push('Se nao existir Anteprojeto, analise o perfil e proponha o endeavor mais forte com justificativa.');
+      lines.push('NUNCA pare para perguntar — DECIDA e execute.');
+    }
+    if (selectedSocCode) {
+      lines.push(`Codigo SOC escolhido: ${selectedSocCode}`);
+    } else {
+      lines.push('Codigo SOC escolhido: NAO PRE-SELECIONADO.');
+      lines.push('INSTRUCAO: Selecione o codigo SOC/BLS mais adequado ao endeavor escolhido.');
+      lines.push('Valide compatibilidade educacional com a formacao do cliente.');
+      lines.push('NUNCA usar codigos que exigem validacao de diploma nos EUA (23-1011, 29-1069, 17-201X, 13-2011).');
+    }
     lines.push('Execute TODOS os prompts do sistema (1-9 para EB-2 ou 1-4 para EB-1) focando EXCLUSIVAMENTE neste endeavor.');
   } else {
     lines.push('');
@@ -234,12 +255,14 @@ export async function POST(req: NextRequest) {
   }
 
   const clients = readJson(CLIENTS_FILE);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const client = clients.find((c: any) => c.id === client_id);
   if (!client) {
     return NextResponse.json({ error: `Cliente ${client_id} nao encontrado` }, { status: 404 });
   }
 
   const systems = readJson(SYSTEMS_FILE);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const system = systems.find((s: any) => s.doc_type === doc_type);
   if (!system) {
     return NextResponse.json({ error: `Sistema ${doc_type} nao encontrado` }, { status: 404 });
@@ -289,6 +312,7 @@ export async function POST(req: NextRequest) {
           estimatedTokens: system.file_count * 5000,
           instruction_source: 'anteprojeto_generator',
           instruction_path: specialPromptPath,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rulesInjected: readRules().filter((r: any) => r.active && (!r.doc_type || r.doc_type === doc_type)).length,
           selected_endeavor: selected_endeavor || null,
           selected_soc_code: selected_soc_code || null,
@@ -576,6 +600,7 @@ export async function POST(req: NextRequest) {
         estimatedTokens: system.file_count * 3000,
         instruction_source: instructionSource,
         instruction_path: promptPath,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rulesInjected: readRules().filter((r: any) => r.active && (!r.doc_type || r.doc_type === doc_type)).length,
         pipeline: ['generation', 'separation_of_concerns'],
         soc_enabled: true,

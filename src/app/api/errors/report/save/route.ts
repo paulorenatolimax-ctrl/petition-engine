@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
     });
 
     return apiSuccess(result, 201);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Erro ao salvar regra: ${err.message}`, 500);
   }

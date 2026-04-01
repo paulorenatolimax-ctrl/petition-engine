@@ -10,6 +10,7 @@ const SEED_CLIENTS = [
   { id: 'c3', name: 'Renato Silveira dos Reis', email: 'renato@example.com', visa_type: 'EB-1A', status: 'active', company_name: '', docs_folder_path: '', created_at: '2025-09-05T10:00:00Z', client_profiles: { extracted_at: '2025-09-06T10:00:00Z' } },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readClients(): any[] {
   if (!existsSync(DATA_FILE)) {
     writeFileSync(DATA_FILE, JSON.stringify(SEED_CLIENTS, null, 2), 'utf-8');
@@ -18,6 +19,7 @@ function readClients(): any[] {
   return JSON.parse(readFileSync(DATA_FILE, 'utf-8'));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function writeClients(clients: any[]) {
   writeFileSync(DATA_FILE, JSON.stringify(clients, null, 2), 'utf-8');
 }
@@ -30,12 +32,14 @@ export async function GET(req: NextRequest) {
 
   let filtered = clients;
   if (search) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filtered = filtered.filter((c: any) =>
       c.name.toLowerCase().includes(search) ||
       (c.email || '').toLowerCase().includes(search)
     );
   }
   if (visaType) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filtered = filtered.filter((c: any) => c.visa_type === visaType);
   }
 

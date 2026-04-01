@@ -1,8 +1,7 @@
-import { NextRequest } from 'next/server';
 import { createServerClient } from '@/lib/supabase';
 import { apiSuccess } from '@/lib/api-helpers';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const supabase = createServerClient();
 
   const [clientsRes, docsRes, errorsRes] = await Promise.all([

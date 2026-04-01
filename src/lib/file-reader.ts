@@ -97,6 +97,7 @@ export async function setupSymlinks(systems: Array<{ system_name: string; system
       await fs.access(sys.system_path);
       await fs.symlink(sys.system_path, linkPath);
       results.push({ name: sys.system_name, status: 'ok' });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       results.push({ name: sys.system_name, status: 'error', message: err.message });
     }

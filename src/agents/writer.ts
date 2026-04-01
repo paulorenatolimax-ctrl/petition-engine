@@ -15,6 +15,7 @@ interface WriterInput {
   docType: string;
   systemName: string;
   systemPath?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   profileJson?: any;
   proposedEndeavor?: string;
   previousDenied?: boolean;
@@ -33,6 +34,7 @@ export async function runWriter(input: WriterInput): Promise<{
   };
 }> {
   // 1. Buscar system_version do Supabase (tentar por nome exato, depois ilike)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let system: any = null;
   const { data: exactMatch } = await supabase
     .from('system_versions')

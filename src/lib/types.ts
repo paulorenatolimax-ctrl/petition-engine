@@ -26,17 +26,27 @@ export interface ClientProfile {
   client_id: string;
   full_name: string | null;
   nationality: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   education: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   work_experience: any[];
   total_years_experience: number | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   evidence_inventory: any[];
   total_evidence_count: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   publications: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   media_coverage: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   awards: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   financial_data: Record<string, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   satellite_letters_needed: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   eb1a_criteria: Record<string, any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dhanasar_pillars: Record<string, any>;
   raw_extracted_text: string | null;
   extracted_at: string;
@@ -51,9 +61,11 @@ export interface Document {
   status: string;
   system_used: string | null;
   output_file_path: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   quality_score: Record<string, any>;
   quality_passed: boolean | null;
   quality_notes: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   uscis_risk_score: Record<string, any>;
   generation_time_seconds: number | null;
   generated_at: string;

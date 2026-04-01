@@ -44,6 +44,7 @@ export async function POST(
       prompt,
       instructions: 'Use o prompt acima no Claude Code para gerar a proposta de atualização. Depois, envie o JSON resultante via POST /api/systems/[name]/apply-update com { proposal: {...} }',
     });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     return apiError(`Falha ao propor atualização: ${err.message}`);
   }

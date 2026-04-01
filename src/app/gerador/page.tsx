@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FileText, Zap, Copy, Check, X, ChevronRight, AlertTriangle, User, Loader2, Sparkles, AlertCircle, Shield, Eye, Activity } from 'lucide-react';
+import { FileText, Zap, Check, X, ChevronRight, User, Loader2, Sparkles, AlertCircle, Shield, Activity } from 'lucide-react';
 
 // Mapa: system_name (EXATO como vem do banco) → doc_type enum (esperado pela API)
 const SYSTEM_TO_ENUM: Record<string, string> = {
@@ -101,14 +101,16 @@ export default function GeradorPage() {
   const [selectedSystem, setSelectedSystem] = useState<SystemVersion | null>(null);
   const [generating, setGenerating] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [promptMetadata, setPromptMetadata] = useState<any>(null);
   const [claudeCommand, setClaudeCommand] = useState<string>('');
   const [promptPath, setPromptPath] = useState<string>('');
-  const [commandCopied, setCommandCopied] = useState(false);
+  const [, setCommandCopied] = useState(false);
   const [error, setError] = useState<string>('');
   const [copied, setCopied] = useState(false);
   const [executing, setExecuting] = useState(false);
   const [executionStages, setExecutionStages] = useState<{ stage: string; message?: string; text?: string }[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [executionResult, setExecutionResult] = useState<any>(null);
   const [generationInstructions, setGenerationInstructions] = useState<string>('');
 
@@ -175,6 +177,7 @@ export default function GeradorPage() {
         handleExecute(pFile, selectedClientData?.name || 'Cliente', SYSTEM_TO_ENUM[selectedSystem.system_name] || selectedSystem.system_name);
         return;
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || 'Erro de conexão');
     } finally {
@@ -224,6 +227,7 @@ export default function GeradorPage() {
           }
         }
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setExecutionStages(prev => [...prev, { stage: 'error', message: `Erro de conexão: ${err.message}` }]);
     } finally {
@@ -428,8 +432,11 @@ export default function GeradorPage() {
                             {/* PIPELINE TIMELINE — 5 Steps */}
                             {(() => {
                               const hasStages = executionStages.length > 0;
+                              // eslint-disable-next-line @typescript-eslint/no-explicit-any
                               const phase1Active = hasStages && !executionStages.some((s: any) => s.stage === 'gen_complete') && !executionResult;
+                              // eslint-disable-next-line @typescript-eslint/no-explicit-any
                               const phase1Done = executionStages.some((s: any) => s.stage === 'gen_complete');
+                              // eslint-disable-next-line @typescript-eslint/no-explicit-any
                               const phase2Active = executionStages.some((s: any) => s.phase === 2) && !executionResult;
                               const phase2Done = executionResult?.success && executionResult?.review_verdict;
                               const failed = executionResult && !executionResult.success;
@@ -494,6 +501,7 @@ export default function GeradorPage() {
                                 {/* Execution log — Phase 1 & Phase 2 stages */}
                                 {executionStages.length > 0 && (
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                     {executionStages.map((s: any, i: number) => {
                                       const isPhaseHeader = s.stage === 'phase';
                                       const isPhase2 = s.phase === 2;
@@ -512,6 +520,7 @@ export default function GeradorPage() {
                                       return (
                                         <div key={i} style={{ fontSize: '12px', fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: '6px', color: isReviewComplete || isGenComplete ? '#22c55e' : isPersona ? '#c084fc' : s.stage === 'error' ? '#ef4444' : isPhase2 ? '#a1b1cc' : '#64748b', paddingLeft: isPersona ? '12px' : '0' }}>
                                           <span>{isReviewComplete || isGenComplete ? '✓' : isPersona ? '👁' : s.stage === 'error' ? '✗' : '→'}</span>
+                                          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                           <span>{s.message || (s as any).text?.slice(0, 120)}</span>
                                         </div>
                                       );
