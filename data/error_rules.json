@@ -752,5 +752,17 @@
     "active": true,
     "times_triggered": 0,
     "created_at": "2026-03-31T11:00:00Z"
+  },
+  {
+    "id": "r59",
+    "rule_type": "content",
+    "rule_description": "ACENTUAÇÃO OBRIGATÓRIA: Todo documento em português DEVE ter acentos corretos. NUNCA 'introducao' (correto: 'introdução'), NUNCA 'peticao' (correto: 'petição'), NUNCA 'informacao' (correto: 'informação'). Se o output vier sem acentos, é REJEIÇÃO AUTOMÁTICA. Instruir explicitamente no prompt: 'Use acentuação portuguesa completa: ção, ções, ão, ões, é, ê, á, í, ú, ã, õ'.",
+    "rule_pattern": "\\b(introducao|peticao|informacao|certificacao|formacao|avaliacao|ocupacao|operacao|integracao|migracao|capacitacao|micropigmentacao)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": null,
+    "active": true,
+    "source": "feedback_paulo_2026-04-01",
+    "created_at": "2026-04-01T19:00:00Z"
   }
 ]

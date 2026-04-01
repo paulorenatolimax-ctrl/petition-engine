@@ -198,6 +198,41 @@ export async function runQualityLocal(input: QualityInput): Promise<QualityResul
   }
 
   // ============================================================
+  // 3.5. ACCENT CHECK (Portuguese documents MUST have accents)
+  // ============================================================
+  const accentViolations = [
+    'introducao', 'peticao', 'informacao', 'certificacao', 'formacao',
+    'avaliacao', 'ocupacao', 'operacao', 'integracao', 'capacitacao',
+    'micropigmentacao', 'restauracao', 'elaboracao', 'atuacao',
+    'localizacao', 'educacao', 'comunicacao', 'organizacao',
+    'documentacao', 'validacao', 'implementacao', 'estruturacao',
+    'classificacao', 'qualificacao', 'especializacao', 'aplicacao',
+    'contribuicao', 'projecao', 'identificacao', 'padronizacao',
+    'regulamentacao', 'administracao', 'demonstracao', 'publicacao',
+    'preparacao', 'consolidacao', 'selecao', 'diferenciacao',
+    'combinacao', 'descricao', 'reducao', 'resolucao', 'execucao',
+    'instituicao', 'instrucao', 'distribuicao', 'atencao',
+    'manutencao', 'intervencao', 'prevencao', 'retencao',
+  ];
+  const unaccentedFound: string[] = [];
+  for (const word of accentViolations) {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+    const matches = cleanedText.match(regex);
+    if (matches) {
+      unaccentedFound.push(`${word}(${matches.length}x)`);
+    }
+  }
+  if (unaccentedFound.length > 0) {
+    violations.push({
+      rule: 'ACENTUAÇÃO AUSENTE — Documento em PT-BR sem acentos (BLOQUEANTE)',
+      severity: 'critical',
+      match: unaccentedFound.slice(0, 10).join(', '),
+      location: `${unaccentedFound.length} palavras sem acento detectadas`,
+      autoFixable: false,
+    });
+  }
+
+  // ============================================================
   // 4. STRUCTURAL CHECKS
   // ============================================================
 
