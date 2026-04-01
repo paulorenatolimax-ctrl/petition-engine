@@ -31,8 +31,14 @@ Pasta de documentos: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIA
 Leia TODOS os documentos do cliente (CV, certificados, evidencias) ANTES de gerar.
 
 ## ENDEAVOR E CODIGO SELECIONADOS
-Endeavor escolhido: [NAO SELECIONADO — PERGUNTAR AO PAULO]
-Codigo SOC escolhido: [NAO SELECIONADO — PERGUNTAR AO PAULO]
+Endeavor escolhido: NÃO PRÉ-SELECIONADO.
+INSTRUÇÃO: Leia TODOS os documentos do cliente (CV, certificados, Anteprojeto se existir) e SELECIONE AUTONOMAMENTE o melhor endeavor.
+Se existir um Anteprojeto na pasta do cliente, use o endeavor recomendado nele.
+Se não existir, analise o perfil e proponha o endeavor mais forte.
+NUNCA pare para perguntar — DECIDA e execute.
+Código SOC escolhido: NÃO PRÉ-SELECIONADO.
+INSTRUÇÃO: Selecione o código SOC/BLS mais adequado ao endeavor escolhido.
+Valide compatibilidade educacional. NUNCA usar códigos que exigem validação de diploma nos EUA.
 Execute TODOS os prompts do sistema (1-9 para EB-2 ou 1-4 para EB-1) focando EXCLUSIVAMENTE neste endeavor.
 
 ## OUTPUT
