@@ -87,6 +87,7 @@ export default function DocumentosPage() {
   const [complementText, setComplementText] = useState('');
   const [complementing, setComplementing] = useState(false);
   const [showComplement, setShowComplement] = useState<string | null>(null);
+  const [relaunching, setRelaunching] = useState<string | null>(null);
 
   const fetchGenerations = () => {
     fetch('/api/documents')
@@ -159,6 +160,31 @@ export default function DocumentosPage() {
   const acceptDocument = async (genId: string) => {
     setFeedbackResult('Documento ACEITO. Regras incorporadas ao sistema.');
     setTimeout(() => setFeedbackResult(null), 5000);
+  };
+
+  const relaunchGeneration = async (gen: Generation) => {
+    setRelaunching(gen.id);
+    try {
+      const res = await fetch('/api/generate/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt_file: gen.prompt_file,
+          client_name: gen.client_name,
+          doc_type: gen.doc_type,
+          client_id: gen.client_id,
+        }),
+      });
+      if (res.ok) {
+        setFeedbackResult(`Relancado! ${gen.client_name} — ${DOC_TYPE_LABELS[gen.doc_type] || gen.doc_type}. Acompanhe o progresso.`);
+        setTimeout(() => { fetchGenerations(); setFeedbackResult(null); }, 5000);
+      } else {
+        setFeedbackResult('Erro ao relancar');
+      }
+    } catch {
+      setFeedbackResult('Erro de conexao ao relancar');
+    }
+    setRelaunching(null);
   };
 
   const launchComplement = async (gen: Generation) => {
@@ -466,6 +492,26 @@ export default function DocumentosPage() {
         </div>
       )}
 
+      {/* FAILED BANNER — RED ALERT */}
+      {generations.some(g => g.status === 'failed') && (
+        <div className="v2-card p-4 border-2 border-[#ff4757] bg-[#ff475715] animate-pulse">
+          <div className="flex items-center gap-3">
+            <div className="w-4 h-4 rounded-full bg-[#ff4757] shadow-[0_0_15px_#ff4757] animate-ping" />
+            <div className="flex flex-col flex-1">
+              <span className="text-sm font-mono text-[#ff4757] font-bold">
+                {generations.filter(g => g.status === 'failed').length} GERACAO(OES) FALHARAM — RELANCAR!
+              </span>
+              <span className="text-[10px] font-mono text-[#ff4757] mt-1">
+                {generations.filter(g => g.status === 'failed').map(g =>
+                  `${g.client_name} (${DOC_TYPE_LABELS[g.doc_type] || g.doc_type})`
+                ).join('  |  ')}
+              </span>
+            </div>
+            <AlertTriangle className="w-6 h-6 text-[#ff4757]" />
+          </div>
+        </div>
+      )}
+
       {/* Document List */}
       <div className="v2-card overflow-hidden">
         {loading ? (
@@ -541,6 +587,18 @@ export default function DocumentosPage() {
                            gen.status === 'failed' ? 'FALHOU' :
                            gen.status?.toUpperCase() || 'DESCONHECIDO'}
                         </span>
+                      )}
+                      {gen.status === 'failed' && gen.prompt_file && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); relaunchGeneration(gen); }}
+                          disabled={relaunching === gen.id}
+                          className="px-3 py-1.5 rounded text-[10px] font-mono font-bold tracking-wider bg-[#ff4757] text-white animate-pulse hover:bg-[#ff6b6b] transition-all shadow-[0_0_20px_rgba(255,71,87,0.5)] disabled:opacity-50"
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <RefreshCw className={`w-3 h-3 ${relaunching === gen.id ? 'animate-spin' : ''}`} />
+                            {relaunching === gen.id ? 'RELANCANDO...' : 'RELANCAR AGORA'}
+                          </span>
+                        </button>
                       )}
                       {isExpanded ? <ChevronUp className="w-4 h-4 text-[#4b6584]" /> : <ChevronDown className="w-4 h-4 text-[#4b6584]" />}
                     </div>
