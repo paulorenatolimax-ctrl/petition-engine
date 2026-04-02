@@ -526,5 +526,24 @@
     "stages": [],
     "current_phase": "phase_2",
     "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775147597491_8hwklt",
+    "client_id": "c1775043056111",
+    "client_name": "Antonio Carlos A Santana",
+    "doc_type": "cover_letter_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_COVER_LETTER_EB1A_Antonio_Carlos_A_Santana.md",
+    "status": "completed",
+    "started_at": "2026-04-02T16:33:17.491Z",
+    "completed_at": "2026-04-02T17:25:47.093Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Antonio Santana/_Forjado por Petition Engine/",
+    "output_files": [
+      "cover_letter_eb1a_Antonio_Carlos_A_Santana.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 3150,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
   }
 ]
