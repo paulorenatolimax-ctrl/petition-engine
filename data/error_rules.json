@@ -944,5 +944,41 @@
     "active": true,
     "source": "feedback_paulo_2026-04-02_no_system_artifacts",
     "created_at": "2026-04-02T10:00:00Z"
+  },
+  {
+    "id": "r78",
+    "rule_type": "forbidden_term",
+    "rule_description": "ANTI-CRISTINE: NUNCA usar termos que provem que o endeavor funciona SEM o beneficiário. Proibidos: 'standardized', 'operates autonomously', 'self-sustaining', 'plug-and-play', 'train-the-trainer', 'white-label', 'client autonomy'. Esses termos DESTROEM o Prong 3 ao provar que a expertise é transferível.",
+    "rule_pattern": "\\b(standardized|operates autonomously|self-sustaining|plug-and-play|train.the.trainer|white.label|client autonomy)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": null,
+    "active": true,
+    "source": "anti_cristine_cowork_audit_2026-04-02",
+    "created_at": "2026-04-02T15:00:00Z"
+  },
+  {
+    "id": "r79",
+    "rule_type": "forbidden_term",
+    "rule_description": "NUNCA usar 'consultoria' ou 'consulting' isolado em documentos EB-2 NIW — dispara flag no sistema VIBE/Dun & Bradstreet do USCIS. Usar: 'prestação de serviços técnicos especializados' ou 'soluções baseadas em metodologia proprietária'.",
+    "rule_pattern": "\\b(consultoria|consulting)\\b",
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": null,
+    "active": true,
+    "source": "anti_cristine_cowork_audit_2026-04-02",
+    "created_at": "2026-04-02T15:00:00Z"
+  },
+  {
+    "id": "r80",
+    "rule_type": "content",
+    "rule_description": "Todo documento de Estratégia/Anteprojeto/Projeto-Base EB-2 NIW DEVE incluir argumentação explícita de Prong 3 (Waiver): PERM impraticável, urgência nacional, vazio competitivo, não-transferibilidade da expertise. Sem Prong 3 = petição incompleta.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "projeto_base_eb2_niw",
+    "active": true,
+    "source": "anti_cristine_cowork_audit_2026-04-02",
+    "created_at": "2026-04-02T15:00:00Z"
   }
 ]
