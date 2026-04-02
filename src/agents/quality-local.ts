@@ -268,6 +268,39 @@ export async function runQualityLocal(input: QualityInput): Promise<QualityResul
   }
 
   // ============================================================
+  // 4.5. BP-SPECIFIC: Check for charts/tables density
+  // ============================================================
+  if (input.docType === 'business_plan') {
+    // Check if text mentions chart generation (matplotlib, plt.savefig, etc.)
+    // In the DOCX text, charts appear as empty paragraphs or image refs
+    // We can detect by checking for common chart-related terms
+    const hasChartMentions = /\b(Figure|Chart|Graph|Exhibit)\s+\d/gi.test(cleanedText);
+    const tableCount = (cleanedText.match(/\|.*\|.*\|/g) || []).length;
+
+    if (!hasChartMentions) {
+      violations.push({
+        rule: 'Business Plan SEM gráficos/charts detectados — MÍNIMO 6 obrigatórios',
+        severity: 'critical',
+        match: 'Zero referências a Figure/Chart/Graph encontradas no texto',
+        location: 'Documento inteiro',
+        autoFixable: false,
+      });
+    }
+
+    // Check footnotes density for BP
+    const footnoteCount = (cleanedText.match(/\[\d+\]|\¹|²|³|⁴|⁵|⁶|⁷|⁸|⁹/g) || []).length;
+    if (footnoteCount < 10) {
+      violations.push({
+        rule: `Business Plan com apenas ${footnoteCount} footnotes — MÍNIMO 10 obrigatórias`,
+        severity: 'high',
+        match: `${footnoteCount} footnotes encontradas`,
+        location: 'Documento inteiro',
+        autoFixable: false,
+      });
+    }
+  }
+
+  // ============================================================
   // 5. FORBIDDEN CONTENT (hardcoded critical checks)
   // ============================================================
   const forbiddenTerms = [

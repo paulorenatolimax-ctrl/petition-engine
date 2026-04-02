@@ -764,5 +764,41 @@
     "active": true,
     "source": "feedback_paulo_2026-04-01",
     "created_at": "2026-04-01T19:00:00Z"
+  },
+  {
+    "id": "r60",
+    "rule_type": "content",
+    "rule_description": "Business Plan DEVE conter MÍNIMO 6 gráficos/charts gerados com matplotlib e inseridos como imagem no DOCX. Revenue, Expenses, Profit/Loss, Market Size, Customer Acquisition, Investment Allocation. Zero gráficos = REJEIÇÃO AUTOMÁTICA.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "business_plan",
+    "active": true,
+    "source": "feedback_paulo_2026-04-02_zero_graficos",
+    "created_at": "2026-04-02T08:00:00Z"
+  },
+  {
+    "id": "r61",
+    "rule_type": "formatting",
+    "rule_description": "Business Plan: Fonte Garamond 12pt corpo, 14pt títulos bold. Margens: top 0.7in, bottom 0.6in, left 0.8in, right 0.6in. Footer marrom com CONFIDENTIAL. Entrelinhas 1.15. NUNCA Arial ou Calibri.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "block",
+    "doc_type": "business_plan",
+    "active": true,
+    "source": "feedback_amalia_bp_formatting",
+    "created_at": "2026-04-02T08:00:00Z"
+  },
+  {
+    "id": "r62",
+    "rule_type": "content",
+    "rule_description": "Business Plan: Mínimo 10 footnotes com fontes verificáveis (BLS, Census, IBISWorld, Statista). Dados de mercado sem fonte = REJEIÇÃO. Formato: número sobrescrito no texto → bloco separado no final da seção.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "business_plan",
+    "active": true,
+    "source": "feedback_amalia_bp_footnotes",
+    "created_at": "2026-04-02T08:00:00Z"
   }
 ]
