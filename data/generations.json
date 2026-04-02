@@ -485,5 +485,46 @@
     "stages": [],
     "current_phase": "phase_1",
     "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775115610573_vfw0bb",
+    "client_id": "c1775115598005",
+    "client_name": "Rebeka Cunha",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Rebeka_Cunha.md",
+    "status": "completed",
+    "started_at": "2026-04-02T07:40:10.573Z",
+    "completed_at": "2026-04-02T08:03:13.454Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb2_niw_Rebeka_Cunha.docx",
+      "~$sume_eb2_niw_Rebeka_Cunha.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1383,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775115697239_97uam2",
+    "client_id": "c1775115598005",
+    "client_name": "Rebeka Cunha",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_Rebeka_Cunha.md",
+    "status": "completed",
+    "started_at": "2026-04-02T07:41:37.239Z",
+    "completed_at": "2026-04-02T08:12:47.888Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_Rebeka_Cunha.md",
+      "resume_eb2_niw_Rebeka_Cunha.docx",
+      "~$sume_eb2_niw_Rebeka_Cunha.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1871,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
   }
 ]

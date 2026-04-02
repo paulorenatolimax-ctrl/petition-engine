@@ -218,7 +218,11 @@ async function main() {
       const fileName = `SaaS_${pageNum}_${pageName}.png`;
       const filePath = path.join(screenshotsDir, fileName);
 
-      await page.screenshot({ path: filePath, fullPage: true, type: 'png' });
+      // Cap height: if page is taller than 2 viewports (1800px), take viewport-only screenshot
+      // This prevents pricing/landing pages from being 4000px tall images that don't fit in Word
+      const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
+      const useFullPage = bodyHeight <= 1800;
+      await page.screenshot({ path: filePath, fullPage: useFullPage, type: 'png' });
 
       const stats = fs.statSync(filePath);
       const sizeKB = Math.round(stats.size / 1024);
