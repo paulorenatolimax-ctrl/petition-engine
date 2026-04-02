@@ -800,5 +800,101 @@
     "active": true,
     "source": "feedback_amalia_bp_footnotes",
     "created_at": "2026-04-02T08:00:00Z"
+  },
+  {
+    "id": "r63",
+    "rule_type": "formatting",
+    "rule_description": "PPTX card body text MÁXIMO 9.5pt. NUNCA usar 14pt — overflow documentado em 18/26 slides do deck Leandro. Card title máximo 11pt.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "methodology",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r64",
+    "rule_type": "formatting",
+    "rule_description": "PPTX footer DEVE ser bg GoldDark #8B7355 com texto Beige #E8D5B7. NUNCA navy sobre navy (footer invisível). Testado e corrigido no deck Leandro.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "methodology",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r65",
+    "rule_type": "formatting",
+    "rule_description": "PPTX DEVE usar GRADIENTES (nunca solid fill). Master bg: NavyDark→Navy 270°. TitleBar: Navy→NavyDark 0°. Solid fill = visual flat/amador.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "block",
+    "doc_type": "methodology",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r66",
+    "rule_type": "content",
+    "rule_description": "PPTX NUNCA repetir o mesmo layout type em 2 slides consecutivos. Variar: pipeline→cards→text→table→quadrant→cards→pipeline.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": "methodology",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r67",
+    "rule_type": "formatting",
+    "rule_description": "PPTX card body text MÁXIMO 9.5pt. NUNCA usar 14pt — overflow documentado em 18/26 slides do deck Leandro. Card title máximo 11pt.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "declaration_of_intentions",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r69",
+    "rule_type": "formatting",
+    "rule_description": "PPTX footer DEVE ser bg GoldDark #8B7355 com texto Beige #E8D5B7. NUNCA navy sobre navy (footer invisível). Testado e corrigido no deck Leandro.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "declaration_of_intentions",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r71",
+    "rule_type": "formatting",
+    "rule_description": "PPTX DEVE usar GRADIENTES (nunca solid fill). Master bg: NavyDark→Navy 270°. TitleBar: Navy→NavyDark 0°. Solid fill = visual flat/amador.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "block",
+    "doc_type": "declaration_of_intentions",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r73",
+    "rule_type": "content",
+    "rule_description": "PPTX NUNCA repetir o mesmo layout type em 2 slides consecutivos. Variar: pipeline→cards→text→table→quadrant→cards→pipeline.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": "declaration_of_intentions",
+    "active": true,
+    "source": "leandro_deck_engineering_spec",
+    "created_at": "2026-04-02T09:00:00Z"
   }
 ]
