@@ -896,5 +896,53 @@
     "active": true,
     "source": "leandro_deck_engineering_spec",
     "created_at": "2026-04-02T09:00:00Z"
+  },
+  {
+    "id": "r74",
+    "rule_type": "forbidden_term",
+    "rule_description": "SaaS Evidence, Metodologia e Declaração de Intenções JAMAIS podem conter termos imigratórios: petition, petitioner, EB-2, NIW, EB-1, USCIS, immigration, visa, I-140, green card, adjudicator, Dhanasar, Kazarian, extraordinary ability, national interest waiver. Esses documentos são Product Dossiers para CLIENTES e INVESTIDORES — o oficial de imigração NÃO pode desconfiar que foram feitos pra ele.",
+    "rule_pattern": "\\b(petition|petitioner|EB-2|EB-1|NIW|USCIS|immigration|visa|I-140|green.card|adjudicator|Dhanasar|Kazarian|extraordinary.ability|national.interest.waiver)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "saas_evidence",
+    "active": true,
+    "source": "feedback_paulo_2026-04-02_immigration_terms_saas",
+    "created_at": "2026-04-02T10:00:00Z"
+  },
+  {
+    "id": "r75",
+    "rule_type": "forbidden_term",
+    "rule_description": "Metodologia JAMAIS pode conter termos imigratórios. É um documento profissional para clientes/investidores.",
+    "rule_pattern": "\\b(petition|petitioner|EB-2|EB-1|NIW|USCIS|immigration|visa|I-140|green.card|adjudicator|Dhanasar)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "methodology",
+    "active": true,
+    "source": "feedback_paulo_2026-04-02_immigration_terms_methodology",
+    "created_at": "2026-04-02T10:00:00Z"
+  },
+  {
+    "id": "r76",
+    "rule_type": "forbidden_term",
+    "rule_description": "Declaração de Intenções JAMAIS pode conter termos imigratórios explícitos. Deve parecer genuína para clientes/investidores.",
+    "rule_pattern": "\\b(petition|petitioner|EB-2|EB-1|NIW|USCIS|immigration|visa|I-140|green.card|adjudicator|Dhanasar)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "declaration_of_intentions",
+    "active": true,
+    "source": "feedback_paulo_2026-04-02_immigration_terms_declaration",
+    "created_at": "2026-04-02T10:00:00Z"
+  },
+  {
+    "id": "r77",
+    "rule_type": "formatting",
+    "rule_description": "SaaS Evidence, Met e Dec NUNCA devem ter 'Version X.X', 'Generated: date', ou 'SaaS Evidence Architect' no documento. São termos internos do sistema. O documento deve parecer produzido profissionalmente pela empresa, não por um gerador automático.",
+    "rule_pattern": "\\b(Version \\d|Generated:|SaaS Evidence Architect|Petition Engine)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": null,
+    "active": true,
+    "source": "feedback_paulo_2026-04-02_no_system_artifacts",
+    "created_at": "2026-04-02T10:00:00Z"
   }
 ]
