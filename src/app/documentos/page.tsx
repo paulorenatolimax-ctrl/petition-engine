@@ -14,6 +14,10 @@ import {
   GitBranch,
   Upload,
   AlertTriangle,
+  Camera,
+  Monitor,
+  Loader2,
+  Image,
 } from 'lucide-react';
 
 interface Generation {
@@ -90,6 +94,20 @@ export default function DocumentosPage() {
   const [showComplement, setShowComplement] = useState<string | null>(null);
   const [relaunching, setRelaunching] = useState<string | null>(null);
 
+  // SaaS Capture state
+  const [showSaasCapture, setShowSaasCapture] = useState(false);
+  const [saasUrl, setSaasUrl] = useState('');
+  const [saasClientId, setSaasClientId] = useState('');
+  const [saasDocxPath, setSaasDocxPath] = useState('');
+  const [saasCapturing, setSaasCapturing] = useState(false);
+  const [saasProgress, setSaasProgress] = useState<string[]>([]);
+  const [saasScreenshots, setSaasScreenshots] = useState<string[]>([]);
+  const [saasDone, setSaasDone] = useState(false);
+  const [saasError, setSaasError] = useState<string | null>(null);
+  const [saasResult, setSaasResult] = useState<{ output_dir?: string; output_docx?: string; total?: number } | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [clientsList, setClientsList] = useState<any[]>([]);
+
   const fetchGenerations = () => {
     fetch('/api/documents')
       .then(r => r.json())
@@ -104,6 +122,13 @@ export default function DocumentosPage() {
     fetchGenerations();
     // Auto-refresh every 10s to catch updates from running generations
     const interval = setInterval(fetchGenerations, 10000);
+
+    // Fetch clients for SaaS capture dropdown
+    fetch('/api/clients')
+      .then(r => r.json())
+      .then(d => setClientsList(d.data || []))
+      .catch(() => setClientsList([]));
+
     return () => clearInterval(interval);
   }, []);
 
@@ -338,6 +363,86 @@ export default function DocumentosPage() {
     setSubmitting(false);
   };
 
+  const startSaasCapture = async () => {
+    if (!saasUrl.trim() || !saasClientId) return;
+    setSaasCapturing(true);
+    setSaasProgress([]);
+    setSaasScreenshots([]);
+    setSaasDone(false);
+    setSaasError(null);
+    setSaasResult(null);
+
+    try {
+      const res = await fetch('/api/saas-capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: saasUrl.trim(),
+          client_id: saasClientId,
+          docx_path: saasDocxPath.trim() || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        setSaasError(err.error || 'Erro ao iniciar captura');
+        setSaasCapturing(false);
+        return;
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) {
+        setSaasError('Sem stream de resposta');
+        setSaasCapturing(false);
+        return;
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split('\n\n');
+        buffer = events.pop() || '';
+
+        for (const block of events) {
+          const lines = block.split('\n');
+          let eventType = '';
+          let eventData = '';
+          for (const line of lines) {
+            if (line.startsWith('event: ')) eventType = line.slice(7);
+            if (line.startsWith('data: ')) eventData = line.slice(6);
+          }
+          if (!eventType || !eventData) continue;
+
+          try {
+            const parsed = JSON.parse(eventData);
+            if (eventType === 'progress') {
+              setSaasProgress(prev => [...prev.slice(-20), parsed.message || '']);
+            } else if (eventType === 'screenshot') {
+              setSaasScreenshots(prev => [...prev, parsed.file]);
+            } else if (eventType === 'done') {
+              setSaasDone(true);
+              setSaasResult({
+                output_dir: parsed.output_dir,
+                output_docx: parsed.output_docx,
+                total: parsed.total,
+              });
+            } else if (eventType === 'error') {
+              setSaasError(parsed.message || 'Erro desconhecido');
+            }
+          } catch {}
+        }
+      }
+    } catch (err) {
+      setSaasError(`Erro de conexão: ${(err as Error).message}`);
+    }
+    setSaasCapturing(false);
+  };
+
   return (
     <div className="flex flex-col gap-6 p-6 md:p-8 w-full animate-in fade-in duration-500 max-w-[1400px]">
       <div className="flex items-center justify-between mb-2">
@@ -438,6 +543,156 @@ export default function DocumentosPage() {
           </div>
         </div>
       )}
+
+      {/* SaaS Screenshot Capture */}
+      <div className="v2-card overflow-hidden">
+        <button
+          onClick={() => setShowSaasCapture(!showSaasCapture)}
+          className="w-full flex items-center justify-between px-6 py-4 hover:bg-[#101e30] transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <Camera className="w-5 h-5 text-[#00eaff]" style={{ filter: 'drop-shadow(0 0 5px rgba(0,234,255,0.5))' }} />
+            <div className="flex flex-col items-start">
+              <span className="text-xs font-mono text-[#00eaff] tracking-widest uppercase font-bold">
+                Capturar Screenshots do SaaS
+              </span>
+              <span className="text-[10px] text-[#4b6584] font-mono mt-0.5">
+                Captura automatizada de todas as telas de um deploy Lovable
+              </span>
+            </div>
+          </div>
+          {showSaasCapture ? <ChevronUp className="w-4 h-4 text-[#4b6584]" /> : <ChevronDown className="w-4 h-4 text-[#4b6584]" />}
+        </button>
+
+        {showSaasCapture && (
+          <div className="px-6 pb-6 border-t border-[rgba(0,234,255,0.06)]">
+            <div className="flex flex-col gap-4 mt-4">
+              {/* URL Input */}
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">URL do Lovable Deploy</label>
+                <div className="flex items-center gap-2">
+                  <Monitor className="w-4 h-4 text-[#00eaff] flex-shrink-0" />
+                  <input
+                    value={saasUrl}
+                    onChange={e => setSaasUrl(e.target.value)}
+                    placeholder="https://xxx.lovable.app/"
+                    disabled={saasCapturing}
+                    className="flex-1 bg-[#03060a] border border-[rgba(0,234,255,0.15)] rounded px-3 py-2 text-xs text-[#e2e8f0] font-mono placeholder-[#4b6584] focus:outline-none focus:border-[#00eaff] disabled:opacity-40"
+                  />
+                </div>
+              </div>
+
+              {/* Client + DOCX row */}
+              <div className="flex gap-3">
+                <div className="flex flex-col gap-1 flex-1">
+                  <label className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">Cliente</label>
+                  <select
+                    value={saasClientId}
+                    onChange={e => setSaasClientId(e.target.value)}
+                    disabled={saasCapturing}
+                    className="bg-[#03060a] border border-[rgba(0,234,255,0.15)] rounded px-3 py-2 text-xs text-[#a1b1cc] font-mono focus:outline-none focus:border-[#00eaff] disabled:opacity-40"
+                  >
+                    <option value="">Selecionar cliente...</option>
+                    {clientsList.map((c: { id: string; name: string }) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1 flex-1">
+                  <label className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase">DOCX para inserir screenshots (opcional)</label>
+                  <input
+                    value={saasDocxPath}
+                    onChange={e => setSaasDocxPath(e.target.value)}
+                    placeholder="/Users/paulo1844/Documents/.../SaaS_Evidence.docx"
+                    disabled={saasCapturing}
+                    className="bg-[#03060a] border border-[rgba(0,234,255,0.15)] rounded px-3 py-2 text-xs text-[#e2e8f0] font-mono placeholder-[#4b6584] focus:outline-none focus:border-[#00eaff] disabled:opacity-40"
+                  />
+                </div>
+              </div>
+
+              {/* Capture button */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={startSaasCapture}
+                  disabled={saasCapturing || !saasUrl.trim() || !saasClientId}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-xs font-mono tracking-widest uppercase font-bold bg-[#00eaff] text-[#03060a] hover:bg-[#33eeff] transition-all disabled:opacity-30 shadow-[0_0_20px_rgba(0,234,255,0.3)]"
+                >
+                  {saasCapturing ? (
+                    <><Loader2 className="w-3.5 h-3.5 animate-spin" /> CAPTURANDO...</>
+                  ) : (
+                    <><Camera className="w-3.5 h-3.5" /> CAPTURAR</>
+                  )}
+                </button>
+                {saasCapturing && (
+                  <span className="text-[10px] text-[#00eaff] font-mono animate-pulse">
+                    Navegando pelas páginas do SaaS...
+                  </span>
+                )}
+              </div>
+
+              {/* Progress log */}
+              {saasProgress.length > 0 && (
+                <div className="mt-2 p-3 rounded-lg bg-[#03060a] border border-[rgba(0,234,255,0.08)] max-h-40 overflow-y-auto">
+                  <h4 className="text-[9px] text-[#4b6584] font-mono tracking-widest uppercase mb-2">Progresso</h4>
+                  <div className="flex flex-col gap-0.5">
+                    {saasProgress.map((msg, i) => (
+                      <span key={i} className="text-[10px] font-mono text-[#a1b1cc]">
+                        {msg}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Error display */}
+              {saasError && (
+                <div className="p-3 rounded-lg bg-[#ff475710] border border-[#ff475730]">
+                  <p className="text-xs font-mono text-[#ff4757]">{saasError}</p>
+                </div>
+              )}
+
+              {/* Screenshots captured */}
+              {saasScreenshots.length > 0 && (
+                <div className="p-3 rounded-lg bg-[#0a1320] border border-[rgba(0,234,255,0.08)]">
+                  <h4 className="text-[10px] font-mono text-[#00eaff] tracking-widest uppercase mb-2 flex items-center gap-2">
+                    <Image className="w-3 h-3" /> Screenshots Capturados ({saasScreenshots.length})
+                  </h4>
+                  <div className="flex flex-col gap-1">
+                    {saasScreenshots.map((file, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs font-mono text-[#a1b1cc]">
+                        <span className="text-[#00eaff] text-[10px] w-5 text-right">{i + 1}.</span>
+                        <span>{file}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Done result */}
+              {saasDone && saasResult && (
+                <div className="p-4 rounded-lg bg-[#2ed57310] border border-[#2ed57330]">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Check className="w-4 h-4 text-[#2ed573]" />
+                    <span className="text-sm font-mono text-[#2ed573] font-bold">
+                      Captura concluída — {saasResult.total} screenshots
+                    </span>
+                  </div>
+                  {saasResult.output_dir && (
+                    <p className="text-[10px] font-mono text-[#a1b1cc] mt-1">
+                      Pasta: {saasResult.output_dir}
+                    </p>
+                  )}
+                  {saasResult.output_docx && (
+                    <p className="text-[10px] font-mono text-[#2ed573] mt-1">
+                      DOCX com screenshots: {saasResult.output_docx}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
