@@ -948,8 +948,8 @@
   {
     "id": "r78",
     "rule_type": "forbidden_term",
-    "rule_description": "ANTI-CRISTINE: NUNCA usar termos que provem que o endeavor funciona SEM o beneficiário. Proibidos: 'standardized', 'operates autonomously', 'self-sustaining', 'plug-and-play', 'train-the-trainer', 'white-label', 'client autonomy'. Esses termos DESTROEM o Prong 3 ao provar que a expertise é transferível.",
-    "rule_pattern": "\\b(standardized|operates autonomously|self-sustaining|plug-and-play|train.the.trainer|white.label|client autonomy)\\b",
+    "rule_description": "ANTI-CRISTINE V2: NUNCA usar termos que provem que o endeavor funciona SEM o beneficiário. Lista expandida: 'standardized/padronizado', 'operates autonomously', 'self-sustaining/auto-sustentável', 'plug-and-play', 'train-the-trainer', 'white-label/marca branca', 'client autonomy', 'founder dependency: low', 'scalable without the founder', 'replicable by any professional', 'turnkey solution/chave-na-mão'. Esses termos DESTROEM Prong 3.",
+    "rule_pattern": "\\b(standardized|padronizado|operates autonomously|self-sustaining|auto-sustent|plug.and.play|train.the.trainer|white.label|marca branca|client autonomy|founder dependency|scalable without|replicable by any|turnkey|chave.na.m)\\b",
     "severity": "critical",
     "rule_action": "block",
     "doc_type": null,
@@ -980,5 +980,17 @@
     "active": true,
     "source": "anti_cristine_cowork_audit_2026-04-02",
     "created_at": "2026-04-02T15:00:00Z"
+  },
+  {
+    "id": "r81",
+    "rule_type": "forbidden_term",
+    "rule_description": "PROIBIÇÃO DE HISTÓRICO PROCESSUAL: JAMAIS mencionar negativa anterior, denial, RFE anterior, petição anterior, refile, segunda tentativa. Mencionar histórico planta dúvida no oficial. Toda petição = ORIGINAL.",
+    "rule_pattern": "\\b(denial|negativa anterior|RFE anterior|previous petition|prior filing|refile|segunda tentativa|nova submissão|petição anterior|corrected approach|lessons learned from denial)\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": null,
+    "active": true,
+    "source": "anti_cristine_v2_cowork_2026-04-02",
+    "created_at": "2026-04-02T16:00:00Z"
   }
 ]
