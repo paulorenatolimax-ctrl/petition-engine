@@ -4,11 +4,19 @@
 
 ---
 
-## NOTA: SEM BENCHMARK REAL
+## BENCHMARK REAL: DENI RUBENS (EB-2 NIW RFE)
 
-Este orquestrador é INFERIDO — não temos caso real de RFE EB-2 NIW produzido ainda.
-Baseado em: RFE EB-1A (Marcelo, 131pg) + Cover Letter EB-2 NIW (V3, Andrea) + jurisprudência.
-Deve ser ATUALIZADO assim que o primeiro caso real for produzido.
+**VF:** `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Deni Rubens (Direto)/1. Pleito Inicial 2023 OS3210 Jhonathamn-Paulo CONSULAR/1.CARREGUE AQUI SEUS DOCUMENTOS/DOCS RFE/VF_Resposta RFE_Deni Rubens.docx`
+
+| Métrica | Valor |
+|---------|-------|
+| Palavras | 27.852 |
+| Páginas | ~92 |
+| Tabelas | 19 |
+| Imagens | 53 |
+| Parágrafos | 811 |
+
+**LIÇÃO DO DENI (Paulo):** As "novas evidências" NÃO devem ser apresentadas no meio do sumário/índice para não perder a numeração da petição inicial (cover letter originalmente enviada). Manter a mesma numeração da CL original e adicionar novas evidências ao FINAL da lista, com numeração contínua.
 
 ---
 

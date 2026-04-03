@@ -992,5 +992,17 @@
     "active": true,
     "source": "anti_cristine_v2_cowork_2026-04-02",
     "created_at": "2026-04-02T16:00:00Z"
+  },
+  {
+    "id": "r82",
+    "rule_type": "content",
+    "rule_description": "RFE Response: Novas evidências DEVEM manter a numeração contínua da petição inicial (cover letter). NUNCA inserir novas evidências no MEIO do sumário quebrando a numeração original. Novas evidências vão ao FINAL da lista com números sequenciais continuando do último exhibit da CL.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "rfe_response",
+    "active": true,
+    "source": "feedback_paulo_deni_rfe_2026-04-03",
+    "created_at": "2026-04-03T12:00:00Z"
   }
 ]

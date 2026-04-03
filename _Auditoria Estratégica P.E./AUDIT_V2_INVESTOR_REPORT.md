@@ -5,6 +5,14 @@
 
 ---
 
+> # 💰 VALUATION ESTIMADO: **$15M – $30M**
+>
+> Benchmark: **Seed round de legaltech em 2025 → $20-25M post-money at $150-500K ARR**
+>
+> Método: Comparable Transactions (aquisições e rounds em legaltech/immigrationtech)
+
+---
+
 ## EXECUTIVE SUMMARY
 
 O **AIOS / Petition Engine** (produto da **OMNI**) é o único sistema de automação end-to-end para petições de imigração dos EUA que gera, em uma única plataforma, todos os documentos necessários para aprovação: Cover Letters, Résumés, Business Plans, Metodologias, Declarações de Intenções, Cartas Satélite, Evidence Blocks e análises de impacto econômico.
