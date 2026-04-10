@@ -155,6 +155,16 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     estimatedTokens: 80000,
     multiAgent: false,
   },
+  endeavor_assessment: {
+    name: 'Avaliação de Endeavor',
+    symlinkDir: '',
+    preferredModel: 'claude-opus-4',
+    requiresProfile: true,
+    requiresDeepResearch: true,
+    outputFormat: 'md',
+    estimatedTokens: 50000,
+    multiAgent: false,
+  },
   rfe_response: {
     name: 'Resposta a RFE',
     symlinkDir: 'cover-letter-eb1a',

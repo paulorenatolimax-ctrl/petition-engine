@@ -275,6 +275,7 @@ export async function runQualityLocal(input: QualityInput): Promise<QualityResul
     // In the DOCX text, charts appear as empty paragraphs or image refs
     // We can detect by checking for common chart-related terms
     const hasChartMentions = /\b(Figure|Chart|Graph|Exhibit)\s+\d/gi.test(cleanedText);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const tableCount = (cleanedText.match(/\|.*\|.*\|/g) || []).length;
 
     if (!hasChartMentions) {

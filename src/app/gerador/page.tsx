@@ -50,6 +50,8 @@ const SYSTEM_TO_ENUM: Record<string, string> = {
   'Anteprojeto EB-1A': 'anteprojeto_eb1a',
   'Projeto-Base EB-2 NIW': 'projeto_base_eb2_niw',
   'Projeto-Base EB-1A': 'projeto_base_eb1a',
+  'Endeavor Assessment': 'endeavor_assessment',
+  'Avaliação de Endeavor': 'endeavor_assessment',
 };
 
 interface SystemVersion {
@@ -90,6 +92,7 @@ const SYSTEM_LABELS: Record<string, string> = {
   'anteprojeto-eb1a': 'Anteprojeto EB-1A',
   'projeto-base-eb2-niw': 'Projeto-Base EB-2 NIW',
   'projeto-base-eb1a': 'Projeto-Base EB-1A',
+  'endeavor-assessment': 'Avaliação de Endeavor',
 };
 
 export default function GeradorPage() {

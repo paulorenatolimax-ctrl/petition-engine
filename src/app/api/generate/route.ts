@@ -80,6 +80,7 @@ const DOC_TYPE_PATTERNS: Record<string, string[]> = {
   anteprojeto_eb1a: ['GERAR_ANTEPROJETO_EB1_'],
   projeto_base_eb2_niw: ['GERAR_PROJETO_BASE_EB2_'],
   projeto_base_eb1a: ['GERAR_PROJETO_BASE_EB1_'],
+  endeavor_assessment: ['AVALIAR_ENDEAVOR_', 'ENDEAVOR_ASSESSMENT_'],
 };
 
 const RAGS_EB1 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-1/';
@@ -107,6 +108,16 @@ function buildAnteprojetoInstruction(client: any, system: any, docType: string, 
     '- NUNCA usar codigos SOC que exigem validacao de diploma nos EUA (advogado 23-1011, medico 29-1069, engenheiro 17-201X, contador 13-2011). Usar alternativas.',
     '- NUNCA propor endeavors genericos como "consultoria" ou "assessoria". USCIS tende a negar.',
     '- Verificar compatibilidade educacional do codigo SOC com formacao do peticionario.',
+    '- SEGREDO INDUSTRIAL — NUNCA expor infraestrutura interna no documento:',
+    '  - NUNCA mencionar RAG, RAG I, RAG II, RAG III, repositorio de argumentacao',
+    '  - NUNCA mencionar Petition Engine, Forjado por, gerado automaticamente, gerado por IA/Claude',
+    '  - NUNCA mencionar Obsidian, formato .md, markdown, ferramentas de producao',
+    '  - NUNCA incluir versao (V1, V2), Separation of Concerns, Quality Gate no documento',
+    '  - NUNCA incluir glossarios de ferramentas internas',
+    '  - O documento DEVE parecer produzido por ESPECIALISTA HUMANO experiente',
+    '- TERMINOLOGIA ADMINISTRATIVA:',
+    '  - NUNCA: equipe juridica, advogado, escritorio de advocacia, traducao juramentada, tribunal, juiz, sentenca',
+    '  - USAR: equipe tecnica, consultor, consultoria, traducao certificada, processo administrativo, oficial de imigracao',
     '',
     '## SISTEMA DE GERACAO',
     `Leia TODOS os arquivos .md em: ${system.system_path}`,
@@ -167,21 +178,42 @@ function buildAnteprojetoInstruction(client: any, system: any, docType: string, 
   } else {
     lines.push('');
     lines.push('## MODO ANTEPROJETO (EXECUCAO PARCIAL)');
+    lines.push('');
+    lines.push('## CLAUSULA PETREA — NEUTRALIDADE ABSOLUTA (INEGOCIAVEL)');
+    lines.push('Os 3 endeavors DEVEM ser apresentados com IGUAL profundidade, IGUAL respeito, e ZERO juizo de valor.');
+    lines.push('O documento existe para o CLIENTE ESCOLHER com autonomia e co-responsabilidade.');
+    lines.push('NUNCA:');
+    lines.push('- Recomendar um endeavor sobre outro');
+    lines.push('- Usar "recomendamos", "sugerimos", "o mais forte", "melhor opcao", "menor risco"');
+    lines.push('- Rankear endeavors por preferencia ou forca');
+    lines.push('- Incluir secao "Recomendacao Estrategica" ou "Recomendacao Final"');
+    lines.push('- Classificar risco de negacao de forma que induza escolha (ex: um BAIXO e dois ALTO)');
+    lines.push('- Usar "destaca-se", "claramente superior", "se sobressai"');
+    lines.push('- Concluir com "portanto o endeavor X e o mais indicado"');
+    lines.push('FAZER:');
+    lines.push('- Apresentar FATOS objetivos: mercado, SOC, politicas, riscos — sem conclusao de "qual e melhor"');
+    lines.push('- Cada endeavor tem pros E contras — mostrar AMBOS igualmente');
+    lines.push('- A secao final deve ser "PROXIMOS PASSOS" (escolher, enriquecer CV, coletar evidencias)');
+    lines.push('- Se os 3 endeavors tiverem riscos diferentes, apresentar como FATO, nao como argumento de escolha');
+    lines.push('VIOLACAO DESTA REGRA = REJEICAO AUTOMATICA DO DOCUMENTO INTEIRO.');
+    lines.push('');
     if (!isEB1) {
       lines.push('Execute APENAS os prompts 1-3 do sistema EB-2 NIW.');
       lines.push('O output deve conter:');
-      lines.push('1. Quadro-resumo comparativo com 3 endeavors distintos');
+      lines.push('1. Quadro-resumo comparativo com 3 endeavors distintos (apresentacao NEUTRA, sem ranking)');
       lines.push('2. Para cada endeavor: descricao tecnica, publico-alvo, modelo de receita, projecao Y1/Y2');
       lines.push('3. 3 codigos SOC/BLS para cada endeavor (com validacao de compatibilidade educacional)');
-      lines.push('4. Analise de risco de negacao pelo USCIS para cada endeavor');
+      lines.push('4. Analise de risco para cada endeavor (apresentar como FATO, sem induzir escolha)');
       lines.push('5. Alinhamento com politicas federais');
+      lines.push('6. Secao final: PROXIMOS PASSOS (NAO "Recomendacao")');
     } else {
       lines.push('Execute APENAS os prompts 1-3 do sistema EB-1A (Kortix).');
       lines.push('O output deve conter:');
       lines.push('1. Mapeamento completo do perfil (10 categorias)');
       lines.push('2. Analise detalhada dos 10 criterios EB-1A (forca: ROBUSTA/PROMISSORA/EM DESENVOLVIMENTO)');
       lines.push('3. 3 codigos SOC/BLS alternativos com validacao');
-      lines.push('4. Quadro-resumo com endeavor proposto e criterios mais fortes');
+      lines.push('4. Quadro-resumo com endeavor proposto e criterios — SEM ranking ou recomendacao');
+      lines.push('5. Secao final: PROXIMOS PASSOS (NAO "Recomendacao")');
     }
   }
 
@@ -281,6 +313,150 @@ export async function POST(req: NextRequest) {
 
   const rulesSection = buildRulesSection(doc_type);
   const { selected_endeavor, selected_soc_code } = body;
+
+  // Special handling for endeavor assessment
+  if (doc_type === 'endeavor_assessment') {
+    const isEB1 = client.visa_type?.includes('EB-1') || client.visa_type?.includes('EB1');
+    const ragsPath = isEB1 ? RAGS_EB1 : RAGS_EB2;
+    const assessmentPrompt = [
+      '# AVALIAÇÃO DE ENDEAVOR — Parecer Estratégico',
+      `## Cliente: ${client.name}`,
+      `## Visto: ${client.visa_type}`,
+      '',
+      '## MISSÃO',
+      'Você é um estrategista de imigração sênior. O cliente enviou uma sugestão de endeavor (negócio/empreendimento)',
+      'e precisa de um PARECER ESTRATÉGICO antes de investir tempo e dinheiro nessa direção.',
+      '',
+      'Sua análise deve ser HONESTA e DIRETA — se a ideia é ruim, diga. Se é boa, diga por quê.',
+      'Se precisa de ajustes, especifique exatamente o quê.',
+      '',
+      '## O QUE AVALIAR',
+      '',
+      '### 1. VIABILIDADE IMIGRATÓRIA (peso 40%)',
+      '- A proposta atende aos requisitos do visto? (Dhanasar 3 prongs para EB-2 NIW, ou 10 critérios para EB-1A)',
+      '- O endeavor é específico o suficiente ou soa como "consultoria genérica"?',
+      '- Existe produto/serviço tangível ou é só conceito?',
+      '- O perfil do peticionário conecta com o endeavor? (formação + experiência → endeavor)',
+      '- Risco de anti-Cristine: o endeavor funciona SEM o peticionário? Se sim, mata Prong 3.',
+      '',
+      '### 2. VIABILIDADE DE MERCADO (peso 30%)',
+      '- O mercado-alvo existe e tem tamanho documentável? (dados SBA, BLS, Census)',
+      '- O pricing faz sentido pro público-alvo?',
+      '- Existe lacuna real que o endeavor preenche?',
+      '- Há concorrentes diretos? Se sim, qual o diferencial?',
+      '',
+      '### 3. ALINHAMENTO COM O ANTEPROJETO (peso 20%)',
+      '- Como essa sugestão se compara com os endeavors já propostos no anteprojeto?',
+      '- É melhor, pior, ou complementar?',
+      '- Pode ser hibridizado com algum endeavor existente?',
+      '',
+      '### 4. RISCOS ESPECÍFICOS (peso 10%)',
+      '- Riscos de RFE (Request for Evidence)',
+      '- Riscos de negação',
+      '- Riscos de nomenclatura (nome da empresa soa como algo que não é?)',
+      '- Riscos de anti-Cristine (termos que provam que funciona sem o peticionário)',
+      '',
+      '## FONTES OBRIGATÓRIAS',
+      `Leia os RAGs ANTES de avaliar: ${ragsPath}`,
+      '',
+      '## DADOS DO CLIENTE',
+      `Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`,
+      'Leia TODOS os documentos do cliente — especialmente:',
+      '- O anteprojeto existente (se houver) para comparar os endeavors propostos',
+      '- O documento/PDF que o cliente enviou com a sugestão',
+      '- CV, timeline, certificados para validar conexão perfil ↔ endeavor',
+      '',
+      generation_instructions ? `## CONTEXTO ADICIONAL DO PAULO\n${generation_instructions}\n` : '',
+      '## PESQUISA WEB OBRIGATÓRIA',
+      '- Pesquise dados BLS/SBA/Census sobre o mercado-alvo do endeavor proposto',
+      '- Pesquise concorrentes diretos nos EUA',
+      '- Pesquise códigos SOC compatíveis',
+      '- Verifique se o nome da empresa já existe (sunbiz.org, Secretary of State)',
+      '',
+      '## OUTPUT',
+      'Formato: .md (documento interno de trabalho)',
+      `Salvar em: ${outputDir}`,
+      `Nome: Parecer_Endeavor_${clientSlug}.md`,
+      '',
+      '## ESTRUTURA DO PARECER',
+      '',
+      '### Cabeçalho',
+      '- Cliente, visto, data, endeavor avaliado',
+      '',
+      '### Resumo Executivo (3-5 linhas)',
+      '- Veredicto: ADOTAR / ADAPTAR / REJEITAR',
+      '- Score de viabilidade: 0-100',
+      '',
+      '### Análise de Viabilidade Imigratória',
+      '- Prong 1 (Mérito + Importância Nacional): nota + justificativa',
+      '- Prong 2 (Bem Posicionado): nota + justificativa',
+      '- Prong 3 (Waiver): nota + justificativa + check anti-Cristine',
+      '',
+      '### Análise de Mercado',
+      '- Tamanho do mercado com fontes',
+      '- Lacuna identificada',
+      '- Pricing: realista ou não?',
+      '- Concorrentes',
+      '',
+      '### Comparação com Anteprojeto',
+      '- Tabela comparativa: endeavor sugerido vs. endeavors do anteprojeto',
+      '- Recomendação de hibridização (se aplicável)',
+      '',
+      '### Riscos e Mitigações',
+      '- Tabela: risco | nível | mitigação',
+      '',
+      '### Correções Necessárias',
+      '- Lista específica do que precisa mudar pra funcionar',
+      '',
+      '### Códigos SOC Recomendados',
+      '- Tabela: código | ocupação | salário mediano | compatibilidade',
+      '',
+      '### Veredicto Final',
+      '- ADOTAR: usar como está',
+      '- ADAPTAR: usar com as correções listadas',
+      '- REJEITAR: não usar, motivo claro',
+      '- Se ADAPTAR: formulação sugerida do endeavor final',
+      '',
+      '## REGRAS',
+      '- NUNCA expor infraestrutura interna (RAGs, Petition Engine, Obsidian)',
+      '- NUNCA usar terminologia jurídica (advogado, tribunal, tradução juramentada)',
+      '- USAR terminologia administrativa (consultor, oficial de imigração, tradução certificada)',
+      '- Ser HONESTO — não inflar uma ideia ruim pra agradar o cliente',
+      '- Dados SEMPRE com fonte verificável',
+      rulesSection,
+    ].filter(Boolean).join('\n');
+
+    const promptFileName = `AVALIAR_ENDEAVOR_${clientSlug}.md`;
+    if (!existsSync(PROMPTS_DIR)) mkdirSync(PROMPTS_DIR, { recursive: true });
+    const assessmentPromptPath = path.join(PROMPTS_DIR, promptFileName);
+    writeFileSync(assessmentPromptPath, assessmentPrompt, 'utf-8');
+
+    const claudeCommand = `claude -p "Leia ${assessmentPromptPath} e execute tudo." --allowedTools Bash,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch`;
+
+    return NextResponse.json({
+      data: {
+        prompt: assessmentPrompt,
+        metadata: {
+          system: 'Endeavor Assessment',
+          systemName: 'Endeavor Assessment',
+          doc_type: 'endeavor_assessment',
+          client_name: client.name,
+          client_id: client.id,
+          output_dir: outputDir,
+          recommended_model: 'claude-opus-4',
+          instruction_source: 'endeavor_assessment_generator',
+          instruction_path: assessmentPromptPath,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          rulesInjected: readRules().filter((r: any) => r.active && (!r.doc_type || r.doc_type === doc_type)).length,
+          rags_path: ragsPath,
+          pipeline: ['endeavor_assessment', 'quality_gate'],
+        },
+        prompt_path: assessmentPromptPath,
+        prompt_file: assessmentPromptPath,
+        claude_command: claudeCommand,
+      },
+    });
+  }
 
   // Special handling for anteprojeto/projeto-base
   const isAnteprojeto = doc_type.startsWith('anteprojeto_') || doc_type.startsWith('projeto_base_');
@@ -537,6 +713,18 @@ export async function POST(req: NextRequest) {
         '- Leia TODOS os arquivos de sistema ANTES de escrever codigo.',
         '- Instrucoes estrategicas — NAO invente parametrizacoes.',
         '- ACENTUAÇÃO PORTUGUESA É INEGOCIÁVEL (para docs em PT-BR): EXEMPLOS DE VIOLAÇÃO: "introducao" (→ introdução), "peticao" (→ petição), "informacao" (→ informação), "certificacao" (→ certificação), "area" (→ área), "tambem" (→ também), "ja" (→ já), "ate" (→ até), "nao" (→ não), "sera" (→ será), "apos" (→ após), "servico" (→ serviço), "codigo" (→ código), "negocio" (→ negócio), "gestao" (→ gestão), "analise" (→ análise). Se sair sem acentos = REJEIÇÃO AUTOMÁTICA.',
+        '- SEGREDO INDUSTRIAL — NUNCA expor infraestrutura interna no documento:',
+        '  - NUNCA mencionar RAG, RAG I, RAG II, RAG III, repositorio de argumentacao, base de conhecimento',
+        '  - NUNCA mencionar Petition Engine, Forjado por, gerado automaticamente, gerado por IA/Claude/sistema',
+        '  - NUNCA mencionar Obsidian, formato .md, markdown, ferramentas de producao, pipeline',
+        '  - NUNCA incluir versao (V1, V2, V3), Separation of Concerns, Quality Gate, auto-learning no documento',
+        '  - NUNCA incluir disclaimers tipo DOCUMENTO INTERNO, Rascunho, Para Revisao',
+        '  - NUNCA incluir glossarios de ferramentas internas (RAG I = tal coisa)',
+        '  - O documento DEVE parecer produzido por ESPECIALISTA HUMANO experiente, NAO por sistema automatizado',
+        '- TERMINOLOGIA ADMINISTRATIVA — NUNCA usar linguagem juridica/advocaticia:',
+        '  - NUNCA: equipe juridica, advogado, escritorio de advocacia, representacao legal, traducao juramentada',
+        '  - USAR: equipe tecnica, consultor/especialista, consultoria, suporte tecnico, traducao certificada',
+        '  - USCIS eh processo ADMINISTRATIVO. NUNCA: tribunal, juiz, sentenca, julgamento, litigio',
         doc_type === 'saas_evidence' ? [
           '',
           '## REGRAS ESPECIFICAS PARA SAAS EVIDENCE (OBRIGATORIO)',
@@ -586,21 +774,59 @@ export async function POST(req: NextRequest) {
           '- BENCHMARK: VF_business plan_ikaro ferreira souza.docx — COPIAR o nível de densidade e visual.',
           '',
         ].join('\n') : null,
-        isResume ? [
+        isResume && doc_type === 'resume_eb2_niw' ? [
           '',
-          '## REGRAS ESPECIFICAS PARA RESUME (CRITICO — V2.0 Premium)',
+          '## REGRAS ESPECIFICAS PARA RESUME EB-2 NIW (CRITICO — V2.0 Premium)',
+          '- IDIOMA: 100% em PORTUGUES BRASILEIRO. Todo texto corrido em portugues. Termos tecnicos e nomes proprios em italico podem ficar em ingles. ACENTUACAO OBRIGATORIA.',
+          '- FONT: Garamond em TODO o documento. 20pt nome, 11pt secao, 10.5pt corpo, 9pt contact/footer. ZERO Arial, ZERO Calibri.',
+          '- HEADER: Tabela 3 rows x 2 cols. Row 0-1: Navy #2D3E50 (nome + RESUME + EB-2 NIW + SOC code). Row 2: Teal #3498A2 accent.',
+          '- FOOTER: Barra Navy com "Page X of Y" em branco, Garamond 9pt.',
+          '- MARGENS: 0.65" laterais, 0" topo (header colado), 0.5" bottom.',
+          '- SECTION HEADERS: Barra Navy #2D3E50 full-width com texto branco centralizado, Garamond 11pt Bold.',
+          '- SUB-HEADERS: Barra Teal #3498A2 full-width, Garamond 10pt Bold branco.',
+          '- EVIDENCE BLOCKS: Tabela 2 colunas — metadata ESQUERDA (5760 DXA), thumbnail DIREITA (4320 DXA).',
+          '  Borda #CCCCCC. Impact label "Description & Impact" em bold #2D3E50, texto italic #333333.',
+          '  Impact DENTRO do bloco, NUNCA abaixo. Minimo 4 linhas por paragrafo de impacto.',
+          '  Thumbnail: NAO tente gerar imagem. SEMPRE coloque o placeholder exato: [THUMBNAIL — Exhibit X]',
+          '  onde X eh o numero da evidencia (1, 2, 3...). O script insert_thumbnails.py vai substituir depois.',
+          '  CADA evidence block DEVE ter um placeholder [THUMBNAIL — Exhibit X] na celula da direita.',
+          '  Se a evidencia eh "EVIDENCIA 10 - global.pdf", coloque [THUMBNAIL — Exhibit 10].',
+          '- CORES PERMITIDAS: Navy #2D3E50, Teal #3498A2, White, Black, #333333, #666666, #F5F5F5, #CCCCCC. NENHUMA outra.',
+          '- PAGE BREAKS: Cada secao principal (Navy header) DEVE comecar em pagina nova.',
+          '',
+          '## ESTRUTURA EB-2 NIW (OBRIGATORIA — NAO usar estrutura EB-1A)',
+          '- NAO organizar por criterio C1-C10 (isso eh EB-1A). Organizar por TEMA.',
+          '- NAO mencionar Dhanasar no corpo do resume (pertence a Cover Letter).',
+          '- NAO citar numeros de evidencia no texto corrido ([Exhibit 1], [Evidence 3] etc.).',
+          '- NAO mencionar cartas de recomendacao no corpo do resume.',
+          '- NAO listar evidencias no final do documento.',
+          '- INCLUIR inferencias tecnicas e nexos causais: cada realizacao deve ter conexao explicita com a qualificacao.',
+          '- Secoes obrigatorias: Sintese, Historico (Gantt), Experiencia, Contribuicoes Tecnicas (por TEMA), Publicacoes, Formacao, Cursos, Cartas de Recomendacao.',
+          '- NUNCA incluir secao de PROPOSED ENDEAVORS, ENDEAVORS ou escolha de endeavor. Isso pertence ao Anteprojeto, NAO ao resume.',
+          '- NUNCA incluir dados financeiros (revenue, projecao, receita, faturamento, lucro, investimento, ROI). Isso pertence ao Business Plan.',
+          '- NUNCA copiar conteudo de arquivos de Anteprojeto ou Projeto-Base. Ignorar completamente esses arquivos.',
+          '- NUNCA incluir codigos SOC alternativos ou comparativos de endeavors. O resume apresenta UM perfil, nao opcoes.',
+          '',
+          '- Apos gerar: rodar QUALITY_REVIEWER.md (script de QA obrigatorio no sistema).',
+          '',
+        ].join('\n') : null,
+        isResume && doc_type !== 'resume_eb2_niw' ? [
+          '',
+          '## REGRAS ESPECIFICAS PARA RESUME EB-1A (CRITICO — V2.0 Premium)',
           '- BENCHMARKS: Thiago (61 imgs, 78 tabelas, 54pg) e Andre Cerbasi (37 imgs, 48 tabelas)',
-          '- HEADER: Tabela Navy (#2D4F5F) 1x2 colunas — nome esquerda, contato direita. TODAS as paginas.',
-          '- FOOTER: "Page X of Y" alinhado direita, Arial 9pt cinza #666666. SEM barra navy no footer.',
-          '- MARGENS: 0.59" laterais, ~0.4" topo. NAO 1" padrao. Margens estreitas = visual premium.',
+          '- HEADER: Tabela Navy (#2D3E50) 3 rows x 2 colunas — nome + RESUME + EB-1A + SOC.',
+          '- FOOTER: Barra Navy com "Page X of Y" em branco, Garamond 9pt.',
+          '- MARGENS: 0.65" laterais, 0" topo, 0.5" bottom.',
           '- SECTION HEADERS: Barra Navy full-width com texto branco centralizado, 11pt Bold.',
-          '- EVIDENCE BLOCKS: Tabela 2 colunas — metadata ESQUERDA (5797 DXA), thumbnail DIREITA (4743 DXA).',
-          '  Thumbnail da 1a pagina do PDF de evidencia. Gerar com PyMuPDF/fitz.',
-          '  Se PDF nao encontrado: placeholder "[THUMBNAIL — Evidence X]" em italico cinza.',
-          '- FONT: Arial em TODO o documento. 14pt nome, 11pt secao, 10pt corpo, 9pt contact.',
-          '- COR: Titulos Navy #2D4F5F (NAO preto). Corpo preto. Secundario #333333. Terciario #666666.',
-          '- CONCISAO: Max 18K chars. Description & Impact = 2-3 paragrafos MAX.',
+          '- EVIDENCE BLOCKS: Tabela 2 colunas — metadata ESQUERDA (5760 DXA), thumbnail DIREITA (4320 DXA).',
+          '  Thumbnail: NAO tente gerar imagem. SEMPRE coloque o placeholder exato: [THUMBNAIL — Exhibit X]',
+          '  onde X eh o numero da evidencia. O script insert_thumbnails.py vai substituir depois.',
+          '  CADA evidence block DEVE ter um placeholder [THUMBNAIL — Exhibit X] na celula da direita.',
+          '- FONT: Garamond em TODO o documento. 20pt nome, 11pt secao, 10.5pt corpo, 9pt contact.',
+          '- COR: Navy #2D3E50 (NAO preto). Corpo preto. Secundario #333333. Terciario #666666.',
+          '- CONCISAO: Description & Impact = minimo 4 linhas por paragrafo.',
           '- BOXES INSTITUCIONAIS: Fundo #F5F5F5, borda #CCCCCC, texto 9.5pt italic #333333.',
+          '- PAGE BREAKS: Cada secao principal DEVE comecar em pagina nova.',
           '- Apos gerar: rodar QUALITY_REVIEWER.md (script de QA obrigatorio no sistema).',
           '',
         ].join('\n') : null,
@@ -611,7 +837,25 @@ export async function POST(req: NextRequest) {
         '',
         '## DADOS DO CLIENTE',
         `Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`,
-        'Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.',
+        isResume ? [
+          'Leia APENAS os seguintes tipos de documentos do cliente:',
+          '- CV / curriculum vitae / timeline',
+          '- Diplomas, certificados, cursos',
+          '- Artigos, publicacoes, capitulos de livro',
+          '- Premiacoes, reconhecimentos',
+          '- Cartas de recomendacao / apoio',
+          '- Documentos pessoais (passaporte, RG) para dados biograficos',
+          '- Evidencias de contribuicao (relatorios, projetos, patentes)',
+          '',
+          'NUNCA LEIA estes arquivos (pertencem a outras etapas do pipeline):',
+          '- Anteprojeto*.md / Anteprojeto*.pdf (etapa de pre-projeto com 3 endeavors — IRRELEVANTE para resume)',
+          '- Projeto_Base*.md / Projeto_Base*.pdf (etapa de projeto)',
+          '- Business*Plan* / BP_* (etapa de business plan — dados financeiros NAO pertencem ao resume)',
+          '- Cover*Letter* / COVER_* (etapa de cover letter)',
+          '- Metodologia* / Declaracao* (etapas separadas)',
+          '- Qualquer arquivo na subpasta _Forjado por Petition Engine/',
+          '- Planilhas financeiras / projecoes de receita',
+        ].join('\n') : 'Leia todos os documentos de evidencia na pasta do cliente para construir o perfil.',
         '',
         '## OUTPUT',
         `Crie a pasta se nao existir: ${outputDir}`,
