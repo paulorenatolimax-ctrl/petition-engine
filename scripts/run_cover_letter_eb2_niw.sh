@@ -459,10 +459,17 @@ Após consolidar, imprima estatísticas:
 
 echo "[FASE 7] Consolidação concluída."
 
-# ═══ FASE 7.5: FIX FORMATAÇÃO (compressão de spacing) ═══
+# ═══ FASE 7.5: FIX FORMATAÇÃO COMPLETO ═══
 echo ""
-echo "[FASE 7.5/12] COMPRESSÃO DE FORMATAÇÃO..."
-if [ -f "${OUTPUT_DIR}/${CONSOLIDATED}" ]; then
+echo "[FASE 7.5/12] FIX FORMATAÇÃO (spacing + images + anchor + cleanup)..."
+FIX_SCRIPT="$(cd "$(dirname "$0")" && pwd)/fix_docx_formatting.py"
+if [ -f "${OUTPUT_DIR}/${CONSOLIDATED}" ] && [ -f "$FIX_SCRIPT" ]; then
+  FINAL_NAME="Cover_Letter_EB2_NIW_${SLUG}.docx"
+  python3 "$FIX_SCRIPT" "${OUTPUT_DIR}/${CONSOLIDATED}" "${OUTPUT_DIR}/${FINAL_NAME}"
+  echo "[FASE 7.5] Formatação corrigida → ${FINAL_NAME}"
+elif [ -f "${OUTPUT_DIR}/${CONSOLIDATED}" ]; then
+  # Fallback inline fix
+  echo "[FASE 7.5] WARN: fix_docx_formatting.py não encontrado, usando fallback..."
   python3 -c "
 from docx import Document
 from docx.shared import Pt, Inches
@@ -517,6 +524,13 @@ else
   echo "[FASE 7.5] WARN: Arquivo consolidado não encontrado."
 fi
 
+# Determine final file name for SOC
+if [ -f "${OUTPUT_DIR}/Cover_Letter_EB2_NIW_${SLUG}.docx" ]; then
+  FINAL_DOC="${OUTPUT_DIR}/Cover_Letter_EB2_NIW_${SLUG}.docx"
+else
+  FINAL_DOC="${OUTPUT_DIR}/${CONSOLIDATED}"
+fi
+
 # ═══ FASE 8: SOC (SEPARATION OF CONCERNS) ═══
 echo ""
 echo "[FASE 8/12] SEPARATION OF CONCERNS — Revisão cruzada..."
@@ -528,7 +542,7 @@ Leia: ${SOC_PATH} — Protocolo de Revisão
 Leia: ${QUALITY_PATH} — Pareceres da Qualidade (50 regras)
 
 TAREFA: Revisão cruzada completa do documento:
-${OUTPUT_DIR}/${CONSOLIDATED}
+${FINAL_DOC}
 
 Você é o REVISOR, não o autor. Seja RIGOROSO.
 
@@ -544,7 +558,7 @@ Para CADA problema encontrado:
 - O que está errado
 - Como corrigir
 
-Salve: ${OUTPUT_DIR}/REVIEW_${CONSOLIDATED%.docx}.md
+Salve: ${OUTPUT_DIR}/REVIEW_Cover_Letter_EB2_NIW_${SLUG}.md
 " --allowedTools Bash,Read,Write,Edit,Glob,Grep
 
 echo "[FASE 8] SOC concluída."
@@ -552,7 +566,7 @@ echo "[FASE 8] SOC concluída."
 echo ""
 echo "============================================================================"
 echo "PIPELINE COMPLETO — Cover Letter EB-2 NIW: ${CLIENT_NAME}"
-echo "Documento: ${OUTPUT_DIR}/${CONSOLIDATED}"
-echo "Review: ${OUTPUT_DIR}/REVIEW_${CONSOLIDATED%.docx}.md"
+echo "Documento final: ${FINAL_DOC}"
+echo "Review: ${OUTPUT_DIR}/REVIEW_Cover_Letter_EB2_NIW_${SLUG}.md"
 echo "Fases: ${PHASES_DIR}/"
 echo "============================================================================"

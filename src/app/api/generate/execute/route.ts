@@ -1993,6 +1993,22 @@ export async function POST(req: NextRequest) {
         send('stage', { stage: 'warning', phase: 1.7, message: `Script insert_thumbnails.py nao encontrado: ${INSERT_THUMBNAILS_PATH}` });
       }
 
+      // ═══ PHASE 1.8: FIX DOCX FORMATTING ═══
+      const FIX_FORMATTING_PATH = path.join(process.cwd(), 'scripts', 'fix_docx_formatting.py');
+      if (mainDocx.endsWith('.docx') && existsSync(FIX_FORMATTING_PATH)) {
+        send('stage', { stage: 'phase', phase: 1.8, message: 'FASE 1.8: FIX FORMATAÇÃO (spacing + anchor + cleanup)' });
+        try {
+          const fixOutput = execSync(
+            `python3 "${FIX_FORMATTING_PATH}" "${mainDocx}"`,
+            { encoding: 'utf-8', timeout: 60000 }
+          );
+          send('stage', { stage: 'gen_complete', phase: 1.8, message: fixOutput.trim().split('\n').pop() || 'Formatação corrigida' });
+        } catch (fixErr: unknown) {
+          const errMsg = fixErr instanceof Error ? fixErr.message : String(fixErr);
+          send('stage', { stage: 'warning', phase: 1.8, message: `Fix formatação falhou: ${errMsg.slice(0, 200)}` });
+        }
+      }
+
       // ═══ PHASE 2: SEPARATION OF CONCERNS ═══
       upsertGeneration({ id: genId, current_phase: 'phase_2', current_phase_label: 'Separation of Concerns — Revisao cruzada' });
       send('stage', { stage: 'phase', phase: 2, message: 'FASE 2: REVISAO CRUZADA — Separation of Concerns' });
