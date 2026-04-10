@@ -459,6 +459,64 @@ Após consolidar, imprima estatísticas:
 
 echo "[FASE 7] Consolidação concluída."
 
+# ═══ FASE 7.5: FIX FORMATAÇÃO (compressão de spacing) ═══
+echo ""
+echo "[FASE 7.5/12] COMPRESSÃO DE FORMATAÇÃO..."
+if [ -f "${OUTPUT_DIR}/${CONSOLIDATED}" ]; then
+  python3 -c "
+from docx import Document
+from docx.shared import Pt, Inches
+from docx.oxml.ns import qn
+import sys
+
+path = sys.argv[1]
+doc = Document(path)
+fixed = 0
+
+for p in doc.paragraphs:
+    pf = p.paragraph_format
+    if pf.space_after and pf.space_after > Pt(8):
+        pf.space_after = Pt(6)
+        fixed += 1
+    if pf.space_before and pf.space_before > Pt(8):
+        pf.space_before = Pt(3)
+        fixed += 1
+    if pf.line_spacing and pf.line_spacing > Pt(20):
+        pf.line_spacing = Pt(14)
+        fixed += 1
+    for run in p.runs:
+        for br in run._element.findall(qn('w:br')):
+            if br.get(qn('w:type')) == 'page':
+                is_header = run.bold and run.font.size and run.font.size >= Pt(13)
+                if not is_header:
+                    br.getparent().remove(br)
+                    fixed += 1
+
+for table in doc.tables:
+    for row in table.rows:
+        for cell in row.cells:
+            for p in cell.paragraphs:
+                pf = p.paragraph_format
+                if pf.space_after and pf.space_after > Pt(6):
+                    pf.space_after = Pt(3)
+                if pf.space_before and pf.space_before > Pt(6):
+                    pf.space_before = Pt(2)
+
+for section in doc.sections:
+    section.top_margin = Inches(0.7)
+    section.bottom_margin = Inches(0.6)
+    section.left_margin = Inches(0.8)
+    section.right_margin = Inches(0.6)
+
+doc.save(path)
+chars = sum(len(p.text) for p in doc.paragraphs)
+print(f'Fixed {fixed} formatting issues. ~{chars // 2500} pages.')
+" "${OUTPUT_DIR}/${CONSOLIDATED}" 2>&1
+  echo "[FASE 7.5] Formatação comprimida."
+else
+  echo "[FASE 7.5] WARN: Arquivo consolidado não encontrado."
+fi
+
 # ═══ FASE 8: SOC (SEPARATION OF CONCERNS) ═══
 echo ""
 echo "[FASE 8/12] SEPARATION OF CONCERNS — Revisão cruzada..."
