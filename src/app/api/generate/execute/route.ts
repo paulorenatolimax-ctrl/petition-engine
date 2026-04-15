@@ -3,10 +3,11 @@ import { execSync, spawn } from 'child_process';
 import { readFileSync, existsSync, readdirSync, mkdirSync, statSync, writeFileSync } from 'fs';
 import path from 'path';
 
-const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
-const QUALITY_PATH = '/Users/paulo1844/Documents/Aqui OBSIDIAN/Aspectos Gerais da Vida/PROEX/Pareceres da Qualidade - Apontamentos (insumos para agente de qualidade).md';
-const EB1A_SYSTEM_PATH = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema cover auto/EB1A_SYSTEM_v5';
-const INSERT_THUMBNAILS_PATH = '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema résumé auto/insert_thumbnails.py';
+import {
+  SOC_PATH, QUALITY_PATH, EB1A_SYSTEM_PATH, INSERT_THUMBNAILS_PATH,
+  EB2_NIW_SYSTEM_PATH as EB2_NIW_SYS_PATH, RAGS_EB2 as RAGS_EB2_PATH,
+  CLAUDE_BIN_CANDIDATES, DEFAULT_CASES_DIR,
+} from '@/lib/config/paths';
 const ORCHESTRATOR_SPEC_PATH = path.join(process.cwd(), 'systems', 'cover-letter-eb1a-orchestrator', 'ORCHESTRATOR_COVER_LETTER_EB1A.md');
 const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
 const GENERATIONS_FILE = path.join(process.cwd(), 'data', 'generations.json');
@@ -38,13 +39,7 @@ function upsertGeneration(gen: any) {
 let _claudeBin: string | null = null;
 function findClaudeBin(): string | null {
   if (_claudeBin) return _claudeBin;
-  const candidates = [
-    '/Users/paulo1844/.npm-global/bin/claude',
-    `${process.env.HOME}/.npm-global/bin/claude`,
-    '/usr/local/bin/claude',
-    '/opt/homebrew/bin/claude',
-    `${process.env.HOME}/.claude/bin/claude`,
-  ];
+  const candidates = CLAUDE_BIN_CANDIDATES;
   for (const p of candidates) {
     if (existsSync(p)) { _claudeBin = p; return p; }
   }
@@ -792,8 +787,8 @@ Use os padroes de qualidade em: ${QUALITY_PATH}
 // COVER LETTER EB-2 NIW MULTI-PHASE ORCHESTRATOR
 // ═══════════════════════════════════════════════════════════════════════
 
-const EB2_NIW_SYSTEM_PATH = '/Users/paulo1844/Documents/AIOS_Petition Engine/CONSTRUTOR COVER EB-2 NIW/V3_Project Instructions';
-const RAGS_EB2 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs';
+const EB2_NIW_SYSTEM_PATH = EB2_NIW_SYS_PATH;
+const RAGS_EB2 = RAGS_EB2_PATH;
 const EB2_NIW_ORCHESTRATOR_SPEC_PATH = path.join(process.cwd(), 'systems', 'cover-letter-eb2niw-orchestrator', 'ORCHESTRATOR_COVER_LETTER_EB2NIW.md');
 
 const TRANSVERSAL_RULES_EB2_NIW = `
@@ -1482,7 +1477,7 @@ export async function POST(req: NextRequest) {
     if (client?.docs_folder_path) clientBaseDir = client.docs_folder_path;
   }
   if (!clientBaseDir) {
-    clientBaseDir = `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client_name || 'output'}/`;
+    clientBaseDir = `${DEFAULT_CASES_DIR}${client_name || 'output'}/`;
   }
   const outputDir = path.join(clientBaseDir, '_Forjado por Petition Engine') + '/';
 

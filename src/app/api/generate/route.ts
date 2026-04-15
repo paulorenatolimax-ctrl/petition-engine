@@ -7,9 +7,14 @@ const CLIENTS_FILE = path.join(process.cwd(), 'data', 'clients.json');
 const SYSTEMS_FILE = path.join(process.cwd(), 'data', 'systems.json');
 const RULES_FILE = path.join(process.cwd(), 'data', 'error_rules.json');
 const PROMPTS_DIR = path.join(process.cwd(), 'data', 'prompts');
-const SOC_PATH = '/Users/paulo1844/Documents/Claude/Projects/C.P./SEPARATION_OF_CONCERNS.md';
-const CP_DIR = '/Users/paulo1844/Documents/Claude/Projects/C.P.';
+import {
+  SOC_PATH, CP_DIR, RAGS_EB1 as RAGS_EB1_PATH, RAGS_EB2 as RAGS_EB2_PATH,
+  BENCHMARK_THAYSE as BENCHMARK_THAYSE_PATH, BENCHMARK_THIAGO as BENCHMARK_THIAGO_PATH,
+  DEFAULT_CASES_DIR,
+} from '@/lib/config/paths';
 const PPTX_GENERATOR = path.join(process.cwd(), 'scripts', 'generate_pptx_v2.py');
+
+import { buildRulesSection as buildRulesSectionFromRepo } from '@/lib/rules/repository';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readRules(): any[] {
@@ -120,10 +125,10 @@ const DOC_TYPE_PATTERNS: Record<string, string[]> = {
   endeavor_assessment: ['AVALIAR_ENDEAVOR_', 'ENDEAVOR_ASSESSMENT_'],
 };
 
-const RAGS_EB1 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-1/';
-const RAGS_EB2 = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs/';
-const BENCHMARK_THAYSE = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/LILIAN/Thayse/';
-const BENCHMARK_THIAGO = '/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/';
+const RAGS_EB1 = RAGS_EB1_PATH;
+const RAGS_EB2 = RAGS_EB2_PATH;
+const BENCHMARK_THAYSE = BENCHMARK_THAYSE_PATH;
+const BENCHMARK_THIAGO = BENCHMARK_THIAGO_PATH;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function buildAnteprojetoInstruction(client: any, system: any, docType: string, outputDir: string, rulesSection: string, selectedEndeavor?: string, selectedSocCode?: string): string {
@@ -338,7 +343,7 @@ export async function POST(req: NextRequest) {
   }
 
   const clientSlug = client.name.replace(/\s+/g, '_');
-  const clientBaseDir = client.docs_folder_path || `/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/${client.name}/`;
+  const clientBaseDir = client.docs_folder_path || `${DEFAULT_CASES_DIR}${client.name}/`;
   const outputDir = path.join(clientBaseDir, '_Forjado por Petition Engine') + '/';
 
   // Try to find existing specific instruction first
