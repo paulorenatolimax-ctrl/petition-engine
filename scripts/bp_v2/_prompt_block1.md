@@ -1,0 +1,3 @@
+INSTRUCTION: You are writing Block 1 of a Business Plan for DentalShield LLC. The piped input contains research data, financial data, and detailed section instructions. Generate the ACTUAL content in Portuguese (Brazil), formal, investor-facing. Use markdown headers (## H1, ### H2, #### H3). Include [N] footnotes inline with verifiable sources. List all footnotes at the end. Output 2000-3500 words of REAL business plan prose, tables, and data. Do NOT describe what you would write — WRITE the actual content.
+
+CONTEXT FILE: /Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/scripts/bp_v2/_context_block1.md

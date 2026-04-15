@@ -1,0 +1,74 @@
+{
+  "company": {
+    "name": "DentalShield Compliance Solutions LLC",
+    "naics": "541990",
+    "naics_desc": "All Other Professional, Scientific, and Technical Services",
+    "soc_codes": ["31-9091.00", "49-2098.00", "13-1161.00", "13-1041.00", "43-4171.00"],
+    "services": [
+      {"name": "Regulatory Compliance Auditing", "pct_revenue": 30},
+      {"name": "Infection Control & Biosafety Programs", "pct_revenue": 25},
+      {"name": "IoT Monitoring (SteriSensor)", "pct_revenue": 20},
+      {"name": "Staff Training & Certification", "pct_revenue": 15},
+      {"name": "Waste Management (BiohazardBox)", "pct_revenue": 5},
+      {"name": "Digital Compliance (ComplianceScreen)", "pct_revenue": 5}
+    ],
+    "locations": [
+      {"city": "Tampa", "state": "FL", "county": "Hillsborough", "phase": "Y0", "type": "HQ"},
+      {"city": "Miami", "state": "FL", "county": "Miami-Dade", "phase": "Y2", "type": "Branch"},
+      {"city": "Houston", "state": "TX", "county": "Harris", "phase": "Y2-Y5", "type": "Branch"}
+    ]
+  },
+  "market": {
+    "global_dental_services": {"value": "$614.2B", "year": 2024, "cagr": "6.2%", "source": "Grand View Research, Dental Services Market Report, 2024"},
+    "us_dental_market": {"value": "$183.4B", "year": 2024, "cagr": "5.8%", "source": "IBISWorld, Dentists in the US Industry Report 62121, 2024"},
+    "us_dental_practices": {"count": "201,117", "year": 2023, "source": "ADA Health Policy Institute, Supply of Dentists in the U.S.: 2001-2023"},
+    "us_dental_compliance_market": {"value": "$4.8B", "year": 2024, "cagr": "8.3%", "source": "MarketsandMarkets, Healthcare Regulatory Affairs Outsourcing Market, 2024"},
+    "us_infection_control_market": {"value": "$22.7B", "year": 2024, "cagr": "7.1%", "source": "Fortune Business Insights, Infection Control Market Size, 2024"},
+    "us_healthcare_iot_market": {"value": "$89.7B", "year": 2024, "cagr": "18.4%", "source": "Precedence Research, IoT in Healthcare Market, 2024"},
+    "dental_compliance_violations": {"fines_avg": "$50,000-$100,000 per OSHA citation", "source": "OSHA, Penalties Summary, Updated January 2024"},
+    "osha_dental_inspections": {"count": "3,200+", "year": 2023, "source": "OSHA, Dental Office Inspection Data, FY2023"}
+  },
+  "bls": {
+    "dental_hygienists": {"soc": "29-1292", "median": "$87,530", "growth": "7%", "openings": "12,100/yr", "source": "BLS, OEWS May 2024"},
+    "dental_lab_techs": {"soc": "51-9081", "median": "$46,990", "growth": "6%", "openings": "6,800/yr", "source": "BLS, OEWS May 2024"},
+    "compliance_officers": {"soc": "13-1041", "median": "$75,670", "growth": "4%", "openings": "33,800/yr", "source": "BLS, OEWS May 2024"},
+    "market_research": {"soc": "13-1161", "median": "$74,680", "growth": "13%", "openings": "99,800/yr", "source": "BLS, OEWS May 2024"},
+    "medical_equipment_repair": {"soc": "49-9062", "median": "$60,360", "growth": "14%", "openings": "6,700/yr", "source": "BLS, OEWS May 2024"}
+  },
+  "census": {
+    "hillsborough_county": {"population": "1,512,070", "median_income": "$65,782", "poverty_rate": "12.1%", "source": "U.S. Census Bureau, ACS 2023 5-Year Estimates"},
+    "miami_dade_county": {"population": "2,701,767", "median_income": "$59,274", "poverty_rate": "14.8%", "source": "U.S. Census Bureau, ACS 2023 5-Year Estimates"},
+    "harris_county": {"population": "4,780,913", "median_income": "$65,394", "poverty_rate": "14.2%", "source": "U.S. Census Bureau, ACS 2023 5-Year Estimates"},
+    "tampa_msa_dental_practices": {"count": "2,847", "source": "ADA Health Policy Institute, 2023"},
+    "miami_msa_dental_practices": {"count": "4,231", "source": "ADA Health Policy Institute, 2023"},
+    "houston_msa_dental_practices": {"count": "5,112", "source": "ADA Health Policy Institute, 2023"}
+  },
+  "regulations": {
+    "osha_bloodborne": {"title": "OSHA Bloodborne Pathogens Standard", "cfr": "29 CFR 1910.1030", "source": "OSHA.gov"},
+    "osha_hazcom": {"title": "OSHA Hazard Communication Standard", "cfr": "29 CFR 1910.1200", "source": "OSHA.gov"},
+    "epa_medical_waste": {"title": "EPA Medical Waste Management Guidelines", "cfr": "40 CFR 259", "source": "EPA.gov"},
+    "cdc_dental_guidelines": {"title": "CDC Guidelines for Infection Control in Dental Health-Care Settings", "year": 2003, "updated": 2016, "source": "CDC MMWR 52(RR-17)"},
+    "hipaa": {"title": "HIPAA Privacy and Security Rules", "cfr": "45 CFR Parts 160, 164", "source": "HHS.gov"},
+    "florida_dental_board": {"title": "Florida Board of Dentistry Regulations", "statute": "F.S. Chapter 466", "source": "Florida Department of Health"},
+    "texas_dental_board": {"title": "Texas State Board of Dental Examiners", "statute": "Texas Occupations Code Title 3 Subtitle D", "source": "TSBDE.texas.gov"}
+  },
+  "federal_policies": [
+    {"name": "CDC Dental Infection Prevention & Control", "agency": "CDC", "impact": "Mandatory sterilization protocols for all dental offices", "source": "CDC.gov/oralhealth"},
+    {"name": "OSHA National Emphasis Program — Healthcare", "agency": "OSHA", "impact": "Increased inspections of dental offices, $15,625 per serious violation", "source": "OSHA NEP 2024"},
+    {"name": "ADA Standards of Clinical Dentistry", "agency": "ADA", "impact": "Industry self-regulation standards adopted by 78% of state boards", "source": "ADA.org/resources"},
+    {"name": "HIPAA Enforcement Rule Updates 2024", "agency": "HHS OCR", "impact": "Higher penalties for non-compliance, $1.5M max per category", "source": "HHS.gov/hipaa"},
+    {"name": "FDA Regulation of Dental Devices", "agency": "FDA", "impact": "510(k) clearance for IoT dental monitoring devices", "source": "FDA.gov, 21 CFR 872"}
+  ],
+  "epi_multiplier": {
+    "naics_54": 3.35,
+    "source": "Economic Policy Institute, Updated Employment Multipliers, NAICS 54",
+    "calculation": "Each direct job creates 2.35 additional jobs in supply chain and induced spending"
+  },
+  "competitors": [
+    {"name": "OSHA Review Inc.", "location": "National", "focus": "Online OSHA training", "weakness": "No on-site auditing"},
+    {"name": "Total Medical Compliance", "location": "National", "focus": "Medical/dental compliance", "weakness": "Generic, not dental-specific"},
+    {"name": "Dental Compliance Specialists", "location": "Southeast", "focus": "State board compliance", "weakness": "No IoT/tech integration"},
+    {"name": "Practice Compliance Solutions", "location": "Texas", "focus": "HIPAA compliance", "weakness": "No infection control expertise"},
+    {"name": "SmartCompliance", "location": "National", "focus": "SaaS compliance tracking", "weakness": "Software-only, no consulting"}
+  ]
+}

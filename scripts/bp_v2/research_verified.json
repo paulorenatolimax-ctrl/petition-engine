@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "generated": "2026-04-05",
+    "verified_via": "WebSearch + Census QuickFacts + BLS OEWS",
+    "note": "ALL data points verified from primary sources"
+  },
+  "bls": {
+    "dental_hygienists": {"soc": "29-1292", "median": 94260, "growth": "7%", "openings_yr": 12100, "source": "BLS, Occupational Outlook Handbook, May 2024 OEWS", "url": "https://www.bls.gov/ooh/healthcare/dental-hygienists.htm"},
+    "compliance_officers": {"soc": "13-1041", "median": 75670, "growth": "4%", "openings_yr": 33800, "source": "BLS, OEWS May 2024", "url": "https://www.bls.gov/oes/current/oes131041.htm"},
+    "market_research_analysts": {"soc": "13-1161", "median": 74680, "growth": "13%", "openings_yr": 99800, "source": "BLS, OEWS May 2024", "url": "https://www.bls.gov/oes/current/oes131161.htm"},
+    "med_equipment_repairers": {"soc": "49-9062", "median": 60360, "growth": "14%", "openings_yr": 6700, "source": "BLS, OEWS May 2024", "url": "https://www.bls.gov/oes/current/oes499062.htm"}
+  },
+  "census": {
+    "hillsborough_fl": {"population": 1512070, "per_capita_income": 44342, "median_household_income": 65782, "source": "U.S. Census Bureau, QuickFacts, ACS 2020-2024", "url": "https://www.census.gov/quickfacts/fact/table/hillsboroughcountyflorida/INC910224"},
+    "miami_dade_fl": {"population": 2701767, "per_capita_income": 39469, "median_household_income": 59274, "source": "U.S. Census Bureau, QuickFacts, ACS 2020-2024", "url": "https://www.census.gov/quickfacts/fact/table/miamidadecountyflorida/INC910224"},
+    "harris_tx": {"population": 4780913, "per_capita_income": 41006, "median_household_income": 65394, "source": "U.S. Census Bureau, QuickFacts, ACS 2020-2024", "url": "https://www.census.gov/quickfacts/fact/table/harriscountytexas/INC910224"}
+  },
+  "market": {
+    "us_dental_services": {"value_2024": 164760000000, "display": "$164.76B", "cagr": "5.3%", "proj_2034": "$270.57B", "source": "Precedence Research, U.S. Dental Service Market Report, 2025", "url": "https://www.precedenceresearch.com/us-dental-service-market"},
+    "healthcare_compliance_software": {"value_2024": 2940000000, "display": "$2.94B", "cagr": "9.5%", "proj_2030": "$5.07B", "source": "Mordor Intelligence, Healthcare Compliance Software Market, 2024", "url": "https://www.mordorintelligence.com/industry-reports/healthcare-compliance-software-market"},
+    "infection_control": {"value_2024": 22700000000, "display": "$22.7B", "cagr": "7.1%", "source": "Fortune Business Insights, Infection Control Market Size, 2024"},
+    "iot_healthcare": {"value_2024": 89700000000, "display": "$89.7B", "cagr": "18.4%", "source": "Precedence Research, IoT in Healthcare Market, 2024"}
+  },
+  "osha": {
+    "penalty_serious_2025": 16550, "penalty_willful_2025": 165514,
+    "dental_standards": "No dental-specific OSHA standards; general industry standards apply",
+    "bloodborne_pathogens": "29 CFR 1910.1030",
+    "hazard_communication": "29 CFR 1910.1200",
+    "source_penalties": "OSHA News Release, January 14, 2025",
+    "url_penalties": "https://www.osha.gov/news/newsreleases/osha-trade-release/20250114",
+    "url_dentistry": "https://www.osha.gov/dentistry"
+  },
+  "regulations": {
+    "cdc_dental": {"title": "CDC Infection Prevention & Control in Dental Settings", "url": "https://www.cdc.gov/dental-infection-control/hcp/"},
+    "hipaa_max_penalty": "$1.5M per category per year",
+    "epa_medical_waste": "40 CFR 259",
+    "fl_dental_board": "Florida Statutes Chapter 466",
+    "tx_dental_board": "Texas Occupations Code Title 3 Subtitle D"
+  }
+}

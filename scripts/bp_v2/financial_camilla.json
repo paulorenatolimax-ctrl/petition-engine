@@ -1,0 +1,67 @@
+{
+  "company": "DentalShield Compliance Solutions LLC",
+  "structure": "LLC",
+  "state": "Florida",
+  "founder": "Camilla",
+  "revenue": {
+    "Y1": 627180, "Y2": 1238588, "Y3": 2108052, "Y4": 1576134, "Y5": 2964110,
+    "total_5yr": 8514064
+  },
+  "variable_costs": {
+    "Y1": 153696, "Y2": 303498, "Y3": 516504, "Y4": 386185, "Y5": 726552,
+    "pct_revenue": 24.51
+  },
+  "payroll": {
+    "Y1": 380976, "Y2": 643956, "Y3": 847740, "Y4": 847740, "Y5": 1181784
+  },
+  "fixed_costs": {
+    "Y1": 109200, "Y2": 175200, "Y3": 217200, "Y4": 217200, "Y5": 265200
+  },
+  "employees": {
+    "Y1": 5, "Y2": 9, "Y3": 13, "Y4": 13, "Y5": 22,
+    "by_location": {
+      "tampa": {"Y1": 5, "Y2": 5, "Y3": 6, "Y4": 6, "Y5": 8},
+      "miami": {"Y1": 0, "Y2": 3, "Y3": 4, "Y4": 4, "Y5": 7},
+      "houston": {"Y1": 0, "Y2": 1, "Y3": 3, "Y4": 3, "Y5": 7}
+    }
+  },
+  "dre": {
+    "gross_revenue": {"Y1": 627180, "Y2": 1238588, "Y3": 2108052, "Y4": 1576134, "Y5": 2964110},
+    "total_costs": {"Y1": 643872, "Y2": 1122654, "Y3": 1581444, "Y4": 1451125, "Y5": 2173536},
+    "ebitda": {"Y1": -16692, "Y2": 115934, "Y3": 526608, "Y4": 125009, "Y5": 790574},
+    "net_income": {"Y1": -16692, "Y2": 86951, "Y3": 394956, "Y4": 93757, "Y5": 592931},
+    "ebitda_margin": {"Y1": "-2.7%", "Y2": "9.4%", "Y3": "25.0%", "Y4": "7.9%", "Y5": "26.7%"}
+  },
+  "investments": {
+    "phase1_Y0": {"tangible": 78108, "intangible": 56635, "working_capital": 40514, "total": 175257},
+    "phase2_Y2": {"tangible": 45200, "intangible": 28700, "working_capital": 24446, "total": 98346},
+    "phase3_Y4": {"tangible": 51800, "intangible": 43994, "working_capital": 24446, "total": 120240},
+    "total": 393843
+  },
+  "indicators": {
+    "npv": 396168,
+    "irr": 61.18,
+    "roi": 178.94,
+    "payback_years": 3,
+    "business_value": 2174346,
+    "discount_rate": 12
+  },
+  "breakeven": {
+    "Y1": 649266, "Y2": 1173150, "Y3": 1358628, "Y4": 1358628, "Y5": 1792734
+  },
+  "services_pricing": {
+    "regulatory_audit": {"hourly": 150, "monthly_retainer": 2500},
+    "infection_control": {"hourly": 125, "program_setup": 5000},
+    "iot_monitoring": {"monthly_per_device": 199, "setup": 1500},
+    "staff_training": {"per_session": 750, "certification_program": 3500},
+    "waste_management": {"monthly": 450},
+    "digital_compliance": {"monthly_saas": 299}
+  },
+  "tax": {
+    "effective_rate": 0.25,
+    "payroll_tax_fl": 0.0765,
+    "payroll_tax_tx": 0.0765,
+    "fl_no_income_tax": true,
+    "tx_franchise_threshold": 2470000
+  }
+}
