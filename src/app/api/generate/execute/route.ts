@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
       // ═══════════════════════════════════════════════════════════════
       if (doc_type === 'cover_letter_eb1a') {
         send('stage', { stage: 'info', phase: 0, message: '⚡ Pipeline multi-fase EB-1A ativado (10 fases)' });
-        send('stage', { stage: 'info', phase: 0, message: `Orchestrator: ${ORCHESTRATOR_SPEC_PATH}` });
+        send('stage', { stage: 'info', phase: 0, message: 'Orchestrator: EB-1A multi-phase pipeline (extracted module)' });
 
         // Resolve client docs path
         let clientDocsPath = '';
