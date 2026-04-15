@@ -122,6 +122,30 @@ async function runCoverLetterEB1APipeline(
   allFiles: string[];
 }> {
   const phasesDir = path.join(outputDir, 'phases');
+
+  // ═══ PHASE -1: EVIDENCE ORGANIZATION (Python) ═══
+  const evidenceDir = path.join(clientDocsPath, 'Evidence');
+  if (!existsSync(evidenceDir) || readdirSync(evidenceDir).length === 0) {
+    send('stage', { stage: 'phase', phase: '-1', message: 'FASE -1: ORGANIZAÇÃO DE EVIDÊNCIAS' });
+    send('stage', { stage: 'loading', phase: '-1', message: 'Escaneando pasta do cliente, classificando, filtrando, numerando...' });
+    const organizeScript = path.join(process.cwd(), 'scripts', 'core', 'organize_evidence.py');
+    if (existsSync(organizeScript)) {
+      try {
+        const orgResult = execSync(
+          `python3 "${organizeScript}" "${clientDocsPath}" --force`,
+          { encoding: 'utf-8', timeout: 300000, maxBuffer: 10 * 1024 * 1024 }
+        );
+        send('stage', { stage: 'gen_complete', phase: '-1', message: `Evidências organizadas: ${orgResult.split('\n').filter(l => l.includes('Valid:')).pop() || 'OK'}` });
+      } catch (err: unknown) {
+        const errMsg = (err as { stderr?: string })?.stderr || String(err);
+        send('stage', { stage: 'warning', phase: '-1', message: `Organizer falhou: ${errMsg.slice(0, 200)}. Continuando com pasta original.` });
+      }
+    } else {
+      send('stage', { stage: 'info', phase: '-1', message: 'organize_evidence.py não encontrado — pulando organização automática' });
+    }
+  } else {
+    send('stage', { stage: 'info', phase: '-1', message: `Evidence/ já existe com ${readdirSync(evidenceDir).length} arquivos — usando existente` });
+  }
   if (!existsSync(phasesDir)) mkdirSync(phasesDir, { recursive: true });
 
   const phaseResults: PhaseResult[] = [];
