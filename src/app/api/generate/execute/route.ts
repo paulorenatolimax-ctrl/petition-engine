@@ -506,6 +506,33 @@ export async function POST(req: NextRequest) {
         send('stage', { stage: 'warning', phase: 1.5, message: `Quality agent erro: ${qErr.message?.slice(0, 200)}` });
       }
 
+      // ═══ PHASE 1.6: PYTHON QUALITY GATE (DOCX formatting checks) ═══
+      // This catches what the TypeScript quality agent misses:
+      // Exhibit in résumé, missing Responsabilidades/Resultados, word count, footer, fonts
+      if (mainDocx.endsWith('.docx') && (doc_type?.includes('resume') || doc_type?.includes('cover_letter'))) {
+        send('stage', { stage: 'phase', phase: 1.6, message: 'FASE 1.6: PYTHON QUALITY GATE — Validacao DOCX (formatacao, estrutura, thumbnails)' });
+        const qualityGateScript = path.join(process.cwd(), 'scripts', 'core', 'quality_gate_resume.py');
+        if (existsSync(qualityGateScript)) {
+          try {
+            const { execSync: execSyncQG } = await import('child_process');
+            const qgResult = execSyncQG(
+              `python3 "${qualityGateScript}" "${mainDocx}"`,
+              { encoding: 'utf-8', maxBuffer: 5 * 1024 * 1024, timeout: 30000 }
+            );
+            send('stage', { stage: 'info', phase: 1.6, message: `Python quality gate output: ${qgResult.trim().slice(-300)}` });
+            send('stage', { stage: 'gen_complete', phase: 1.6, message: '✅ Python quality gate APROVADO' });
+          } catch (qgErr: unknown) {
+            // Exit code 1 = quality gate FAILED
+            const errOutput = (qgErr as { stdout?: string })?.stdout || '';
+            send('stage', { stage: 'warning', phase: 1.6, message: `⚠️ Python quality gate REPROVADO: ${errOutput.trim().slice(-500)}` });
+            send('stage', { stage: 'warning', phase: 1.6, message: 'Documento gerado mas NAO passou no quality gate de formatacao. Verifique manualmente.' });
+            // Don't block — warn only (blocking can be enabled later when the gate is mature)
+          }
+        } else {
+          send('stage', { stage: 'info', phase: 1.6, message: 'Python quality gate nao encontrado em scripts/core/ — pulando' });
+        }
+      }
+
       // ═══ PHASE 1.7: THUMBNAILS (for résumés and cover letters) ═══
       const needsThumbnails = (doc_type || '').includes('resume') || (doc_type || '').includes('cover_letter');
       if (needsThumbnails && mainDocx.endsWith('.docx') && existsSync(INSERT_THUMBNAILS_PATH)) {
