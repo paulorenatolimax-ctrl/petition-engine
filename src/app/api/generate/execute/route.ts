@@ -75,23 +75,22 @@ function findNewDocx(dir: string, afterMs: number): string[] {
 
 function autoVersionExisting(dir: string) {
   /**
-   * Auto-version: if output files already exist, rename them to V1, V2, etc.
-   * So the new generation doesn't overwrite previous work.
+   * Auto-version: if output files already exist, rename them with V[N]_ PREFIX.
+   * Convention: V1_arquivo.docx, V2_arquivo.docx, V3_arquivo.docx
+   * V prefix ALWAYS at front, never at end.
    */
   if (!existsSync(dir)) return;
   try {
     const files = readdirSync(dir).filter(f =>
       (f.endsWith('.docx') || f.endsWith('.pptx') || f.endsWith('.md') || f.endsWith('.json')) &&
-      !f.startsWith('REVIEW_') && !f.startsWith('.') && !f.includes('_V')
+      !f.startsWith('REVIEW_') && !f.startsWith('.') && !f.startsWith('V')
     );
     for (const f of files) {
       const fullPath = path.join(dir, f);
-      const ext = path.extname(f);
-      const base = f.slice(0, -ext.length);
-      // Find next version number
+      // Find next version number (check V1_, V2_, V3_ prefixed files)
       let v = 1;
-      while (existsSync(path.join(dir, `${base}_V${v}${ext}`))) v++;
-      const versionedPath = path.join(dir, `${base}_V${v}${ext}`);
+      while (existsSync(path.join(dir, `V${v}_${f}`))) v++;
+      const versionedPath = path.join(dir, `V${v}_${f}`);
       try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         const { renameSync } = require('fs');

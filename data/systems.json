@@ -24,7 +24,7 @@
   {
     "id": "3",
     "system_name": "Cover Letter EB-1A",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema cover auto/EB1A_SYSTEM_v5/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema cover auto/EB1A_SYSTEM_v5/",
     "version_tag": "5.0",
     "file_count": 24,
     "is_active": true,
@@ -46,7 +46,7 @@
   {
     "id": "5",
     "system_name": "Business Plan",
-    "system_path": "/Users/paulo1844/Documents/OMNI/_SISTEMAS (Petition Engine)/BP Orquestrador/BP_SYSTEM_V3/",
+    "system_path": "/Users/paulo1844/Documents/3_OMNI/_SISTEMAS (Petition Engine)/BP Orquestrador/BP_SYSTEM_V3/",
     "version_tag": "6.0",
     "file_count": 49,
     "is_active": true,
@@ -57,7 +57,7 @@
   {
     "id": "6",
     "system_name": "Metodologia",
-    "system_path": "/Users/paulo1844/Documents/_Z GLOBAL/Z_PROMPTS/_V2 Met e Dec (2026)/METODOLOGIA (PROMPTS)/",
+    "system_path": "/Users/paulo1844/Documents/5_Z GLOBAL/Z_PROMPTS/_V2 Met e Dec (2026)/METODOLOGIA (PROMPTS)/",
     "version_tag": "2.1",
     "file_count": 5,
     "is_active": true,
@@ -68,7 +68,7 @@
   {
     "id": "7",
     "system_name": "Declaração de Intenções",
-    "system_path": "/Users/paulo1844/Documents/_Z GLOBAL/Z_PROMPTS/_V2 Met e Dec (2026)/Declaração de Intenções (PROMPTS)/",
+    "system_path": "/Users/paulo1844/Documents/5_Z GLOBAL/Z_PROMPTS/_V2 Met e Dec (2026)/Declaração de Intenções (PROMPTS)/",
     "version_tag": "2.1",
     "file_count": 6,
     "is_active": true,
@@ -79,7 +79,7 @@
   {
     "id": "8",
     "system_name": "IMPACTO®",
-    "system_path": "/Users/paulo1844/Documents/_Z GLOBAL/_PRODUTO NOVO/agents/",
+    "system_path": "/Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/agents/",
     "version_tag": "1.0",
     "file_count": 9,
     "is_active": true,
@@ -90,7 +90,7 @@
   {
     "id": "9",
     "system_name": "Estratégia EB-2 NIW",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
     "version_tag": "1.0",
     "file_count": 9,
     "is_active": true,
@@ -101,7 +101,7 @@
   {
     "id": "10",
     "system_name": "Estratégia EB-1A",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/",
     "version_tag": "1.0",
     "file_count": 3,
     "is_active": true,
@@ -112,7 +112,7 @@
   {
     "id": "11",
     "system_name": "Localização",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/LOCALIZAÇÃO - PROMPT/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/LOCALIZAÇÃO - PROMPT/",
     "version_tag": "1.0",
     "file_count": 2,
     "is_active": true,
@@ -133,20 +133,20 @@
   },
   {
     "id": "13",
-    "system_name": "Cartas Satélite",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
+    "system_name": "Cartas de Testemunho & Satélite (EB-1)",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
     "version_tag": "2.0",
     "file_count": 6,
     "is_active": true,
     "recommended_model": "claude-sonnet-4",
-    "doc_type": "satellite_letter",
+    "doc_type": "recommendation_letters",
     "note": "Integrado no Sistema Produtor de Cartas EB-1 v2.0",
     "created_at": "2026-03-24T10:00:00Z"
   },
   {
     "id": "14",
     "system_name": "Cartas EB-1 v2.0",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
     "version_tag": "2.0",
     "file_count": 6,
     "is_active": true,
@@ -157,7 +157,7 @@
   {
     "id": "15",
     "system_name": "Case Compass EB-2 NIW",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
     "version_tag": "1.0",
     "file_count": 9,
     "is_active": true,
@@ -169,7 +169,7 @@
   {
     "id": "16",
     "system_name": "Case Compass EB-1A",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/",
     "version_tag": "1.0",
     "file_count": 10,
     "is_active": true,
@@ -181,7 +181,7 @@
   {
     "id": "17",
     "system_name": "Case Blueprint EB-2 NIW",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/EB-2 - ESTRATÉGIAS/",
     "version_tag": "1.0",
     "file_count": 9,
     "is_active": true,
@@ -193,7 +193,7 @@
   {
     "id": "18",
     "system_name": "Case Blueprint EB-1A",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/EB-1 - ESTRATÉGIA EB-1 (PROMPTS)/_ASSISTENTE FINAL (ESTE)/TENTATIVA 2 - KORTIX/",
     "version_tag": "1.0",
     "file_count": 10,
     "is_active": true,
@@ -204,30 +204,30 @@
   },
   {
     "id": "19",
-    "system_name": "Cartas Satélite EB-1A",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
+    "system_name": "Cartas de Testemunho EB-1A",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
     "version_tag": "3.1",
     "file_count": 6,
     "is_active": true,
     "recommended_model": "claude-sonnet-4",
-    "doc_type": "satellite_letter_eb1",
+    "doc_type": "testimony_letters_eb1a",
     "created_at": "2026-03-30T14:00:00Z"
   },
   {
     "id": "20",
-    "system_name": "Cartas Satélite EB-2 NIW",
-    "system_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)/eb2-niw-letters/",
+    "system_name": "Cartas de Testemunho EB-2 NIW",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)/eb2-niw-letters/",
     "version_tag": "1.0",
     "file_count": 4,
     "is_active": true,
     "recommended_model": "claude-sonnet-4",
-    "doc_type": "satellite_letter_eb2",
+    "doc_type": "testimony_letters_eb2_niw",
     "created_at": "2026-03-30T14:00:00Z"
   },
   {
     "id": "21",
     "system_name": "SaaS Evidence Architect",
-    "system_path": "/Users/paulo1844/Documents/_Z GLOBAL/Z_PROMPTS/SAAS (PROMPTS)/",
+    "system_path": "/Users/paulo1844/Documents/5_Z GLOBAL/Z_PROMPTS/SAAS (PROMPTS)/",
     "version_tag": "2.0",
     "file_count": 2,
     "is_active": true,

@@ -89,7 +89,7 @@
     "visa_type": "EB-2-NIW",
     "status": "active",
     "company_name": "",
-    "docs_folder_path": "/Users/paulo1844/Documents/OMNI/_CLIENTES/SAMOLA DE OLIVEIRA SIMÃO",
+    "docs_folder_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/SAMOLA DE OLIVEIRA SIMÃO",
     "created_at": "2026-03-30T17:39:20.326Z",
     "client_profiles": null
   },
@@ -215,6 +215,182 @@
     "company_name": "",
     "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE",
     "created_at": "2026-04-02T07:39:58.005Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775441169698",
+    "name": "Cristine Correa",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA",
+    "created_at": "2026-04-06T02:06:09.698Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775453301008",
+    "name": "Camilla Santana Pereira Paes de Barros",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA",
+    "created_at": "2026-04-06T05:28:21.008Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775506955804",
+    "name": "Regiane Glory",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs",
+    "created_at": "2026-04-06T20:22:35.804Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775649092158",
+    "name": "Ricardo Augusto Borges Porfirio Pereira",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)",
+    "created_at": "2026-04-08T11:51:32.158Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775651647098",
+    "name": "Flavia Tenório",
+    "email": "",
+    "visa_type": "EB-1A",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/DEBORAH/Flávia Tenório",
+    "created_at": "2026-04-08T12:34:07.098Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775741101105",
+    "name": "DANIELLE CEDINI",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/DANIELLE CEDINI (Refile - EB-2 NIW - DIRETO)",
+    "created_at": "2026-04-09T13:25:01.105Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775742017031",
+    "name": "CRISTINE CORREA",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA",
+    "created_at": "2026-04-09T13:40:17.031Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775746961942",
+    "name": "Vitor Mourão Rocha",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha",
+    "created_at": "2026-04-09T15:02:41.942Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775766330613",
+    "name": "Gustavo - G",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo",
+    "created_at": "2026-04-09T20:25:30.613Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775766356394",
+    "name": "Pedro - G",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Pedro",
+    "created_at": "2026-04-09T20:25:56.394Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775825159915",
+    "name": "Thiago Fernandes dos Santos ",
+    "email": "",
+    "visa_type": "EB-1A",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)",
+    "created_at": "2026-04-10T12:45:59.915Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775849407090",
+    "name": "MARCIO ELIAS BARBOSA ",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA ",
+    "created_at": "2026-04-10T19:30:07.090Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775941358526",
+    "name": "Márcio Elias Barbosa (O1) ",
+    "email": "",
+    "visa_type": "O-1",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Consultoras GIU e Karina Mariano",
+    "created_at": "2026-04-11T21:02:38.527Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1775965492262",
+    "name": "Bruno da Silva Ucella",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)",
+    "created_at": "2026-04-12T03:44:52.262Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1776002982474",
+    "name": "Daphne Carolini Catunda Bispo",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/KARINA S./Daphne Carolini Catunda Bispo",
+    "created_at": "2026-04-12T14:09:42.474Z",
+    "client_profiles": null
+  },
+  {
+    "id": "c1776020379063",
+    "name": "Ricardo de Moura Pinton",
+    "email": "",
+    "visa_type": "EB-2-NIW",
+    "status": "active",
+    "company_name": "",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Ricardo de Moura Pinton (DIRETO)",
+    "created_at": "2026-04-12T18:59:39.063Z",
     "client_profiles": null
   }
 ]

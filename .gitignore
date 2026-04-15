@@ -34,3 +34,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Runtime/ephemeral data
+data/generations.json
+data/prompts/
+
+# Audit reports (generated, not source)
+AUDIT_*.md
+AUDITORIA_*.md
+COMPLEMENTO_*.md
+PROMPT_AUDITORIA_*.md
+PROMPT_COWORK_*.md
