@@ -13,18 +13,8 @@ import { readFileSync, existsSync, readdirSync, mkdirSync, statSync, writeFileSy
 import path from 'path';
 import { EB1A_SYSTEM_PATH, INSERT_THUMBNAILS_PATH, SOC_PATH, QUALITY_PATH } from '@/lib/config/paths';
 import {
-  upsertGeneration, runClaude, findNewDocx, SendFn,
+  upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult,
 } from './base';
-
-// Re-declare locally to avoid import conflict with base.ts
-interface PhaseResult {
-  phase: string;
-  label: string;
-  success: boolean;
-  duration_seconds: number;
-  files_created: string[];
-  error?: string;
-}
 
 const ORCHESTRATOR_SPEC_PATH = path.join(process.cwd(), 'systems', 'cover-letter-eb1a-orchestrator', 'ORCHESTRATOR_COVER_LETTER_EB1A.md');
 

@@ -13,21 +13,12 @@ import { readFileSync, existsSync, readdirSync, mkdirSync, statSync, writeFileSy
 import path from 'path';
 import { EB2_NIW_SYSTEM_PATH as EB2_NIW_SYS_PATH, RAGS_EB2 as RAGS_EB2_PATH, INSERT_THUMBNAILS_PATH, SOC_PATH, QUALITY_PATH } from '@/lib/config/paths';
 import {
-  upsertGeneration, runClaude, findNewDocx, SendFn,
+  upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult,
 } from './base';
 
 const EB2_NIW_SYSTEM_PATH = EB2_NIW_SYS_PATH;
 const RAGS_EB2 = RAGS_EB2_PATH;
 const EB2_NIW_ORCHESTRATOR_SPEC_PATH = path.join(process.cwd(), 'systems', 'cover-letter-eb2niw-orchestrator', 'ORCHESTRATOR_COVER_LETTER_EB2NIW.md');
-
-interface PhaseResult {
-  phase: string;
-  label: string;
-  success: boolean;
-  duration_seconds: number;
-  files_created: string[];
-  error?: string;
-}
 
 // ═══════════════════════════════════════════════════════════════════════
 // COVER LETTER EB-2 NIW MULTI-PHASE ORCHESTRATOR
