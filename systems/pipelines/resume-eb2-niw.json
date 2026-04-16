@@ -1,0 +1,67 @@
+{
+  "doc_type": "resume_eb2_niw",
+  "name": "Résumé EB-2 NIW — Multi-Phase Pipeline",
+  "version": "1.0",
+  "description": "Generates EB-2 NIW résumé in 6 phases: organize → inventory → síntese → experiência → complementares → consolidação DOCX + quality gate",
+  "phases": [
+    {
+      "id": "0",
+      "name": "Evidence Organization",
+      "type": "python",
+      "script": "scripts/core/organize_evidence.py",
+      "args": ["{clientDocsPath}", "--force"],
+      "output": "{clientDocsPath}/Evidence/evidence_inventory.json",
+      "skip_if_exists": "{clientDocsPath}/Evidence/evidence_inventory.json"
+    },
+    {
+      "id": "1",
+      "name": "Síntese Profissional (500-700 palavras)",
+      "type": "claude",
+      "prompt": "Leia TODOS os arquivos .md em: {systemPath}\nLeia o inventário de evidências: {clientDocsPath}/Evidence/evidence_inventory.json\nLeia os documentos do cliente em: {clientDocsPath}\n\nGere APENAS a SÍNTESE PROFISSIONAL do résumé EB-2 NIW.\n\nREGRAS:\n- 500-700 palavras MÍNIMO\n- Narrativa densa em terceira pessoa\n- Inferências EMBUTIDAS: cada parágrafo tem fato + o que demonstra + nexo com qualificação\n- NUNCA mencionar código SOC no texto (só header)\n- NUNCA 'consultoria' — usar 'assessoria técnica especializada'\n- 100% em português brasileiro com acentuação correta\n- NUNCA mencionar PROEX, Kortix, Petition Engine\n\nSalve APENAS o texto da síntese em: {phasesDir}/phase_1_sintese.md\nNÃO gere DOCX ainda — apenas o texto em .md.",
+      "validation": {
+        "type": "word_count",
+        "min": 500,
+        "file": "{phasesDir}/phase_1_sintese.md"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Experiência Profissional (Responsabilidades + Resultados)",
+      "type": "claude",
+      "prompt": "Leia: {systemPath}\nLeia: {clientDocsPath}/Evidence/evidence_inventory.json\nLeia a síntese gerada: {phasesDir}/phase_1_sintese.md\nLeia os documentos do cliente: {clientDocsPath}\n\nGere APENAS a seção EXPERIÊNCIA PROFISSIONAL.\n\nPara CADA empresa/emprego do peticionário:\n\n[CARGO] | [EMPRESA] | [PERÍODO]\n\n### Principais Responsabilidades\n• responsabilidade 1\n• responsabilidade 2\n• responsabilidade 3\n\n### Principais Resultados e Impactos\n• resultado com métrica + inferência técnica\n• resultado com métrica + nexo com qualificação\n\n[Evidência Documental: nome do arquivo conforme evidence_inventory.json]\n\nREGRAS:\n- CADA empresa DEVE ter 'Principais Responsabilidades' E 'Principais Resultados e Impactos'\n- NUNCA bloco único sem sub-seções\n- Inferências em 3 camadas: fato → demonstra → nexo\n- NUNCA 'Exhibit' — usar 'Evidência'\n- NUNCA código SOC no texto\n- Datas até 2026 (presente)\n\nSalve em: {phasesDir}/phase_2_experiencia.md",
+      "validation": {
+        "type": "contains",
+        "patterns": ["Principais Responsabilidades", "Principais Resultados"],
+        "file": "{phasesDir}/phase_2_experiencia.md"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Seções Complementares",
+      "type": "claude",
+      "prompt": "Leia: {systemPath}\nLeia: {clientDocsPath}/Evidence/evidence_inventory.json\nLeia fases anteriores: {phasesDir}/phase_1_sintese.md, {phasesDir}/phase_2_experiencia.md\n\nGere as seções complementares:\n1. CONTRIBUIÇÕES TÉCNICAS (organizadas por TEMA, não por critério)\n2. PUBLICAÇÕES (artigos, livros, capítulos)\n3. FORMAÇÃO ACADÊMICA\n4. CURSOS E CERTIFICAÇÕES\n\nREGRAS:\n- Manter consistência com síntese e experiência já geradas\n- NUNCA incluir Proposed Endeavors (é do Anteprojeto)\n- NUNCA incluir dados financeiros (é do Business Plan)\n- NUNCA citar cartas de recomendação\n\nSalve em: {phasesDir}/phase_3_complementares.md",
+      "validation": {
+        "type": "exists",
+        "file": "{phasesDir}/phase_3_complementares.md"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Consolidação DOCX (python-docx)",
+      "type": "claude",
+      "prompt": "Leia TODOS os outputs das fases anteriores:\n- {phasesDir}/phase_1_sintese.md\n- {phasesDir}/phase_2_experiencia.md\n- {phasesDir}/phase_3_complementares.md\n- {clientDocsPath}/Evidence/evidence_inventory.json (para mapear evidências)\n\nLeia o sistema de formatação: {systemPath} (especialmente FORMATTING_SPEC e TEMPLATE)\n\nCONSOLIDE tudo num ÚNICO .docx com python-docx.\n\nFORMATAÇÃO OBRIGATÓRIA:\n- Font: Garamond 100% (20pt nome, 11pt seção, 10.5pt corpo, 9pt footer)\n- Header: Tabela Navy #2D3E50 (nome + RÉSUMÉ + EB-2 NIW + SOC code)\n- Section headers: Barra Navy #2D3E50 full-width, texto branco\n- Sub-headers: Barra Teal #3498A2\n- Evidence blocks: Tabela 2 colunas com [THUMBNAIL — Evidência N]\n- Footer: 'Page X of Y' em barra Navy\n- Margens: 0.65\" laterais, 1.5cm topo, 0.5\" bottom\n- Page breaks entre seções principais\n- MÍNIMO 3.500 palavras\n- NUNCA 'Exhibit' — usar 'Evidência'\n- NUNCA código SOC no corpo (só header)\n\nGere TAMBÉM thumbnail_map.json com paths do Evidence/ folder.\n\nSalve:\n- {outputDir}/resume_eb2_niw_{clientSlug}.docx\n- {outputDir}/thumbnail_map.json",
+      "validation": {
+        "type": "exists",
+        "file": "{outputDir}/resume_eb2_niw_{clientSlug}.docx"
+      }
+    },
+    {
+      "id": "5",
+      "name": "Quality Gate (Python)",
+      "type": "python",
+      "script": "scripts/core/quality_gate_resume.py",
+      "args": ["{outputDir}/resume_eb2_niw_{clientSlug}.docx"],
+      "fail_action": "warn"
+    }
+  ]
+}

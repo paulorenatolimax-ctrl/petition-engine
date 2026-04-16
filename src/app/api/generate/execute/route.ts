@@ -126,6 +126,74 @@ export async function POST(req: NextRequest) {
       });
 
       // ═══════════════════════════════════════════════════════════════
+      // GENERIC MULTI-PHASE PIPELINE (JSON spec-driven)
+      // Checks systems/pipelines/ for a spec before falling through
+      // ═══════════════════════════════════════════════════════════════
+      const { loadPipelineSpec, runMultiPhasePipeline, hasMultiPhaseSpec } = await import('@/lib/pipelines/generic');
+      const multiPhaseSpec = (doc_type && doc_type !== 'cover_letter_eb1a' && doc_type !== 'cover_letter_eb2_niw')
+        ? loadPipelineSpec(doc_type)
+        : null;
+
+      if (multiPhaseSpec) {
+        send('stage', { stage: 'info', phase: 0, message: `⚡ Pipeline multi-fase genérico: ${multiPhaseSpec.name} (${multiPhaseSpec.phases.length} fases)` });
+
+        let clientDocsPath = clientBaseDir;
+        if (client_id) {
+          const cs = readClients();
+          const cl = cs.find((c: { id: string; docs_folder_path?: string }) => c.id === client_id);
+          if (cl?.docs_folder_path) clientDocsPath = cl.docs_folder_path;
+        }
+
+        // Resolve system path from systems.json
+        let systemPath = '';
+        try {
+          const systems = JSON.parse(readFileSync(path.join(process.cwd(), 'data', 'systems.json'), 'utf-8'));
+          const sys = systems.find((s: { doc_type: string; system_path?: string }) => s.doc_type === doc_type);
+          if (sys?.system_path) systemPath = sys.system_path;
+        } catch {}
+
+        const phasesDir = path.join(outputDir, 'phases');
+        const clientSlug = (client_name || 'output').replace(/\s+/g, '_');
+
+        try {
+          const result = await runMultiPhasePipeline(
+            multiPhaseSpec,
+            claudeBin,
+            { clientDocsPath, outputDir, phasesDir, systemPath, clientSlug, clientName: client_name || '' },
+            send,
+            genId,
+            startTime,
+          );
+
+          const totalDuration = Math.round((Date.now() - startTime) / 1000);
+          upsertGeneration({
+            id: genId,
+            status: result.success ? 'completed' : 'failed',
+            completed_at: new Date().toISOString(),
+            duration_seconds: totalDuration,
+            output_files: result.allFiles.map(f => f.split('/').pop()),
+          });
+
+          send('complete', {
+            success: result.success,
+            pipeline: true,
+            pipeline_type: 'generic_multi_phase',
+            spec: multiPhaseSpec.name,
+            phases_total: result.phaseResults.length,
+            phases_succeeded: result.phaseResults.filter(p => p.success).length,
+            files_created: result.allFiles.map(f => f.split('/').pop()),
+            duration_seconds: totalDuration,
+          });
+        } catch (err: unknown) {
+          const errMsg = err instanceof Error ? err.message : String(err);
+          send('complete', { success: false, error: `Pipeline genérico falhou: ${errMsg}` });
+        }
+
+        controller.close();
+        return;
+      }
+
+      // ═══════════════════════════════════════════════════════════════
       // COVER LETTER EB-1A: MULTI-PHASE PIPELINE
       // ═══════════════════════════════════════════════════════════════
       if (doc_type === 'cover_letter_eb1a') {
