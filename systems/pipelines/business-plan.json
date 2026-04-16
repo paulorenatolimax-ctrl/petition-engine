@@ -1,0 +1,80 @@
+{
+  "doc_type": "business_plan",
+  "name": "Business Plan EB-2 NIW — Multi-Phase Pipeline",
+  "version": "1.0",
+  "description": "Generates EB-2 NIW Business Plan in 7 phases using BP_SYSTEM_V3 (42 sections). Based on benchmarks: Ikaro (67pg), Dental Shield/Camilla, Rafael Almeida.",
+  "phases": [
+    {
+      "id": "0",
+      "name": "Inventário + Pesquisa de Mercado",
+      "type": "claude",
+      "prompt": "Leia TODOS os arquivos em: {systemPath}\nEspecialmente: SISTEMA_BP.md, ARCHITECT_BP.md, FORMATTING_SPEC_BP.md, FORBIDDEN_CONTENT_BP.md\n\nLeia os documentos do cliente: {clientDocsPath}\nLeia o Anteprojeto/Projeto Base se existir.\n\nTAREFA: Pesquise na web dados ATUALIZADOS para o Business Plan:\n1. Dados BLS/Census para o setor do cliente (SOC code, salários, crescimento)\n2. Tamanho de mercado (TAM, SAM, SOM) com fontes reais\n3. Dados de concorrentes no setor\n4. Políticas governamentais relevantes (Executive Orders, regulações)\n5. Dados demográficos relevantes\n\nSalve um dossiê de pesquisa em: {phasesDir}/phase_0_research.md\nCom TODAS as fontes citadas (nome, ano, URL quando possível).",
+      "validation": {
+        "type": "exists",
+        "file": "{phasesDir}/phase_0_research.md"
+      }
+    },
+    {
+      "id": "1",
+      "name": "Seções 1-10 (Estratégia + Mercado)",
+      "type": "claude",
+      "prompt": "Leia o sistema BP: {systemPath}\nLeia os prompts das seções: {systemPath}/sections/01_S1*.md até {systemPath}/sections/10_S9*.md\nLeia a pesquisa: {phasesDir}/phase_0_research.md\nLeia os dados do cliente: {clientDocsPath}\n\nGere as seções S1 a S10 do Business Plan:\nS1. Sumário Executivo e Oportunidade de Negócio\nS2. Timeline do Negócio\nS3. Visão, Missão e Valores\nS4. Enquadramento Jurídico\nS5. Perspectivas do Mercado\nS5b. Relevância, Oportunidades e Perspectivas Futuras\nS6. Cadeia de Suprimentos\nS7. Empregabilidade Esperada\nS8. Gestão do Conhecimento\nS9. Impactos ESG\n\nREGRAS:\n- 100% em INGLÊS (en-US)\n- Dados com fontes reais (BLS, Census, IBISWorld, etc.)\n- NUNCA inventar estatísticas\n- Seguir exatamente o formato de cada seção conforme o prompt .md\n\nSalve em: {phasesDir}/phase_1_sections_S1_S10.md",
+      "validation": {
+        "type": "word_count",
+        "min": 3000,
+        "file": "{phasesDir}/phase_1_sections_S1_S10.md"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Seções 11-20 (Análise Competitiva + Marketing)",
+      "type": "claude",
+      "prompt": "Leia: {systemPath}\nLeia seções: {systemPath}/sections/11_S10*.md até {systemPath}/sections/22_S20*.md\nLeia pesquisa: {phasesDir}/phase_0_research.md\nLeia seções anteriores: {phasesDir}/phase_1_sections_S1_S10.md\nLeia dados do cliente: {clientDocsPath}\n\nGere seções S10 a S20:\nS10. Análise SWOT\nS11. SWOT Cruzada\nS11b. Matriz Ansoff\nS12. Análise de Concorrentes\nS13. Ameaça de Novos Entrantes\nS14. Poder de Negociação dos Clientes\nS15. Poder de Negociação dos Fornecedores\nS16. Produtos/Serviços Substitutos\nS17. Segmentação de Mercado\nS18. Público-Alvo B2C\nS19. Setor-Alvo B2B\nS20. Posicionamento da Marca\n\nManter consistência com S1-S10. Dados com fontes reais.\n\nSalve em: {phasesDir}/phase_2_sections_S11_S20.md",
+      "validation": {
+        "type": "word_count",
+        "min": 3000,
+        "file": "{phasesDir}/phase_2_sections_S11_S20.md"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Seções 21-30 (Operações + Recursos)",
+      "type": "claude",
+      "prompt": "Leia: {systemPath}\nLeia seções: {systemPath}/sections/23_S21*.md até {systemPath}/sections/33_S31*.md\nLeia fases anteriores: {phasesDir}/phase_1*.md, {phasesDir}/phase_2*.md\nLeia dados do cliente: {clientDocsPath}\n\nGere seções S21 a S31:\nS21. Produto — Análise de Valor\nS22. Análise de Preço\nS23. Praça — Estratégia de Distribuição\nS24. Promoção — Orçamento de Marketing\nS25. Estratégia de Marketing 4.0\nS26. Quadro de Funcionários\nS27. Layout do Empreendimento\nS28. Recursos Físicos e Equipamentos\nS29. Recursos Tecnológicos\nS30. Localização do Negócio\nS31. Capacidade Produtiva\n\nManter consistência com seções anteriores.\n\nSalve em: {phasesDir}/phase_3_sections_S21_S31.md",
+      "validation": {
+        "type": "word_count",
+        "min": 2000,
+        "file": "{phasesDir}/phase_3_sections_S21_S31.md"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Seções 32-40 (Financeiro + Conclusão)",
+      "type": "claude",
+      "prompt": "Leia: {systemPath}\nLeia seções: {systemPath}/sections/34_S32*.md até {systemPath}/sections/42_S40*.md\nLeia TODAS as fases anteriores: {phasesDir}/phase_0*.md, {phasesDir}/phase_1*.md, {phasesDir}/phase_2*.md, {phasesDir}/phase_3*.md\nLeia dados do cliente: {clientDocsPath}\n\nGere seções S32 a S40:\nS32. Premissas Financeiras\nS33. Investimentos\nS34. Estimativa de Receitas e Custos (Y1-Y5)\nS35. DRE — Demonstrativo de Resultados\nS36. Indicadores de Retorno (ROI, TIR, VPL, Payback)\nS37. Break-Even Point\nS38. Timeline de Implementação\nS39. Considerações Finais\nS40. Referências e Fontes\n\nAs projeções financeiras DEVEM ser conservadoras e consistentes com os dados das seções anteriores.\nCada número DEVE ter justificativa (fonte ou premissa).\n\nSalve em: {phasesDir}/phase_4_sections_S32_S40.md",
+      "validation": {
+        "type": "word_count",
+        "min": 2000,
+        "file": "{phasesDir}/phase_4_sections_S32_S40.md"
+      }
+    },
+    {
+      "id": "5",
+      "name": "Consolidação DOCX (python-docx)",
+      "type": "claude",
+      "prompt": "Leia TODOS os outputs das fases:\n- {phasesDir}/phase_0_research.md\n- {phasesDir}/phase_1_sections_S1_S10.md\n- {phasesDir}/phase_2_sections_S11_S20.md\n- {phasesDir}/phase_3_sections_S21_S31.md\n- {phasesDir}/phase_4_sections_S32_S40.md\n\nLeia o sistema de formatação: {systemPath}/FORMATTING_SPEC_BP.md\n\nCONSOLIDE tudo num ÚNICO .docx com python-docx.\n\nFORMATAÇÃO:\n- Idioma: 100% INGLÊS (en-US)\n- Font: Garamond em todo o documento\n- Capa profissional com nome da empresa e do peticionário\n- Table of Contents\n- Tabelas formatadas (financeiras com bordas, SWOT com cores)\n- Gráficos se possível (matplotlib): Revenue Y1-Y5, Break-Even, DRE\n- Footer com paginação\n- Notas de rodapé com fontes\n- MÍNIMO 40 páginas / 15.000 palavras\n\nNUNCA:\n- Mencionar PROEX, Kortix, Petition Engine\n- Inventar dados sem fonte\n- Usar 'consultoria' isolado\n\nSalve: {outputDir}/business_plan_{clientSlug}.docx",
+      "validation": {
+        "type": "exists",
+        "file": "{outputDir}/business_plan_{clientSlug}.docx"
+      }
+    },
+    {
+      "id": "6",
+      "name": "Quality Gate",
+      "type": "python",
+      "script": "scripts/core/quality_gate_resume.py",
+      "args": ["{outputDir}/business_plan_{clientSlug}.docx"],
+      "fail_action": "warn"
+    }
+  ]
+}
