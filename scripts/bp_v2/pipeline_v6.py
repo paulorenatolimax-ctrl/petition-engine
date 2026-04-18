@@ -7,7 +7,7 @@ Fixes: cover page, TOC, page breaks, footnote size 9pt single spacing,
 import subprocess, re, os
 from pathlib import Path
 
-BP_DIR = Path("/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
+BP_DIR = Path("/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
 CHARTS_DIR = Path("/Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/scripts/bp_v2/_charts")
 MD_INPUT  = BP_DIR / "BP_DentalShield_FULL.md"
 REF_DOC   = BP_DIR / "reference.docx"

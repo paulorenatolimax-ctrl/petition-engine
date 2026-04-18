@@ -14,7 +14,7 @@ from datetime import datetime
 
 # === PATHS ===
 SCRIPT_DIR = Path(__file__).parent
-OUTPUT_DIR = Path("/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
+OUTPUT_DIR = Path("/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
 RESEARCH_PATH = SCRIPT_DIR / "research_dental.json"
 FINANCIAL_PATH = SCRIPT_DIR / "financial_camilla.json"
 

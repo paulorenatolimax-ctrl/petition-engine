@@ -9,7 +9,7 @@ import sys
 from docx import Document
 from docx.shared import Inches, Emu
 
-DOC_PATH = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/resume_eb2_niw_Cristine_Correa.docx"
+DOC_PATH = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/resume_eb2_niw_Cristine_Correa.docx"
 DOC_TYPE = "eb2niw"
 
 # Allowed colors (hex, lowercase, no #)

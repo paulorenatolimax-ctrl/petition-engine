@@ -15,7 +15,7 @@ from docx.oxml import parse_xml
 import os
 
 # ─── CONFIG ────────────────────────────────────────────────────
-OUTPUT_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine"
+OUTPUT_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine"
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "resume_eb1a_Guilherme_Caldeira_De_Lello.docx")
 
 # Colors

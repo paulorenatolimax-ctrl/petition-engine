@@ -17,7 +17,7 @@ from docx.oxml import parse_xml
 # ============================================================
 # PATHS
 # ============================================================
-CLIENT_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Deni Rubens (Direto)"
+CLIENT_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Deni Rubens (Direto)"
 OUTPUT_DIR = os.path.join(CLIENT_DIR, "_AUTOMAÇÃO", "COVER LETTER")
 PARTS_DIR = os.path.join(CLIENT_DIR, "COVER LETTER")
 

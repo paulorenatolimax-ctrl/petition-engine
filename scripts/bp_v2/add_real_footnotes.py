@@ -238,7 +238,7 @@ def process_docx(input_path, output_path, endnotes_map):
 def main():
     """Post-process the BP to add real footnotes."""
     SCRIPT_DIR = Path(__file__).parent
-    OUTPUT_DIR = Path("/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
+    OUTPUT_DIR = Path("/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
 
     input_path = OUTPUT_DIR / "BP_DentalShield_V2.docx"
     output_path = OUTPUT_DIR / "BP_DentalShield_V2_FOOTNOTES.docx"

@@ -18,7 +18,7 @@ fi
 CLAUDE="/Users/paulo1844/.npm-global/bin/claude"
 PHASES_DIR="${OUTPUT_DIR}/phases"
 SYSTEM_PATH="/Users/paulo1844/Documents/AIOS_Petition Engine/CONSTRUTOR COVER EB-2 NIW/V3_Project Instructions"
-RAGS_PATH="/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs"
+RAGS_PATH="/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs"
 THUMBNAILS_SCRIPT="/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_sistema résumé auto/insert_thumbnails.py"
 SLUG=$(echo "$CLIENT_NAME" | tr ' ' '_')
 

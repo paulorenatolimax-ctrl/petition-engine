@@ -21,7 +21,7 @@ from docx.oxml import parse_xml
 
 # === PATHS ===
 SCRIPT_DIR = Path(__file__).parent
-OUTPUT_DIR = Path("/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
+OUTPUT_DIR = Path("/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
 
 # === DESIGN CONSTANTS ===
 FONT = "Garamond"

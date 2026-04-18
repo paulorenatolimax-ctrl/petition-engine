@@ -42,7 +42,7 @@ THUMB_WIDTH = 4320  # DXA
 COMPACT_META = 6480
 COMPACT_THUMB = 3600
 
-OUTPUT_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/"
+OUTPUT_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/"
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "resume_eb2_niw_Cristine_Correa.docx")
 
 BENEFICIARY_NAME = "CRISTINE CORREA"

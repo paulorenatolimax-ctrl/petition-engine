@@ -17,7 +17,7 @@ import os
 # ============================================================
 # CONFIG
 # ============================================================
-OUTPUT_PATH = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Deni Rubens (Direto)/BP_DRM_Solutions_LLC_DENI_RUBEN_MOREIRA_2026.docx"
+OUTPUT_PATH = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Deni Rubens (Direto)/BP_DRM_Solutions_LLC_DENI_RUBEN_MOREIRA_2026.docx"
 
 FONT_BODY = "Garamond"
 FONT_SIZE_BODY = Pt(11)

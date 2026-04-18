@@ -24,7 +24,7 @@ ONET_CODE = "15-1299.09"
 ONET_TITLE = "Information Technology Project Managers"
 FIELD = "Cybersecurity, IT Governance, and Technology Innovation"
 
-OUTPUT_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Antonio Santana/_Forjado por Petition Engine"
+OUTPUT_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Antonio Santana/_Forjado por Petition Engine"
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "cover_letter_eb1a_Antonio_Carlos_A_Santana.docx")
 
 # Colors

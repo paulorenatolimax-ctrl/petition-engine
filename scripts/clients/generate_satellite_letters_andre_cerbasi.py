@@ -23,8 +23,8 @@ from docx.oxml.ns import qn, nsdecls
 from docx.oxml import parse_xml
 import datetime
 
-OUTPUT_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/ANDRÉ CERBASI (EB-1)/Met e Dec"
-OUTPUT_DIR_PE = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/ANDRÉ CERBASI (EB-1)/_Forjado por Petition Engine"
+OUTPUT_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/ANDRÉ CERBASI (EB-1)/Met e Dec"
+OUTPUT_DIR_PE = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/ANDRÉ CERBASI (EB-1)/_Forjado por Petition Engine"
 
 os.makedirs(OUTPUT_DIR_PE, exist_ok=True)
 

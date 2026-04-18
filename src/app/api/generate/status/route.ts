@@ -1,8 +1,37 @@
 import { NextResponse } from 'next/server';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 const GENERATIONS_FILE = path.join(process.cwd(), 'data', 'generations.json');
+
+/**
+ * Watchdog lazy: qualquer entrada com status='processing' e started_at mais
+ * antigo que `maxAgeMinutes` é marcada automaticamente como 'failed'.
+ * Isso limpa "ghost processes" (casos em que o subprocess claude -p crashou
+ * silenciosamente e nunca atualizou o status). Executado a cada GET sem
+ * necessidade de cron/daemon separado.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function markStaleProcessesAsFailed(generations: any[], maxAgeMinutes = 30): boolean {
+  const now = Date.now();
+  const threshold = maxAgeMinutes * 60 * 1000;
+  let changed = false;
+  for (const g of generations) {
+    if (g.status !== 'processing' || !g.started_at) continue;
+    const startedMs = new Date(g.started_at).getTime();
+    if (Number.isNaN(startedMs)) continue;
+    const age = now - startedMs;
+    if (age > threshold) {
+      g.status = 'failed';
+      g.completed_at = new Date().toISOString();
+      const ageMin = Math.floor(age / 60000);
+      g.error_message = g.error_message
+        || `Process timed out (>${ageMin}min) — auto-marked failed by watchdog`;
+      changed = true;
+    }
+  }
+  return changed;
+}
 
 export async function GET() {
   if (!existsSync(GENERATIONS_FILE)) {
@@ -15,6 +44,15 @@ export async function GET() {
     generations = JSON.parse(readFileSync(GENERATIONS_FILE, 'utf-8'));
   } catch {
     return NextResponse.json({ data: [] });
+  }
+
+  // Lazy watchdog: limpa ghost processes antes de enriquecer
+  if (markStaleProcessesAsFailed(generations, 30)) {
+    try {
+      writeFileSync(GENERATIONS_FILE, JSON.stringify(generations, null, 2), 'utf-8');
+    } catch {
+      // Se write falhar, segue entregando dados in-memory — melhor que bloquear
+    }
   }
 
   // Enrich with computed fields

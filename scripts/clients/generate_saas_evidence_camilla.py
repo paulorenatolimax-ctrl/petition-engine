@@ -15,7 +15,7 @@ from docx.oxml.ns import nsdecls
 from docx.oxml import parse_xml
 
 # ─── CONFIG ───────────────────────────────────────────────────────
-OUTPUT_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine"
+OUTPUT_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine"
 OUTPUT_FILE = "saas_evidence_Camilla_Santana_Pereira_Paes_de_Barros.docx"
 OUTPUT_PATH = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
 

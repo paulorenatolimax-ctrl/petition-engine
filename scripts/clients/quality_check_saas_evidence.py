@@ -7,7 +7,7 @@ Checks all error rules from the generation prompt.
 import re
 from docx import Document
 
-DOC_PATH = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/saas_evidence_Camilla_Santana_Pereira_Paes_de_Barros.docx"
+DOC_PATH = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/saas_evidence_Camilla_Santana_Pereira_Paes_de_Barros.docx"
 
 def extract_text(path):
     doc = Document(path)

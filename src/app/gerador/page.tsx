@@ -188,10 +188,63 @@ export default function GeradorPage() {
     }
   }
 
+  // Polling fallback quando o stream SSE não conecta/quebra. Consulta
+  // /api/generate/status a cada 1.5s e traduz o status da geração ativa
+  // em executionStages. Timeout absoluto de 45min pra não ficar eterno.
+  async function pollingFallback(promptFile: string) {
+    const MAX_POLLS = 1800; // 45min ≈ 1800 * 1.5s
+    let polls = 0;
+    const tick = async () => {
+      polls++;
+      if (polls > MAX_POLLS) {
+        setExecutionStages(prev => [...prev, { stage: 'error', message: 'Timeout de polling (>45min) — verificar em /gerador/status' }]);
+        setExecuting(false);
+        return;
+      }
+      try {
+        const r = await fetch('/api/generate/status');
+        const { data } = await r.json();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const gen = (data || []).find((g: any) =>
+          g.prompt_file === promptFile || (g.prompt_file && g.prompt_file.endsWith(promptFile))
+        );
+        if (!gen) {
+          setTimeout(tick, 1500);
+          return;
+        }
+        if (gen.status === 'processing') {
+          setExecutionStages([{ stage: 'running', message: `Processando... ${gen.duration_display || (gen.age_seconds + 's')}` }]);
+          setTimeout(tick, 1500);
+        } else if (gen.status === 'completed') {
+          const outFiles = Array.isArray(gen.output_files) && gen.output_files.length > 0
+            ? gen.output_files.join(', ')
+            : (gen.output_path || '(sem output_path)');
+          setExecutionStages([{ stage: 'gen_complete', message: `Geração completa: ${outFiles}` }]);
+          setExecutionResult({ success: true, output_path: gen.output_path, output_files: gen.output_files });
+          setExecuting(false);
+        } else if (gen.status === 'failed') {
+          setExecutionStages([{ stage: 'error', message: gen.error_message || 'Geração falhou (sem error_message)' }]);
+          setExecutionResult({ success: false, error: gen.error_message });
+          setExecuting(false);
+        } else {
+          setTimeout(tick, 1500);
+        }
+      } catch (e) {
+        // backoff em erro de rede
+        setTimeout(tick, 2500);
+      }
+    };
+    tick();
+  }
+
   async function handleExecute(promptFile: string, clientName: string, docType: string) {
     setExecuting(true);
     setExecutionStages([]);
     setExecutionResult(null);
+
+    // Flag local: quando verdadeira, pollingFallback() assume a responsabilidade
+    // de chamar setExecuting(false). O finally abaixo respeita essa transferência.
+    let fellBackToPolling = false;
 
     try {
       const res = await fetch('/api/generate/execute', {
@@ -200,41 +253,75 @@ export default function GeradorPage() {
         body: JSON.stringify({ prompt_file: promptFile, client_name: clientName, doc_type: docType, client_id: selectedClient }),
       });
 
+      if (!res.ok) {
+        console.error('[SSE] fetch retornou', res.status, res.statusText);
+        setExecutionStages([{ stage: 'error', message: `HTTP ${res.status} — caindo em polling fallback` }]);
+        fellBackToPolling = true;
+        pollingFallback(promptFile);
+        return;
+      }
+
       const reader = res.body?.getReader();
+      if (!reader) {
+        console.error('[SSE] res.body.getReader() retornou null — stream indisponível');
+        setExecutionStages([{ stage: 'running', message: 'Stream SSE indisponível — usando polling fallback' }]);
+        fellBackToPolling = true;
+        pollingFallback(promptFile);
+        return;
+      }
+
+      console.log('[SSE] Reader aberto — aguardando eventos');
       const decoder = new TextDecoder();
+      let gotAnyEvent = false;
 
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const text = decoder.decode(value);
-          const events = text.split('\n\n').filter(Boolean);
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const text = decoder.decode(value);
+        const events = text.split('\n\n').filter(Boolean);
 
-          for (const event of events) {
-            try {
-              const lines = event.split('\n');
-              const eventLine = lines.find(l => l.startsWith('event:'));
-              const dataLine = lines.find(l => l.startsWith('data:'));
+        for (const event of events) {
+          try {
+            const lines = event.split('\n');
+            const eventLine = lines.find(l => l.startsWith('event:'));
+            const dataLine = lines.find(l => l.startsWith('data:'));
 
-              if (eventLine && dataLine) {
-                const eventType = eventLine.replace('event: ', '');
-                const data = JSON.parse(dataLine.replace('data: ', ''));
+            if (eventLine && dataLine) {
+              const eventType = eventLine.replace('event: ', '');
+              const data = JSON.parse(dataLine.replace('data: ', ''));
+              gotAnyEvent = true;
 
-                if (eventType === 'complete') {
-                  setExecutionResult(data);
-                } else {
-                  setExecutionStages(prev => [...prev, data]);
-                }
+              if (eventType === 'complete') {
+                setExecutionResult(data);
+              } else {
+                setExecutionStages(prev => [...prev, data]);
               }
-            } catch { /* parse error */ }
-          }
+            }
+          } catch { /* parse error */ }
         }
+      }
+
+      // Se o stream fechou sem emitir nenhum evento, provavelmente o backend
+      // crashou antes de começar. Cai em polling pra ver o estado real.
+      if (!gotAnyEvent) {
+        console.warn('[SSE] Stream fechou sem emitir eventos — caindo em polling fallback');
+        fellBackToPolling = true;
+        pollingFallback(promptFile);
+        return;
       }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setExecutionStages(prev => [...prev, { stage: 'error', message: `Erro de conexão: ${err.message}` }]);
+      console.error('[SSE] Exceção:', err);
+      setExecutionStages(prev => [...prev, { stage: 'error', message: `Erro de conexão: ${err.message} — tentando polling fallback` }]);
+      fellBackToPolling = true;
+      pollingFallback(promptFile);
+      return;
     } finally {
-      setExecuting(false);
+      // Só desligar executing se NÃO caímos em fallback —
+      // pollingFallback tem responsabilidade própria de chamar setExecuting(false)
+      if (!fellBackToPolling) {
+        setExecuting(false);
+      }
     }
   }
 
@@ -502,7 +589,7 @@ export default function GeradorPage() {
                                 </div>
 
                                 {/* Execution log — Phase 1 & Phase 2 stages */}
-                                {executionStages.length > 0 && (
+                                {(executionStages.length > 0 || executing) && (
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
                                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                     {executionStages.map((s: any, i: number) => {

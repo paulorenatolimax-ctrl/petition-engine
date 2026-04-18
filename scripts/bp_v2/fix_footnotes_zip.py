@@ -14,7 +14,7 @@ R = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
 CT = 'http://schemas.openxmlformats.org/package/2006/content-types'
 FONT = "Garamond"
 
-OUTPUT_DIR = Path("/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
+OUTPUT_DIR = Path("/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_BP/_Atualizado (pós-entendimento novo)")
 INPUT = OUTPUT_DIR / "BP_DentalShield_V2.docx"
 OUTPUT = OUTPUT_DIR / "BP_DentalShield_V2_FINAL.docx"
 

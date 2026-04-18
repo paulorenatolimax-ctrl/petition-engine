@@ -15,7 +15,7 @@ import os
 import re
 
 # ─── CONFIG ────────────────────────────────────────────────────
-BASE_DIR = "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine"
+BASE_DIR = "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Guilherme Caldeira De Lello OS5195 15DEZ25 Kayenne AJUSTE/_Forjado por Petition Engine"
 INPUT_FILE = os.path.join(BASE_DIR, "resume_eb1a_Guilherme_Caldeira_De_Lello_V1.docx")
 OUTPUT_FILE = os.path.join(BASE_DIR, "resume_eb1a_Guilherme_Caldeira_De_Lello_REVIEWED.docx")
 
