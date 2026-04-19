@@ -61,12 +61,36 @@ export function findClaudeBin(): string | null {
   return null;
 }
 
+export interface RunClaudeOptions {
+  /** Hard wall-clock timeout. Default 45min. */
+  timeoutMs?: number;
+  /** Idle timeout — kill if no stdout/stderr for this long. Default 10min. */
+  idleTimeoutMs?: number;
+}
+
+export interface RunClaudeResult {
+  code: number;
+  stdout: string;
+  stderr: string;
+  /** True if killed by hard or idle timeout. */
+  timedOut?: boolean;
+  /** Which timeout fired: 'hard' (wall time) or 'idle' (no output). */
+  timeoutKind?: 'hard' | 'idle';
+}
+
+export const RUN_CLAUDE_DEFAULT_TIMEOUT_MS = 45 * 60 * 1000;
+export const RUN_CLAUDE_DEFAULT_IDLE_MS = 10 * 60 * 1000;
+
 export function runClaude(
   claudeBin: string,
   instruction: string,
   onStdout?: (chunk: string) => void,
   onStderr?: (chunk: string) => void,
-): Promise<{ code: number; stdout: string; stderr: string }> {
+  options?: RunClaudeOptions,
+): Promise<RunClaudeResult> {
+  const timeoutMs = options?.timeoutMs ?? RUN_CLAUDE_DEFAULT_TIMEOUT_MS;
+  const idleTimeoutMs = options?.idleTimeoutMs ?? RUN_CLAUDE_DEFAULT_IDLE_MS;
+
   return new Promise((resolve) => {
     const proc = spawn(claudeBin, [
       '-p', instruction,
@@ -79,18 +103,74 @@ export function runClaude(
 
     let stdout = '';
     let stderr = '';
+    let settled = false;
+    let timeoutKind: 'hard' | 'idle' | undefined;
+    let idleTimer: NodeJS.Timeout | undefined;
+    let hardTimer: NodeJS.Timeout | undefined;
+    let killFollowup: NodeJS.Timeout | undefined;
+
+    const clearTimers = () => {
+      if (idleTimer) clearTimeout(idleTimer);
+      if (hardTimer) clearTimeout(hardTimer);
+      if (killFollowup) clearTimeout(killFollowup);
+    };
+
+    const killCascade = (kind: 'hard' | 'idle', reason: string) => {
+      if (settled || timeoutKind) return;
+      timeoutKind = kind;
+      stderr += `\n[runClaude] ${reason} — sending SIGTERM\n`;
+      try { proc.kill('SIGTERM'); } catch {}
+      killFollowup = setTimeout(() => {
+        if (settled) return;
+        stderr += `[runClaude] SIGTERM did not settle after 30s — sending SIGKILL\n`;
+        try { proc.kill('SIGKILL'); } catch {}
+      }, 30_000);
+      killFollowup.unref();
+    };
+
+    const resetIdle = () => {
+      if (settled) return;
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(
+        () => killCascade('idle', `idle timeout — no output for ${idleTimeoutMs}ms`),
+        idleTimeoutMs,
+      );
+      idleTimer.unref();
+    };
+
+    hardTimer = setTimeout(
+      () => killCascade('hard', `hard timeout — ${timeoutMs}ms wall time exceeded`),
+      timeoutMs,
+    );
+    hardTimer.unref();
+    resetIdle();
+
     proc.stdout.on('data', (d: Buffer) => {
       const chunk = d.toString();
       stdout += chunk;
       if (onStdout) onStdout(chunk);
+      resetIdle();
     });
     proc.stderr.on('data', (d: Buffer) => {
       const chunk = d.toString();
       stderr += chunk;
       if (onStderr) onStderr(chunk);
+      resetIdle();
     });
-    proc.on('close', (code: number | null) => resolve({ code: code ?? 1, stdout, stderr }));
-    proc.on('error', (err: Error) => resolve({ code: 1, stdout: '', stderr: `spawn error: ${err.message}` }));
+    proc.on('close', (code: number | null) => {
+      if (settled) return;
+      settled = true;
+      clearTimers();
+      const result: RunClaudeResult = { code: code ?? 1, stdout, stderr };
+      if (timeoutKind) { result.timedOut = true; result.timeoutKind = timeoutKind; }
+      resolve(result);
+    });
+    proc.on('error', (err: Error) => {
+      if (settled) return;
+      settled = true;
+      clearTimers();
+      resolve({ code: 1, stdout: '', stderr: `spawn error: ${err.message}` });
+    });
   });
 }
 
@@ -98,18 +178,45 @@ export function runClaude(
 // FILE UTILITIES
 // ═══════════════════════════════════════════════════════════════
 
+/** Directories never worth scanning when hunting for generated documents. */
+const FIND_DOCX_SKIP_DIRS = new Set([
+  'node_modules', '.git', '.next', '.cache', 'dist', 'build',
+  '__pycache__', '.venv', 'venv', '.pytest_cache',
+]);
+
+/** Max recursion depth when scanning for new docs. 4 is enough for CARTAS/, thumbs/, etc. */
+const FIND_DOCX_MAX_DEPTH = 4;
+
 /**
  * Find newly created documents (docx, pptx, md) in a directory.
+ *
+ * Recursive: Claude often creates subdirectories like CARTAS/ for satellite letters,
+ * thumbs/ for Business Plan charts, versions/ for drafts. Non-recursive scan misses
+ * those — responsible for a large share of "exit 0 but no docx" false-failures.
+ * Skips well-known noise directories (node_modules, .git, .next, etc).
  */
-export function findNewDocx(dir: string, afterMs: number): string[] {
-  if (!existsSync(dir)) return [];
+export function findNewDocx(dir: string, afterMs: number, maxDepth: number = FIND_DOCX_MAX_DEPTH): string[] {
+  if (!existsSync(dir) || maxDepth < 0) return [];
+  const results: string[] = [];
   try {
-    return readdirSync(dir)
-      .filter(f => f.endsWith('.docx') || f.endsWith('.pptx') || f.endsWith('.md'))
-      .filter(f => !f.startsWith('REVIEW_') && !f.startsWith('.'))
-      .map(f => path.join(dir, f))
-      .filter(f => { try { return statSync(f).mtimeMs > afterMs; } catch { return false; } });
-  } catch { return []; }
+    const entries = readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.name.startsWith('.')) continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (FIND_DOCX_SKIP_DIRS.has(entry.name)) continue;
+        results.push(...findNewDocx(full, afterMs, maxDepth - 1));
+        continue;
+      }
+      if (!entry.isFile()) continue;
+      if (!(entry.name.endsWith('.docx') || entry.name.endsWith('.pptx') || entry.name.endsWith('.md'))) continue;
+      if (entry.name.startsWith('REVIEW_')) continue;
+      try {
+        if (statSync(full).mtimeMs > afterMs) results.push(full);
+      } catch {}
+    }
+  } catch {}
+  return results;
 }
 
 /**

@@ -402,34 +402,69 @@ export async function POST(req: NextRequest) {
 
       const genDuration = Math.round((Date.now() - startTime) / 1000);
 
-      // Report exit code honestly
-      if (gen.code !== 0) {
-        send('stage', { stage: 'error', phase: 1, message: `claude -p saiu com codigo ${gen.code}` });
+      // Collect all dirs Claude may have written to — used by both success and failure paths.
+      const forjadoDir = (() => {
+        if (!client_id) return null;
+        try {
+          const cs = readClients();
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const cl = cs.find((c: any) => c.id === client_id);
+          return cl?.docs_folder_path ? cl.docs_folder_path + '/_Forjado por Petition Engine/' : null;
+        } catch { return null; }
+      })();
+      const clientDocsPath = (() => {
+        if (!client_id) return null;
+        try {
+          const cs = readClients();
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const cl = cs.find((c: any) => c.id === client_id);
+          return cl?.docs_folder_path || null;
+        } catch { return null; }
+      })();
+      const allSearchDirs = [outputDir, clientBaseDir, forjadoDir, clientDocsPath].filter((d): d is string => !!d);
+
+      // Report exit code honestly. A timeout is not the same as a generic exit.
+      const isTimeout = !!gen.timedOut;
+      const exitLabel = isTimeout
+        ? `timeout (${gen.timeoutKind ?? 'unknown'}) após ${genDuration}s`
+        : `codigo ${gen.code}`;
+
+      if (gen.code !== 0 || isTimeout) {
+        send('stage', { stage: 'error', phase: 1, message: `claude -p terminou com ${exitLabel}` });
         if (gen.stderr) {
           send('stage', { stage: 'error', phase: 1, message: `stderr: ${gen.stderr.slice(0, 500)}` });
         }
-        // Even on error, check if any .docx was created (partial success)
-        const foundFiles = findNewDocx(outputDir, startTime).concat(findNewDocx(clientBaseDir, startTime));
+        // Check all known dirs for partial output, including docs_folder_path / _Forjado.
+        const foundFiles = Array.from(new Set(
+          allSearchDirs.flatMap(d => findNewDocx(d, startTime))
+        ));
+        const errorBase = isTimeout
+          ? `Timeout ${gen.timeoutKind} (${genDuration}s) — processo morto`
+          : `Geracao falhou (exit ${gen.code})`;
         if (foundFiles.length > 0) {
           send('stage', { stage: 'warning', phase: 1, message: `Processo falhou mas encontrou ${foundFiles.length} .docx criado(s)` });
-          upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: `Exit ${gen.code} — docx parcial`, output_files: foundFiles.map(f => f.split('/').pop()) });
+          upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: `${errorBase} — docx parcial`, output_files: foundFiles.map(f => f.split('/').pop()), stdout_tail: gen.stdout.slice(-500), stderr_tail: gen.stderr.slice(-500), timed_out: isTimeout || undefined, timeout_kind: gen.timeoutKind });
           send('complete', {
             success: false,
             partial: true,
-            error: `Exit ${gen.code} — docx parcial encontrado`,
+            error: `${errorBase} — docx parcial encontrado`,
             files_found: foundFiles.map(f => f.split('/').pop()),
             output_path: outputDir,
             duration_seconds: genDuration,
             stdout_tail: gen.stdout.slice(-500),
+            timed_out: isTimeout,
+            timeout_kind: gen.timeoutKind,
           });
         } else {
-          upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: `Geracao falhou (exit ${gen.code})` });
+          upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: errorBase, stdout_tail: gen.stdout.slice(-500), stderr_tail: gen.stderr.slice(-500), timed_out: isTimeout || undefined, timeout_kind: gen.timeoutKind });
           send('complete', {
             success: false,
-            error: `Geracao falhou (exit ${gen.code}) — nenhum documento criado`,
+            error: `${errorBase} — nenhum documento criado`,
             stderr: gen.stderr.slice(0, 1000),
             stdout_tail: gen.stdout.slice(-500),
             duration_seconds: genDuration,
+            timed_out: isTimeout,
+            timeout_kind: gen.timeoutKind,
           });
         }
         controller.close();
@@ -437,40 +472,32 @@ export async function POST(req: NextRequest) {
       }
 
       // ═══ POST-FLIGHT: Check if document was actually created ═══
-      // Also check the docs_folder_path directly (Claude may save there instead of _Forjado)
-      const searchDirs = [outputDir, clientBaseDir];
-      // Also search the docs_folder_path from client record
-      if (client_id) {
-        try {
-          const cs = readClients();
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const cl = cs.find((c: any) => c.id === client_id);
-          if (cl?.docs_folder_path) {
-            const forjado = cl.docs_folder_path + '/_Forjado por Petition Engine/';
-            if (!searchDirs.includes(forjado)) searchDirs.push(forjado);
-            if (!searchDirs.includes(cl.docs_folder_path)) searchDirs.push(cl.docs_folder_path);
-          }
-        } catch {}
-      }
-      let newDocx: string[] = [];
-      for (const dir of searchDirs) {
-        newDocx = newDocx.concat(findNewDocx(dir, startTime));
-      }
-      // Deduplicate
-      newDocx = newDocx.filter((v, i, a) => a.indexOf(v) === i);
+      // Search all known output dirs (already collected above as allSearchDirs).
+      const newDocx = Array.from(new Set(
+        allSearchDirs.flatMap(d => findNewDocx(d, startTime))
+      ));
 
       if (newDocx.length === 0) {
         send('stage', { stage: 'error', phase: 1, message: 'claude -p retornou 0 mas NENHUM documento foi criado no disco' });
-        send('stage', { stage: 'error', phase: 1, message: `Pasta verificada: ${outputDir}` });
+        send('stage', { stage: 'error', phase: 1, message: `Pastas verificadas: ${allSearchDirs.join(', ')}` });
         send('stage', { stage: 'info', phase: 1, message: `stdout (ultimos 300 chars): ${gen.stdout.slice(-300)}` });
-        upsertGeneration({ id: genId, status: 'failed', completed_at: new Date().toISOString(), duration_seconds: genDuration, error_message: 'Exit 0 mas nenhum documento criado' });
+        upsertGeneration({
+          id: genId,
+          status: 'failed',
+          completed_at: new Date().toISOString(),
+          duration_seconds: genDuration,
+          error_message: 'silent_failure_exit_0_no_docx',
+          stdout_tail: gen.stdout.slice(-500),
+          stderr_tail: gen.stderr.slice(-500),
+          dirs_checked: allSearchDirs,
+        });
         send('complete', {
           success: false,
           error: 'Processo completou mas nao gerou documento — a instrucao pode ser generica demais para o sistema',
           hint: 'Verifique se docs_folder_path do cliente é válido e se a instrução contém seções específicas (estrutura, ingredientes, saídas esperadas). Também pode ser que o claude -p tenha salvo os arquivos em outro diretório diferente de output_dir_checked — conferir manualmente antes de regerar.',
           stdout_tail: gen.stdout.slice(-500),
           duration_seconds: genDuration,
-          output_dir_checked: outputDir,
+          dirs_checked: allSearchDirs,
         });
         controller.close();
         return;
