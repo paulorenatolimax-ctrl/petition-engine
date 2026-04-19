@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNI — AIOS Petition Engine | Valuation Model</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#08090d;--s1:#0d0f16;--s2:#13151e;--s3:#191c27;
+  --navy:#1B2A4A;--navy-l:#2a3f6a;--gold:#C9A96E;--gold-d:#9e8455;--gold-bg:rgba(201,169,110,.06);
+  --accent:#3878ad;--accent-l:#5a9fd4;
+  --txt:#ede9e0;--dim:#a9a396;--mut:#706b62;--body:#ddd8cd;
+  --grn:#4ade80;--red:#f87171;--blue:#60a5fa;--purp:#c084fc;--cyan:#22d3ee;
+  --bd:rgba(201,169,110,.12);--bd2:rgba(201,169,110,.06)
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+.grain{position:fixed;top:0;left:0;width:100%;height:100%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+.wrap{max-width:1280px;margin:0 auto;padding:48px 24px}
+h1,h2,.sec-t,.kv{font-family:'EB Garamond',serif}
+h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.05;background:linear-gradient(135deg,var(--gold),#e8d48b,var(--gold-d));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.sub{text-align:center;font-family:'EB Garamond',serif;font-style:italic;color:var(--accent-l);font-size:1.05rem;margin-top:8px}
+.meta{text-align:center;color:var(--mut);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;margin-top:16px}
+.sec-t{font-size:1.6rem;font-weight:700;text-align:center;margin:56px 0 28px;color:var(--txt)}.sec-t em{font-style:normal;color:var(--gold)}
+.badge{display:inline-block;background:var(--gold-bg);border:1px solid var(--bd);color:var(--gold);padding:4px 16px;border-radius:20px;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.gold-div{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:20px 0;opacity:.4}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:28px 32px;margin-bottom:20px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .4s}.card:hover::before{opacity:.6}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--txt);margin-bottom:4px}
+.card .st{font-family:'EB Garamond',serif;font-style:italic;color:var(--dim);font-size:.85rem;margin-bottom:20px}
+.kpi{text-align:center;padding:22px 14px}
+.kpi .lb{font-size:.6rem;color:var(--mut);text-transform:uppercase;letter-spacing:.14em;margin-bottom:6px}
+.kv{font-size:1.7rem;font-weight:800;color:var(--gold)}.kv.g{color:var(--grn)}.kv.b{color:var(--blue)}.kv.p{color:var(--purp)}.kv.c{color:var(--cyan)}
+.kpi .sm{font-size:.7rem;color:var(--dim);margin-top:3px;font-family:'EB Garamond',serif;font-style:italic}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media(max-width:900px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{text-align:left;font-size:.6rem;color:var(--mut);text-transform:uppercase;letter-spacing:.12em;padding:10px 14px;border-bottom:1px solid var(--bd)}
+td{padding:12px 14px;border-bottom:1px solid var(--bd2);color:var(--body)}
+tr:hover{background:var(--gold-bg)}
+.hl{color:var(--gold);font-weight:700}
+.tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.65rem;font-weight:600}
+.tag.g{background:rgba(74,222,128,.08);color:var(--grn)}.tag.b{background:rgba(96,165,250,.08);color:var(--blue)}.tag.p{background:rgba(192,132,252,.08);color:var(--purp)}.tag.gold{background:var(--gold-bg);color:var(--gold)}
+.cbox{position:relative;height:320px}
+.sl-row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.sl-row label{min-width:220px;font-size:.75rem;color:var(--dim);font-family:'EB Garamond',serif}
+.sl-row input[type=range]{flex:1;-webkit-appearance:none;height:2px;background:var(--bd);border-radius:1px;outline:none}
+.sl-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 0 12px rgba(201,169,110,.3)}
+.sl-row .sv{min-width:110px;text-align:right;font-weight:700;font-size:.88rem;font-family:'EB Garamond',serif;color:var(--txt)}
+.live{transition:color .3s,transform .15s}.live.flash{transform:scale(1.05)}
+.note{font-family:'EB Garamond',serif;font-style:italic;font-size:.78rem;color:var(--mut);text-align:center;padding:12px}
+.foot{text-align:center;padding:48px 0 24px;color:var(--mut);font-size:.68rem;letter-spacing:.06em}.foot strong{color:var(--gold-d)}
+.ref-panel{background:var(--s1);border:1px solid var(--bd);border-radius:16px;margin-bottom:16px;overflow:hidden}
+.ref-toggle{width:100%;background:none;border:none;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:var(--gold);font-family:'EB Garamond',serif;font-size:1rem;font-weight:700;transition:background .3s}
+.ref-toggle:hover{background:var(--gold-bg)}.ref-toggle .arrow{transition:transform .3s;font-size:1.2rem;color:var(--gold-d)}.ref-toggle.open .arrow{transform:rotate(180deg)}
+.ref-content{max-height:0;overflow:hidden;transition:max-height .5s ease}.ref-content.open{max-height:5000px}
+.ref-inner{padding:0 28px 24px}
+.ref-inner h3{font-family:'EB Garamond',serif;font-size:.9rem;font-weight:700;color:var(--gold);margin:16px 0 8px}
+.ref-inner a{color:var(--accent-l);text-decoration:none;font-size:.72rem;word-break:break-all;transition:color .2s}.ref-inner a:hover{color:var(--gold)}
+.ref-item{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--bd2);font-size:.75rem;color:var(--dim)}.ref-item .ref-name{min-width:220px;color:var(--body);font-weight:500}
+.ref-count{font-size:.7rem;color:var(--mut);font-style:italic;padding:0 28px 4px}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+
+<div style="text-align:center;margin-bottom:48px">
+  <div class="badge">Confidencial — Data Room / Investidores</div>
+  <h1 style="margin-top:16px">AIOS Petition Engine</h1>
+  <div class="sub">Modelo de Valuation Interativo — 6 Métodos × 4 Deep Research Reports</div>
+  <div class="meta">OMNI — Abril 2026</div>
+  <div class="gold-div" style="margin-top:28px"></div>
+</div>
+
+<!-- CONTROLES GLOBAIS -->
+<div class="card" style="border-color:var(--gold);background:linear-gradient(135deg,var(--s1),var(--s2))">
+<h2 style="color:var(--gold)">Painel de Controle</h2>
+<div class="st">Todos os números do documento reagem em tempo real a estes parâmetros</div>
+<div class="g2">
+<div>
+  <div class="sl-row"><label>Casos por mês (steady-state)</label><input type="range" id="sCases" min="10" max="200" value="30" step="5"><span class="sv" id="vCases">30</span></div>
+  <div class="sl-row"><label>ARPC — Receita por caso (USD)</label><input type="range" id="sARPC" min="1500" max="8000" value="4000" step="100"><span class="sv" id="vARPC">$4,000</span></div>
+</div>
+<div>
+  <div class="sl-row"><label>Múltiplo de ARR (valuation)</label><input type="range" id="sMult" min="5" max="35" value="20" step="1"><span class="sv" id="vMult">20x</span></div>
+  <div class="sl-row"><label>Sua participação (%)</label><input type="range" id="sSh" min="10" max="60" value="30" step="1"><span class="sv" id="vSh">30%</span></div>
+</div>
+</div>
+</div>
+
+<!-- TOP KPIs — LIVE -->
+<div class="g5">
+  <div class="card kpi"><div class="lb">ARR Projetado</div><div class="kv b live" id="kARR">—</div><div class="sm" id="kARRsub">—</div></div>
+  <div class="card kpi"><div class="lb">Valuation Implícito</div><div class="kv live" id="kVal">—</div><div class="sm">ARR × Múltiplo</div></div>
+  <div class="card kpi"><div class="lb">Sua Participação</div><div class="kv g live" id="kYou">—</div><div class="sm" id="kYouSub">—</div></div>
+  <div class="card kpi"><div class="lb">Receita Mensal (sua)</div><div class="kv c live" id="kMo">—</div><div class="sm">Antes de custos</div></div>
+  <div class="card kpi"><div class="lb">Centro de Gravidade</div><div class="kv live" id="kCG" style="font-size:2rem">—</div><div class="sm">6 métodos ponderados + AI premium</div></div>
+</div>
+
+<!-- DADOS ESTÁTICOS: TAM -->
+<div class="g4">
+  <div class="card kpi"><div class="lb">TAM (3 Categorias)</div><div class="kv">$829M+</div><div class="sm">EB-1A + NIW + O-1</div></div>
+  <div class="card kpi"><div class="lb">Crescimento NIW</div><div class="kv g">+189%</div><div class="sm">FY22→FY24</div></div>
+  <div class="card kpi"><div class="lb">Sistemas Proprietários</div><div class="kv b">17</div><div class="sm">Pipeline end-to-end</div></div>
+  <div class="card kpi"><div class="lb">IP Floor (Cost-to-Recreate)</div><div class="kv p">$3.6–12M</div><div class="sm">Piso absoluto</div></div>
+</div>
+
+<!-- TABELA SÍNTESE — LIVE -->
+<div class="sec-t">Consolidação — <em>6 Métodos</em></div>
+<div class="card">
+<h2>Valuation por Método</h2>
+<div class="st">Valores ajustados em tempo real conforme ARR forward</div>
+<table>
+<thead><tr><th>Método</th><th>Range</th><th>Peso</th><th>Contribuição</th><th>Racional</th></tr></thead>
+<tbody id="methodsBody"></tbody>
+</table>
+<div class="gold-div"></div>
+<div class="g3">
+  <div class="kpi"><div class="lb">Blended (sem AI premium)</div><div class="kv live" id="kBlend">—</div></div>
+  <div class="kpi"><div class="lb">+ AI Premium (+35%)</div><div class="kv live" id="kAI">—</div></div>
+  <div class="kpi"><div class="lb">Range Defensável</div><div class="kv live" id="kRange">—</div></div>
+</div>
+</div>
+
+<!-- GRÁFICO MÉTODOS — LIVE -->
+<div class="card">
+<h2>Zona de Convergência</h2>
+<div class="st">Visualização dos ranges por método</div>
+<div class="cbox" style="height:280px"><canvas id="cMethods"></canvas></div>
+</div>
+
+<!-- SENSIBILIDADE — LIVE -->
+<div class="card">
+<h2>Tabela de Sensibilidade: Valuation por ARR × Múltiplo</h2>
+<div class="st">Em USD milhões — seu ARR atual destacado</div>
+<table id="sensT"><thead><tr><th>ARR ↓ / Múltiplo →</th><th>7x</th><th>10x</th><th>15x</th><th>20x</th><th>25x</th><th>30x</th></tr></thead><tbody id="sensBody"></tbody></table>
+</div>
+
+<!-- PROJEÇÃO TRIANUAL — LIVE -->
+<div class="card">
+<h2>Projeção Trianual</h2>
+<div class="st">Crescimento de 80% Y2, 60% Y3 sobre o ARR base</div>
+<div class="cbox" style="height:350px"><canvas id="cProj"></canvas></div>
+</div>
+
+<!-- USCIS — ESTÁTICO -->
+<div class="sec-t">Mercado — <em>Dados USCIS</em></div>
+<div class="g2">
+  <div class="card"><h2>Volume de Petições Triplicou</h2><div class="st">EB-1A, EB-2 NIW e O-1 (FY2022 → FY2024)</div><div class="cbox"><canvas id="cVol"></canvas></div></div>
+  <div class="card"><h2>Aprovação Despencou</h2><div class="st">Crise sistêmica = demanda por automação</div><div class="cbox"><canvas id="cApp"></canvas></div></div>
+</div>
+
+<!-- COMPARÁVEIS — ESTÁTICO -->
+<div class="sec-t">Rounds Comparáveis — <em>Immigration AI</em></div>
+<div class="card">
+<table>
+<thead><tr><th>Empresa</th><th>Produto</th><th>Round</th><th>Valor</th><th>Data</th><th>Investidores</th></tr></thead>
+<tbody>
+<tr><td class="hl">Alma Immigration</td><td>AI O-1A, EB-1A, NIW</td><td>Seed</td><td class="hl">$5.1–5.5M</td><td>Jul 2024</td><td>Bling, NFX, NEA</td></tr>
+<tr><td>Gale (YC W25)</td><td>H-1B automation</td><td>Seed</td><td>$2.7M</td><td>Mai 2025</td><td>Axiom, Pioneer</td></tr>
+<tr><td>CaseBlink</td><td>End-to-end EB-2, EB-1A, O-1</td><td>Pre-Seed</td><td>$2.0M</td><td>Mar 2025</td><td>Tower Research</td></tr>
+<tr><td>VisaLaw.ai</td><td>Copiloto drafting</td><td>Seed</td><td>$1.6M</td><td>Fev 2025</td><td>Valor Ventures</td></tr>
+<tr><td>LegalOS (YC W26)</td><td>AI-native immigration</td><td>Pre-Seed</td><td>~$500K</td><td>2026</td><td>Y Combinator</td></tr>
+</tbody>
+</table>
+<div class="note">AIOS: 17 sistemas proprietários vs. 1-3 dos concorrentes. Nenhum seed de $15M+ em ImmigrationTech — seria category-defining.</div>
+</div>
+
+<div class="sec-t">Trajetórias — <em>Legal AI</em></div>
+<div class="card">
+<table>
+<thead><tr><th>Empresa</th><th>Valuation</th><th>Total Captado</th><th>Data</th></tr></thead>
+<tbody>
+<tr><td class="hl">Harvey AI</td><td class="hl">$11B</td><td>$1.2B+</td><td>Mar 2026</td></tr>
+<tr><td>Legora</td><td>$5.55B</td><td>$800M+</td><td>Mar 2026</td></tr>
+<tr><td>EvenUp</td><td>$2.0B</td><td>$385M</td><td>Out 2025</td></tr>
+<tr><td>Eve Legal</td><td>$1.0B+</td><td>$150M</td><td>Set 2025</td></tr>
+<tr><td>Spellbook</td><td>$350M</td><td>$84.8M</td><td>Out 2025</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sec-t">M&A — <em>Exit Path</em></div>
+<div class="card">
+<table>
+<thead><tr><th>Target</th><th>Acquirer</th><th>Valor</th><th>Múltiplo</th></tr></thead>
+<tbody>
+<tr><td class="hl">Casetext</td><td>Thomson Reuters</td><td class="hl">$650M</td><td><span class="tag gold">~32.5x ARR</span></td></tr>
+<tr><td class="hl">vLex</td><td>Clio</td><td class="hl">$1.0B</td><td>Cash + stock</td></tr>
+<tr><td>Evisort</td><td>Workday</td><td>~$250-300M</td><td><span class="tag b">~8-10x ARR</span></td></tr>
+<tr><td>SixFifty</td><td>Paychex</td><td>$70-85M</td><td>N/D</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- BENCHMARKS -->
+<div class="sec-t"><em>Benchmarks</em> Carta 2025</div>
+<div class="g4">
+  <div class="card kpi"><div class="lb">Mediana SaaS Seed</div><div class="kv">$19.8M</div><div class="sm">Carta Q3 2025</div></div>
+  <div class="card kpi"><div class="lb">AI Premium</div><div class="kv g">+42%</div><div class="sm">Qubit Capital</div></div>
+  <div class="card kpi"><div class="lb">Legal AI Multiple</div><div class="kv b">9–12x</div><div class="sm">Finro Q4 2025</div></div>
+  <div class="card kpi"><div class="lb">LegalTech 2025</div><div class="kv p">$4.4B</div><div class="sm">+77% YoY</div></div>
+</div>
+
+<!-- REFERÊNCIAS -->
+<div class="sec-t"><em>Referências</em> Completas</div>
+<div class="ref-panel"><button class="ref-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span>Benchmarks de Mercado & Valuation (18 fontes)</span><span class="arrow">▼</span></button><div class="ref-content"><div class="ref-inner">
+<div class="ref-item"><span class="ref-name">Carta — SaaS Spotlight Q3 2025</span><a href="https://carta.com/data/saas-industry-spotlight-Q3-2025/">carta.com</a></div>
+<div class="ref-item"><span class="ref-name">Carta — Private Markets Q4 2024</span><a href="https://carta.com/data/state-of-private-markets-q4-2024/">carta.com</a></div>
+<div class="ref-item"><span class="ref-name">Carta — AI Fundraising 2024</span><a href="https://carta.com/data/ai-fundraising-trends-2024/">carta.com</a></div>
+<div class="ref-item"><span class="ref-name">Carta — Seed Q3 2024</span><a href="https://carta.com/data/five-takeaways-seed-market-q3-2024/">carta.com</a></div>
+<div class="ref-item"><span class="ref-name">Carta — Pre-Seed 2024</span><a href="https://carta.com/data/state-of-pre-seed-2024/">carta.com</a></div>
+<div class="ref-item"><span class="ref-name">SaaStr / Carta</span><a href="https://saastr.com/the-state-of-seed-today-10-key-learnings-from-cartas-latest-data/">saastr.com</a></div>
+<div class="ref-item"><span class="ref-name">Metal.so — Seed Benchmarks</span><a href="https://metal.so/collections/us-saas-seed-round-benchmarks-2025">metal.so</a></div>
+<div class="ref-item"><span class="ref-name">Qubit Capital — AI Trends</span><a href="https://qubit.capital/blog/ai-startup-fundraising-trends">qubit.capital</a></div>
+<div class="ref-item"><span class="ref-name">Finro — AI Multiples Q4 2025</span><a href="https://finrofca.com/news/ai-valuation-multiples-q4-2025">finrofca.com</a></div>
+<div class="ref-item"><span class="ref-name">Aventis — AI Multiples</span><a href="https://aventis-advisors.com/ai-valuation-multiples/">aventis-advisors.com</a></div>
+<div class="ref-item"><span class="ref-name">Crunchbase — LegalTech</span><a href="https://news.crunchbase.com/venture/ai-legal-tech-investment-all-time-high-filevine/">crunchbase.com</a></div>
+<div class="ref-item"><span class="ref-name">SVB — Markets H1 2025</span><a href="https://developmentcorporate.com/product-management/svb-seed-stage-startup-advice-2025/">developmentcorporate.com</a></div>
+<div class="ref-item"><span class="ref-name">Flowjam — Seed 2025</span><a href="https://flowjam.com/blog/seed-round-valuation-2025-complete-founders-guide">flowjam.com</a></div>
+<div class="ref-item"><span class="ref-name">First Page Sage — SaaS</span><a href="https://firstpagesage.com/business/saas-valuation-multiples/">firstpagesage.com</a></div>
+<div class="ref-item"><span class="ref-name">CUFinder — LegalTech</span><a href="https://cufinder.io/blog/benchmarks/legaltech/">cufinder.io</a></div>
+<div class="ref-item"><span class="ref-name">Jackim Woods — M&A 2025</span><a href="https://jackimwoods.com/acquisitions-in-the-legal-tech-sector-in-2025/">jackimwoods.com</a></div>
+<div class="ref-item"><span class="ref-name">ACA — Scorecard Rev 2019</span><a href="https://angelcapitalassociation.org/blog/blog-scorecard-valuation-methodology-rev-2019">angelcapitalassociation.org</a></div>
+<div class="ref-item"><span class="ref-name">Berkus Method</span><a href="https://berkus.com/the-berkus-method-valuing-an-early-stage-investment-2/">berkus.com</a></div>
+</div></div></div>
+
+<div class="ref-panel"><button class="ref-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span>ImmigrationTech & Legal AI Rounds (22 fontes)</span><span class="arrow">▼</span></button><div class="ref-content"><div class="ref-inner">
+<div class="ref-item"><span class="ref-name">Alma — Seed</span><a href="https://www.tryalma.com/newsletter/how-we-raised-our-5-5-million-seed-round-in-three-weeks">tryalma.com</a></div>
+<div class="ref-item"><span class="ref-name">CaseBlink — Pre-seed</span><a href="https://tower-research.com/caseblink-raises-2m-in-pre-seed-funding/">tower-research.com</a></div>
+<div class="ref-item"><span class="ref-name">VisaLaw.ai</span><a href="https://growjo.com/company/Visalaw.AI">growjo.com</a></div>
+<div class="ref-item"><span class="ref-name">Parley (YC S24)</span><a href="https://www.ycombinator.com/companies/parley">ycombinator.com</a></div>
+<div class="ref-item"><span class="ref-name">LegalOS (YC W26)</span><a href="https://www.ycombinator.com/companies/legalos">ycombinator.com</a></div>
+<div class="ref-item"><span class="ref-name">Formally</span><a href="https://www.businesswire.com/news/home/20220516005284">businesswire.com</a></div>
+<div class="ref-item"><span class="ref-name">Harvey AI — Series D</span><a href="https://www.harvey.ai/blog/harvey-raises-series-d">harvey.ai</a></div>
+<div class="ref-item"><span class="ref-name">Harvey — $11B</span><a href="https://www.harvey.ai/blog/harvey-raises-at-dollar11-billion-valuation-to-scale-agents-across-law-firms-and-enterprises">harvey.ai</a></div>
+<div class="ref-item"><span class="ref-name">Harvey — $8B</span><a href="https://techcrunch.com/2025/12/04/legal-ai-startup-harvey-confirms-8b-valuation/">techcrunch.com</a></div>
+<div class="ref-item"><span class="ref-name">EvenUp</span><a href="https://www.forbes.com/sites/alexkonrad/2025/10/15/evenup-raises-at-2b-valuation/">forbes.com</a></div>
+<div class="ref-item"><span class="ref-name">Spellbook</span><a href="https://spellbook.legal">spellbook.legal</a></div>
+<div class="ref-item"><span class="ref-name">Eve — Series A</span><a href="https://www.prnewswire.com/news-releases/eve-secures-47-million-302353165.html">prnewswire.com</a></div>
+<div class="ref-item"><span class="ref-name">Eve — Series B</span><a href="https://www.lawnext.com/2025/09/eve-ai-driven-platform-for-plaintiff-side-law-firms-raises-103-million-in-series-b-round.html">lawnext.com</a></div>
+<div class="ref-item"><span class="ref-name">Luminance</span><a href="https://techcrunch.com/2025/02/18/legal-ai-startup-luminance-backed-by-the-late-mike-lynch-raises-75m/">techcrunch.com</a></div>
+<div class="ref-item"><span class="ref-name">Paxton AI</span><a href="https://www.paxton.ai/post/breaking-new-ground-paxton-secures-22m-series-a-to-transform-legal-ai">paxton.ai</a></div>
+<div class="ref-item"><span class="ref-name">Ironclad</span><a href="https://sacra.com/c/ironclad/">sacra.com</a></div>
+<div class="ref-item"><span class="ref-name">Casetext → TR</span><a href="https://www.thomsonreuters.com/en/press-releases/2023/august/thomson-reuters-completes-acquisition-of-casetext-inc">thomsonreuters.com</a></div>
+<div class="ref-item"><span class="ref-name">Casetext ARR</span><a href="https://www.newcomer.co/p/650-million-for-casetext">newcomer.co</a></div>
+<div class="ref-item"><span class="ref-name">vLex → Clio</span><a href="https://www.clio.com/about/press/clio-completes-landmark-1b-vlex-acquisition">clio.com</a></div>
+<div class="ref-item"><span class="ref-name">SixFifty → Paychex</span><a href="https://www.lawnext.com/2025/07/in-undisclosed-deal-payroll-company-paychex-has-acquired-legal-tech-company-sixfifty.html">lawnext.com</a></div>
+<div class="ref-item"><span class="ref-name">Legalpad → Deel</span><a href="https://www.geekwire.com/2022/seattle-startup-legalpad-acquired-by-payroll-and-compliance-giant-deel/">geekwire.com</a></div>
+<div class="ref-item"><span class="ref-name">INSZoom → Mitratech</span><a href="https://builtinaustin.com/articles/mitratech-fifth-acquisition-2020">builtinaustin.com</a></div>
+</div></div></div>
+
+<div class="ref-panel"><button class="ref-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span>USCIS — Dados Oficiais & Mercado (15 fontes)</span><span class="arrow">▼</span></button><div class="ref-content"><div class="ref-inner">
+<div class="ref-item"><span class="ref-name">USCIS I-140 FY2023</span><a href="https://www.uscis.gov/sites/default/files/document/data/i140_rec_by_class_country_fy2023_q4.pdf">uscis.gov</a></div>
+<div class="ref-item"><span class="ref-name">USCIS I-140 FY2025 Q3</span><a href="https://www.uscis.gov/sites/default/files/document/data/i140_rec_by_class_country_fy2025_q3.xlsx">uscis.gov</a></div>
+<div class="ref-item"><span class="ref-name">USCIS STEM Factsheet</span><a href="https://www.uscis.gov/sites/default/files/document/reports/stem_related_petition_trends_eb2_and_o1a_categories_factsheet_fy23.pdf">uscis.gov</a></div>
+<div class="ref-item"><span class="ref-name">USCIS Processing Times</span><a href="https://egov.uscis.gov/processing-times/">egov.uscis.gov</a></div>
+<div class="ref-item"><span class="ref-name">USCIS NIW Policy Update</span><a href="https://www.uscis.gov/newsroom/alerts/uscis-updates-guidance-on-eb-2-national-interest-waiver-petitions">uscis.gov</a></div>
+<div class="ref-item"><span class="ref-name">Powell Immigration</span><a href="https://calivisa.com/immigration-law-blog/2025/1/28/alarming-uscis-statistics">calivisa.com</a></div>
+<div class="ref-item"><span class="ref-name">Manifest — EB-1A</span><a href="https://manifestlaw.com/blog/eb1-approval-rate/">manifestlaw.com</a></div>
+<div class="ref-item"><span class="ref-name">Manifest — NIW</span><a href="https://manifestlaw.com/blog/eb2-niw-approval-rate/">manifestlaw.com</a></div>
+<div class="ref-item"><span class="ref-name">Manifest — O-1</span><a href="https://manifestlaw.com/blog/o-1-visa-approval-rate/">manifestlaw.com</a></div>
+<div class="ref-item"><span class="ref-name">Boundless — Q3 2025</span><a href="https://boundless.com/blog/uscis-q3-2025-data-eb1a-niw-trends">boundless.com</a></div>
+<div class="ref-item"><span class="ref-name">Eagan — NIW Trends</span><a href="https://eaganimmigration.com/eb-2-niw-trends">eaganimmigration.com</a></div>
+<div class="ref-item"><span class="ref-name">IBISWorld — Firms</span><a href="https://www.ibisworld.com/united-states/number-of-businesses/immigration-lawyers-attorneys/4808/">ibisworld.com</a></div>
+<div class="ref-item"><span class="ref-name">AILA</span><a href="https://www.aila.org/about">aila.org</a></div>
+<div class="ref-item"><span class="ref-name">WIPO — Cost Method</span><a href="https://www.wipo.int/web-publications/intellectual-property-valuation-basics-for-technology-transfer-professionals/en/4-the-cost-method.html">wipo.int</a></div>
+<div class="ref-item"><span class="ref-name">Wall Street Prep — First Chicago</span><a href="https://wallstreetprep.com/knowledge/first-chicago-method/">wallstreetprep.com</a></div>
+</div></div></div>
+
+<div class="foot"><strong>OMNI — AIOS Petition Engine</strong><br>Modelo de Valuation Interativo — 6 Métodos × 4 Deep Research Reports<br>Abril 2026 — Confidencial — Data Room / Investidores<br>76 fontes rastreáveis</div>
+</div>
+
+<script>
+const f=n=>n.toLocaleString('en-US',{maximumFractionDigits:0});
+const fM=n=>'$'+(n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':f(n));
+const $=id=>document.getElementById(id);
+const sl={c:$('sCases'),a:$('sARPC'),m:$('sMult'),s:$('sSh')};
+
+// Static charts
+const co={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#a9a396',font:{family:'EB Garamond',size:11}}},tooltip:{backgroundColor:'#13151e',borderColor:'#C9A96E',borderWidth:1,titleColor:'#C9A96E',bodyColor:'#ede9e0'}},scales:{x:{ticks:{color:'#706b62',font:{size:10}},grid:{color:'rgba(201,169,110,.06)'}},y:{ticks:{color:'#706b62',font:{size:10}},grid:{color:'rgba(201,169,110,.04)'}}}};
+new Chart($('cVol'),{type:'bar',data:{labels:['FY2022','FY2023','FY2024'],datasets:[{label:'EB-1A',data:[9005,11897,25000],backgroundColor:'rgba(201,169,110,.4)',borderColor:'#C9A96E',borderWidth:1,borderRadius:4},{label:'EB-2 NIW',data:[21990,39810,63549],backgroundColor:'rgba(56,120,173,.5)',borderColor:'#3878ad',borderWidth:1,borderRadius:4},{label:'O-1',data:[9970,10010,15000],backgroundColor:'rgba(192,132,252,.3)',borderColor:'#c084fc',borderWidth:1,borderRadius:4}]},options:{...co,plugins:{...co.plugins,legend:{display:true,labels:co.plugins.legend.labels}},scales:{...co.scales,y:{...co.scales.y,ticks:{...co.scales.y.ticks,callback:v=>f(v)}}}}});
+new Chart($('cApp'),{type:'line',data:{labels:['FY2022','FY2023','FY2024','FY2025'],datasets:[{label:'EB-1A %',data:[83.9,70.5,60.7,53.4],borderColor:'#C9A96E',backgroundColor:'rgba(201,169,110,.06)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:'#C9A96E'},{label:'NIW %',data:[96,80,43,35.7],borderColor:'#3878ad',backgroundColor:'rgba(56,120,173,.06)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:'#3878ad'}]},options:{...co,plugins:{...co.plugins,legend:{display:true,labels:co.plugins.legend.labels}},scales:{...co.scales,y:{...co.scales.y,min:0,max:100,ticks:{...co.scales.y.ticks,callback:v=>v+'%'}}}}});
+
+let chartMethods=null,chartProj=null;
+
+function calcMethods(arr){
+  const base=19.8;// Carta baseline in M
+  const scoreMult=1.05;// from valuation doc
+  const scoreVal=base*scoreMult;
+  // VC: use ARR forward with exit multiple
+  const vcLow=Math.max(3.5,arr*7/15)/1e6;
+  const vcMid=arr*10/10/1e6;
+  const vcHigh=Math.min(arr*15/10/1e6,35);
+  return [
+    {name:'Berkus',low:3.0,mid:3.6,high:4.2,w:.05,tag:'Sanity Check',tagC:'b'},
+    {name:'Risk Factor',low:4.5,mid:5.5,high:7.0,w:.10,tag:'',tagC:''},
+    {name:'Cost-to-Recreate',low:3.6,mid:6.8,high:12.0,w:.20,tag:'IP Floor',tagC:'p'},
+    {name:'First Chicago',low:7.3,mid:10.2,high:14.9,w:.20,tag:'3 Cenários',tagC:''},
+    {name:'VC Method',low:Math.max(3.5,vcLow),mid:Math.max(8,vcMid),high:Math.min(vcHigh,35),w:.20,tag:'',tagC:''},
+    {name:'Scorecard',low:scoreVal*.88,mid:scoreVal,high:scoreVal*1.11,w:.25,tag:'Principal',tagC:'gold'}
+  ];
+}
+
+function update(){
+  const c=+sl.c.value,a=+sl.a.value,m=+sl.m.value,s=+sl.s.value/100;
+  $('vCases').textContent=c;$('vARPC').textContent='$'+f(a);$('vMult').textContent=m+'x';$('vSh').textContent=Math.round(s*100)+'%';
+
+  const arr=c*12*a,val=arr*m;
+  $('kARR').textContent=fM(arr);$('kARRsub').textContent=c+' casos/mês × $'+f(a);
+  $('kVal').textContent=fM(val);$('kYou').textContent=fM(val*s);
+  $('kYouSub').textContent=Math.round(s*100)+'% de '+fM(val);
+  $('kMo').textContent=fM(arr*s/12)+'/mês';
+
+  // Methods
+  const methods=calcMethods(arr);
+  let blended=0;
+  const tbody=$('methodsBody');tbody.innerHTML='';
+  methods.forEach(me=>{
+    const contrib=me.mid*me.w;blended+=contrib;
+    const tr=document.createElement('tr');
+    const isScore=me.name==='Scorecard';
+    tr.innerHTML=`<td ${isScore?'class="hl"':''}>${me.name} ${me.tag?'<span class="tag '+me.tagC+'">'+me.tag+'</span>':''}</td>
+      <td ${isScore?'class="hl"':''}>$${me.low.toFixed(1)}M – $${me.high.toFixed(1)}M</td>
+      <td>${Math.round(me.w*100)}%</td>
+      <td ${isScore?'class="hl"':''}>$${contrib.toFixed(2)}M</td>
+      <td style="font-size:.72rem;color:var(--dim)">${me.name==='Scorecard'?'Carta $19.8M × 1.05':me.name==='VC Method'?'ARR forward + exit mult':'Dados consolidados'}</td>`;
+    tbody.appendChild(tr);
+  });
+  const withAI=blended*1.35;
+  const rangeLow=Math.max(blended*.9,3);const rangeHigh=withAI*1.2;
+  $('kBlend').textContent='$'+blended.toFixed(1)+'M';
+  $('kAI').textContent='$'+withAI.toFixed(1)+'M';
+  $('kRange').textContent='$'+Math.round(rangeLow)+'M – $'+Math.round(rangeHigh)+'M';
+  $('kCG').textContent='$'+withAI.toFixed(0)+'M';
+
+  // Methods chart
+  if(chartMethods)chartMethods.destroy();
+  chartMethods=new Chart($('cMethods'),{type:'bar',data:{labels:methods.map(m=>m.name),datasets:[{label:'Low',data:methods.map(m=>m.low),backgroundColor:'rgba(201,169,110,.15)',borderColor:'rgba(201,169,110,.3)',borderWidth:1,borderRadius:3},{label:'High',data:methods.map(m=>m.high),backgroundColor:'rgba(74,222,128,.12)',borderColor:'rgba(74,222,128,.3)',borderWidth:1,borderRadius:3}]},options:{...co,indexAxis:'y',plugins:{...co.plugins,legend:{display:true,labels:co.plugins.legend.labels}},scales:{x:{ticks:{color:'#706b62',font:{size:10},callback:v=>'$'+v+'M'},grid:{color:'rgba(201,169,110,.04)'}},y:{ticks:{color:'#a9a396',font:{family:'EB Garamond',size:11}},grid:{display:false}}}}});
+
+  // Sensitivity
+  const arrs=[540000,1080000,1440000,3000000,7000000,15000000,24000000];
+  const mults=[7,10,15,20,25,30];
+  const sb=$('sensBody');sb.innerHTML='';
+  arrs.forEach(ar=>{const tr=document.createElement('tr');let h=`<td style="font-weight:700;font-family:'EB Garamond',serif;${Math.abs(ar-arr)<arr*.15?'color:var(--gold)':''}">${fM(ar)}</td>`;
+    mults.forEach(mu=>{const v=ar*mu;const isMe=Math.abs(ar-arr)<arr*.15&&mu===m;
+      h+=`<td style="${isMe?'color:var(--gold);font-weight:800;background:rgba(201,169,110,.1);border:1px solid var(--gold)':Math.abs(ar-arr)<arr*.3&&Math.abs(mu-m)<=5?'color:var(--gold);font-weight:700;background:rgba(201,169,110,.04)':'color:var(--dim)'}">${fM(v)}</td>`});
+    tr.innerHTML=h;sb.appendChild(tr)});
+
+  // Projection chart
+  const y1=arr,y2=y1*1.8,y3=y2*1.6;
+  if(chartProj)chartProj.destroy();
+  chartProj=new Chart($('cProj'),{type:'bar',data:{labels:['Ano 1','Ano 2 (+80%)','Ano 3 (+60%)'],datasets:[
+    {label:'ARR',data:[y1,y2,y3],backgroundColor:'rgba(96,165,250,.35)',borderColor:'#60a5fa',borderWidth:1,borderRadius:6},
+    {label:'Valuation ('+m+'x)',data:[y1*m,y2*m,y3*m],backgroundColor:'rgba(201,169,110,.25)',borderColor:'#C9A96E',borderWidth:1,borderRadius:6},
+    {label:'Sua parte ('+Math.round(s*100)+'%)',data:[y1*m*s,y2*m*s,y3*m*s],backgroundColor:'rgba(74,222,128,.2)',borderColor:'#4ade80',borderWidth:1,borderRadius:6}
+  ]},options:{...co,plugins:{...co.plugins,legend:{display:true,labels:co.plugins.legend.labels}},scales:{...co.scales,y:{...co.scales.y,ticks:{...co.scales.y.ticks,callback:v=>fM(v)}}}}});
+
+  // Flash animation
+  document.querySelectorAll('.live').forEach(el=>{el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),200)});
+}
+
+Object.values(sl).forEach(s=>s.addEventListener('input',update));
+update();
+</script>
+</body>
+</html>

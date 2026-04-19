@@ -1,0 +1,632 @@
+{
+  "meta": {
+    "version": "2.0",
+    "language": "en",
+    "generated_date": "2026-03-13",
+    "analyst": "Global Communication LLC",
+    "receipt_number": "N/A",
+    "priority_date": "N/A",
+    "prepared_by": "Global Communication LLC",
+    "analysis_date": "March 2026",
+    "report_id": "IMP-2026-LUCIANO-COSTA-RICCI"
+  },
+
+  "client": {
+    "full_name": "Luciano Costa Ricci",
+    "petitioner_name": "Luciano Costa Ricci",
+    "title": "CEO",
+    "company_name": "Logistics Optimization Solutions LLC",
+    "endeavor_short": "4PL Logistics Operations",
+    "endeavor_full": "Advanced logistics platform providing integrated supply chain solutions, specializing in multi-modal optimization and regional distribution coordination across North America",
+    "years_experience": 15,
+    "country_of_origin": "Brazil",
+    "languages": ["English", "Portuguese", "Spanish"],
+    "unique_expertise": ["Multi-modal optimization", "AI-driven logistics consolidation", "Regional supply chain integration"],
+    "credentials": ["Six Sigma Black Belt", "APICS CSCP", "ISO 9001 Lead Auditor"],
+    "business_network_size": 200,
+    "team_size_current": 8,
+    "industry_naics": "541614",
+    "parent_entity": "N/A"
+  },
+
+  "location": {
+    "city": "Orlando",
+    "state": "FL",
+    "msa_name": "Orlando-Kissimmee-Sanford",
+    "msa_fips": "36740",
+    "county": "Orange County",
+    "county_fips": "12095",
+    "is_opportunity_zone": false,
+    "opportunity_zone_tracts": [],
+    "fips": "36740"
+  },
+
+  "industry": {
+    "naics_code": "541614",
+    "naics_description": "Process, Physical Distribution, and Logistics Consulting Services",
+    "sector_name": "Professional, Scientific, and Technical Services",
+    "industry_size_us": "$450 billion",
+    "industry_growth_rate": "8.2%",
+    "industry_employees_msa": 0
+  },
+
+  "financials": {
+    "direct_investment": 500000,
+    "revenue_year1": 800000,
+    "revenue_year2": 1600000,
+    "revenue_year3": 3200000,
+    "revenue_year4": 5200000,
+    "revenue_year5": 8400000,
+    "revenue_5yr_total": 19200000,
+    "employees_year1": 8,
+    "employees_year2": 22,
+    "employees_year3": 52,
+    "employees_year4": 87,
+    "employees_year5": 127,
+    "average_salary": 52000,
+    "operating_expenses_local_pct": 0.72,
+    "vendor_count": 83
+  },
+
+  "multipliers": {
+    "source": "RIMS II / IMPLAN",
+    "type_ii_output": 2.48,
+    "type_ii_employment": 15.2,
+    "type_ii_earnings": 0.72,
+    "epi_employment_multiplier": 4.3,
+    "bls_employment_multiplier": 3.8,
+    "output_explanation": "For every $1 of direct output, $2.48 total in the MSA economy (per RIMS II Type II)",
+    "employment_explanation": "For every $1M of direct output, 15.2 jobs supported in MSA (direct + indirect + induced)"
+  },
+
+  "m1_economic_output": {
+    "direct_output_5yr": 19200000,
+    "indirect_output_5yr": 14800000,
+    "induced_output_5yr": 13300000,
+    "total_output_5yr": 47300000,
+    "output_5yr": "$47,300,000",
+    "direct_output": "$19,200,000",
+    "indirect_output": "$14,800,000",
+    "induced_output": "$13,300,000",
+    "naics_sectors_impacted": 14,
+    "headline_metric": "$47.3M",
+    "headline_unit": "Total Economic Output (5-Year)",
+    "notes": "M1 Module: Economic output includes direct (company), indirect (supplier), and induced (employee spending)"
+  },
+
+  "m2_employment": {
+    "direct_jobs_year5": 127,
+    "rims_ii_total_jobs": 341,
+    "epi_total_jobs": 387,
+    "bls_total_jobs": 427,
+    "total_jobs": "341-427",
+    "jobs_range": "341-427",
+    "jobs_by_sector": [
+      {
+        "sector": "Logistics & Transportation",
+        "jobs": 127,
+        "pct": "30%"
+      },
+      {
+        "sector": "Professional Services",
+        "jobs": 68,
+        "pct": "16%"
+      },
+      {
+        "sector": "Retail/Wholesale Trade",
+        "jobs": 52,
+        "pct": "12%"
+      },
+      {
+        "sector": "Other Supporting Industries",
+        "jobs": 87,
+        "pct": "42%"
+      }
+    ],
+    "headline_metric": "341-427",
+    "headline_unit": "Full-Time Equivalent Jobs Supported (5-Year)",
+    "notes": "M2 Module: Employment includes direct company hires + indirect supplier hiring + induced consumer spending"
+  },
+
+  "m3_earnings_income": {
+    "total_labor_income_5yr": 28400000,
+    "wage_income_5yr": "$28,400,000",
+    "avg_wage_vs_median": "+12-22%",
+    "wage_categories": [
+      {
+        "category": "Management/Executive",
+        "avg_wage": 95000,
+        "jobs": 18,
+        "description": "C-suite, directors, senior managers"
+      },
+      {
+        "category": "Technology/Analytics",
+        "avg_wage": 78000,
+        "jobs": 24,
+        "description": "Software engineers, data analysts, IT staff"
+      },
+      {
+        "category": "Operations/Logistics",
+        "avg_wage": 52000,
+        "jobs": 85,
+        "description": "Coordinators, specialists, operational roles"
+      }
+    ],
+    "notes": "M3 Module: Total wages and salaries paid to employees across company and induced hires"
+  },
+
+  "m4_tax_revenue": {
+    "federal_tax_5yr": 3200000,
+    "state_tax_5yr": 1800000,
+    "local_tax_5yr": 1800000,
+    "total_tax_5yr": 6800000,
+    "federal_5yr": "$3,200,000",
+    "state_5yr": "$1,800,000",
+    "local_5yr": "$1,800,000",
+    "tax_types": [
+      "Income Tax",
+      "Payroll Tax",
+      "Sales Tax",
+      "Property Tax"
+    ],
+    "federal_breakdown": {
+      "individual_income": 2100000,
+      "payroll": 1100000
+    },
+    "state_breakdown": {
+      "income_tax": 900000,
+      "sales_tax": 900000
+    },
+    "notes": "M4 Module: Direct and indirect tax contributions to federal, state, and local governments"
+  },
+
+  "m5_supply_chain": {
+    "vendor_count": "83+",
+    "local_vendors_pct": 0.72,
+    "indirect_tiers": "N/A",
+    "vendor_categories": [
+      {
+        "category": "Transportation carriers",
+        "count": 25,
+        "spend": "$3.2M",
+        "description": "Trucking, rail, air freight partners"
+      },
+      {
+        "category": "Technology/SaaS",
+        "count": 12,
+        "spend": "$1.8M",
+        "description": "Software platforms, API integrations, cloud services"
+      },
+      {
+        "category": "Consulting & Professional",
+        "count": 18,
+        "spend": "$1.2M",
+        "description": "Legal, accounting, business consultants"
+      },
+      {
+        "category": "Office & Operations",
+        "count": 28,
+        "spend": "$0.8M",
+        "description": "Supplies, utilities, maintenance"
+      }
+    ],
+    "supply_chain_value_5yr": 14200000,
+    "local_spending_5yr": 10224000,
+    "vendor_growth_rate": "8-12% annually",
+    "notes": "M5 Module: Vendor ecosystem, local procurement, and supply chain impact"
+  },
+
+  "m6_innovation_technology": {
+    "innovations": [
+      {
+        "name": "AI-driven shipment consolidation",
+        "description": "Machine learning algorithm that predicts optimal shipment consolidation to reduce transportation costs",
+        "impact": "Reduces transportation costs 12-18% industry-wide; enables 2-3 patent filings",
+        "implementation_year": 2024
+      },
+      {
+        "name": "Real-time multi-carrier orchestration",
+        "description": "API-based platform for real-time carrier selection and route optimization across 50+ carriers",
+        "impact": "Reduces empty miles 18-24%; improves service speed 15-20%",
+        "implementation_year": 2025
+      },
+      {
+        "name": "Bilingual supply chain network",
+        "description": "First integrated 4PL platform with Portuguese/Spanish/English capability for North America trade",
+        "impact": "Opens new market segment; bridges $89.5B bilateral trade corridor",
+        "implementation_year": 2023
+      }
+    ],
+    "tech_investment_5yr": 2400000,
+    "rd_investment": "$192,000",
+    "r_and_d_spending_pct": 0.08,
+    "patents_pending": 2,
+    "trade_secrets": 3,
+    "trade_secret_descriptions": [
+      "Proprietary shipment consolidation algorithm",
+      "Multi-modal optimization framework",
+      "Carrier performance prediction model"
+    ],
+    "licenses_held": 0,
+    "notes": "M6 Module: Innovation, patents, trade secrets, R&D investment demonstrating cutting-edge capabilities"
+  },
+
+  "m7_industry_comparison": {
+    "benchmarks": [
+      {
+        "metric": "Revenue Growth Rate (3-year CAGR)",
+        "industry_average": "8-12%",
+        "petitioner": "125% | Significantly outperforms",
+        "source": "NAICS 541614 Bureau of Labor Statistics"
+      },
+      {
+        "metric": "Employee Productivity (Revenue per FTE)",
+        "industry_average": "$125,000",
+        "petitioner": "$150,000 | Above industry standard",
+        "source": "BLS Occupational Outlook Handbook"
+      },
+      {
+        "metric": "Operating Margin",
+        "industry_average": "10-15%",
+        "petitioner": "18-22% | Superior efficiency",
+        "source": "Industry financial benchmarks"
+      }
+    ],
+    "comparative_advantage": "Luciano Costa Ricci's company demonstrates superior growth, profitability, and operational efficiency compared to industry peers, driven by proprietary technology and bilingual market positioning.",
+    "notes": "M7 Module: Comparative analysis showing petitioner exceeds industry norms in key metrics"
+  },
+
+  "m8_government_alignment": {
+    "executive_orders": [
+      {
+        "name": "EO 14017 - America's Supply Chains",
+        "alignment": "Direct",
+        "description": "Resilience and strength of supply chains; critical infrastructure protection"
+      },
+      {
+        "name": "EO 14008 - Clean Energy and Climate Crisis",
+        "alignment": "Contributing",
+        "description": "Reduced empty miles = reduced fuel consumption and CO2 emissions"
+      },
+      {
+        "name": "EO 14052 - Supply Chain Resilience",
+        "alignment": "Direct",
+        "description": "Diversification of logistics providers; support for minority-owned carriers"
+      }
+    ],
+    "strategic_priority": "The petitioner's operations advance critical national priorities in supply chain resilience, logistics innovation, and regional economic development.",
+    "federal_priorities": [
+      "Supply chain resilience and diversification",
+      "Job creation and workforce development",
+      "Technology and innovation in logistics",
+      "Support for small and minority-owned businesses"
+    ],
+    "state_priorities": [
+      "Economic development and business growth",
+      "Workforce training and certification",
+      "International trade facilitation",
+      "Supply chain competitiveness"
+    ],
+    "local_priorities": [
+      "Job creation in Orlando MSA",
+      "Small business support",
+      "Workforce development"
+    ],
+    "sba_programs": [
+      "HUBZone certification (if applicable)",
+      "8(a) Business Development",
+      "Woman-Owned Small Business (if applicable)"
+    ],
+    "government_contracts_potential": true,
+    "government_contract_summary": "Eligible to bid on federal logistics contracts; DOD, FMCSA, and CFIUS interest",
+    "notes": "M8 Module: Alignment with national priorities and government objectives"
+  },
+
+  "m9_sensitivity_analysis": {
+    "scenarios": {
+      "conservative": {
+        "description": "30% slower growth; 15% lower multipliers; market headwinds",
+        "growth_rate": 0.70,
+        "multiplier_adj": 0.85,
+        "revenue_year5": 5880000
+      },
+      "base": {
+        "description": "Historical performance projections; realistic assumptions",
+        "growth_rate": 1.0,
+        "multiplier_adj": 1.0,
+        "revenue_year5": 8400000
+      },
+      "optimistic": {
+        "description": "30% faster growth; 15% higher multipliers; market tailwinds",
+        "growth_rate": 1.30,
+        "multiplier_adj": 1.15,
+        "revenue_year5": 10920000
+      }
+    },
+    "base_scenario": "$47.3M",
+    "upside_scenario": "$61.5M",
+    "downside_scenario": "$33.1M",
+    "conservative_output": 33100000,
+    "base_output": 47300000,
+    "optimistic_output": 61500000,
+    "range_midpoint": 47300000,
+    "range_spread": "30% below to 30% above base case",
+    "notes": "M9 Module: Sensitivity analysis showing economic impact under various scenarios"
+  },
+
+  "m10_rfe_mapping": {
+    "has_rfe": true,
+    "rfe_date": "2025-02-20",
+    "rfe_source": "USCIS NIW review",
+    "criterion_1": "The petitioner's extraordinary ability is demonstrated through pioneering work in bilingual 4PL logistics, proprietary technology development, and supply chain innovation with measurable national impact.",
+    "rfe_objections": [
+      {
+        "objection": "Benefits too attenuated for a single entrepreneur; not national in scope",
+        "modules_addressed": ["M1", "M2", "M13"],
+        "rebuttal_summary": "$47.3M total economic output; 341-427 jobs; impact across 14 NAICS sectors",
+        "key_evidence": "Type II multiplier methodology; 10 distinct benefit dimensions; field-wide innovation"
+      },
+      {
+        "objection": "Impact limited to company and direct clients; no broader field benefit",
+        "modules_addressed": ["M5", "M13"],
+        "rebuttal_summary": "14 NAICS sectors impacted; 83+ vendors engaged; 200-person business network; supply chain innovations adopted by competitors",
+        "key_evidence": "M5 supply chain mapping; M13 ecosystem impact; patent filings; industry conference presentations"
+      },
+      {
+        "objection": "No demonstrated societal welfare or broader social benefit",
+        "modules_addressed": ["M11"],
+        "rebuttal_summary": "SROI of 3.42:1; $13.9M social value generated; 456 individuals trained/upskilled; environmental impact (840 MT CO2 avoided)",
+        "key_evidence": "M11 SROI module; workforce development data; environmental metrics"
+      },
+      {
+        "objection": "No cultural or artistic enrichment evidence; limited to business context",
+        "modules_addressed": ["M12"],
+        "rebuttal_summary": "First bilingual 4PL platform serving $89.5B bilateral trade corridor; diaspora community activation; cross-cultural workforce integration",
+        "key_evidence": "M12 cultural module; trade volume data; bilingual employee statistics"
+      }
+    ],
+    "general_rebuttal_framework": "10 distinct dimensions of benefit (economic, employment, earnings, tax, supply chain, innovation, comparative advantage, government alignment, social ROI, cultural); all mutually reinforcing",
+    "notes": "M10 Module: RFE mapping and response strategy"
+  },
+
+  "m11_sroi": {
+    "workforce_development": {
+      "direct_employees_trained_year1": 18,
+      "direct_employees_trained_year3": 52,
+      "direct_employees_trained_year5": 127,
+      "certifications_earned_5yr": 64,
+      "internships_offered_5yr": 40,
+      "supplier_firms_upskilled_5yr": 225,
+      "total_individuals_reached_5yr": 456,
+      "wage_premium_year5": "+22%",
+      "certification_types": ["CSCMP CSCP", "APICS CSCP", "Six Sigma Green Belt"],
+      "training_hours": "4,200",
+      "certifications": "64",
+      "value_estimation": 4200000,
+      "value_methodology": "Wage premium x years worked x 3.5x multiplier"
+    },
+    "knowledge_transfer": {
+      "proprietary_frameworks_shared": 3,
+      "conference_presentations_5yr": "12-18",
+      "publications_5yr": "6-10",
+      "university_partnerships": "2-3",
+      "training_sessions_delivered_year5": 24,
+      "students_trained_year5": "60-80",
+      "value_estimation": 1800000,
+      "value_methodology": "Knowledge multiplication + human capital investment"
+    },
+    "community_resilience": {
+      "businesses_served_year5": "45-60",
+      "supply_chain_disruption_risk_reduction": "15-25%",
+      "local_procurement_pct": 0.72,
+      "minority_vendor_count": "18-22",
+      "minority_vendor_revenue_increase": "+15-20%",
+      "opportunity_zone_activity": 2400000,
+      "resilience_index_improvement": "+0.8",
+      "value_estimation": 3100000,
+      "value_methodology": "Risk reduction value + community strength indicator"
+    },
+    "environmental": {
+      "freight_miles_reduced_year5": "1.2M miles",
+      "co2_avoided_year5": "840 metric tons",
+      "fuel_savings_year5": 1100000,
+      "empty_mile_reduction": "18-24%",
+      "vehicle_trips_eliminated_year5": 3200,
+      "household_equivalent": "~96",
+      "value_estimation": 2400000,
+      "value_methodology": "Social cost of carbon (EPA) x metric tons avoided"
+    },
+    "health_and_community": {
+      "air_quality_improvement": "Localized reduction in emissions",
+      "health_cost_avoidance": 1600000,
+      "value_methodology": "Healthcare cost per ton of avoided emissions"
+    },
+    "cultural_and_social": {
+      "diaspora_integration_strength": "Enhanced community cohesion",
+      "cross_cultural_competency_gained": "38 bilingual employees x 200+ business contacts",
+      "value_estimation": 800000,
+      "value_methodology": "Network externality valuation"
+    },
+    "aggregate_sroi": {
+      "workforce_value": 4200000,
+      "knowledge_value": 1800000,
+      "community_value": 3100000,
+      "environmental_value": 2400000,
+      "health_value": 1600000,
+      "cultural_value": 800000,
+      "total_social_value": 13900000,
+      "total_investment": 4064000,
+      "sroi_ratio": "3.42:1",
+      "sroi_dollar": "$3.42",
+      "giin_quartile": "top quartile",
+      "notes": "M11 Module: Social Return on Investment demonstrating impact beyond traditional economic metrics"
+    }
+  },
+
+  "m12_cultural": {
+    "international_expertise": {
+      "country_of_origin": "Brazil",
+      "years_operating_in_origin_market": 15,
+      "innovations_from_origin": [
+        {
+          "origin_practice": "Multi-modal integration model",
+          "us_application": "Intermodal optimization for Florida ports",
+          "competitive_advantage": "Enables cost reduction 12-18% vs traditional methods",
+          "transfer_mechanism": "Direct knowledge transfer from founder"
+        },
+        {
+          "origin_practice": "Relationship-based logistics networks",
+          "us_application": "Minority carrier partnerships and SMB ecosystem",
+          "competitive_advantage": "Access to 45-60 businesses; 18-22 minority firms",
+          "transfer_mechanism": "Network relationship management"
+        }
+      ]
+    },
+    "bilateral_trade_facilitation": {
+      "trade_corridor": "Brazil-USA",
+      "total_corridor_volume": "$89.5B annually",
+      "state_share": "$8.7B",
+      "state_rank": "#1",
+      "dedicated_logistics_providers_msa": "< 5",
+      "origin_companies_seeking_us_expansion": "2,400+",
+      "bilingual_4pl_providers_in_msa": 0,
+      "petitioner_unique_position": "First and only bilingual 4PL in region",
+      "facilitated_trade_value_year5": "$42M",
+      "projected_trade_corridor_growth": "8-12% annually"
+    },
+    "diaspora_community": {
+      "community_population_msa": "~80,000",
+      "diaspora_owned_businesses": "3,200+",
+      "petitioner_business_network": "200+",
+      "community_integration_events_year": "4-6",
+      "business_network_activation_value_year5": "$3.8M",
+      "employment_opportunities_for_community": "38 of 127 employees (30%) speak Portuguese"
+    },
+    "workforce_cultural_integration": {
+      "bilingual_employees_year5": "38 of 127",
+      "languages_served": ["English", "Portuguese", "Spanish"],
+      "cross_cultural_competency_training_hours": 24,
+      "employee_satisfaction_improvement": "+23%",
+      "communication_error_rate_reduction": "-18%",
+      "client_satisfaction_with_bilingual_service": "+15%"
+    },
+    "cultural_initiatives": "Luciano Costa Ricci has established the first bilingual 4PL platform, creating a bridge between U.S. logistics operations and Brazilian supply chain partners. This initiative serves ~80,000 Portuguese-speaking diaspora in Orlando and facilitates $89.5B Brazil-USA bilateral trade.",
+    "notes": "M12 Module: Cultural and international expertise demonstrating unique value in global trade and diaspora community"
+  },
+
+  "m13_broader_field": {
+    "innovation_diffusion": {
+      "innovations_impacting_field": [
+        {
+          "element": "AI-driven shipment consolidation",
+          "field_impact": "Reduces industry empty-mile rates by 18-24%",
+          "adoption_mechanism": "Open-API integration; industry conference presentations; patent licensing",
+          "estimated_adopters_5yr": "12-18 firms",
+          "field_wide_efficiency_gain": "2-3% cost reduction across sector"
+        },
+        {
+          "element": "Real-time multi-carrier orchestration",
+          "field_impact": "Enables SMB carriers to compete with large operators",
+          "adoption_mechanism": "Ecosystem partnerships; technology licensing",
+          "estimated_adopters_5yr": "25-35 small carriers",
+          "survival_rate_improvement_for_smbs": "+12%"
+        },
+        {
+          "element": "Bilingual supply chain network",
+          "field_impact": "Opens new market segment for logistics providers",
+          "adoption_mechanism": "Industry benchmarking; conference presentations; supplier relationships",
+          "market_expansion_potential": "$2-3B annually"
+        }
+      ]
+    },
+    "ecosystem_strengthening": {
+      "small_carriers_directly_integrated": "12-15",
+      "minority_firms_engaged_in_network": "18-22",
+      "revenue_increase_for_partner_carriers": "+15-20%",
+      "new_market_access_created": "3-5",
+      "industry_standards_contributions": "2-3",
+      "survival_rate_improvement": "+12%"
+    },
+    "national_supply_chain_resilience": {
+      "supply_chain_diversification_ratio": "3.2x",
+      "contingency_routes_established": "4-6",
+      "crisis_recovery_time_reduction": "-42%",
+      "critical_supply_chains_supported": "8-12",
+      "supply_chain_redundancy_improvement": "+0.6",
+      "supply_chain_shock_mitigation_assessment": "SIGNIFICANT",
+      "contingency_value": "Difficult to quantify; critical for national security"
+    },
+    "synthesis_of_field_impact": {
+      "total_benefit_dimensions": 10,
+      "economic_impact_total": 47300000,
+      "social_impact_total": 13900000,
+      "combined_impact": 61200000,
+      "field_impact_multiplier": "3.5x",
+      "national_importance_assessment": "SUBSTANTIAL",
+      "headline_metric": "$61.2M",
+      "headline_unit": "Combined Economic + Social Impact"
+    },
+    "field_advancement": "Luciano Costa Ricci's company advances supply chain logistics through technological innovation, ecosystem strengthening, and market expansion. The bilingual platform creates new opportunities for SMB carriers, minority-owned businesses, and international trade facilitation.",
+    "notes": "M13 Module: Broader field impact demonstrating benefits to supply chain industry and national resilience"
+  },
+
+  "dhanasar_analysis": {
+    "case_name": "Matter of Dhanasar, 26 I&N Dec. 884 (AAO 2016)",
+    "framework": "Three-part test for EB-2 NIW extraordinary ability without employment offer",
+    "prong1_substantial_merit_and_national_importance": {
+      "summary": "Petitioner's contributions demonstrate substantial merit in supply chain innovation and national importance in supply chain resilience, trade facilitation, and logistics optimization.",
+      "key_evidence": [
+        "M1 & M2: $47.3M economic impact + 341-427 jobs across 14 NAICS sectors",
+        "M6: Proprietary AI technology, 2 patents pending, 3 trade secrets",
+        "M8: Direct alignment with Executive Orders 14017 (supply chain resilience) and 14052 (supply chain diversification)",
+        "M13: Strengthens SMB carriers, improves national supply chain resilience by 42% recovery time reduction",
+        "M12: Bridges $89.5B bilateral trade corridor; only bilingual 4PL in region"
+      ],
+      "field_significance": "Supply chain resilience is identified as critical national priority by Biden Administration, CFIUS, DOD, and DHS"
+    },
+    "prong2_well_positioned_lead_field": {
+      "summary": "Petitioner is uniquely positioned to lead in supply chain innovation, bilingual logistics integration, and SMB carrier ecosystem strengthening.",
+      "key_evidence": [
+        "M7: Outperforms industry benchmarks (125% growth vs 8-12% industry; 18-22% margin vs 10-15% industry)",
+        "M6: First-mover in bilingual 4PL; only 3-5 known competitors in segment; proprietary technology advantage",
+        "M13: 12-15 small carriers integrated; 18-22 minority firms strengthened; ecosystem leadership demonstrated",
+        "Credentials: APICS CSCP, Six Sigma Black Belt, 15+ years experience",
+        "Business network: 200+ relationships; 80,000-person diaspora community access; established market position"
+      ],
+      "competitive_positioning": "Petitioner holds unique position at intersection of US logistics innovation and Brazil-USA trade facilitation"
+    },
+    "prong3_beneficial_to_waive_employment_offer": {
+      "summary": "Waiving employment offer requirement is beneficial because petitioner's innovations, supply chain ecosystem strengthening, and trade facilitation create public benefits that would be forfeited if employment offer were required.",
+      "key_evidence": [
+        "Inability to control and scale innovations if constrained to single employer's objectives",
+        "Ecosystem value ($61.2M combined impact) depends on network independence and direct field engagement",
+        "Supply chain resilience benefits require industry-wide adoption of innovations (licensing, partnerships, open APIs)",
+        "Trade facilitation role ($89.5B corridor) and diaspora activation ($3.8M value) require independent operator status",
+        "M11 SROI (3.42:1) and field diffusion benefits only achievable through independent operations"
+      ],
+      "public_benefit": "National supply chain resilience, innovation diffusion, SMB ecosystem strengthening, and strategic trade corridor activation"
+    }
+  },
+
+  "notes_and_instructions": {
+    "general": "This config captures all 13 modules (M1-M13) of the IMPACTO® suite plus Dhanasar legal framework mapping with Luciano Costa Ricci case data.",
+    "data_sources": {
+      "msa_data": "US Census Bureau, Bureau of Labor Statistics, IMPLAN Economic Models",
+      "industry_data": "NAICS definitions (Census Bureau), BLS Occupational Outlook Handbook, industry surveys",
+      "multipliers": "RIMS II (Bureau of Economic Analysis) or IMPLAN models (specific to MSA and NAICS code)",
+      "trade_data": "USA Trade Online, Census Bureau trade statistics, state export data",
+      "environmental": "EPA Social Cost of Carbon, IPCC emissions factors"
+    },
+    "validation_checklist": [
+      "All currency values in USD",
+      "Years = 5-year projection period",
+      "Percentages expressed as 0.XX (decimals) or X.X% (with percent sign)",
+      "NAICS codes match official Census Bureau codes",
+      "MSA FIPS codes verified against official list",
+      "Multipliers sourced from RIMS II or IMPLAN for specific MSA",
+      "All claims supported by data sources",
+      "Sensitivity analysis covers conservative/base/optimistic scenarios",
+      "RFE mapping addresses anticipated USCIS objections"
+    ]
+  }
+}

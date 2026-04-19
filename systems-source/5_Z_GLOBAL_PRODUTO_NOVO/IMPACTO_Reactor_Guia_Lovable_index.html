@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPACTO® Reactor — Economic Impact Intelligence Suite</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --primary: #060d1b;
+    --primary-mid: #0a1628;
+    --surface: #0d1929;
+    --surface2: #111f38;
+    --surface3: #162040;
+    --accent: #00d4ff;
+    --accent-dim: rgba(0,212,255,0.6);
+    --accent2: #7c3aed;
+    --accent2-dim: rgba(124,58,237,0.6);
+    --accent3: #06b6d4;
+    --accent4: #10b981;
+    --gold: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border: rgba(0,212,255,0.10);
+    --border-hover: rgba(0,212,255,0.25);
+    --glass: rgba(13,25,41,0.75);
+    --glass2: rgba(17,31,56,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--primary);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ═══ AMBIENT BACKGROUND ═══ */
+  .bg-grid {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    z-index: 0; pointer-events: none;
+  }
+  .bg-orb {
+    position: fixed; border-radius: 50%;
+    filter: blur(80px); z-index: 0; pointer-events: none; opacity: 0.5;
+  }
+  .bg-orb-1 { top: -10%; right: -5%; width: 600px; height: 600px; background: rgba(0,212,255,0.06); animation: drift1 22s ease-in-out infinite; }
+  .bg-orb-2 { bottom: -10%; left: -5%; width: 500px; height: 500px; background: rgba(124,58,237,0.05); animation: drift2 28s ease-in-out infinite; }
+  .bg-orb-3 { top: 40%; left: 50%; width: 400px; height: 400px; background: rgba(6,182,212,0.04); animation: drift3 24s ease-in-out infinite; }
+  @keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-60px,80px)} }
+  @keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(50px,-70px)} }
+  @keyframes drift3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,50px)} }
+
+  .page-wrapper { position: relative; z-index: 1; }
+
+  /* ═══ NAVBAR ═══ */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(6,13,27,0.8);
+    backdrop-filter: blur(24px) saturate(1.4);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    transition: all 0.3s;
+  }
+  .navbar-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .navbar-brand {
+    font-size: 1.1rem; font-weight: 800;
+    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    letter-spacing: -0.02em;
+  }
+  .navbar-brand span { font-weight: 400; opacity: 0.7; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    padding: 7px 14px; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-dim); text-decoration: none;
+    border-radius: 8px; transition: all 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); background: rgba(0,212,255,0.06); }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 100px 24px 80px; position: relative;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(0,212,255,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 80%, rgba(124,58,237,0.04) 0%, transparent 45%);
+  }
+  .hero-content { position: relative; max-width: 820px; }
+  .hero-reactor-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 22px; border-radius: 999px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,58,237,0.08));
+    border: 1px solid rgba(0,212,255,0.15);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 40px;
+  }
+  .hero-reactor-badge .pulse {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  .hero-logo {
+    font-size: 4.5rem; font-weight: 900; letter-spacing: -0.04em;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1.05; margin-bottom: 4px;
+  }
+  .hero-logo-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem; font-weight: 600; letter-spacing: 0.08em;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 12px; text-transform: uppercase;
+  }
+  .hero-tagline {
+    font-size: 1rem; font-weight: 400; color: var(--text-muted);
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 48px;
+  }
+  .hero-divider { width: 80px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); margin: 0 auto 40px; }
+  .hero-desc {
+    font-size: 1.05rem; color: var(--text-muted); line-height: 1.9;
+    max-width: 600px; margin: 0 auto 56px;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-value {
+    font-size: 1.8rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-top: 4px; }
+
+  /* ═══ SECTIONS ═══ */
+  section { max-width: 1000px; margin: 0 auto; padding: 80px 32px; }
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-tag::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+  .section-title {
+    font-size: 2.2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em;
+    margin-bottom: 20px; line-height: 1.2;
+  }
+  .section-lead { font-size: 1rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 32px; }
+  .body-text { font-size: 0.93rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 18px; }
+  .sub-heading {
+    font-size: 1.1rem; font-weight: 700; color: #fff; margin: 36px 0 14px;
+  }
+
+  /* ═══ DIVIDER ═══ */
+  .divider { max-width: 1000px; margin: 0 auto; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+
+  /* ═══ CALLOUT ═══ */
+  .callout {
+    position: relative; padding: 24px 28px 24px 32px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.03), rgba(124,58,237,0.03));
+    border: 1px solid var(--border);
+    margin: 28px 0; font-size: 0.92rem; color: var(--text); line-height: 1.85;
+  }
+  .callout::before {
+    content: ''; position: absolute; left: 0; top: 16px; bottom: 16px;
+    width: 3px; border-radius: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+  }
+  .callout strong { color: #fff; }
+
+  /* ═══ BULLET LIST ═══ */
+  .blist { list-style: none; padding: 0; margin: 16px 0; }
+  .blist li {
+    font-size: 0.92rem; color: var(--text-muted); line-height: 1.85;
+    padding: 5px 0 5px 24px; position: relative;
+  }
+  .blist li::before {
+    content: ''; position: absolute; left: 2px; top: 13px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+
+  /* ═══ GLASS CARDS ═══ */
+  .card-grid { display: grid; gap: 18px; margin: 28px 0; }
+  .card-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .glass-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .glass-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .glass-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .glass-card:hover::after { opacity: 1; }
+  .card-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .glass-card h3 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+  .glass-card p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.75; }
+
+  /* ═══ MODULE CARDS ═══ */
+  .module-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 16px; padding: 30px; margin-bottom: 14px;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .module-card:hover { border-color: var(--border-hover); }
+  .module-tag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 6px;
+    background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.12);
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .module-card h3 { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+  .module-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .module-label { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent3); margin-bottom: 6px; }
+  .module-text { font-size: 0.86rem; color: var(--text-muted); line-height: 1.75; }
+  .module-analogy {
+    grid-column: 1 / -1; margin-top: 6px; padding: 12px 18px;
+    background: rgba(124,58,237,0.05); border: 1px solid rgba(124,58,237,0.1);
+    border-radius: 8px; font-size: 0.84rem; color: var(--text); font-style: italic; line-height: 1.75;
+  }
+
+  /* ═══ PREMIUM TABLE ═══ */
+  .table-wrap {
+    margin: 28px 0; border-radius: 14px; border: 1px solid var(--border);
+    overflow: hidden; background: var(--glass);
+  }
+  .ptable { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+  .ptable thead th {
+    padding: 14px 18px; text-align: left; font-weight: 700;
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); background: rgba(0,212,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .ptable tbody td {
+    padding: 13px 18px; border-bottom: 1px solid rgba(255,255,255,0.025);
+    color: var(--text-muted); vertical-align: top;
+  }
+  .ptable tbody tr:last-child td { border-bottom: none; }
+  .ptable tbody tr:hover { background: rgba(0,212,255,0.015); }
+  .ptable tbody td:first-child { font-weight: 600; color: var(--text); }
+  .ptable.comp-table thead th:last-child { color: var(--accent); background: rgba(0,212,255,0.05); }
+  .ptable.comp-table tbody td:last-child { color: var(--accent); font-weight: 600; }
+
+  /* ═══ TIER CARDS ═══ */
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin: 36px 0; }
+  .tier-card {
+    border-radius: 16px; padding: 30px 26px; border: 1px solid var(--border);
+    background: var(--glass); position: relative; transition: all 0.3s;
+  }
+  .tier-card:hover { transform: translateY(-4px); }
+  .tier-card.featured {
+    border-color: var(--accent); background: linear-gradient(180deg, rgba(0,212,255,0.05), var(--glass));
+    box-shadow: 0 0 40px rgba(0,212,255,0.06);
+  }
+  .tier-badge {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 4px 16px; border-radius: 999px; white-space: nowrap;
+  }
+  .tier-name { font-size: 1.2rem; font-weight: 800; color: #fff; margin: 6px 0 18px; }
+  .tier-list { list-style: none; padding: 0; }
+  .tier-list li {
+    font-size: 0.8rem; color: var(--text-muted); padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.025);
+    display: flex; align-items: flex-start; gap: 9px;
+  }
+  .tier-list li:last-child { border-bottom: none; }
+  .tier-list .ck { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .tier-list .no { color: var(--text-dim); flex-shrink: 0; }
+  .tier-ideal {
+    margin-top: 18px; padding: 10px 14px; border-radius: 8px;
+    background: rgba(0,212,255,0.03); font-size: 0.75rem; color: var(--text-dim);
+    font-style: italic; text-align: center;
+  }
+
+  /* ═══ METHODOLOGY CARDS ═══ */
+  .method-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 14px; padding: 26px 28px;
+    display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: start;
+    transition: all 0.3s; margin-bottom: 14px;
+  }
+  .method-card:hover { border-color: var(--border-hover); }
+  .method-icon {
+    width: 52px; height: 52px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.04em; color: #fff; flex-shrink: 0;
+  }
+  .mi-imp { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+  .mi-rims { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+  .mi-epi { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+  .method-card h3 { font-size: 0.98rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .method-detail { font-size: 0.84rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 6px; }
+  .method-cred {
+    display: inline-block; padding: 4px 11px; border-radius: 6px;
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px;
+  }
+  .cred-h { background: rgba(0,212,255,0.06); color: var(--accent); border: 1px solid rgba(0,212,255,0.12); }
+  .cred-m { background: rgba(124,58,237,0.06); color: #a78bfa; border: 1px solid rgba(124,58,237,0.12); }
+
+  /* ═══ WORKFLOW ═══ */
+  .wf-steps { margin: 28px 0; }
+  .wf-step { display: flex; gap: 22px; }
+  .wf-indicator { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .wf-dot {
+    width: 42px; height: 42px; border-radius: 11px;
+    background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: var(--accent);
+  }
+  .wf-line { width: 2px; flex: 1; background: linear-gradient(180deg, rgba(0,212,255,0.15), transparent); margin: 6px 0; }
+  .wf-content { padding-bottom: 36px; flex: 1; }
+  .wf-content h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .wf-content p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.8; }
+
+  /* ═══ STAT CARDS ═══ */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 32px 0; }
+  .stat-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px; text-align: center; transition: all 0.3s;
+  }
+  .stat-card:hover { border-color: var(--border-hover); }
+  .stat-val {
+    font-size: 1.7rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px;
+  }
+  .stat-lbl { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); }
+
+  /* ═══ FAQ ═══ */
+  .faq-item {
+    border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 10px; overflow: hidden; background: var(--glass);
+    transition: border-color 0.3s;
+  }
+  .faq-item:hover { border-color: var(--border-hover); }
+  .faq-q {
+    padding: 18px 24px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.92rem; font-weight: 600; color: #fff;
+    user-select: none;
+  }
+  .faq-q .arrow { color: var(--accent); font-size: 1.2rem; transition: transform 0.3s; }
+  .faq-item.open .faq-q .arrow { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+  }
+  .faq-a-inner {
+    padding: 0 24px 20px;
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;
+  }
+  .faq-item.open .faq-a { max-height: 500px; }
+
+  /* ═══ CTA SECTION ═══ */
+  .cta-section {
+    text-align: center; padding: 80px 32px;
+    position: relative;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,212,255,0.04) 0%, transparent 60%);
+  }
+  .cta-content { position: relative; max-width: 600px; margin: 0 auto; }
+  .cta-logo {
+    font-size: 2.4rem; font-weight: 900;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px;
+  }
+  .cta-reactor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 24px;
+  }
+  .cta-text { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 32px; }
+  .cta-divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); margin: 24px auto; }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 768px) {
+    .hero-logo { font-size: 2.8rem; }
+    .hero-logo-sub { font-size: 1.1rem; }
+    .card-grid.cols-2, .card-grid.cols-3, .card-grid.cols-4 { grid-template-columns: 1fr; }
+    .tier-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .module-body { grid-template-columns: 1fr; }
+    .method-card { grid-template-columns: 1fr; }
+    section { padding: 48px 18px; }
+    .nav-links { display: none; }
+  }
+
+  /* ═══ NOISE TEXTURE OVERLAY ═══ */
+  .noise-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px;
+  }
+
+  /* ═══ ANIMATED GRADIENT BORDERS ═══ */
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  @keyframes spin-border { to { --angle: 360deg; } }
+
+  .glow-border {
+    position: relative;
+    background: var(--glass);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+  .glow-border::before {
+    content: ''; position: absolute; inset: -1px;
+    border-radius: inherit; z-index: -1;
+    background: conic-gradient(from var(--angle), transparent 40%, var(--accent) 50%, var(--accent2) 55%, transparent 60%);
+    animation: spin-border 8s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .glow-border:hover::before { opacity: 1; }
+
+  /* ═══ SCROLL REVEAL ═══ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ═══ ANIMATED COUNTER ═══ */
+  .counter-animate {
+    display: inline-block;
+    transition: all 0.3s;
+  }
+
+  /* ═══ SHIMMER LINE ═══ */
+  .shimmer-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+  /* ═══ FLOATING PARTICLES (CSS-only) ═══ */
+  .particles {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-particle linear infinite;
+  }
+  @keyframes float-particle {
+    0% { opacity: 0; transform: translateY(100vh) scale(0); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+  }
+  .particle:nth-child(1) { left: 10%; animation-duration: 18s; animation-delay: 0s; width: 3px; height: 3px; }
+  .particle:nth-child(2) { left: 25%; animation-duration: 22s; animation-delay: 3s; }
+  .particle:nth-child(3) { left: 40%; animation-duration: 16s; animation-delay: 7s; width: 2.5px; height: 2.5px; }
+  .particle:nth-child(4) { left: 55%; animation-duration: 20s; animation-delay: 2s; }
+  .particle:nth-child(5) { left: 70%; animation-duration: 24s; animation-delay: 5s; width: 3px; height: 3px; }
+  .particle:nth-child(6) { left: 85%; animation-duration: 19s; animation-delay: 8s; }
+  .particle:nth-child(7) { left: 15%; animation-duration: 21s; animation-delay: 4s; background: var(--accent2); }
+  .particle:nth-child(8) { left: 60%; animation-duration: 17s; animation-delay: 6s; background: var(--accent2); }
+  .particle:nth-child(9) { left: 35%; animation-duration: 23s; animation-delay: 1s; }
+  .particle:nth-child(10) { left: 80%; animation-duration: 20s; animation-delay: 9s; background: var(--accent3); }
+
+  /* ═══ HERO ENHANCED ═══ */
+  .hero-glow-ring {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 500px; height: 500px; border-radius: 50%;
+    border: 1px solid rgba(0,212,255,0.04);
+    animation: ring-pulse 6s ease-in-out infinite;
+  }
+  .hero-glow-ring:nth-child(2) { width: 700px; height: 700px; animation-delay: 2s; }
+  .hero-glow-ring:nth-child(3) { width: 900px; height: 900px; animation-delay: 4s; }
+  @keyframes ring-pulse {
+    0%,100% { opacity: 0.3; transform: translate(-50%,-50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%,-50%) scale(1.03); }
+  }
+
+  /* ═══ MODULE CARD ENHANCED ═══ */
+  .module-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 16px; padding: 30px; margin-bottom: 14px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
+  }
+  .module-card::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(0,212,255,0.02), transparent 50%);
+    opacity: 0; transition: opacity 0.5s;
+  }
+  .module-card:hover::before { opacity: 1; }
+  .module-card:hover { border-color: var(--border-hover); box-shadow: 0 8px 32px rgba(0,212,255,0.05); }
+
+  /* ═══ TIER CARD GLOW ═══ */
+  .tier-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(0,212,255,0.06), var(--glass));
+    box-shadow: 0 0 50px rgba(0,212,255,0.08), 0 0 100px rgba(0,212,255,0.03);
+    animation: tier-glow 4s ease-in-out infinite;
+  }
+  @keyframes tier-glow {
+    0%,100% { box-shadow: 0 0 50px rgba(0,212,255,0.08), 0 0 100px rgba(0,212,255,0.03); }
+    50% { box-shadow: 0 0 60px rgba(0,212,255,0.12), 0 0 120px rgba(0,212,255,0.05); }
+  }
+
+  /* ═══ STAT CARD HOVER ═══ */
+  .stat-card:hover .stat-val {
+    transform: scale(1.08);
+    transition: transform 0.3s;
+  }
+  .stat-val { display: block; transition: transform 0.3s; }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    body { background: #fff; color: #1a1a1a; }
+    .bg-grid, .bg-orb, .navbar { display: none; }
+    .hero { min-height: auto; padding: 40px 0; }
+    section { padding: 30px 0; }
+    .glass-card, .module-card, .tier-card, .method-card, .stat-card, .faq-item {
+      background: #f8fafc; border-color: #e2e8f0; color: #1a1a1a;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="noise-overlay"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
+<div class="particles">
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<div class="page-wrapper">
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-brand">IMPACTO® <span>Reactor</span></div>
+    <div class="nav-links">
+      <a href="#oque">O que é</a>
+      <a href="#problema">O Problema</a>
+      <a href="#paraque">Para que serve</a>
+      <a href="#modulos">Módulos</a>
+      <a href="#metodologias">Metodologias</a>
+      <a href="#tiers">Produto</a>
+      <a href="#diferenciais">Diferenciais</a>
+      <a href="#fluxo">Fluxo</a>
+      <a href="#mercado">Mercado</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero" id="top">
+  <div class="hero-glow-ring"></div>
+  <div class="hero-glow-ring"></div>
+  <div class="hero-glow-ring"></div>
+  <div class="hero-content">
+    <div class="hero-reactor-badge">
+      <span class="pulse"></span>
+      Economic Impact Intelligence Suite
+    </div>
+    <div class="hero-logo">IMPACTO®</div>
+    <div class="hero-logo-sub">Reactor</div>
+    <div class="hero-tagline">Evidência Econômica Científica para EB-2 NIW</div>
+    <div class="hero-divider"></div>
+    <div class="hero-desc">
+      Transforme dados econômicos brutos em evidências quantitativas robustas e bem fundamentadas.
+      Metodologia tripla. Validação cruzada. Blindagem contra RFE.
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">10</div>
+        <div class="hero-stat-label">Módulos Analíticos</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">3</div>
+        <div class="hero-stat-label">Metodologias Gov.</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">546</div>
+        <div class="hero-stat-label">Setores Industriais</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">3</div>
+        <div class="hero-stat-label">Cenários de Stress</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ 1. O QUE É ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="oque">
+  <div class="section-tag">// 01 — Visão Geral</div>
+  <h2 class="section-title">O Que é o IMPACTO® Reactor?</h2>
+  <p class="section-lead">
+    O IMPACTO® Reactor é uma suíte proprietária de análise de impacto econômico projetada para fortalecer petições EB-2 NIW (National Interest Waiver). Ele transforma dados econômicos brutos em evidências quantitativas robustas e tecnicamente fundamentadas que demonstram que o empreendimento do peticionário gera efeitos econômicos positivos substanciais, conforme exigido pelo framework <em>Matter of Dhanasar</em>.
+  </p>
+  <p class="body-text">
+    Em termos simples: o IMPACTO® Reactor responde com números concretos às perguntas que o USCIS faz em praticamente toda RFE de EB-2 NIW — "Quantos empregos? Quanto em impostos? Qual o impacto real na economia americana?" — usando as mesmas ferramentas que o próprio governo utiliza para avaliar políticas públicas.
+  </p>
+  <div class="callout">
+    <strong>O IMPACTO® Reactor não é um business plan.</strong> Não é uma carta de recomendação. É uma análise econômica científica baseada em modelos de referência do Bureau of Economic Analysis e do U.S. Department of Commerce. Se o business plan é o "argumento", o Reactor é a "prova pericial".
+  </div>
+
+  <div class="card-grid cols-4">
+    <div class="glass-card">
+      <div class="card-icon">⚡</div>
+      <h3>Científico</h3>
+      <p>Baseado em modelos econométricos de referência utilizados pelo governo federal americano.</p>
+    </div>
+    <div class="glass-card">
+      <div class="card-icon">🔄</div>
+      <h3>Multi-Validado</h3>
+      <p>Validação cruzada entre até 3 metodologias independentes (IMPLAN, RIMS II, EPI).</p>
+    </div>
+    <div class="glass-card">
+      <div class="card-icon">🛡️</div>
+      <h3>Anti-RFE</h3>
+      <p>Cada módulo foi projetado para responder a objeções específicas do USCIS.</p>
+    </div>
+    <div class="glass-card">
+      <div class="card-icon">📊</div>
+      <h3>Modular</h3>
+      <p>10 módulos independentes que podem ser combinados conforme a complexidade do caso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2. POR QUE EXISTE ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="problema">
+  <div class="section-tag">// 02 — O Problema</div>
+  <h2 class="section-title">Por Que o IMPACTO® Reactor Existe?</h2>
+
+  <div class="sub-heading">Colapso nas Aprovações EB-2 NIW</div>
+  <p class="body-text">
+    A taxa de aprovação de petições EB-2 NIW caiu de mais de 90% historicamente para apenas 43,31% no FY2024. Embora tenha apresentado recuperação parcial para aproximadamente 62–67% nos primeiros trimestres do FY2025, o cenário continua significativamente mais desafiador.
+  </p>
+  <p class="body-text">As principais razões para indeferimentos e RFEs estão concentradas na falta de evidências quantitativas de impacto econômico:</p>
+
+  <ul class="blist">
+    <li>Nenhuma projeção de criação de empregos fornecida</li>
+    <li>Nenhum dado de receita tributária apresentado</li>
+    <li>Nenhuma demonstração de que o impacto vai além da empresa individual</li>
+    <li>Nenhuma evidência de alinhamento com prioridades nacionais</li>
+    <li>Business plans genéricos sem fundamentação econômica</li>
+    <li>Conteúdo detectado como genérico ou sintético pelos novos sistemas ATLAS e ATA do USCIS</li>
+  </ul>
+
+  <div class="sub-heading">A Solução: Evidência Econômica Científica</div>
+  <p class="body-text">
+    O IMPACTO® Reactor preenche exatamente essa lacuna. Ele fornece análises econômicas baseadas em modelos utilizados pelo próprio governo americano (Bureau of Economic Analysis, Department of Commerce), tornando significativamente mais difícil para o adjudicador descartar a evidência como "insuficiente" ou "genérica".
+  </p>
+  <p class="body-text">
+    Além disso, em um cenário onde o USCIS implementou sistemas de IA como o <strong>ATLAS</strong> (motor de vetting automatizado com NLP para análise de cartas e business plans) e o <strong>ATA — Asylum Text Analytics</strong> (detecção de conteúdo genérico ou sintético, expandindo para EB-2 NIW), evidências econômicas quantitativas e individualizadas são a única forma de se diferenciar de petições genéricas.
+  </p>
+
+  <div class="callout">
+    <strong>Analogia:</strong> Se o business plan é o "argumento", o IMPACTO® Reactor é a "prova pericial". Um diz o que você pretende fazer; o outro prova, com números auditáveis, o impacto que isso terá na economia.
+  </div>
+</section>
+
+<!-- ═══ 3. PARA QUE SERVE ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="paraque">
+  <div class="section-tag">// 03 — Aplicação Estratégica</div>
+  <h2 class="section-title">Para Que Serve?</h2>
+  <p class="section-lead">O IMPACTO® Reactor serve a três finalidades estratégicas dentro do processo EB-2 NIW:</p>
+
+  <div class="card-grid cols-2">
+    <div class="glass-card">
+      <div class="card-icon">P1</div>
+      <h3>Fortalecer o Pilar 1 — Importância Nacional</h3>
+      <p>O USCIS exige que o peticionário demonstre que seu empreendimento tem "importância nacional" — não basta que o campo seja importante, o empreendimento específico precisa gerar "efeitos econômicos positivos substanciais" (Dhanasar, p. 890). O Reactor fornece: projeção de empregos diretos/indiretos/induzidos, cálculo de produção econômica total, valor agregado ao PIB, receita tributária projetada, mapeamento de setores NAICS e alinhamento com políticas nacionais.</p>
+    </div>
+    <div class="glass-card">
+      <div class="card-icon">P3</div>
+      <h3>Suportar o Pilar 3 — Benéfico Dispensar</h3>
+      <p>O Pilar 3 do Dhanasar exige demonstrar que é benéfico dispensar o requisito de oferta de emprego. O Reactor prova que o impacto econômico do peticionário vai muito além do que o processo de certificação trabalhista poderia avaliar, mostrando efeitos multiplicadores em cascata — cada emprego direto gera 1,5 a 2,5 empregos adicionais na economia.</p>
+    </div>
+  </div>
+
+  <div class="sub-heading">Neutralizar RFEs (Request for Evidence)</div>
+  <p class="body-text">O IMPACTO® Reactor foi projetado para responder antecipadamente a cada tipo de objeção que aparece em RFEs de EB-2 NIW. Cada módulo endereça uma deficiência específica:</p>
+
+  <div class="table-wrap">
+    <table class="ptable">
+      <thead><tr><th>Objeção Típica do USCIS</th><th>Módulo que Resolve</th></tr></thead>
+      <tbody>
+        <tr><td>"Não demonstrou impacto econômico projetado"</td><td>M1 — Análise Core (IMPLAN + RIMS II)</td></tr>
+        <tr><td>"Não mostrou níveis de pessoal futuros"</td><td>M1 + M6 — Projeções de emprego</td></tr>
+        <tr><td>"Não demonstrou receita tributária"</td><td>M4 — Projeção Tributária</td></tr>
+        <tr><td>"Benefícios limitados à empresa individual"</td><td>M3 + M5 — Setorial + Supply Chain</td></tr>
+        <tr><td>"Impacto atenuado para importância nacional"</td><td>M7 — Alinhamento com Políticas</td></tr>
+        <tr><td>"Não demonstrou área economicamente deprimida"</td><td>M2 — Análise Regional</td></tr>
+        <tr><td>"Habilidades não demonstradas como insubstituíveis"</td><td>M6 + M9 — EPI + Sensibilidade</td></tr>
+        <tr><td>"Impacto não vai além da empresa/clientes"</td><td>M3 + M5 + M8 — Setorial + Supply Chain + Regional</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 4. OS 10 MÓDULOS ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="modulos">
+  <div class="section-tag">// 04 — Arquitetura do Produto</div>
+  <h2 class="section-title">Os 10 Módulos do Reactor</h2>
+  <p class="section-lead">O IMPACTO® Reactor é composto por 10 módulos independentes e complementares, focados exclusivamente em impacto econômico. Todos os módulos estão incluídos no produto.</p>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 01 — Core</span>
+    <h3>M1 — Análise de Impacto Econômico Central</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">É o coração do produto. Usa dois modelos econômicos (IMPLAN e RIMS II) para calcular quantos empregos, quanta produção econômica e quanto valor agregado o empreendimento vai gerar em 5 anos.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">Responde diretamente à pergunta central do USCIS: "Qual o tamanho real do impacto econômico?" A validação cruzada entre dois modelos fortalece substancialmente a credibilidade da evidência.</div></div>
+      <div class="module-analogy">💡 Se o business plan é um "palpite educado", o M1 é um "laudo pericial com duas perícias independentes chegando à mesma conclusão".</div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 02 — Regional</span>
+    <h3>M2 — Pegada Econômica Regional</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Mapeia como o impacto econômico se distribui geograficamente pela região (MSA). Identifica quais condados se beneficiam, quais áreas são economicamente deprimidas (Opportunity Zones) e quantos empregos vão para comunidades carentes.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">O Dhanasar menciona especificamente que impacto em "áreas economicamente deprimidas" carrega peso adicional (p. 890). Este módulo captura exatamente isso.</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 03 — Setorial</span>
+    <h3>M3 — Análise de Multiplicadores Setoriais</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Desagrega o impacto por setor industrial (NAICS). Mostra que o empreendimento não afeta só um setor, mas gera ondas de impacto em 14+ setores diferentes — de transporte a TI, de seguros a restaurantes.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">Destrói o argumento de que "o benefício se limita à empresa individual". Se 14 setores são impactados, o efeito claramente vai além da empresa.</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 04 — Tributário</span>
+    <h3>M4 — Projeção de Receita Tributária</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Calcula exatamente quanto o empreendimento contribuirá em impostos para os três níveis de governo: federal, estadual e local. Desagrega por tipo de imposto.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">RFEs frequentemente citam "nenhum dado de receita tributária". Este módulo elimina essa objeção por completo.</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 05 — Supply Chain</span>
+    <h3>M5 — Mapeamento de Cadeia de Suprimentos</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Identifica todos os fornecedores que serão ativados pelo empreendimento (Tier 1 e Tier 2), quanto será gasto com cada categoria e quantos empregos indiretos isso gera.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">Prova que o empreendimento cria um "ecossistema" econômico, não apenas uma empresa isolada. Fundamental para demonstrar "implicações mais amplas".</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 06 — Nacional</span>
+    <h3>M6 — Multiplicadores de Emprego EPI</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Aplica uma terceira metodologia independente (Economic Policy Institute) que captura ligações econômicas em nível NACIONAL, além do regional.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">É crucial para rebater a objeção de que o impacto é "apenas local" e não alcança "importância nacional".</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 07 — Policy</span>
+    <h3>M7 — Alinhamento com Políticas Nacionais</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Mapeia o empreendimento a políticas, ordens executivas e frameworks estratégicos do governo americano (Executive Orders, CHIPS Act, IRA, IIJA, America First Trade Policy etc.).</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">Se o governo americano já declarou que o campo é "de importância nacional" em documentos oficiais, fica muito difícil para o adjudicador argumentar o contrário.</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 08 — Competitivo</span>
+    <h3>M8 — Vantagem Comparativa Regional</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Analisa o posicionamento competitivo da região do peticionário, identificando lacunas de mercado e vantagens específicas que justificam por que AQUELA região se beneficia do empreendimento.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">Fortalece o argumento de que o peticionário está estrategicamente posicionado em um mercado subatendido.</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 09 — Stress Test</span>
+    <h3>M9 — Análise de Sensibilidade & Cenários</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Testa as projeções sob três cenários (conservador, base, otimista), variando premissas para mostrar que MESMO no pior caso, o impacto ainda é substancial.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">Antecipa a objeção de que "as projeções são otimistas demais". Se mesmo o cenário pessimista mostra impacto significativo, o argumento se torna blindado.</div></div>
+    </div>
+  </div>
+
+  <div class="module-card">
+    <span class="module-tag">Módulo 10 — Dashboard</span>
+    <h3>M10 — Painel Executivo & Resumo USCIS</h3>
+    <div class="module-body">
+      <div><div class="module-label">O que faz</div><div class="module-text">Consolida todos os achados em um formato de dashboard executivo, mapeando cada deficiência típica de RFE ao módulo e evidência que a resolve. Inclui resumo por pilar Dhanasar.</div></div>
+      <div><div class="module-label">Por que importa</div><div class="module-text">É o "mapa de navegação" para quem monta a petição e para o adjudicador. Facilita encontrar rapidamente a evidência que responde a cada objeção específica.</div></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Nota:</strong> Análises de impacto social, cultural e comunitário estão disponíveis como produto complementar separado (<strong>IMPACTO® Social</strong>), para casos que necessitem dessa dimensão adicional de evidência.
+  </div>
+</section>
+
+<!-- ═══ 5. METODOLOGIAS ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="metodologias">
+  <div class="section-tag">// 05 — Fundamento Científico</div>
+  <h2 class="section-title">As Metodologias Explicadas</h2>
+  <p class="section-lead">O diferencial científico do IMPACTO® Reactor está no uso combinado de múltiplas metodologias de referência, cada uma reconhecida por agências governamentais e pelo meio acadêmico:</p>
+
+  <div class="method-card">
+    <div class="method-icon mi-imp">IMP</div>
+    <div>
+      <h3>IMPLAN® — IMpact Analysis for PLANning</h3>
+      <p class="method-detail"><strong>O que é:</strong> O modelo de impacto econômico mais utilizado nos EUA. Originalmente desenvolvido pelo U.S. Forest Service, hoje é mantido pela IMPLAN Group LLC. Possui dados de 546 setores industriais em nível municipal.</p>
+      <p class="method-detail"><strong>Como funciona:</strong> Você insere os dados do empreendimento (receita, funcionários, gastos) e o modelo calcula os efeitos em cascata: para cada dólar gasto, quanto se propaga pela economia em compras de fornecedores (efeito indireto) e em gastos dos funcionários (efeito induzido).</p>
+      <span class="method-cred cred-h">Credibilidade Alta — Amplamente utilizado por agências governamentais e universidades</span>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-icon mi-rims">RII</div>
+    <div>
+      <h3>RIMS II — Regional Input-Output Modeling System</h3>
+      <p class="method-detail"><strong>O que é:</strong> Modelo mantido pelo Bureau of Economic Analysis (BEA), órgão oficial do U.S. Department of Commerce. Fornece multiplicadores regionais derivados diretamente das contas nacionais do governo.</p>
+      <p class="method-detail"><strong>Como funciona:</strong> Similar ao IMPLAN, mas derivado diretamente das contas nacionais. Fornece multiplicadores Tipo II (que incluem efeitos induzidos) para regiões específicas.</p>
+      <span class="method-cred cred-m">Credibilidade Máxima — Modelo oficial do governo federal</span>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <div class="method-icon mi-epi">EPI</div>
+    <div>
+      <h3>EPI — Economic Policy Institute Employment Multipliers</h3>
+      <p class="method-detail"><strong>O que é:</strong> Multiplicadores de emprego publicados como pesquisa revisada por pares pelo Economic Policy Institute, cobrindo 179 indústrias do setor privado.</p>
+      <p class="method-detail"><strong>Como funciona:</strong> Para cada emprego direto criado, calcula quantos empregos adicionais são gerados em fornecedores (supplier jobs) e em re-gastos dos funcionários (re-spending jobs) em nível NACIONAL.</p>
+      <span class="method-cred cred-h">Pesquisa Acadêmica Revisada por Pares — Alcance Nacional</span>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Por que três?</strong> Quando IMPLAN, RIMS II e EPI convergem nos resultados, a evidência ganha um grau de robustez técnica muito superior. É o equivalente a ter três peritos independentes chegando à mesma conclusão — o que dificulta significativamente ao adjudicador argumentar que os números são "otimistas" ou "não confiáveis".
+  </div>
+</section>
+
+<!-- ═══ 6. O PRODUTO ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="tiers">
+  <div class="section-tag">// 06 — O Produto</div>
+  <h2 class="section-title">O Que Está Incluído</h2>
+  <p class="section-lead">O IMPACTO® Reactor é um produto único e completo. Sem versões parciais, sem limitações — cada cliente recebe o pacote integral de evidência econômica:</p>
+
+  <div class="tier-grid" style="grid-template-columns:1fr;">
+    <div class="tier-card featured" style="max-width:680px;margin:0 auto;">
+      <div class="tier-badge">Produto Completo</div>
+      <div class="tier-name">IMPACTO® Reactor</div>
+      <ul class="tier-list">
+        <li><span class="ck">✓</span> Todos os 10 módulos analíticos (M1–M10)</li>
+        <li><span class="ck">✓</span> 3 metodologias: IMPLAN + RIMS II + EPI</li>
+        <li><span class="ck">✓</span> Validação cruzada tripla (3 modelos independentes)</li>
+        <li><span class="ck">✓</span> Análise de sensibilidade completa (3 cenários)</li>
+        <li><span class="ck">✓</span> Alinhamento com políticas nacionais (CET, EOs, Acts)</li>
+        <li><span class="ck">✓</span> Mapeamento de Supply Chain (Tier 1 + Tier 2)</li>
+        <li><span class="ck">✓</span> Projeção tributária desagregada por tipo e nível de governo</li>
+        <li><span class="ck">✓</span> Dashboard executivo com mapeamento RFE → Evidência</li>
+        <li><span class="ck">✓</span> Relatório completo em DOCX + PDF pronto para submissão</li>
+        <li><span class="ck">✓</span> Entrega em inglês e português</li>
+      </ul>
+      <div class="tier-ideal">Aplicável a petições iniciais, respostas a RFE, Appeals e casos complexos</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Complemento disponível:</strong> Para casos que também necessitem de evidência de impacto social, cultural ou comunitário, o <strong>IMPACTO® Social</strong> pode ser contratado como produto complementar.
+  </div>
+</section>
+
+<!-- ═══ 7. DIFERENCIAIS ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="diferenciais">
+  <div class="section-tag">// 07 — Vantagem Competitiva</div>
+  <h2 class="section-title">Diferenciais Competitivos</h2>
+  <p class="section-lead">O IMPACTO® Reactor não tem concorrente direto no mercado de EB-2 NIW para o público brasileiro. Os poucos players americanos oferecem produtos inferiores em escopo:</p>
+
+  <div class="table-wrap">
+    <table class="ptable comp-table">
+      <thead><tr><th>Diferencial</th><th>Concorrentes</th><th>IMPACTO® Reactor</th></tr></thead>
+      <tbody>
+        <tr><td>Metodologias</td><td>1 modelo (geralmente IMPLAN)</td><td>3 modelos (IMPLAN + RIMS II + EPI)</td></tr>
+        <tr><td>Validação Cruzada</td><td>Não oferecem</td><td>Incluído como padrão</td></tr>
+        <tr><td>Módulos</td><td>1–3 análises genéricas</td><td>10 módulos especializados</td></tr>
+        <tr><td>Mapeamento de Políticas</td><td>Raro</td><td>Padrão (CET, EOs, Acts)</td></tr>
+        <tr><td>Análise de Sensibilidade</td><td>Raro</td><td>3 cenários completos</td></tr>
+        <tr><td>Mapeamento de RFE</td><td>Não oferecem</td><td>Tabela Deficiência → Evidência</td></tr>
+        <tr><td>Supply Chain</td><td>Mencionado brevemente</td><td>Mapeamento Tier 1 + Tier 2</td></tr>
+        <tr><td>Idioma</td><td>Apenas inglês</td><td>Inglês + Português</td></tr>
+        <tr><td>Integração c/ Business Plan</td><td>Isolado</td><td>Complementar ao BP</td></tr>
+        <tr><td>Anti-IA (ATLAS/ATA)</td><td>Sem proteção</td><td>Dados individualizados e verificáveis</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 8. FLUXO ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="fluxo">
+  <div class="section-tag">// 08 — Processo de Entrega</div>
+  <h2 class="section-title">Como é o Fluxo de Trabalho?</h2>
+  <p class="section-lead">Do momento da contratação até a entrega do relatório final:</p>
+
+  <div class="wf-steps">
+    <div class="wf-step">
+      <div class="wf-indicator"><div class="wf-dot">01</div><div class="wf-line"></div></div>
+      <div class="wf-content">
+        <h3>Coleta de Dados — Dia 1–3</h3>
+        <p>O cliente preenche um questionário detalhado sobre seu empreendimento: setor, localização, projeção de receita, número de funcionários planejados, fornecedores conhecidos, investimentos realizados e planejados. Também são coletados dados do business plan existente e documentos de suporte.</p>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-indicator"><div class="wf-dot">02</div><div class="wf-line"></div></div>
+      <div class="wf-content">
+        <h3>Modelagem Econômica — Dia 3–7</h3>
+        <p>A equipe de análise executa os modelos IMPLAN, RIMS II e/ou EPI utilizando os dados coletados e benchmarks setoriais. As premissas são calibradas com dados públicos do BEA, BLS e Census Bureau para garantir máxima defensibilidade.</p>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-indicator"><div class="wf-dot">03</div><div class="wf-line"></div></div>
+      <div class="wf-content">
+        <h3>Compilação do Relatório — Dia 7–10</h3>
+        <p>Os resultados são compilados em um relatório profissional com tabelas, gráficos e narrativa que conecta cada dado ao framework Dhanasar. O relatório é revisado internamente para consistência, precisão e alinhamento com as exigências regulatórias mais recentes.</p>
+      </div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-indicator"><div class="wf-dot">04</div></div>
+      <div class="wf-content">
+        <h3>Revisão & Entrega — Dia 10–12</h3>
+        <p>Revisão final de consistência e alinhamento com a estratégia da petição. Ajustes finais são feitos e o documento final é entregue em formato DOCX e PDF, pronto para ser submetido ao USCIS.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Prazo de entrega:</strong> 10–15 dias úteis
+  </div>
+</section>
+
+<!-- ═══ 9. MERCADO ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="mercado">
+  <div class="section-tag">// 09 — Contexto de Mercado</div>
+  <h2 class="section-title">Por Que Agora?</h2>
+  <p class="section-lead">O cenário regulatório e tecnológico criou uma janela de oportunidade sem precedentes para evidência econômica científica:</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-val">43%</div>
+      <div class="stat-lbl">Aprovação FY24</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">~65%</div>
+      <div class="stat-lbl">Aprovação FY25*</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">ATLAS</div>
+      <div class="stat-lbl">IA do USCIS ativa</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">OBBBA</div>
+      <div class="stat-lbl">Novas taxas de filing</div>
+    </div>
+  </div>
+
+  <ul class="blist">
+    <li><strong>Colapso nas aprovações:</strong> Taxa caiu de 90%+ para 43% no FY2024, com recuperação parcial para 62–67% no FY2025 — demanda por evidência econômica robusta nunca foi tão alta</li>
+    <li><strong>OBBBA (H.R. 1):</strong> Novas sobretaxas de filing aumentam significativamente os custos totais de adjuste de status — clientes querem maximizar suas chances de aprovação no primeiro filing</li>
+    <li><strong>IA do USCIS:</strong> Implementação do ATLAS (vetting automatizado por NLP) e ATA (detecção de conteúdo genérico/sintético) torna business plans genéricos cada vez mais ineficazes</li>
+    <li><strong>First-mover advantage:</strong> Nenhum player oferece produto equivalente com metodologia tripla e mapeamento anti-RFE para o mercado brasileiro</li>
+    <li><strong>Produto complementar:</strong> O Reactor funciona como complemento natural a qualquer business plan, agregando a camada de evidência quantitativa que falta na maioria das petições</li>
+  </ul>
+
+  <p style="font-size:0.72rem;color:var(--text-dim);margin-top:16px;font-style:italic;">* Dados preliminares Q1-Q2 FY2025. Fonte: USCIS quarterly processing data.</p>
+</section>
+
+<!-- ═══ 10. FAQ ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<section id="faq">
+  <div class="section-tag">// 10 — Perguntas Frequentes</div>
+  <h2 class="section-title">FAQ</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      O IMPACTO® Reactor substitui o business plan?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">Não. O Reactor é um complemento ao business plan. Enquanto o business plan descreve a estratégia e as projeções do empreendimento, o Reactor fornece a evidência econômica científica que comprova quantitativamente o impacto — usando modelos que o próprio governo americano utiliza. São documentos complementares que se fortalecem mutuamente.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      Funciona para qualquer tipo de empreendimento?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">Sim. Os modelos IMPLAN e RIMS II cobrem 546 setores industriais (classificação NAICS). Independentemente de o empreendimento ser em tecnologia, logística, saúde, educação, engenharia ou qualquer outro campo, existe um setor NAICS correspondente com multiplicadores específicos. O relatório é totalmente individualizado para cada caso.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      Como o Reactor se diferencia de análises genéricas?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">Três diferenças fundamentais: (1) usa até 3 metodologias com validação cruzada, contra 1 dos concorrentes; (2) cada módulo foi mapeado a objeções específicas de RFE, criando uma "blindagem" preventiva; (3) os dados são individualizados por região (MSA/condado), setor (NAICS) e cenários (conservador/base/otimista), tornando muito mais difícil classificá-los como "genéricos" pelos sistemas ATLAS/ATA do USCIS.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      O USCIS aceita esse tipo de evidência?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">Sim. Os modelos IMPLAN e RIMS II são referência no governo federal. O RIMS II é mantido pelo Bureau of Economic Analysis, órgão do U.S. Department of Commerce. O próprio USCIS já aceitou análises baseadas nesses modelos como evidência probatória em decisões publicadas. A validação cruzada entre múltiplos modelos fortalece ainda mais a credibilidade.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      Posso usar o Reactor para responder uma RFE já recebida?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">Sim — essa é, inclusive, uma das aplicações mais poderosas do produto. O Reactor inclui todos os 10 módulos com validação tripla, ideal para respostas a RFE. O Módulo 10 (Dashboard USCIS) mapeia exatamente cada deficiência apontada na RFE à evidência correspondente no relatório.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      É disponível em inglês e português?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">Sim. O relatório final é entregue em inglês (para submissão ao USCIS) e pode ser acompanhado de versão em português para compreensão do cliente. Toda a comunicação durante o processo pode ser feita em português.</div></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+      E se meu caso também precisar de evidência de impacto social?
+      <span class="arrow">+</span>
+    </div>
+    <div class="faq-a"><div class="faq-a-inner">O <strong>IMPACTO® Social</strong> está disponível como produto complementar separado, cobrindo dimensões de impacto social, cultural e comunitário. Pode ser contratado em conjunto com o Reactor para criar o pacote de evidência mais completo possível.</div></div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER / CTA ═══ -->
+<div class="shimmer-line" style="max-width:1000px;margin:0 auto;"></div>
+<div class="cta-section">
+  <div class="cta-content">
+    <div class="cta-logo">IMPACTO®</div>
+    <div class="cta-reactor">Reactor</div>
+    <div class="cta-divider"></div>
+    <p class="cta-text">
+      Evidência econômica científica que transforma petições EB-2 NIW de "um pedido" em "um caso técnico robusto e bem fundamentado".
+    </p>
+    <div style="margin:28px 0 8px;">
+      <span style="font-size:2.2rem;font-weight:800;color:#00A3CC;letter-spacing:-1px;">$790</span>
+      <span style="font-size:0.9rem;color:var(--text-dim);margin-left:6px;">USD</span>
+    </div>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin:4px 0 0;">Pagamento único antecipado</p>
+    <div class="cta-divider"></div>
+    <div style="margin-top:24px;">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E" alt="" style="display:none;">
+      <p style="font-size:0.72rem;color:var(--text-dim);margin:0 0 8px;letter-spacing:1px;text-transform:uppercase;">Comercializado por</p>
+      <p style="font-size:1rem;font-weight:700;color:#fff;margin:0;">Global Communications</p>
+      <p style="font-size:0.72rem;color:var(--text-dim);margin:4px 0 0;">globalsupportingdocs.com</p>
+    </div>
+    <div class="cta-divider"></div>
+    <p style="font-size:0.78rem;color:var(--text-dim);margin-top:24px;">Economic Impact Intelligence Suite</p>
+  </div>
+</div>
+
+</div><!-- /page-wrapper -->
+
+<script>
+// Scroll Reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('section, .module-card, .glass-card, .method-card, .tier-card, .stat-card, .faq-item, .callout, .table-wrap, .wf-step').forEach(el => {
+  el.classList.add('reveal');
+  observer.observe(el);
+});
+
+// Smooth active nav link
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    a.style.background = a.getAttribute('href') === '#' + current ? 'rgba(0,212,255,0.06)' : '';
+  });
+});
+</script>
+
+</body>
+</html>

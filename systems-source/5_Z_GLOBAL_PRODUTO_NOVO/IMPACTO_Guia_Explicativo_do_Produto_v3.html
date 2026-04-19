@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMPACTO® — Guia Explicativo do Produto</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --primary: #0a1628;
+    --primary-light: #111d35;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #06b6d4;
+    --gold: #f59e0b;
+    --surface: #0f1a2e;
+    --surface2: #162040;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border: rgba(0,212,255,0.12);
+    --glow: rgba(0,212,255,0.15);
+    --glass: rgba(15,26,46,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--primary);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ═══ ANIMATED BACKGROUND ═══ */
+  .bg-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .bg-glow-1 {
+    position: fixed; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: float1 20s ease-in-out infinite;
+  }
+  .bg-glow-2 {
+    position: fixed; bottom: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
+    z-index: 0; pointer-events: none;
+    animation: float2 25s ease-in-out infinite;
+  }
+  @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-80px,80px); } }
+  @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,-60px); } }
+
+  .content-wrapper { position: relative; z-index: 1; }
+
+  /* ═══ HERO / COVER ═══ */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(ellipse at 50% 30%, rgba(0,212,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(124,58,237,0.05) 0%, transparent 50%);
+  }
+  .hero-content { position: relative; max-width: 800px; }
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+    margin-bottom: 32px;
+  }
+  .hero-logo {
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero-subtitle {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+  .hero-divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 0 auto 40px;
+  }
+  .hero-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    line-height: 1.8;
+  }
+  .hero-meta {
+    display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+    font-size: 0.8rem; color: var(--text-dim);
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 8px; }
+  .hero-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .confidential-bar {
+    margin-top: 60px;
+    padding: 10px 24px;
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 8px;
+    background: rgba(245,158,11,0.04);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  /* ═══ NAVIGATION DOTS ═══ */
+  .nav-strip {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  }
+  .nav-strip a {
+    padding: 6px 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+  }
+  .nav-strip a:hover {
+    color: var(--accent);
+    background: rgba(0,212,255,0.06);
+    border-color: var(--border);
+  }
+
+  /* ═══ SECTIONS ═══ */
+  section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-number::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+  .section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.9;
+    margin-bottom: 32px;
+  }
+  p.body-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.85;
+    margin-bottom: 20px;
+  }
+
+  /* ═══ CALLOUT BOX ═══ */
+  .callout {
+    position: relative;
+    padding: 28px 32px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(124,58,237,0.04));
+    border: 1px solid var(--border);
+    margin: 32px 0;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.8;
+    font-style: italic;
+  }
+  .callout::before {
+    content: '';
+    position: absolute; left: 0; top: 20px; bottom: 20px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+    border-radius: 3px;
+  }
+
+  /* ═══ GLASS CARDS ═══ */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 32px 0;
+  }
+  .glass-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: all 0.35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .glass-card:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-2px); }
+  .glass-card:hover::before { opacity: 1; }
+  .glass-card .card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+  .glass-card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .glass-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ═══ MODULE CARDS ═══ */
+  .module-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s;
+  }
+  .module-card:hover { border-color: rgba(0,212,255,0.25); }
+  .module-card .module-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.15);
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .module-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .module-card .module-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .module-card .module-section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 8px;
+  }
+  .module-card .module-section-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+  .module-card .analogy-box {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 14px 20px;
+    background: rgba(124,58,237,0.06);
+    border: 1px solid rgba(124,58,237,0.12);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ═══ PREMIUM TABLE ═══ */
+  .premium-table-wrap {
+    margin: 32px 0;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--glass);
+  }
+  .premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .premium-table thead th {
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,212,255,0.04);
+    border-bottom: 1px solid var(--border);
+  }
+  .premium-table tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--text-muted);
+    vertical-align: top;
+  }
+  .premium-table tbody tr:last-child td { border-bottom: none; }
+  .premium-table tbody tr:hover { background: rgba(0,212,255,0.02); }
+  .premium-table tbody td:first-child {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* ═══ TIER CARDS ═══ */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin: 40px 0;
+  }
+  .tier-card {
+    border-radius: 16px;
+    padding: 32px 28px;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    position: relative;
+    transition: all 0.35s;
+  }
+  .tier-card:hover { transform: translateY(-4px); }
+  .tier-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(0,212,255,0.06), var(--glass));
+    box-shadow: 0 0 40px rgba(0,212,255,0.08);
+  }
+  .tier-card.featured .tier-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tier-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+    margin-top: 8px;
+  }
+  .tier-price {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+  }
+  .tier-list {
+    list-style: none; padding: 0;
+  }
+  .tier-list li {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .tier-list li:last-child { border-bottom: none; }
+  .tier-list .check { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .tier-list .dash { color: var(--text-dim); flex-shrink: 0; }
+  .tier-ideal {
+    margin-top: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: rgba(0,212,255,0.04);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ═══ COMPETITIVE TABLE ═══ */
+  .comp-table thead th:nth-child(3) {
+    color: var(--accent);
+    background: rgba(0,212,255,0.06);
+  }
+  .comp-table tbody td:nth-child(3) {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ═══ WORKFLOW STEPS ═══ */
+  .workflow-steps { margin: 32px 0; }
+  .workflow-step {
+    display: flex; gap: 24px;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .step-indicator {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0;
+  }
+  .step-dot {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .step-line {
+    width: 2px; flex: 1;
+    background: linear-gradient(180deg, rgba(0,212,255,0.2), transparent);
+    margin: 8px 0;
+  }
+  .step-content {
+    padding-bottom: 40px;
+    flex: 1;
+  }
+  .step-content h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .step-content p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* ═══ STATS ROW ═══ */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .stat-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.35s;
+  }
+  .stat-card:hover { border-color: rgba(0,212,255,0.2); }
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ═══ BULLET LIST ═══ */
+  .bullet-list {
+    list-style: none; padding: 0; margin: 20px 0;
+  }
+  .bullet-list li {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    padding: 6px 0 6px 24px;
+    position: relative;
+  }
+  .bullet-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 14px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+
+  /* ═══ METHODOLOGY CARDS ═══ */
+  .method-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .method-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: start;
+    transition: all 0.35s;
+  }
+  .method-card:hover { border-color: rgba(0,212,255,0.2); }
+  .method-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .method-icon.implan { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+  .method-icon.rims { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+  .method-icon.epi { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+  .method-card h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .method-card .method-detail { font-size: 0.85rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 8px; }
+  .method-card .method-cred {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cred-high { background: rgba(0,212,255,0.08); color: var(--accent); border: 1px solid rgba(0,212,255,0.15); }
+  .cred-max { background: rgba(124,58,237,0.08); color: #a78bfa; border: 1px solid rgba(124,58,237,0.15); }
+
+  /* ═══ FOOTER ═══ */
+  .footer-section {
+    text-align: center;
+    padding: 80px 32px 60px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .footer-logo {
+    font-size: 2.4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .footer-company {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .footer-url {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+  .footer-divider {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 32px auto;
+  }
+  .footer-conf {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 32px;
+    padding: 8px 20px;
+    border: 1px solid rgba(245,158,11,0.15);
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* ═══ PRINT ═══ */
+  @media print {
+    body { background: #fff; color: #1a1a1a; }
+    .bg-grid, .bg-glow-1, .bg-glow-2, .nav-strip { display: none; }
+    .hero { min-height: auto; padding: 60px 24px; }
+    .hero-logo { color: #0a1628; -webkit-text-fill-color: #0a1628; }
+    section { padding: 40px 0; }
+    .glass-card, .module-card, .tier-card, .method-card, .stat-card {
+      background: #f8fafc; border-color: #e2e8f0;
+    }
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 768px) {
+    .hero-logo { font-size: 3rem; }
+    .card-grid, .module-card .module-body { grid-template-columns: 1fr; }
+    .tier-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .method-card { grid-template-columns: 1fr; }
+    section { padding: 48px 20px; }
+  }
+
+  /* ═══ SECTION DIVIDER ═══ */
+  .section-divider {
+    max-width: 960px; margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow-1"></div>
+<div class="bg-glow-2"></div>
+
+<div class="content-wrapper">
+
+<!-- ═══════ HERO ═══════ -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Produto Proprietário &bull; Versão 3.0</div>
+    <div class="hero-logo">IMPACTO®</div>
+    <div class="hero-subtitle">Economic Impact Intelligence Suite</div>
+    <div class="hero-divider"></div>
+    <div class="hero-title">Guia Explicativo do Produto</div>
+    <div class="hero-desc">
+      O que é, para que serve, como funciona e por que existe.<br>
+      Documento complementar à apresentação para investidores.
+    </div>
+    <div class="hero-meta">
+      <span><span class="dot"></span>Global Communication LLC</span>
+      <span><span class="dot"></span>Março 2026</span>
+      <span><span class="dot"></span>10 Módulos Analíticos</span>
+    </div>
+    <div class="confidential-bar">Confidencial — Uso Interno e para Investidores</div>
+  </div>
+</header>
+
+<!-- ═══════ NAV ═══════ -->
+<nav class="nav-strip">
+  <a href="#oque">O que é</a>
+  <a href="#porque">Por que existe</a>
+  <a href="#paraque">Para que serve</a>
+  <a href="#modulos">Módulos</a>
+  <a href="#metodologias">Metodologias</a>
+  <a href="#tiers">Tiers & Preços</a>
+  <a href="#diferenciais">Diferenciais</a>
+  <a href="#fluxo">Fluxo</a>
+  <a href="#mercado">Mercado</a>
+</nav>
+
+<!-- ═══════ 1. O QUE É ═══════ -->
+<section id="oque">
+  <div class="section-number">Seção 01</div>
+  <h2 class="section-title">O Que é o IMPACTO®?</h2>
+  <p class="section-lead">
+    O IMPACTO® é uma suíte proprietária de análise de impacto econômico desenvolvida pela Global Communication para fortalecer petições EB-2 NIW (National Interest Waiver). Ele transforma dados econômicos brutos em evidências quantitativas irrefutáveis que demonstram que o empreendimento do peticionário gera efeitos econômicos positivos substanciais conforme exigido pelo framework Dhanasar.
+  </p>
+  <p class="body-text">
+    Em termos simples: o IMPACTO® responde com números concretos às perguntas que o USCIS faz em praticamente toda RFE de EB-2 NIW: "Quantos empregos? Quanto em impostos? Qual o impacto real na economia americana?"
+  </p>
+  <div class="callout">
+    O IMPACTO® não é um business plan. Não é uma carta de recomendação. É uma análise econômica científica, baseada nas mesmas metodologias que o governo americano utiliza para avaliar políticas públicas.
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 2. POR QUE EXISTE ═══════ -->
+<section id="porque">
+  <div class="section-number">Seção 02</div>
+  <h2 class="section-title">Por Que o IMPACTO® Existe?</h2>
+
+  <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:16px;margin-top:8px;">O Problema: Colapso nas Aprovações EB-2 NIW</h3>
+  <p class="body-text">
+    A taxa de aprovação de petições EB-2 NIW caiu de mais de 90% historicamente para apenas 43,31% no FY2024. Embora tenha se recuperado parcialmente para ~61% no FY2025, o cenário continua significativamente mais desafiador do que no passado.
+  </p>
+  <p class="body-text">As principais razões para indeferimentos e RFEs estão concentradas na falta de evidências quantitativas:</p>
+
+  <ul class="bullet-list">
+    <li>Nenhuma projeção de criação de empregos fornecida</li>
+    <li>Nenhum dado de receita tributária apresentado</li>
+    <li>Nenhuma demonstração de que o impacto vai além da empresa individual</li>
+    <li>Nenhuma evidência de alinhamento com prioridades nacionais</li>
+    <li>Business plans genéricos sem fundamentação econômica</li>
+  </ul>
+
+  <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin:32px 0 16px;">A Solução: Evidência Econômica Científica</h3>
+  <p class="body-text">
+    O IMPACTO® preenche exatamente essa lacuna. Ele fornece análises econômicas baseadas em modelos utilizados pelo próprio governo americano (Bureau of Economic Analysis, Department of Commerce), tornando virtualmente impossível para o adjudicador descartar a evidência como "insuficiente" ou "genérica".
+  </p>
+
+  <div class="callout">
+    <strong>Analogia:</strong> Se o business plan é o "argumento", o IMPACTO® é a "prova pericial". Um diz o que você pretende fazer; o outro prova, com números auditados, o impacto que isso terá na economia.
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 3. PARA QUE SERVE ═══════ -->
+<section id="paraque">
+  <div class="section-number">Seção 03</div>
+  <h2 class="section-title">Para Que Serve?</h2>
+  <p class="section-lead">O IMPACTO® serve a três finalidades estratégicas dentro do processo EB-2 NIW:</p>
+
+  <div class="card-grid">
+    <div class="glass-card">
+      <div class="card-icon">P1</div>
+      <h3>Fortalecer o Pilar 1 — Importância Nacional</h3>
+      <p>Projeção de empregos diretos, indiretos e induzidos; cálculo de produção econômica total; valor agregado ao PIB; receita tributária projetada; mapeamento de setores NAICS impactados; alinhamento com políticas nacionais documentadas.</p>
+    </div>
+    <div class="glass-card">
+      <div class="card-icon">P3</div>
+      <h3>Suportar o Pilar 3 — Benéfico Dispensar</h3>
+      <p>Prova que o impacto econômico vai muito além do que o processo de certificação trabalhista poderia avaliar, mostrando efeitos multiplicadores em cascata — cada emprego direto gera 1,5–2,5 empregos adicionais.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin:32px 0 16px;">Neutralizar RFEs (Request for Evidence)</h3>
+  <p class="body-text">O IMPACTO® foi projetado para responder antecipadamente a cada tipo de objeção que aparece em RFEs de EB-2 NIW:</p>
+
+  <div class="premium-table-wrap">
+    <table class="premium-table">
+      <thead><tr><th>Objeção Típica do USCIS</th><th>Módulo que Resolve</th></tr></thead>
+      <tbody>
+        <tr><td>"Não demonstrou impacto econômico projetado"</td><td>M1 — Análise Core (IMPLAN + RIMS II)</td></tr>
+        <tr><td>"Não mostrou níveis de pessoal futuros"</td><td>M1 + M6 — Projeções de emprego</td></tr>
+        <tr><td>"Não demonstrou receita tributária"</td><td>M4 — Projeção Tributária</td></tr>
+        <tr><td>"Benefícios limitados à empresa individual"</td><td>M3 + M5 — Setorial + Supply Chain</td></tr>
+        <tr><td>"Impacto atenuado para importância nacional"</td><td>M7 — Alinhamento com Políticas</td></tr>
+        <tr><td>"Não demonstrou área economicamente deprimida"</td><td>M2 — Análise Regional</td></tr>
+        <tr><td>"Habilidades não demonstradas como insubstituíveis"</td><td>M6 + M9 — EPI + Sensibilidade</td></tr>
+        <tr><td>"Impacto não vai além da empresa/clientes"</td><td>M3 + M5 + M8 — Setorial + Supply Chain + Regional</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 4. OS 10 MÓDULOS ═══════ -->
+<section id="modulos">
+  <div class="section-number">Seção 04</div>
+  <h2 class="section-title">Como Funciona? Os 10 Módulos</h2>
+  <p class="section-lead">O IMPACTO® é composto por 10 módulos independentes e complementares, focados exclusivamente em impacto econômico. Dependendo do tier contratado, o cliente recebe de 3 a 10 módulos.</p>
+
+  <!-- M1 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 01</span>
+    <h3>M1 — Análise de Impacto Econômico Central</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">É o coração do produto. Usa dois modelos econômicos (IMPLAN e RIMS II) para calcular quantos empregos, quanta produção econômica e quanto valor agregado o empreendimento vai gerar em 5 anos.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">Responde diretamente à pergunta central do USCIS: "Qual o tamanho real do impacto econômico?" A validação cruzada entre dois modelos torna a evidência praticamente irrefutável.</div>
+      </div>
+      <div class="analogy-box">
+        💡 Se o business plan é um "palpite educado", o M1 é um "laudo pericial com duas perícias independentes chegando à mesma conclusão".
+      </div>
+    </div>
+  </div>
+
+  <!-- M2 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 02</span>
+    <h3>M2 — Pegada Econômica Regional</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Mapeia como o impacto econômico se distribui geograficamente pela região (MSA). Identifica quais condados se beneficiam, quais áreas são economicamente deprimidas (Opportunity Zones) e quantos empregos vão para comunidades carentes.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">O Dhanasar menciona especificamente que impacto em "áreas economicamente deprimidas" carrega peso adicional (p. 890). Este módulo captura exatamente isso.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M3 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 03</span>
+    <h3>M3 — Análise de Multiplicadores Setoriais</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Desagrega o impacto por setor industrial (NAICS). Mostra que o empreendimento não afeta só um setor, mas gera ondas de impacto em 14+ setores diferentes — de transporte a TI, de seguros a restaurantes.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">Destrói o argumento de que "o benefício se limita à empresa individual". Se 14 setores são impactados, o efeito claramente vai além da empresa.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M4 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 04</span>
+    <h3>M4 — Projeção de Receita Tributária</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Calcula exatamente quanto o empreendimento contribuirá em impostos para os três níveis de governo: federal, estadual e local. Desagrega por tipo de imposto.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">RFEs frequentemente citam "nenhum dado de receita tributária". Este módulo elimina essa objeção por completo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M5 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 05</span>
+    <h3>M5 — Mapeamento de Cadeia de Suprimentos</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Identifica todos os fornecedores que serão ativados pelo empreendimento (Tier 1 e Tier 2), quanto será gasto com cada categoria e quantos empregos indiretos isso gera.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">Prova que o empreendimento cria um "ecossistema" econômico, não apenas uma empresa isolada. Fundamental para demonstrar "implicações mais amplas".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M6 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 06</span>
+    <h3>M6 — Multiplicadores de Emprego EPI</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Aplica uma terceira metodologia independente (Economic Policy Institute) que captura ligações econômicas em nível NACIONAL, além do regional.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">É crucial para rebater a objeção de que o impacto é "apenas local" e não alcança "importância nacional".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M7 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 07</span>
+    <h3>M7 — Alinhamento com Políticas Nacionais</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Mapeia o empreendimento a políticas, ordens executivas e frameworks estratégicos do governo americano (Executive Orders, CHIPS Act, IRA, IIJA, America First Trade Policy etc.).</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">Se o governo americano já declarou que o campo é "de importância nacional" em documentos oficiais, fica muito difícil para o adjudicador argumentar o contrário.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M8 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 08</span>
+    <h3>M8 — Vantagem Comparativa Regional</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Analisa o posicionamento competitivo da região do peticionário, identificando lacunas de mercado e vantagens específicas que justificam por que AQUELA região se beneficia do empreendimento.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">Fortalece o argumento de que o peticionário está estrategicamente posicionado em um mercado subatendido.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M9 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 09</span>
+    <h3>M9 — Análise de Sensibilidade & Cenários</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Testa as projeções sob três cenários (conservador, base, otimista), variando premissas para mostrar que MESMO no pior caso, o impacto ainda é substancial.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">Antecipa a objeção de que "as projeções são otimistas demais". Se mesmo o cenário pessimista mostra impacto significativo, o argumento se torna blindado.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M10 -->
+  <div class="module-card">
+    <span class="module-tag">Módulo 10</span>
+    <h3>M10 — Painel Executivo & Resumo USCIS</h3>
+    <div class="module-body">
+      <div>
+        <div class="module-section-label">O que faz</div>
+        <div class="module-section-text">Consolida todos os achados em um formato de dashboard executivo, mapeando cada deficiência típica de RFE ao módulo e evidência que a resolve. Inclui resumo por pilar Dhanasar.</div>
+      </div>
+      <div>
+        <div class="module-section-label">Por que importa</div>
+        <div class="module-section-text">É o "mapa de navegação" para o advogado e para o adjudicador. Facilita encontrar rapidamente a evidência que responde a cada objeção específica.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Nota:</strong> Análises de impacto social, cultural e comunitário estão disponíveis como produto complementar separado (<strong>IMPACTO® Social</strong>), para casos que necessitem dessa dimensão adicional de evidência.
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 5. METODOLOGIAS ═══════ -->
+<section id="metodologias">
+  <div class="section-number">Seção 05</div>
+  <h2 class="section-title">As Metodologias Explicadas</h2>
+  <p class="section-lead">O diferencial científico do IMPACTO® está no uso combinado de múltiplas metodologias de referência:</p>
+
+  <div class="method-cards">
+    <div class="method-card">
+      <div class="method-icon implan">IMP</div>
+      <div>
+        <h3>IMPLAN® — IMpact Analysis for PLANning</h3>
+        <p class="method-detail"><strong>O que é:</strong> O modelo de impacto econômico mais utilizado nos EUA. Originalmente desenvolvido pelo U.S. Forest Service, hoje é mantido pela IMPLAN Group LLC. Possui dados de 546 setores industriais em nível municipal.</p>
+        <p class="method-detail"><strong>Como funciona:</strong> Você insere os dados do empreendimento (receita, funcionários, gastos) e o modelo calcula os efeitos em cascata: para cada dólar gasto, quanto se propaga pela economia em compras de fornecedores (indireto) e em gastos dos funcionários (induzido).</p>
+        <span class="method-cred cred-high">Credibilidade Alta — 3.000+ agências governamentais</span>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-icon rims">RII</div>
+      <div>
+        <h3>RIMS II — Regional Input-Output Modeling System</h3>
+        <p class="method-detail"><strong>O que é:</strong> Modelo mantido pelo Bureau of Economic Analysis (BEA), órgão oficial do U.S. Department of Commerce. Fornece multiplicadores regionais "certificados pelo governo".</p>
+        <p class="method-detail"><strong>Como funciona:</strong> Similar ao IMPLAN, mas derivado diretamente das contas nacionais do governo. Fornece multiplicadores Tipo II (que incluem efeitos induzidos) para regiões específicas.</p>
+        <span class="method-cred cred-max">Credibilidade Máxima — Modelo do governo federal</span>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <div class="method-icon epi">EPI</div>
+      <div>
+        <h3>EPI — Economic Policy Institute Employment Multipliers</h3>
+        <p class="method-detail"><strong>O que é:</strong> Multiplicadores de emprego publicados como pesquisa revisada por pares pelo Economic Policy Institute, cobrindo 179 indústrias do setor privado.</p>
+        <p class="method-detail"><strong>Como funciona:</strong> Para cada emprego direto criado, calcula quantos empregos adicionais são gerados em fornecedores (supplier jobs) e em re-gastos dos funcionários (re-spending jobs) em nível NACIONAL.</p>
+        <span class="method-cred cred-high">Pesquisa Acadêmica Revisada por Pares</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 6. TIERS ═══════ -->
+<section id="tiers">
+  <div class="section-number">Seção 06</div>
+  <h2 class="section-title">Estrutura de Tiers e Precificação</h2>
+  <p class="section-lead">O IMPACTO® é oferecido em três níveis de serviço, adequados a diferentes perfis de caso e orçamento:</p>
+
+  <div class="tier-grid">
+    <!-- ESSENCIAL -->
+    <div class="tier-card">
+      <div class="tier-name">Essencial</div>
+      <div class="tier-price">$1.500 – $2.500</div>
+      <ul class="tier-list">
+        <li><span class="check">✓</span> M1 + M4 + M10</li>
+        <li><span class="check">✓</span> IMPLAN apenas</li>
+        <li><span class="dash">—</span> Sem validação cruzada</li>
+        <li><span class="dash">—</span> Sem análise de sensibilidade</li>
+        <li><span class="dash">—</span> Sem alinhamento c/ políticas</li>
+        <li><span class="dash">—</span> Sem supply chain mapping</li>
+        <li><span class="check">✓</span> Projeção tributária consolidada</li>
+      </ul>
+      <div class="tier-ideal">Ideal para petições simples e baixo risco</div>
+    </div>
+
+    <!-- PROFISSIONAL -->
+    <div class="tier-card featured">
+      <div class="tier-badge">Mais Popular</div>
+      <div class="tier-name">Profissional</div>
+      <div class="tier-price">$3.500 – $5.500</div>
+      <ul class="tier-list">
+        <li><span class="check">✓</span> M1–M6 + M10 (7 módulos)</li>
+        <li><span class="check">✓</span> IMPLAN + RIMS II</li>
+        <li><span class="check">✓</span> Validação cruzada (2 modelos)</li>
+        <li><span class="check">✓</span> Sensibilidade básica</li>
+        <li><span class="check">✓</span> Alinhamento básico c/ políticas</li>
+        <li><span class="check">✓</span> Supply chain Tier 1</li>
+        <li><span class="check">✓</span> Tributária por nível de governo</li>
+      </ul>
+      <div class="tier-ideal">Recomendado para a maioria dos casos</div>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="tier-card">
+      <div class="tier-name">Enterprise</div>
+      <div class="tier-price">$7.500 – $12.000</div>
+      <ul class="tier-list">
+        <li><span class="check">✓</span> M1–M10 (todos os 10 módulos)</li>
+        <li><span class="check">✓</span> IMPLAN + RIMS II + EPI</li>
+        <li><span class="check">✓</span> Validação tripla (3 modelos)</li>
+        <li><span class="check">✓</span> Sensibilidade completa (3 cenários)</li>
+        <li><span class="check">✓</span> Alinhamento completo (CET + EOs)</li>
+        <li><span class="check">✓</span> Supply chain Tier 1 + Tier 2</li>
+        <li><span class="check">✓</span> Tributária desagregada por tipo</li>
+      </ul>
+      <div class="tier-ideal">Para casos complexos, RFE ativa ou AP</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Recomendação:</strong> Para casos com RFE existente ou onde a objeção principal é "benefícios atenuados", o tier Enterprise é fortemente recomendado pois inclui todos os 10 módulos com validação tripla (IMPLAN + RIMS II + EPI). Para casos que também necessitem de evidência de impacto social/cultural, o <strong>IMPACTO® Social</strong> pode ser contratado como complemento.
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 7. DIFERENCIAIS ═══════ -->
+<section id="diferenciais">
+  <div class="section-number">Seção 07</div>
+  <h2 class="section-title">Diferenciais Competitivos</h2>
+  <p class="section-lead">O IMPACTO® não tem concorrente direto no mercado brasileiro de EB-2 NIW. Os poucos concorrentes americanos (Carnegie Evaluations, ProfVal) oferecem produtos inferiores em escopo:</p>
+
+  <div class="premium-table-wrap">
+    <table class="premium-table comp-table">
+      <thead><tr><th>Diferencial</th><th>Concorrentes</th><th>IMPACTO®</th></tr></thead>
+      <tbody>
+        <tr><td>Metodologias</td><td>1 modelo (geralmente IMPLAN)</td><td>3 modelos (IMPLAN + RIMS II + EPI)</td></tr>
+        <tr><td>Validação Cruzada</td><td>Não oferecem</td><td>Padrão em 2 tiers</td></tr>
+        <tr><td>Módulos</td><td>1–3 análises genéricas</td><td>10 módulos especializados</td></tr>
+        <tr><td>Mapeamento de Políticas</td><td>Raro</td><td>Padrão (CET, EOs, Acts)</td></tr>
+        <tr><td>Análise de Sensibilidade</td><td>Raro</td><td>3 cenários completos</td></tr>
+        <tr><td>Mapeamento de RFE</td><td>Não oferecem</td><td>Tabela Deficiência → Evidência</td></tr>
+        <tr><td>Supply Chain</td><td>Mencionado brevemente</td><td>Mapeamento Tier 1 + Tier 2</td></tr>
+        <tr><td>Idioma</td><td>Apenas inglês</td><td>Inglês + Português</td></tr>
+        <tr><td>Integração c/ Business Plan</td><td>Isolado</td><td>Complementar ao Ikaro/BP</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 8. FLUXO ═══════ -->
+<section id="fluxo">
+  <div class="section-number">Seção 08</div>
+  <h2 class="section-title">Como é o Fluxo de Trabalho?</h2>
+  <p class="section-lead">Do momento da contratação até a entrega do relatório final:</p>
+
+  <div class="workflow-steps">
+    <div class="workflow-step">
+      <div class="step-indicator">
+        <div class="step-dot">01</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h3>Coleta de Dados — Dia 1–3</h3>
+        <p>O cliente preenche um questionário detalhado sobre seu empreendimento: setor, localização, projeção de receita, número de funcionários planejados, fornecedores conhecidos, investimentos realizados e planejados.</p>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-indicator">
+        <div class="step-dot">02</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h3>Modelagem Econômica — Dia 3–7</h3>
+        <p>A equipe de análise executa os modelos IMPLAN, RIMS II e/ou EPI utilizando os dados coletados e benchmarks setoriais. As premissas são calibradas com dados públicos do BEA, BLS e Census Bureau.</p>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-indicator">
+        <div class="step-dot">03</div>
+        <div class="step-line"></div>
+      </div>
+      <div class="step-content">
+        <h3>Compilação do Relatório — Dia 7–10</h3>
+        <p>Os resultados são compilados em um relatório profissional com tabelas, gráficos e narrativa que conecta cada dado ao framework Dhanasar. O relatório é revisado internamente para consistência e precisão.</p>
+      </div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-indicator">
+        <div class="step-dot">04</div>
+      </div>
+      <div class="step-content">
+        <h3>Revisão & Entrega — Dia 10–12</h3>
+        <p>O relatório é revisado pelo advogado do caso para garantir alinhamento com a estratégia da petição. Ajustes finais são feitos e o documento final é entregue em formato DOCX e PDF.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Prazo total de entrega:</strong> 10–12 dias úteis (tier Essencial e Profissional) | 12–15 dias úteis (tier Enterprise)
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 9. MERCADO ═══════ -->
+<section id="mercado">
+  <div class="section-number">Seção 09</div>
+  <h2 class="section-title">Oportunidade de Mercado</h2>
+  <p class="section-lead">O mercado para o IMPACTO® é substancial e crescente:</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value">~45K</div>
+      <div class="stat-label">Petições EB-2 NIW/ano</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$135M</div>
+      <div class="stat-label">TAM Anual</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$22M</div>
+      <div class="stat-label">SAM (Foco BR)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">~70%</div>
+      <div class="stat-label">Margem Bruta</div>
+    </div>
+  </div>
+
+  <div class="premium-table-wrap">
+    <table class="premium-table">
+      <thead><tr><th>Métrica</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Petições EB-2 NIW por ano (est. FY2026)</td><td>~45.000</td></tr>
+        <tr><td>Taxa de RFE atual</td><td>~35–40%</td></tr>
+        <tr><td>Petições que precisariam de EIA</td><td>~25.000–30.000</td></tr>
+        <tr><td>Ticket médio IMPACTO® (mix de tiers)</td><td>~US$ 4.500</td></tr>
+        <tr><td>TAM (Total Addressable Market)</td><td>~US$ 135M/ano</td></tr>
+        <tr><td>SAM (Serviceable, foco brasileiro)</td><td>~US$ 22M/ano</td></tr>
+        <tr><td>Meta Year 1 (conservador)</td><td>120 relatórios → US$ 540K receita</td></tr>
+        <tr><td>Meta Year 3</td><td>480 relatórios → US$ 2,16M receita</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin:40px 0 16px;">Por Que Agora?</h3>
+  <ul class="bullet-list">
+    <li>Taxa de aprovação colapsou de 90%+ para 43% — demanda por evidência econômica nunca foi tão alta</li>
+    <li>OBBBA (H.R. 1) vai aumentar taxas de filing em ~$2.805 — clientes querem maximizar chances de aprovação</li>
+    <li>USCIS implementou ATLAS (IA para triagem) e ATA (detecção de conteúdo genérico) — business plans genéricos não passam mais</li>
+    <li>Nenhuma empresa brasileira oferece produto equivalente — first-mover advantage total</li>
+  </ul>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════ 10. CONCLUSÃO ═══════ -->
+<section>
+  <div class="section-number">Seção 10</div>
+  <h2 class="section-title">Conclusão</h2>
+  <p class="body-text">
+    O IMPACTO® representa uma evolução fundamental na forma como petições EB-2 NIW são construídas. Em um cenário onde mais da metade das petições são rejeitadas ou recebem RFE, não basta mais ter um bom business plan e boas cartas de recomendação. O adjudicador quer ver números.
+  </p>
+  <p class="body-text">
+    O IMPACTO® fornece esses números de forma científica, multi-metodológica e blindada contra objeções. Com 10 módulos especializados cobrindo todas as dimensões de impacto econômico exigidas pelo framework Dhanasar, ele transforma a petição de "um pedido" em "um caso técnico irrefutável".
+  </p>
+  <p class="body-text">
+    <strong>Para o investidor:</strong> O IMPACTO® é um produto de alta margem (~70%), baixo custo de aquisição (venda cruzada para base existente), com barreira de entrada técnica (poucos sabem executar IMPLAN/RIMS II), mercado crescente (mais RFEs = mais demanda) e agora com produto complementar de impacto social (IMPACTO® Social) para casos que necessitem dessa dimensão adicional. É uma expansão natural do portfólio da Global Communication com potencial de se tornar o produto mais rentável da empresa.
+  </p>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<div class="section-divider"></div>
+<div class="footer-section">
+  <div class="footer-logo">IMPACTO®</div>
+  <div class="footer-tagline">Economic Impact Intelligence Suite</div>
+  <div class="footer-divider"></div>
+  <div class="footer-company">Global Communication LLC</div>
+  <div class="footer-url">www.globalcommunication.com</div>
+  <div class="footer-conf">Confidencial — Uso Interno e para Investidores</div>
+</div>
+
+</div><!-- /content-wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "nex-inteligencia-pedagogica",
+  "version": "1.0.0",
+  "description": "Agência de marketing automatizada para Nex Inteligência Pedagógica",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "creative": "node -e \"import('dotenv/config').then(() => import('./agents/creative-director.js').then(m => m.default.runCycle()))\"",
+    "publish-ads": "node -e \"import('dotenv/config').then(() => import('./agents/media-buyer.js').then(m => m.default.publishLatest()))\"",
+    "analyze": "node -e \"import('dotenv/config').then(() => import('./agents/performance-analyst.js').then(m => m.default.analyze()))\"",
+    "webhook": "node -e \"import('dotenv/config').then(() => import('./webhooks/server.js').then(m => m.startServer()))\""
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@google/generative-ai": "^0.21.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "form-data": "^4.0.5",
+    "fs-extra": "^11.2.0",
+    "node-cron": "^3.0.3",
+    "winston": "^3.17.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
