@@ -258,5 +258,31 @@
     "note": "v5: 57 rules + 23 antipatterns + 5 master prompts + hard_block_scrub configurável + persona_bank + master_facts + anti-atlas validator. Base empírica caso Ricardo Augusto. Current symlink points to SKILL_v5.md. v2.0, v3.1, v1.0 preserved in same dir.",
     "active": true,
     "created_at": "2026-04-19T11:00:00Z"
+  },
+  {
+    "id": "24",
+    "system_name": "Sistema de Resposta a RFE EB-1A v1.0",
+    "system_path": "systems/rfe-eb1a-orchestrator/",
+    "version_tag": "1.0.0",
+    "file_count": 2,
+    "is_active": true,
+    "recommended_model": "claude-opus-4",
+    "doc_type": "rfe_response_eb1a",
+    "note": "Pipeline de resposta a RFE EB-1A, reverse-engineered de caso bem-sucedido. Arquivos: ORCHESTRATOR_RFE_EB1A.md + RFE_EB1A_ENGINEERING_REVERSE_V1.md.",
+    "active": true,
+    "created_at": "2026-04-19T12:00:00Z"
+  },
+  {
+    "id": "25",
+    "system_name": "Sistema de Resposta a RFE EB-2 NIW v1.0",
+    "system_path": "systems/rfe-eb2niw-orchestrator/",
+    "version_tag": "1.0.0",
+    "file_count": 0,
+    "is_active": false,
+    "recommended_model": "claude-opus-4",
+    "doc_type": "rfe_response_eb2_niw",
+    "note": "Stub — pasta criada mas conteudo pendente. Aguardando reverse engineering de caso EB-2 NIW bem-sucedido.",
+    "active": false,
+    "created_at": "2026-04-19T12:00:00Z"
   }
 ]
