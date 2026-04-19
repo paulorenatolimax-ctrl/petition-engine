@@ -467,7 +467,7 @@ export async function POST(req: NextRequest) {
         send('complete', {
           success: false,
           error: 'Processo completou mas nao gerou documento — a instrucao pode ser generica demais para o sistema',
-          hint: 'Cover Letters e BPs precisam de instrucoes especificas de 4 partes (veja GERAR_COVER_EB1A_GUSTAVO_NELSON.md como exemplo)',
+          hint: 'Verifique se docs_folder_path do cliente é válido e se a instrução contém seções específicas (estrutura, ingredientes, saídas esperadas). Também pode ser que o claude -p tenha salvo os arquivos em outro diretório diferente de output_dir_checked — conferir manualmente antes de regerar.',
           stdout_tail: gen.stdout.slice(-500),
           duration_seconds: genDuration,
           output_dir_checked: outputDir,
