@@ -1,0 +1,222 @@
+[
+  {
+    "rule_type": "logic",
+    "rule_description": "Inconsistência de valores financeiros entre páginas/seções do mesmo documento (sumário executivo vs planilha detalhada, totais de investimento variando entre páginas).",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": "business_plan",
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Divergência de Valores de Investimento p84/100/104",
+      "Erro Grave: sumário executivo financeiro vs planilha"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r127",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.669521Z",
+    "dedup_overlap_score": 0.5555555555555556
+  },
+  {
+    "rule_type": "logic",
+    "rule_description": "Divergência de datas entre documentos de suporte do cliente e o documento gerado (licenças, diplomas, certificados).",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Erro Grave: Data da Licença LPC Associate",
+      "Divergência de Data BT KIDS Fitness"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r128",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.669809Z",
+    "dedup_overlap_score": 0.6
+  },
+  {
+    "rule_type": "formatting",
+    "rule_description": "Padronização de idioma em cabeçalhos — todos os cabeçalhos do mesmo documento devem estar no mesmo idioma (inglês para USCIS, português para interno).",
+    "rule_pattern": null,
+    "severity": "medium",
+    "rule_action": "warn",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Padronização de Idioma nos Cabeçalhos"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r129",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.669890Z",
+    "dedup_overlap_score": 0.5
+  },
+  {
+    "rule_type": "formatting",
+    "rule_description": "Numeração de evidências deve bater entre sumário interno e pasta Drive/physical. Divergências entre sumário e numeração real são bloqueantes.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "numeração divergente do sumário interno",
+      "Evidence 46/29/47 referência incorreta"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r130",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.669950Z",
+    "dedup_overlap_score": 0.4375
+  },
+  {
+    "rule_type": "content",
+    "rule_description": "Links em rodapé/referências devem ter relação temática com o projeto. Links aleatórios (ex: Wikipedia de tema não relacionado) indicam revisão pendente e comprometem integridade do documento.",
+    "rule_pattern": "(?i)(?:source|fonte|ref(?:er[eê]ncia)?)[:\\s]*https?://(?:en|pt|es)\\.wikipedia\\.org",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Carta Andrea Uchoa rodapé indevido Esquadrão da Moda"
+    ],
+    "needs_semantic_validation": false,
+    "id": "r131",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.670060Z",
+    "dedup_overlap_score": 0.3076923076923077
+  },
+  {
+    "rule_type": "logic",
+    "rule_description": "Overlap temporal de empregos em tempo integral — currículo mostrando 2+ empregos simultâneos por meses consecutivos sem explicação sobre natureza part-time/consultoria.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Experian + Oracle 9 meses 2014 overlap"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r132",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.670205Z",
+    "dedup_overlap_score": 0.14285714285714285
+  },
+  {
+    "rule_type": "content",
+    "rule_description": "Duplicação de case number — identificadores USCIS (IOE, MSC, SRC, LIN, WAC, EAC, NBC, YSC) não podem aparecer duplicados na mesma linha (ex: 'IOE IOE0933936623').",
+    "rule_pattern": "\\b(IOE|MSC|SRC|LIN|WAC|EAC|NBC|YSC)\\s+\\1\\d+\\b",
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "rfe_response",
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Duplicação Case Number IOE IOE0933936623"
+    ],
+    "needs_semantic_validation": false,
+    "id": "r133",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.670410Z",
+    "dedup_overlap_score": 0.2608695652173913
+  },
+  {
+    "rule_type": "formatting",
+    "rule_description": "Nomenclatura de pessoas — primeira menção com nome completo seguida de título abreviado (Ms/Mr/Dr), menções subsequentes com sobrenome + título.",
+    "rule_pattern": null,
+    "severity": "low",
+    "rule_action": "warn",
+    "doc_type": "cover_letter_eb1a",
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "padronização nomenclatura primeira menção nome completo"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r134",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.670901Z",
+    "dedup_overlap_score": 0.23529411764705882
+  },
+  {
+    "rule_type": "logic",
+    "rule_description": "Descrição no sumário executivo de evidências deve bater exatamente com o conteúdo da evidência referenciada. Descrições copiadas de outra evidência são erro crítico de revisão.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Evidence 46 descrita igual Evidence 45"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r135",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.671318Z",
+    "dedup_overlap_score": 0.4090909090909091
+  },
+  {
+    "rule_type": "content",
+    "rule_description": "Critérios EB-1A alegados devem corresponder ao escopo da RFE — mencionar critério que não está em discussão na RFE é incompatibilidade bloqueante.",
+    "rule_pattern": null,
+    "severity": "critical",
+    "rule_action": "block",
+    "doc_type": "rfe_response",
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Critério 10 Incompatibilidade com a RFE"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r136",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.671629Z",
+    "dedup_overlap_score": 0.14285714285714285
+  },
+  {
+    "rule_type": "formatting",
+    "rule_description": "Tabelas devem ter cross-check de totais — soma de colunas/linhas deve conferir com totalizadores exibidos no mesmo quadro.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": "business_plan",
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "Tabelas e Dados Cruzados",
+      "Tabela de Impacto Econômico pág 46"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r137",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.671946Z",
+    "dedup_overlap_score": 0.3888888888888889
+  },
+  {
+    "rule_type": "legal",
+    "rule_description": "Declarações profissionais que não podem ser comprovadas documentalmente devem ser reformuladas ou removidas — 'afirmação não comprovada' é red flag em petições USCIS.",
+    "rule_pattern": null,
+    "severity": "high",
+    "rule_action": "warn",
+    "doc_type": null,
+    "source": "pareceres_qualidade_corpus_2026-04-19",
+    "pareceres_references": [
+      "evitar afirmação não comprovada"
+    ],
+    "needs_semantic_validation": true,
+    "id": "r138",
+    "active": false,
+    "times_triggered": 0,
+    "created_at": "2026-04-19T10:03:06.672153Z",
+    "dedup_overlap_score": 0.25
+  }
+]
