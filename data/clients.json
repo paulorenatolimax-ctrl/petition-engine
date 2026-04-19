@@ -418,5 +418,25 @@
     "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/Ricardo Alves (DIRETO)",
     "created_at": "2026-04-16T18:24:06.650Z",
     "client_profiles": null
+  },
+  {
+    "id": "c1776612867129_fernando_felix",
+    "name": "Fernando Pereira Félix",
+    "visa_type": "EB-1A",
+    "docs_folder_path": "/Users/paulo1844/Downloads/FERNANDO PEREIRA FELIX OS4743 04JUN25 Giu CONSULAR",
+    "case_id": "fernando_felix",
+    "case_status": "active",
+    "created_at": "2026-04-19T12:34:27.129005Z",
+    "note": "Cadastrado 2026-04-19 pra gerar Metodologia + Declaração em .md (destino: Gamma)"
+  },
+  {
+    "id": "c1776612867130_mariana_kasza",
+    "name": "Mariana Kasza",
+    "visa_type": "EB-2-NIW",
+    "docs_folder_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)",
+    "case_id": "mariana_kasza",
+    "case_status": "active",
+    "created_at": "2026-04-19T12:34:27.129005Z",
+    "note": "Cadastrada 2026-04-19 pra engenharia reversa do arsenal de cartas (benchmark histórico validado)"
   }
 ]

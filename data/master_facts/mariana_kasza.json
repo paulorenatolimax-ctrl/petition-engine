@@ -1,0 +1,121 @@
+{
+  "case_id": "mariana_kasza",
+  "petitioner_name": "Mariana de Oliveira Kasza",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "13-1082 Project Management Specialists",
+  "description": "Master facts canônicos do caso Mariana Kasza. Cada carta do arsenal deve ecoar ≥3 anchors. Endeavor US: Niveon Tech Services.",
+  "source": "5 cartas de apoio + 2 cartas de investimento + Quadro de Informações (engenharia reversa 2026-04-19)",
+  "anchors": {
+    "years_experience": {
+      "value": "15+",
+      "aliases": [
+        "mais de 15 anos",
+        "15+ years",
+        "desde 2008",
+        "quinze anos",
+        "sixteen years"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "medical_systems_bug_ratio": {
+      "value": "20-45 erros/mês vs média 5/mês (Medical Systems 2008-2011)",
+      "aliases": [
+        "4 vezes aumento de qualidade",
+        "estagiária promovida a Analista de Qualidade",
+        "roteiros de teste"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "walmart_ifood_fusion": {
+      "value": "liderou fusão e-commerce (marketplace) com varejo Walmart Brasil; migração do sistema de pagamentos iFood em 45 dias sem erros em produção",
+      "aliases": [
+        "fusão marketplace Walmart",
+        "migração pagamentos iFood",
+        "45 dias sem erro"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado",
+        "parceiro_estrategico"
+      ]
+    },
+    "movile_banco_restaurantes": {
+      "value": "Gerente de Projetos Estratégicos Sênior (PMO) na Movile — liderou Lançamento do Banco dos Restaurantes do iFood",
+      "aliases": [
+        "Banco dos Restaurantes",
+        "PMO Movile",
+        "Modelo de Gestão Movile",
+        "report direto ao CEO"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "team_and_portfolio_scale": {
+      "value": "time de 1 para 6 colaboradores, portfólio de ~33 iniciativas, liderança indireta de 470+ pessoas",
+      "aliases": [
+        "1 para 6",
+        "33 iniciativas",
+        "470 pessoas",
+        "C-Level confidence"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado",
+        "parceiro_estrategico"
+      ]
+    },
+    "niveon_tech_services": {
+      "value": "Niveon Tech Services (endeavor US — abertura nos EUA)",
+      "aliases": [
+        "Niveon",
+        "Niveon Tech",
+        "abertura nos EUA",
+        "economia forte dos Estados Unidos"
+      ],
+      "required_in_letter_types": [
+        "investidor_futuro",
+        "cliente_futuro",
+        "parceiro_estrategico"
+      ]
+    },
+    "investor_commitment_lrc": {
+      "value": "LRC - Sistemas e Dados comprometeu US$200.000 (Duzentos Mil Dólares) em capital inicial",
+      "aliases": [
+        "US$ 200.000",
+        "200000 dólares",
+        "LRC Sistemas e Dados",
+        "Leandro Ribeiro Calixto"
+      ],
+      "required_in_letter_types": [
+        "investidor_futuro"
+      ]
+    },
+    "soc_target": {
+      "value": "13-1082 Project Management Specialists",
+      "aliases": [
+        "PMO",
+        "Project Management Office",
+        "Gerente de Projetos Estratégicos",
+        "Strategic Planning Manager"
+      ],
+      "required_in_letter_types": []
+    }
+  },
+  "evidence_bank": [
+    {
+      "kind": "INVESTOR_COMMITMENT",
+      "example": "US$200.000 LRC - Sistemas e Dados, São Paulo, 17 de Abril de 2023",
+      "count_portfolio": "2 cartas de intenção (LRC + DM Soluções em Tecnologia)"
+    },
+    {
+      "kind": "EMPLOYER_TRAJECTORY",
+      "example": "Medical Systems (2008-2011) → Walmart.com → iFood → Movile",
+      "count_portfolio": "4 empresas comprovadas por testemunhos independentes"
+    }
+  ]
+}

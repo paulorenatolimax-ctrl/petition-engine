@@ -1,0 +1,72 @@
+{
+  "case_id": "mariana_kasza",
+  "soc_target": "13-1082 Project Management Specialists",
+  "description": "Hard blocks específicos do caso Mariana Kasza (PMO/Project Management). Termos que sugerem SOC técnico-operacional ou não-gerencial = RFE automático para 13-1082.",
+  "source": "Análise de 5 cartas + 2 investidores + SKILL_v5 Section 3",
+  "blocks": [
+    {
+      "id": "mariana_software_developer",
+      "pattern": "\\b(software developer|desenvolvedor(a)? de software|programador(a)?|coder)\\b",
+      "flags": "i",
+      "reason": "Mariana é PMO/gestora. Termo sugere SOC 15-1252 (Software Developers) — RFE automático para 13-1082",
+      "replacement": "project management professional",
+      "severity": "critical"
+    },
+    {
+      "id": "mariana_data_scientist",
+      "pattern": "\\b(data scientist|cientista de dados|machine learning engineer|ML engineer)\\b",
+      "flags": "i",
+      "reason": "Sugere SOC 15-2051 Data Scientists — fora do escopo gerencial",
+      "replacement": "strategic project leader",
+      "severity": "critical"
+    },
+    {
+      "id": "mariana_qa_analyst",
+      "pattern": "\\b(QA analyst|analista de qualidade|quality analyst|software tester)\\b",
+      "flags": "i",
+      "reason": "Era cargo inicial (2008-2011 Medical Systems). Uso atual sugere SOC técnico-júnior",
+      "replacement": "program management professional",
+      "severity": "high"
+    },
+    {
+      "id": "mariana_consulting_en",
+      "pattern": "\\bconsulting\\b(?! services for project)",
+      "flags": "i",
+      "reason": "Em EN descrevendo Mariana, sugere SOC 13-1111 Management Analysts (consultor) — RFE para 13-1082",
+      "replacement": "strategic project management engagement",
+      "severity": "high"
+    },
+    {
+      "id": "mariana_marketing_brand",
+      "pattern": "\\b(marketing specialist|especialista em marketing|brand manager|gerente de marca)\\b",
+      "flags": "i",
+      "reason": "Sugere SOC 13-1161 Market Research — Mariana não atua em marketing",
+      "replacement": "strategic project management",
+      "severity": "critical"
+    },
+    {
+      "id": "mariana_accountant",
+      "pattern": "\\b(accountant|contador(a)?|bookkeeper|financial analyst júnior)\\b",
+      "flags": "i",
+      "reason": "Sugere SOC 13-2011 Accountants — fora do escopo PMO",
+      "replacement": "finance project lead",
+      "severity": "high"
+    },
+    {
+      "id": "mariana_junior_title",
+      "pattern": "\\b(junior|júnior|pleno|mid-level|estagiári[oa])\\b",
+      "flags": "i",
+      "reason": "Mariana é sênior há anos. Uso atual reduz o advanced degree equivalence",
+      "replacement": "senior",
+      "severity": "medium"
+    },
+    {
+      "id": "mariana_dev_team_member",
+      "pattern": "\\b(team member|membro da equipe de desenvolvimento|desenvolvedora júnior)\\b",
+      "flags": "i",
+      "reason": "Subdimensiona o papel de liderança (1→6 time, 470+ indiretos)",
+      "replacement": "team leader",
+      "severity": "medium"
+    }
+  ]
+}

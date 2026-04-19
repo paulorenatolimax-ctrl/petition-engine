@@ -16,7 +16,12 @@
         "No exercício de minhas funções na Hirata & Associados",
         "Subscrevo o presente em minha condição de sócio-sênior"
       ],
-      "expertise_lock": ["protensão", "concreto armado", "análise estrutural sênior", "CFRP reinforcement"],
+      "expertise_lock": [
+        "protensão",
+        "concreto armado",
+        "análise estrutural sênior",
+        "CFRP reinforcement"
+      ],
       "emotional_register": "formal-técnico sênior",
       "sentence_length_distribution": "long_sentences_enumerativas",
       "preferred_language": "pt",
@@ -35,7 +40,11 @@
         "Emito o presente endosso na condição profissional de Engenheiro Civil formado pela Universidade Federal de Goiás (2013)",
         "Ingressei na Hirata & Associados em fevereiro de 2014, aos 23 anos, como engenheiro junior"
       ],
-      "expertise_lock": ["CFRP reinforcement", "retrofit estrutural", "protensão em pontes"],
+      "expertise_lock": [
+        "CFRP reinforcement",
+        "retrofit estrutural",
+        "protensão em pontes"
+      ],
       "emotional_register": "formal-técnico jovem",
       "sentence_length_distribution": "short_direct",
       "preferred_language": "pt",
@@ -54,7 +63,11 @@
         "Subscrevo o presente como elemento objetivo de convicção",
         "Parecerado em minha condição de assessor jurídico especializado"
       ],
-      "expertise_lock": ["dano-presumido", "jurisprudência TRT-18", "carga empírica probatória"],
+      "expertise_lock": [
+        "dano-presumido",
+        "jurisprudência TRT-18",
+        "carga empírica probatória"
+      ],
       "emotional_register": "técnico-forense",
       "sentence_length_distribution": "medium_formal",
       "preferred_language": "pt",
@@ -73,7 +86,12 @@
         "Observei pessoalmente o trabalho do Ricardo em nosso período comum na TCI",
         "Testemunho em primeira pessoa a trajetória técnica do pleiteante"
       ],
-      "expertise_lock": ["protensão", "CFRP", "normas ACI 440", "PTI Vol. 13"],
+      "expertise_lock": [
+        "protensão",
+        "CFRP",
+        "normas ACI 440",
+        "PTI Vol. 13"
+      ],
       "emotional_register": "pessoal-colegial",
       "sentence_length_distribution": "medium_warm",
       "preferred_language": "pt",
@@ -92,11 +110,198 @@
         "I have worked directly with Mr. Pereira since his arrival at our Tampa office in June 2025",
         "As the signing engineer for our FL practice (License 34217), I oversee Mr. Pereira's technical work"
       ],
-      "expertise_lock": ["FL structural practice", "SB 4-D milestone inspection", "NBIS federal-aid", "FDOT procurement"],
+      "expertise_lock": [
+        "FL structural practice",
+        "SB 4-D milestone inspection",
+        "NBIS federal-aid",
+        "FDOT procurement"
+      ],
       "emotional_register": "frio-comercial US",
       "sentence_length_distribution": "short_direct_business",
       "preferred_language": "en",
       "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "tiago_leocadio",
+      "case_id": "mariana_kasza",
+      "full_name": "Tiago Leocadio",
+      "credential": "Partner & Chief Technology Officer na Grafeno — MBA Executivo em Gestão Estratégica da Tecnologia",
+      "firm": "Grafeno",
+      "years_in_field": 20,
+      "relationship_to_petitioner": "supervisor direto na Medical Systems Comercial Ltda 2008-2011",
+      "signature_verb": "recomendo fortemente",
+      "opening_variants": [
+        "Sou o Tiago Leocadio, Partner & Chief Technology Officer na Grafeno",
+        "Atuo como responsável pela arquitetura e implantação de projetos de inteligência tecnológica",
+        "Tive a oportunidade de coordenar o desenvolvimento na Medical Systems entre 2008 e 2011"
+      ],
+      "expertise_lock": [
+        "arquitetura TI",
+        "business intelligence",
+        "SaaS cloud",
+        "gestão de qualidade de software",
+        "ERP"
+      ],
+      "emotional_register": "formal-técnico PT, tom de supervisor-orientador",
+      "sentence_length_distribution": "medium_enumerative",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "juliana_dalmam",
+      "case_id": "mariana_kasza",
+      "full_name": "Juliana Marney Dantas Dalmam",
+      "credential": "Co-Founder na Procinn Consultoria em Negócios e Processos — Ciência da Computação (Unasp), certificada BPM/ECM (Fluig) e ABPMP",
+      "firm": "Procinn Consultoria em Negócios e Processos",
+      "years_in_field": 12,
+      "relationship_to_petitioner": "colega e consultora parceira 2011-2013",
+      "signature_verb": "elaboro esta carta de recomendação",
+      "opening_variants": [
+        "Meu nome é Juliana Dalmam e sou Cofundadora da Procinn Consultoria em Negócios e Processos",
+        "É com grande satisfação que elaboro essa carta de recomendação",
+        "Tenho mais de 12 anos de experiência em MS-Project e certificação BPM/ECM"
+      ],
+      "expertise_lock": [
+        "BPM/ECM",
+        "mapeamento de processos",
+        "PMI",
+        "MS-Project",
+        "metodologias ágeis"
+      ],
+      "emotional_register": "formal-cordial PT, tom colegial de parceira de consultoria",
+      "sentence_length_distribution": "medium_warm",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "luciana_vaz",
+      "case_id": "mariana_kasza",
+      "full_name": "Luciana Vaz",
+      "credential": "Head of Product Management — 10+ anos em Strategic Planning & Corporative PMO, MBA em Desenvolvimento Sustentável e Economia Circular (PUCRS)",
+      "firm": "Head of Product Management (São Paulo) — passagens por iFood, Walmart.com Brasil, Unilever, ILOS",
+      "years_in_field": 15,
+      "relationship_to_petitioner": "gestora direta e mentora desde 2015 (mais de 8 anos)",
+      "signature_verb": "devo testemunhar",
+      "opening_variants": [
+        "Sr. Oficial, permita-me que me apresente",
+        "Meu nome é Luciana Vaz, sou Head of Product Management em São Paulo",
+        "Conheço a Sra. Kasza desde 2015 e tive o privilégio de trabalhar em estreita colaboração por mais de 8 anos"
+      ],
+      "expertise_lock": [
+        "Product Management",
+        "Strategic Planning",
+        "Corporative PMO",
+        "portfolio management",
+        "logística e sustentabilidade"
+      ],
+      "emotional_register": "formal-profissional PT, tom de mentora-superiora que testemunha",
+      "sentence_length_distribution": "long_enumerative",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "fabio_massuda",
+      "case_id": "mariana_kasza",
+      "full_name": "Fabio Massuda",
+      "credential": "Managing Director, Investments and Portfolio Management na Movile — MBA UC Berkeley Haas, Eng. Aeronáutica-Mecânica ITA, Mentor Endeavor",
+      "firm": "Movile (Berkeley-Haas Alumni Chapter Brasil Co-Presidente)",
+      "years_in_field": 20,
+      "relationship_to_petitioner": "executivo sênior da Movile durante atuação de Mariana como PMO Sênior",
+      "signature_verb": "é com grande satisfação que lhe apresento",
+      "opening_variants": [
+        "Atualmente sou Diretor Superintendente de Investimentos e Gestão de Portfólio da Movile",
+        "Na função de Managing Director, Investments and Portfolio Management na Movile, é com grande satisfação que lhe apresento",
+        "Possuo MBA pela UC Berkeley Haas e bacharelado em Engenharia Aeronáutica-Mecânica pelo ITA"
+      ],
+      "expertise_lock": [
+        "venture investments",
+        "portfolio management",
+        "corporate strategy",
+        "fintech/marketplace scale-up",
+        "governança de conselho"
+      ],
+      "emotional_register": "formal-executivo PT, tom de C-level que endossa talento raro",
+      "sentence_length_distribution": "medium_warm",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "patrick_hruby",
+      "case_id": "mariana_kasza",
+      "full_name": "Patrick Hruby",
+      "credential": "CEO at Movile — MBA Yale SOM, BBA PUC-RJ, ex-VP Facebook LatAm SMB, ex-Google Silicon Valley (7 anos)",
+      "firm": "Movile",
+      "years_in_field": 20,
+      "relationship_to_petitioner": "CEO da Movile durante período em que Mariana liderou Banco dos Restaurantes",
+      "signature_verb": "tive a oportunidade de acompanhar sua trajetória",
+      "opening_variants": [
+        "Meu nome é Patrick Hruby e sou o CEO da Movile, um investidor de longo prazo em empresas de tecnologia na América Latina",
+        "Passei 5 meses como Executivo no Residence antes de assumir o cargo atual de CEO",
+        "Ao longo de sua jornada na Movile, a SRA. Mariana destacou-se pela forma profissional"
+      ],
+      "expertise_lock": [
+        "tech scale-up LatAm",
+        "venture operations",
+        "executive leadership",
+        "marketplace & fintech",
+        "corporate governance"
+      ],
+      "emotional_register": "formal-executivo PT/EN híbrido, tom de CEO-investidor",
+      "sentence_length_distribution": "medium_warm",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "leandro_calixto_lrc",
+      "case_id": "mariana_kasza",
+      "full_name": "Leandro Ribeiro Calixto",
+      "credential": "CEO da LRC - Sistemas e Dados (fundada em 26/09/2008)",
+      "firm": "LRC - Sistemas e Dados",
+      "years_in_field": 17,
+      "relationship_to_petitioner": "investidor futuro comprometido com US$200.000 no projeto Niveon Tech Services",
+      "signature_verb": "declaramos interesse em nos tornar investidores",
+      "opening_variants": [
+        "Fundada em 26 de Setembro de 2008 a LRC - Sistemas e Dados cobre com sua tecnologia todo o território brasileiro",
+        "A LRC - Sistemas e Dados acredita reunir condições para se tornar investidor no projeto apresentado pela Mariana de Oliveira Kasza",
+        "Após criteriosa pesquisa entendemos que este projeto trará retorno financeiro"
+      ],
+      "expertise_lock": [
+        "engenharia de dados",
+        "sistemas de ingestão e distribuição de dados",
+        "infraestrutura em nuvem",
+        "consolidação de empreendimentos",
+        "contratos acima de R$1.000.000,00"
+      ],
+      "emotional_register": "formal-comercial PT, tom institucional-corporativo",
+      "sentence_length_distribution": "medium_formal",
+      "preferred_language": "pt",
+      "letter_type": "investidor_futuro"
+    },
+    {
+      "author_id": "dm_solucoes_tecnologia",
+      "case_id": "mariana_kasza",
+      "full_name": "DM Soluções em Tecnologia (signatário CEO)",
+      "credential": "CEO da DM Soluções em Tecnologia (fundada em 12/08/2021)",
+      "firm": "DM Soluções em Tecnologia",
+      "years_in_field": 5,
+      "relationship_to_petitioner": "investidor futuro comprometido com o projeto Niveon Tech Services",
+      "signature_verb": "declaramos interesse em nos tornar investidores",
+      "opening_variants": [
+        "Fundada em 12 de Agosto de 2021 a DM Soluções em Tecnologia cobre com seus serviços de tecnologia todo o território brasileiro",
+        "A DM Soluções em Tecnologia acredita reunir condições para se tornar investidor no projeto apresentado pela Mariana de Oliveira Kasza",
+        "Contribuímos para a consolidação de vários empreendimentos através da Transformação Digital"
+      ],
+      "expertise_lock": [
+        "desenvolvimento de sistemas em nuvem",
+        "transformação digital",
+        "engenharia de software",
+        "serviços regionais de TI",
+        "contratos acima de R$500.000,00"
+      ],
+      "emotional_register": "formal-comercial PT, tom institucional-corporativo (espelha LRC)",
+      "sentence_length_distribution": "medium_formal",
+      "preferred_language": "pt",
+      "letter_type": "investidor_futuro"
     }
   ]
 }
