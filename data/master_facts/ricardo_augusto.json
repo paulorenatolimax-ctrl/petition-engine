@@ -1,0 +1,61 @@
+{
+  "case_id": "ricardo_augusto",
+  "petitioner_name": "Ricardo Augusto Borges Porfírio Pereira",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "17-2051 Civil Engineers",
+  "description": "Master facts canônicos do caso. Usado por adversarial_auditor e checkAnchorsPresence. Cada carta do arsenal deve ecoar ≥3 anchors.",
+  "source": "RETROSPECTIVA_RICARDO_COWORK.md + SKILL_v5 Section 2 GAP 7.6",
+  "anchors": {
+    "years_experience": {
+      "value": "14+",
+      "aliases": ["fourteen years", "more than fourteen", "14+ years", "14 anos", "catorze anos"],
+      "required_in_letter_types": ["cliente_futuro", "parceiro_estrategico", "investidor_futuro"]
+    },
+    "prior_role": {
+      "value": "CEO RBP Construtora 2015–May 2025",
+      "aliases": ["CEO da RBP", "RBP Construtora", "2015 a maio de 2025", "2015-2025"],
+      "required_in_letter_types": ["contador", "testemunho_passado"]
+    },
+    "current_role": {
+      "value": "Senior PM Karins Engineering Group Tampa FL, since June 2025",
+      "aliases": ["Karins Engineering Group", "Tampa", "Senior Project Manager", "June 2025"],
+      "required_in_letter_types": ["cliente_futuro", "parceiro_estrategico", "investidor_futuro"]
+    },
+    "pe_channel": {
+      "value": "David Karins, PE · FL License 34217",
+      "aliases": ["FL License 34217", "License 34217", "Licença 34217", "David Karins"],
+      "required_in_letter_types": ["cliente_futuro", "parceiro_estrategico", "investidor_futuro", "testemunho_passado"]
+    },
+    "soc_target": {
+      "value": "17-2051 Civil Engineers",
+      "aliases": ["SOC 17-2051", "civil engineer", "structural engineer"],
+      "required_in_letter_types": []
+    }
+  },
+  "evidence_bank": [
+    {
+      "kind": "ART",
+      "number_pattern": "\\d{13}",
+      "example": "ART 1020160020103",
+      "count_portfolio": "17+ between 2015-2025"
+    },
+    {
+      "kind": "DOI",
+      "pattern": "10\\.\\d{4,}/[\\w.-]+",
+      "count_portfolio": "multiple"
+    },
+    {
+      "kind": "NFS-e",
+      "example": "NFS-e nº 3",
+      "volume_example": "3.000m CFRP"
+    },
+    {
+      "kind": "regulatory_trigger_us",
+      "values": ["SB 4-D", "LL 126", "NBIS", "FDOT", "IIJA", "FEMA 11:1"]
+    },
+    {
+      "kind": "market_size",
+      "values": ["ARTBA 373B", "IIJA 40B", "FEMA 11:1"]
+    }
+  ]
+}

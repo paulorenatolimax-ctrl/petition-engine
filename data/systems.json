@@ -245,5 +245,18 @@
     "recommended_model": "claude-opus-4",
     "doc_type": "endeavor_assessment",
     "created_at": "2026-04-09T10:00:00Z"
+  },
+  {
+    "id": "23",
+    "system_name": "Sistema Produtor de Cartas v5.0",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
+    "version_tag": "5.0.0",
+    "file_count": 9,
+    "is_active": true,
+    "recommended_model": "claude-sonnet-4",
+    "doc_type": "testimony_letter_eb1a",
+    "note": "v5: 57 rules + 23 antipatterns + 5 master prompts + hard_block_scrub configurável + persona_bank + master_facts + anti-atlas validator. Base empírica caso Ricardo Augusto. Current symlink points to SKILL_v5.md. v2.0, v3.1, v1.0 preserved in same dir.",
+    "active": true,
+    "created_at": "2026-04-19T11:00:00Z"
   }
 ]

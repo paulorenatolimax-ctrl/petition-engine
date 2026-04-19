@@ -1,0 +1,54 @@
+{
+  "description": "Global hard blocks applied to all cases. Cases can add more via hard_blocks/{case_id}.json.",
+  "source": "SKILL_v5 Section 3 + feedback_nunca_expor_infraestrutura",
+  "blocks": [
+    {
+      "id": "global_proex",
+      "pattern": "\\bPROEX\\b",
+      "flags": "i",
+      "reason": "Infra interna exposta em artefato de cliente",
+      "replacement": null,
+      "severity": "critical"
+    },
+    {
+      "id": "global_kortix",
+      "pattern": "\\bKortix\\b",
+      "flags": "i",
+      "reason": "Infra interna exposta em artefato de cliente",
+      "replacement": null,
+      "severity": "critical"
+    },
+    {
+      "id": "global_petition_engine",
+      "pattern": "\\bPetition\\s+Engine\\b",
+      "flags": "i",
+      "reason": "Infra interna do sistema de produção",
+      "replacement": null,
+      "severity": "critical"
+    },
+    {
+      "id": "global_obsidian",
+      "pattern": "\\bObsidian\\b",
+      "flags": "i",
+      "reason": "Infra interna (editor .md do Paulo)",
+      "replacement": null,
+      "severity": "critical"
+    },
+    {
+      "id": "global_rags",
+      "pattern": "\\bRAGs?\\b",
+      "flags": "",
+      "reason": "Base de conhecimento interna",
+      "replacement": null,
+      "severity": "critical"
+    },
+    {
+      "id": "global_immigration_jargon",
+      "pattern": "\\b(national[_ ]interest[_ ]waiver|dhanasar|eb-?1a?|eb-?2|i-?140|uscis|green[_ ]card|permanent[_ ]residency)\\b",
+      "flags": "i",
+      "reason": "Cartas NUNCA devem nomear os prongs ou jargão imigratório (SKILL v5 B7)",
+      "replacement": null,
+      "severity": "critical"
+    }
+  ]
+}

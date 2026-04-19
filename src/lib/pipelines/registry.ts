@@ -6,7 +6,11 @@
  * No more if/else chains in execute/route.ts.
  */
 
-export type PipelineType = 'cover_letter_eb1a' | 'cover_letter_eb2_niw' | 'generic';
+export type PipelineType =
+  | 'cover_letter_eb1a'
+  | 'cover_letter_eb2_niw'
+  | 'testimony_letters'
+  | 'generic';
 
 /**
  * Determine which pipeline to use for a given document type.
@@ -17,6 +21,9 @@ export function getPipelineType(docType: string): PipelineType {
       return 'cover_letter_eb1a';
     case 'cover_letter_eb2_niw':
       return 'cover_letter_eb2_niw';
+    case 'testimony_letter_eb1a':
+    case 'testimony_letter_eb2_niw':
+      return 'testimony_letters';
     default:
       return 'generic';
   }
@@ -29,6 +36,8 @@ export function getPipelineType(docType: string): PipelineType {
 export const MULTI_PHASE_DOC_TYPES = [
   'cover_letter_eb1a',
   'cover_letter_eb2_niw',
+  'testimony_letter_eb1a',
+  'testimony_letter_eb2_niw',
 ] as const;
 
 /**

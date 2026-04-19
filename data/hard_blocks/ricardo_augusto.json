@@ -1,0 +1,72 @@
+{
+  "case_id": "ricardo_augusto",
+  "soc_target": "17-2051 Civil Engineers",
+  "description": "Hard blocks específicos do caso Ricardo Augusto. Termos que sugerem SOC não-engenharia = RFE automático.",
+  "source": "SKILL_v5 Section 3 + feedback_eb2niw_hard_blocks + RETROSPECTIVA_RICARDO_COWORK.md",
+  "blocks": [
+    {
+      "id": "ricardo_advisory_en",
+      "pattern": "\\badvisory\\b",
+      "flags": "i",
+      "reason": "Em EN descrevendo serviço, sugere SOC consultor — RFE automático para 17-2051",
+      "replacement": "engineering engagement",
+      "severity": "critical"
+    },
+    {
+      "id": "ricardo_consulting_en",
+      "pattern": "\\bconsulting\\b",
+      "flags": "i",
+      "reason": "Em EN descrevendo serviço, sugere SOC consultor — RFE automático",
+      "replacement": "engineering",
+      "severity": "critical"
+    },
+    {
+      "id": "ricardo_sub_consulting",
+      "pattern": "\\bsub-?consulting\\b",
+      "flags": "i",
+      "reason": "Idem, subcontrato consultor. Substituir por specialty engineering subcontract",
+      "replacement": "specialty engineering subcontract",
+      "severity": "critical"
+    },
+    {
+      "id": "ricardo_assessoria_pt",
+      "pattern": "\\bassessoria\\b",
+      "flags": "i",
+      "reason": "PT descrevendo atuação profissional — sugere SOC não-engenharia. Tolerado apenas em razão social de firma BR.",
+      "replacement": "engenharia técnica",
+      "severity": "high"
+    },
+    {
+      "id": "ricardo_padronizado_pt",
+      "pattern": "\\bpadronizad[oa]s?\\b",
+      "flags": "i",
+      "reason": "Sugere processo standard industrial, não engenharia especializada",
+      "replacement": "sistematizado",
+      "severity": "high"
+    },
+    {
+      "id": "ricardo_turnkey",
+      "pattern": "\\bturn-?key\\b",
+      "flags": "i",
+      "reason": "Sugere integração contractor-style, fora de SOC 17-2051",
+      "replacement": "specialty engineering engagement",
+      "severity": "critical"
+    },
+    {
+      "id": "ricardo_autossuficiente_pt",
+      "pattern": "\\bautossuficient[es]?\\b",
+      "flags": "i",
+      "reason": "Sugere SOC não-engenharia-especialista. Remover adjetivo ou usar capability específica",
+      "replacement": null,
+      "severity": "high"
+    },
+    {
+      "id": "ricardo_consultoria_servico_pt",
+      "pattern": "\\bconsultoria\\s+(?:técnica|estrutural|de\\s+engenharia)\\b",
+      "flags": "i",
+      "reason": "PT descrevendo serviço (NÃO razão social) — RFE automático para 17-2051",
+      "replacement": "engenharia técnica",
+      "severity": "critical"
+    }
+  ]
+}

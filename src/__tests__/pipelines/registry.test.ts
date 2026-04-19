@@ -22,10 +22,17 @@ describe('Pipeline Registry', () => {
     expect(getPipelineType('anteprojeto_eb2_niw')).toBe('generic');
   });
 
-  it('MULTI_PHASE_DOC_TYPES contains only cover letters', () => {
+  it('MULTI_PHASE_DOC_TYPES contains cover letters and testimony letters', () => {
     expect(MULTI_PHASE_DOC_TYPES).toContain('cover_letter_eb1a');
     expect(MULTI_PHASE_DOC_TYPES).toContain('cover_letter_eb2_niw');
-    expect(MULTI_PHASE_DOC_TYPES.length).toBe(2);
+    expect(MULTI_PHASE_DOC_TYPES).toContain('testimony_letter_eb1a');
+    expect(MULTI_PHASE_DOC_TYPES).toContain('testimony_letter_eb2_niw');
+    expect(MULTI_PHASE_DOC_TYPES.length).toBe(4);
+  });
+
+  it('routes testimony_letter_eb1a and _eb2_niw to testimony_letters pipeline', () => {
+    expect(getPipelineType('testimony_letter_eb1a')).toBe('testimony_letters');
+    expect(getPipelineType('testimony_letter_eb2_niw')).toBe('testimony_letters');
   });
 
   it('THUMBNAIL_DOC_TYPES includes resumes and cover letters', () => {

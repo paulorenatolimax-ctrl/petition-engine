@@ -185,6 +185,28 @@ export const SYSTEM_MAP: Record<string, SystemConfig> = {
     estimatedTokens: 40000,
     multiAgent: false,
   },
+  testimony_letter_eb1a: {
+    name: 'Cartas de Testemunho EB-1A v5',
+    symlinkDir: 'satellite-letters-eb1',
+    preferredModel: 'claude-sonnet-4',
+    requiresProfile: true,
+    requiresDeepResearch: false,
+    outputFormat: 'docx',
+    estimatedTokens: 50000,
+    multiAgent: true,
+    heterogeneity: true,
+  },
+  testimony_letter_eb2_niw: {
+    name: 'Cartas de Testemunho EB-2 NIW v5',
+    symlinkDir: 'satellite-letters-eb2',
+    preferredModel: 'claude-sonnet-4',
+    requiresProfile: true,
+    requiresDeepResearch: false,
+    outputFormat: 'docx',
+    estimatedTokens: 50000,
+    multiAgent: true,
+    heterogeneity: true,
+  },
 };
 
 export function getSystemForDocType(docType: string): SystemConfig {

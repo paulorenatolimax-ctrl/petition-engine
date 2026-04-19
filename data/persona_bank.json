@@ -1,0 +1,102 @@
+{
+  "description": "Persona bank — engineered voices for satellite letter arsenals. Each author has distinct signature_verb, opening variants, expertise_lock, tone. Used by testimony_letters pipeline to prevent ATLAS.",
+  "source": "SKILL_v5 Section 2 Category C + RETROSPECTIVA_RICARDO_COWORK.md personas",
+  "personas": [
+    {
+      "author_id": "ademar_hirata",
+      "case_id": "ricardo_augusto",
+      "full_name": "Ademar Hirata",
+      "credential": "Engenheiro Civil — CREA/GO",
+      "firm": "Hirata & Associados Engenharia",
+      "years_in_field": 50,
+      "relationship_to_petitioner": "sócio-sênior durante passagem do pleiteante pela firma",
+      "signature_verb": "registre-se",
+      "opening_variants": [
+        "Atuo como engenheiro estrutural em Goiás há mais de cinco décadas",
+        "No exercício de minhas funções na Hirata & Associados",
+        "Subscrevo o presente em minha condição de sócio-sênior"
+      ],
+      "expertise_lock": ["protensão", "concreto armado", "análise estrutural sênior", "CFRP reinforcement"],
+      "emotional_register": "formal-técnico sênior",
+      "sentence_length_distribution": "long_sentences_enumerativas",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "carlos_eduardo_assis",
+      "case_id": "ricardo_augusto",
+      "full_name": "Carlos Eduardo Assis",
+      "credential": "Engenheiro Civil — UFG 2013",
+      "firm": "CE Estrutural",
+      "years_in_field": 13,
+      "relationship_to_petitioner": "coautor em projetos 2014-2017",
+      "signature_verb": "emito o presente endosso na condição profissional de",
+      "opening_variants": [
+        "Emito o presente endosso na condição profissional de Engenheiro Civil formado pela Universidade Federal de Goiás (2013)",
+        "Ingressei na Hirata & Associados em fevereiro de 2014, aos 23 anos, como engenheiro junior"
+      ],
+      "expertise_lock": ["CFRP reinforcement", "retrofit estrutural", "protensão em pontes"],
+      "emotional_register": "formal-técnico jovem",
+      "sentence_length_distribution": "short_direct",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "antonio_claret",
+      "case_id": "ricardo_augusto",
+      "full_name": "Antônio Claret",
+      "credential": "Advogado — OAB/GO",
+      "firm": "Claret Advocacia Técnica",
+      "years_in_field": 25,
+      "relationship_to_petitioner": "assessor jurídico em disputas técnicas envolvendo o pleiteante",
+      "signature_verb": "subscrevo",
+      "opening_variants": [
+        "Subscrevo o presente como elemento objetivo de convicção",
+        "Parecerado em minha condição de assessor jurídico especializado"
+      ],
+      "expertise_lock": ["dano-presumido", "jurisprudência TRT-18", "carga empírica probatória"],
+      "emotional_register": "técnico-forense",
+      "sentence_length_distribution": "medium_formal",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "thiago_avelino",
+      "case_id": "ricardo_augusto",
+      "full_name": "Thiago Avelino",
+      "credential": "Engenheiro Civil — ex-TCI",
+      "firm": "Consultoria independente (ex-TCI Engenharia)",
+      "years_in_field": 20,
+      "relationship_to_petitioner": "colega ex-TCI, testemunhou práticas técnicas em projetos compartilhados",
+      "signature_verb": "testemunho em primeira pessoa",
+      "opening_variants": [
+        "Observei pessoalmente o trabalho do Ricardo em nosso período comum na TCI",
+        "Testemunho em primeira pessoa a trajetória técnica do pleiteante"
+      ],
+      "expertise_lock": ["protensão", "CFRP", "normas ACI 440", "PTI Vol. 13"],
+      "emotional_register": "pessoal-colegial",
+      "sentence_length_distribution": "medium_warm",
+      "preferred_language": "pt",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "david_karins",
+      "case_id": "ricardo_augusto",
+      "full_name": "David Karins, PE",
+      "credential": "Professional Engineer — FL License 34217",
+      "firm": "Karins Engineering Group, Tampa FL",
+      "years_in_field": 30,
+      "relationship_to_petitioner": "signing-engineer channel US, supervisor direto em projetos FL",
+      "signature_verb": "I hereby attest",
+      "opening_variants": [
+        "I have worked directly with Mr. Pereira since his arrival at our Tampa office in June 2025",
+        "As the signing engineer for our FL practice (License 34217), I oversee Mr. Pereira's technical work"
+      ],
+      "expertise_lock": ["FL structural practice", "SB 4-D milestone inspection", "NBIS federal-aid", "FDOT procurement"],
+      "emotional_register": "frio-comercial US",
+      "sentence_length_distribution": "short_direct_business",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    }
+  ]
+}
