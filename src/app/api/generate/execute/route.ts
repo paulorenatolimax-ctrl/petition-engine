@@ -14,6 +14,7 @@ import {
 } from '@/lib/pipelines/base';
 import { runCoverLetterEB1APipeline } from '@/lib/pipelines/cover-letter-eb1a';
 import { runCoverLetterEB2NIWPipeline } from '@/lib/pipelines/cover-letter-eb2-niw';
+import { runTestimonyLettersPipeline } from '@/lib/pipelines/testimony-letters';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -187,6 +188,61 @@ export async function POST(req: NextRequest) {
         } catch (err: unknown) {
           const errMsg = err instanceof Error ? err.message : String(err);
           send('complete', { success: false, error: `Pipeline genérico falhou: ${errMsg}` });
+        }
+
+        controller.close();
+        return;
+      }
+
+      // ═══════════════════════════════════════════════════════════════
+      // TESTIMONY LETTERS: persona-engineered arsenal (SKILL v5)
+      // Uses persona_bank + master_facts + hard_blocks + anti-ATLAS validator
+      // ═══════════════════════════════════════════════════════════════
+      if (doc_type === 'testimony_letter_eb1a' || doc_type === 'testimony_letter_eb2_niw') {
+        send('stage', { stage: 'info', phase: 0, message: `⚡ Testimony Letters Pipeline (SKILL v5) — ${doc_type}` });
+
+        let clientDocsPath = clientBaseDir;
+        let caseId = '';
+        if (client_id) {
+          const cs = readClients();
+          const cl = cs.find((c: { id: string; docs_folder_path?: string; case_id?: string; name?: string }) => c.id === client_id);
+          if (cl?.docs_folder_path) clientDocsPath = cl.docs_folder_path;
+          caseId = cl?.case_id || (cl?.name ? cl.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : '');
+        }
+
+        if (!caseId) {
+          send('stage', { stage: 'error', phase: 0, message: 'Testimony pipeline requires a client_id com case_id ou nome do caso' });
+          send('complete', { success: false, error: 'case_id ausente' });
+          controller.close();
+          return;
+        }
+
+        const visa: 'EB-1A' | 'EB-2 NIW' | 'O-1' = doc_type === 'testimony_letter_eb1a' ? 'EB-1A' : 'EB-2 NIW';
+
+        try {
+          const result = await runTestimonyLettersPipeline({
+            caseId,
+            clientName: client_name || '',
+            clientDocsPath,
+            outputDir,
+            visaType: visa,
+            claudeBin,
+            send,
+            genId,
+          });
+
+          send('complete', {
+            success: result.success,
+            pipeline: true,
+            pipeline_type: 'testimony_letters',
+            verdict: result.verdict,
+            letters_generated: result.letters_generated.map(f => f.split('/').pop()),
+            atlas_score: result.atlas_validation?.atlas_score,
+            duration_seconds: result.total_duration_seconds,
+          });
+        } catch (err: unknown) {
+          const errMsg = err instanceof Error ? err.message : String(err);
+          send('complete', { success: false, error: `Testimony pipeline falhou: ${errMsg}` });
         }
 
         controller.close();
@@ -595,6 +651,34 @@ export async function POST(req: NextRequest) {
             // Non-critical failures: warn but deliver
             send('stage', { stage: 'warning', phase: 1.5, message: `Quality gate REPROVADO (${qualityResult.score}/100). Sem violacoes criticas — documento entregue com ressalvas.` });
           }
+
+          // ═══ PHASE 1.55: AUTO-LEARNING — AutoDebugger closes the feedback loop ═══
+          // Any violation (critical or not) that doesn't map to an already-active
+          // rule becomes a new rule so the next generation won't repeat it.
+          if (qualityResult.violations.length > 0) {
+            try {
+              const { reportBatch } = await import('@/agents/auto-debugger-local');
+              const signals = qualityResult.violations
+                .filter(v => !v.rule.startsWith('r')) // skip if already came from an error_rules entry
+                .map(v => ({
+                  errorDescription: `${v.rule}: ${v.match}`.slice(0, 180),
+                  docType: doc_type || null,
+                  severity: v.severity,
+                  sourceGenId: genId,
+                }));
+              if (signals.length > 0) {
+                const learnResults = await reportBatch(signals);
+                const newRules = learnResults.filter(r => r.action === 'new_rule_created');
+                const updated = learnResults.filter(r => r.action === 'existing_rule_updated');
+                if (newRules.length > 0 || updated.length > 0) {
+                  send('stage', { stage: 'info', phase: 1.55, message: `AutoDebugger: ${newRules.length} nova(s) regra(s), ${updated.length} atualizada(s)` });
+                }
+              }
+            } catch (learnErr: unknown) {
+              const msg = learnErr instanceof Error ? learnErr.message : String(learnErr);
+              send('stage', { stage: 'warning', phase: 1.55, message: `AutoDebugger falhou: ${msg.slice(0, 200)}` });
+            }
+          }
         }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (qErr: any) {
@@ -625,6 +709,58 @@ export async function POST(req: NextRequest) {
           }
         } else {
           send('stage', { stage: 'info', phase: 1.6, message: 'Python quality gate nao encontrado em scripts/core/ — pulando' });
+        }
+      }
+
+      // ═══ PHASE 1.65: USCIS ADJUDICATION REVIEWER ═══
+      // Simulates a USCIS officer reading the document and flags weak points
+      // BEFORE the document is delivered. Non-blocking (warn-only) since LLM
+      // judgment is advisory, not hard rule.
+      if (mainDocx.endsWith('.docx') || mainDocx.endsWith('.md')) {
+        const visaType =
+          (doc_type || '').includes('eb1') ? 'EB-1A' :
+          (doc_type || '').includes('eb2') ? 'EB-2 NIW' :
+          (doc_type || '').includes('o1') || (doc_type || '').includes('o-1') ? 'O-1' : '';
+        if (visaType) {
+          send('stage', { stage: 'phase', phase: 1.65, message: 'FASE 1.65: USCIS REVIEWER — Simulação de adjudicação' });
+          try {
+            const { buildUSCISReviewPrompt } = await import('@/agents/uscis-reviewer');
+            let docTextForReview = '';
+            try {
+              docTextForReview = mainDocx.endsWith('.md')
+                ? readFileSync(mainDocx, 'utf-8')
+                : execSync(
+                    `python3 -c "from docx import Document; doc=Document('${mainDocx}'); print('\\n'.join(p.text for p in doc.paragraphs))"`,
+                    { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024, timeout: 30000 },
+                  );
+            } catch { /* ignored */ }
+
+            if (docTextForReview) {
+              const reviewPrompt = buildUSCISReviewPrompt({
+                documentText: docTextForReview.slice(0, 40000),
+                docType: doc_type || '',
+                visaType,
+                clientName: client_name || '',
+              });
+              const uscisReviewPath = path.join(outputDir, 'USCIS_REVIEW.md');
+              const uscisReview = await runClaude(
+                claudeBin,
+                `${reviewPrompt}\n\nSalve a análise em ${uscisReviewPath}`,
+                undefined,
+                undefined,
+                { timeoutMs: 10 * 60 * 1000, idleTimeoutMs: 3 * 60 * 1000 },
+              );
+              if (uscisReview.code === 0 && existsSync(uscisReviewPath)) {
+                send('stage', { stage: 'gen_complete', phase: 1.65, message: `✓ USCIS review gerada: ${path.basename(uscisReviewPath)}` });
+                upsertGeneration({ id: genId, uscis_review_path: 'USCIS_REVIEW.md' });
+              } else {
+                send('stage', { stage: 'warning', phase: 1.65, message: `USCIS reviewer falhou (${uscisReview.timedOut ? 'timeout' : `exit ${uscisReview.code}`}) — não bloqueante` });
+              }
+            }
+          } catch (uErr: unknown) {
+            const msg = uErr instanceof Error ? uErr.message : String(uErr);
+            send('stage', { stage: 'warning', phase: 1.65, message: `USCIS reviewer erro: ${msg.slice(0, 200)}` });
+          }
         }
       }
 
