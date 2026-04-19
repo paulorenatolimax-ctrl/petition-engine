@@ -15,6 +15,8 @@ import {
   upsertGeneration, runClaude, findNewDocx, autoVersionExisting,
   SendFn, PhaseResult,
 } from './base';
+import { scanHardBlocks, renderHardBlockReport } from '@/lib/rules/hard-blocks';
+import { getMasterFacts, checkAnchorsPresence } from '@/lib/rules/master-facts';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -53,6 +55,10 @@ interface PipelineParams {
   systemPath: string;
   clientSlug: string;
   clientName: string;
+  /** Optional case identifier. When present, generic pipeline injects
+   *  hard_blocks/{caseId}.json + master_facts/{caseId}.json into prompts
+   *  and runs a post-phase hard-block scan on generated docs. */
+  caseId?: string;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -90,7 +96,49 @@ function interpolate(template: string, params: PipelineParams): string {
     .replace(/\{phasesDir\}/g, params.phasesDir)
     .replace(/\{systemPath\}/g, params.systemPath)
     .replace(/\{clientSlug\}/g, params.clientSlug)
-    .replace(/\{clientName\}/g, params.clientName);
+    .replace(/\{clientName\}/g, params.clientName)
+    .replace(/\{caseId\}/g, params.caseId || '');
+}
+
+/**
+ * Build a case-specific context section to inject into every Claude prompt.
+ * When caseId is set, pulls hard_blocks + master_facts and formats as
+ * guard-rail text at the top of the prompt. Returns '' when no caseId.
+ */
+function buildCaseContext(caseId?: string): string {
+  if (!caseId) return '';
+  const mf = getMasterFacts(caseId);
+  const hbResult = scanHardBlocks('', caseId); // just to load blocks list
+  const blocks = hbResult.violations.length
+    ? []
+    : (() => {
+        // Reload raw blocks for display (scanHardBlocks returned no violations because text='')
+        try {
+          const { loadHardBlocks } = require('@/lib/rules/hard-blocks') as typeof import('@/lib/rules/hard-blocks');
+          return loadHardBlocks(caseId);
+        } catch { return []; }
+      })();
+
+  const parts: string[] = ['\n## CONTEXTO DO CASO (obrigatório respeitar)\n'];
+
+  if (mf) {
+    parts.push(`**Pleiteante:** ${mf.petitioner_name} · **Visto:** ${mf.visa_type} · **SOC alvo:** ${mf.soc_target}`);
+    parts.push('\n### Anchors canônicos (ecoar no documento quando aplicável)');
+    for (const [key, spec] of Object.entries(mf.anchors)) {
+      parts.push(`- **${key}:** ${spec.value}`);
+    }
+  }
+
+  if (blocks.length > 0) {
+    parts.push('\n### HARD BLOCKS (vocábulos proibidos — sugerem SOC errado)');
+    for (const b of blocks) {
+      const replacement = b.replacement ? ` → usar: **${b.replacement}**` : '';
+      parts.push(`- [${b.severity.toUpperCase()}] \`${b.pattern.replace(/\\/g, '')}\`${replacement} — ${b.reason}`);
+    }
+  }
+
+  parts.push('\n---\n');
+  return parts.join('\n');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -220,8 +268,11 @@ export async function runMultiPhasePipeline(
       }
     } else if (phase.type === 'claude') {
       // ═══ CLAUDE PHASE ═══
-      const prompt = interpolate(phase.prompt || '', params);
-      send('stage', { stage: 'generating', phase: phase.id, message: `Executando claude -p (fase ${phase.id})...` });
+      // Inject case context (hard_blocks + master_facts) at top when caseId is set.
+      // Backward-compatible: no caseId → caseContext is '' and prompt is unchanged.
+      const caseContext = buildCaseContext(params.caseId);
+      const prompt = caseContext + interpolate(phase.prompt || '', params);
+      send('stage', { stage: 'generating', phase: phase.id, message: `Executando claude -p (fase ${phase.id}${params.caseId ? `, case=${params.caseId}` : ''})...` });
 
       let lastChunkTime = Date.now();
       const result = await runClaude(claudeBin, prompt,
@@ -268,6 +319,44 @@ export async function runMultiPhasePipeline(
       ...findNewDocx(params.outputDir, phaseStart),
     ].filter((v, idx, a) => a.indexOf(v) === idx);
     allFiles.push(...newFiles);
+
+    // Post-phase hard-block scan when caseId is set and new files were created.
+    // Non-blocking — emits a warning stage if any critical match is found.
+    if (success && params.caseId && newFiles.length > 0) {
+      for (const filePath of newFiles) {
+        let text = '';
+        try {
+          if (filePath.endsWith('.md')) {
+            text = readFileSync(filePath, 'utf-8');
+          } else if (filePath.endsWith('.docx')) {
+            text = execSync(
+              `python3 -c "from docx import Document; d=Document('${filePath}'); print('\\n'.join(p.text for p in d.paragraphs))"`,
+              { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024, timeout: 30000 },
+            );
+          } else {
+            continue;
+          }
+          const scan = scanHardBlocks(text, params.caseId);
+          if (scan.criticalCount > 0) {
+            send('stage', {
+              stage: 'warning',
+              phase: phase.id,
+              message: `Hard-block scan: ${scan.criticalCount} critical match(es) em ${path.basename(filePath)}`,
+            });
+          }
+          const anchors = checkAnchorsPresence(text, params.caseId);
+          if (anchors && anchors.coverage_ratio < 0.3) {
+            send('stage', {
+              stage: 'warning',
+              phase: phase.id,
+              message: `Master facts coverage baixa em ${path.basename(filePath)}: ${Math.round(anchors.coverage_ratio * 100)}% (faltam ${anchors.missing_anchors.join(', ')})`,
+            });
+          }
+        } catch {
+          // non-fatal; post-scan is advisory only
+        }
+      }
+    }
 
     const duration = Math.round((Date.now() - phaseStart) / 1000);
     phaseResults.push({

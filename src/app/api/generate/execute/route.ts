@@ -156,11 +156,21 @@ export async function POST(req: NextRequest) {
         const phasesDir = path.join(outputDir, 'phases');
         const clientSlug = (client_name || 'output').replace(/\s+/g, '_');
 
+        // Resolve caseId so generic pipeline can inject hard_blocks + master_facts.
+        let caseId: string | undefined;
+        if (client_id) {
+          try {
+            const cs = readClients();
+            const cl = cs.find((c: { id: string; case_id?: string; name?: string }) => c.id === client_id);
+            caseId = cl?.case_id || (cl?.name ? cl.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : undefined);
+          } catch {}
+        }
+
         try {
           const result = await runMultiPhasePipeline(
             multiPhaseSpec,
             claudeBin,
-            { clientDocsPath, outputDir, phasesDir, systemPath, clientSlug, clientName: client_name || '' },
+            { clientDocsPath, outputDir, phasesDir, systemPath, clientSlug, clientName: client_name || '', caseId },
             send,
             genId,
             startTime,
