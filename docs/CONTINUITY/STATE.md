@@ -1,6 +1,6 @@
 # STATE.md — Estado atual do Petition Engine
 
-**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-19T16:19:55Z
+**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-19T19:50:27Z
 
 > Esta página é regenerada a cada commit (via git hook post-commit). Para ver cronologia, consultar `STEPLOG.md`. Para o mapa completo do que existe, `INVENTORY.md`.
 
@@ -8,9 +8,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Último commit | `5b66193c13c422f670361c84d706a4ec22d30d13` — feat(pipelines): generic.ts injects hard_blocks + master_facts when caseId present |
+| Último commit | `f00f8be82d4ffb1b398827a8d160e17c9fb52f3a` — docs(continuity): refresh STATE + STEPLOG after Deni+Fernando generations |
 | Autor | paulorenatolimax-ctrl |
-| Total de commits | 115 |
+| Total de commits | 116 |
 | Sincronização | ✅ local = remote |
 | Último handoff | SESSAO_2026-04-19_RESUMO.md |
 

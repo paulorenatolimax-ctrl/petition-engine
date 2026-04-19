@@ -7,6 +7,14 @@ Cada entrada é um commit (auto-append pelo post-commit hook) ou uma anotação 
 Para saber onde estamos: ler as últimas 10-15 entradas. Cada entrada tem o `sha`, a mensagem, e a data.
 
 
+### 2026-04-19T16:20:24Z — `f00f8be82d4ffb1b398827a8d160e17c9fb52f3a`
+
+docs(continuity): refresh STATE + STEPLOG after Deni+Fernando generations
+
+- Rules: 148 · Systems: 25 · Clients: 39 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
 ### 2026-04-19T15:46:58Z — `5b66193c13c422f670361c84d706a4ec22d30d13`
 
 feat(pipelines): generic.ts injects hard_blocks + master_facts when caseId present
