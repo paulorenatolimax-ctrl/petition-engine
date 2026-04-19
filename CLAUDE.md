@@ -1,78 +1,98 @@
-# PETITION ENGINE — Instruções para Claude Code
+# CLAUDE.md — Petition Engine (raiz do repo)
 
-## ANTES DE QUALQUER COISA
+**Versão:** 2 · **Desde:** 2026-04-19 · **Predecessor preservado:** `CLAUDE_v1_legacy_2026-03.md`
 
-Leia os arquivos abaixo NA ORDEM antes de escrever uma única linha de código:
+Este arquivo é carregado AUTOMATICAMENTE pelo Claude Code toda sessão que trabalha neste repo. Por isso é curto por design — fica sempre no contexto.
 
-1. `01_ARCHITECTURE.md` — Stack, estrutura do projeto, princípios
-2. `02_SUPABASE.md` — Schema SQL completo (copiar e executar no SQL Editor)
-3. `03_AGENTS.md` — Os 6 agentes do orquestrador (Extrator, Escritor, Qualidade, USCIS, Auto-Debugger, **System Updater**)
-4. `04_API_ROUTES.md` — Todos os endpoints do back-end
-5. `05_SYSTEMS_MAP.md` — Mapa de symlinks + **pipeline de 9 prompts do Anteprojeto** + **sistema de heterogeneidade anti-ATLAS para cartas**
-6. `06_ERROR_RULES.md` — Sistema de error rules com **50 regras seed extraídas dos Pareceres da Qualidade**
-7. `07_THUMBNAILS.md` — Scripts Python para geração e inserção de thumbnails no DOCX
-8. `09_AUTO_LEARNING.md` — **CRÍTICO**: Sistema de auto-aprendizado conversacional (3 níveis: Error Rules, System Updates, Preferences). Cada interação com Paulo pode evoluir o sistema. Versionar, NUNCA sobrescrever.
+## O que isto é
 
-O arquivo `08_FRONTEND.md` é para o Gemini/Antigravity construir o front-end. Claude Code NÃO precisa ler esse arquivo a menos que esteja implementando componentes React diretamente.
+**Petition Engine:** plataforma Next.js 14 que automatiza geração de documentos de imigração USCIS (EB-1A, EB-2 NIW, O-1) usando Claude Code CLI (`claude -p`) como motor de geração.
 
-## REGRAS ABSOLUTAS
+- Repo GitHub: `paulorenatolimax-ctrl/petition-engine` · branch `main`
+- Dev server daemon: `com.paulo.petitionengine.dev` (LaunchAgent) serve `localhost:3000` full-time
+- Dono: Paulo Lima · PROEX · 598+ clientes atendidos historicamente
 
-1. **NÃO recriar sistemas que já existem.** Os sistemas de geração (Cover Letter, Résumé, BP, etc.) já estão prontos como arquivos .md nas pastas do Paulo. O Petition Engine ORQUESTRA esses sistemas — não os reescreve.
+## Você chegou agora — LEIA NESTA ORDEM
 
-2. **Usar SYMLINKS** para apontar para os sistemas nas pastas originais. Zero duplicação de arquivos.
+**ANTES** de escrever código, ler arquivo ou responder qualquer pergunta sobre estado:
 
-3. **Cada fix/melhoria = commit no GitHub.** Nunca sobrescrever sem commit. Paulo precisa de rollback a qualquer momento.
+1. **`docs/CONTINUITY/STATE.md`** — estado atual: o que funciona, o que quebrou, em andamento. Auto-atualizado por git hook a cada commit.
+2. **`docs/CONTINUITY/STEPLOG.md`** — cronologia de passos. Aqui você descobre ONDE paramos.
+3. **`docs/CONTINUITY/INVENTORY.md`** — inventário de tudo: agentes, pipelines, doc_types, systems, tests.
+4. **`docs/handoff/`** (o `SESSAO_*_RESUMO.md` mais recente) — último handoff detalhado.
 
-4. **Versionar, não sobrescrever.** Quando um sistema evolui (v5.0 → v5.1), a versão anterior fica como backup. Symlink `current.md` aponta para a versão ativa. Rollback = mudar o symlink.
+Total: 15-20 min de leitura. Aí sim você está a par.
 
-5. **Auto-aprendizado conversacional.** Quando Paulo dá feedback durante uma conversa, o Engine DEVE perguntar: "Quer que eu incorpore isso no sistema?" Se sim → propor diff → confirmar → commit no GitHub → nova versão.
+Se a conversa anterior caiu e o usuário disse apenas "continue", responda:
+> Li CONTINUITY. Paramos em [passo N — ler STATE.md]. Posso prosseguir com [próximo passo — do STEPLOG]?
 
-6. **Scripts Python rodam local** na máquina do Paulo via `child_process.exec()` nas API routes. Não tentar rodar Python no Vercel.
+## Princípios não-negociáveis
 
-7. **Supabase via MCP** quando disponível. Senão, usar `@supabase/supabase-js` standard.
+- **Nunca expor infraestrutura** em artefatos de cliente: sem PROEX, Kortix, RAGs, Petition Engine, Obsidian, nomes de outros clientes
+- **PROEX é consultoria**, NÃO escritório de advocacia. USCIS é processo **administrativo**, não judicial
+- **Sistemas são genéricos.** 598+ clientes — NUNCA nomear sistema/arquivo por cliente (ex.: `RFE_MARCELO_GOIS.md` é PROIBIDO; `RFE_EB1A_V1.md` é correto). Benchmarks ficam no CONTEÚDO, nunca no path.
+- **Anteprojeto = ZERO juízo de valor.** 3 endeavors neutros. Cláusula pétrea.
+- **V prefix NA FRENTE.** `V5_arquivo.md`, nunca `arquivo_V5.md`. Versões antigas preservadas SEMPRE (renomear, nunca deletar).
+- **DOCX** passa por `scripts/fix_docx_formatting.py`. **Output `.md`** só para anteprojetos/projetos-base internos.
+- **`localhost:3000` roda full-time** via LaunchAgent. Se cair, diagnosticar o daemon (`launchctl list | grep petition`), nunca sugerir `npm run dev` como primeiro recurso.
+- **Livro do Sandeco** (`/Users/paulo1844/Documents/Tecnologia e IA/Sandeco/Livro/Versão Branca - Eng_software_agentes_inteligentes (1).pdf`) é a referência arquitetural. Cap 4 (Factory Method, Repository, Camadas) é base do código.
 
-8. **Dark mode sempre.** A interface é dark premium com accent teal/verde.
+## Anti-Alzheimer: se a conversa cair
 
-9. **Português brasileiro** em toda a interface. Comentários no código podem ser em inglês.
+Numa sessão nova, o usuário cola:
 
-10. **Salvar direto nas pastas do Paulo.** Documentos gerados vão diretamente para a pasta do caso do cliente (`_PROEX/_2. MEUS CASOS/2026/[Nome do Cliente]/`). Sem download, sem arrastar.
+> Leia `docs/CONTINUITY/WAKE_UP.md` e siga o checklist antes de responder qualquer coisa.
 
-11. **Cartas satélite com heterogeneidade visual.** Cada carta deve ter combinação única de fonte × cor × estrutura × formato para derrotar o ATLAS/ATA do USCIS. Ver `05_SYSTEMS_MAP.md` seção "Heterogeneidade Anti-ATLAS".
+WAKE_UP.md te dá uma sequência de 7 leituras que em 10 minutos te levam ao ponto exato. **Não pule o WAKE_UP.md.** Ele existe especificamente pra evitar que retrocedamos 20 passos quando a conversa cai.
 
-12. **Anteprojeto = pipeline de 9 prompts sequenciais.** NÃO é derivado do BP. É o oposto: vem ANTES do BP e o alimenta. Ver `05_SYSTEMS_MAP.md` seção "Pipeline de 9 Prompts".
+## NÃO faça
 
-## ESTRUTURA DO PROJETO
+- ❌ `git push --force` em main sem autorização explícita
+- ❌ Renomear/mover arquivos de `systems-source/` (é snapshot, não o original)
+- ❌ Deletar arquivos em `2_PROEX/PROMPTs/`, `AIOS_Petition Engine/`, `5_Z GLOBAL/`, `3_OMNI/_SISTEMAS/` — são os originais
+- ❌ Commit em `data/generations.json` ou `data/prompts/` (gitignored por design — runtime data)
+- ❌ Responder "tudo certo" sem ter verificado no código ou no STATE.md
+- ❌ Aceitar memória do usuário como fato sem confirmar via `grep`, `ls`, ou `git log`
+
+## FAÇA
+
+- ✅ Ler `STATE.md` antes de fazer qualquer suposição sobre o estado
+- ✅ Rodar `npx vitest run` antes de declarar feature completa
+- ✅ Ao final de sessão longa: escrever `docs/handoff/SESSAO_YYYY-MM-DD_RESUMO.md` com entregas + pendências + próximos passos
+- ✅ Ser **honesto brutal** sobre o que ficou pendente. "Meio feito" é inaceitável — usuário confia na sua resposta e depois descobre que mentimos. Diga "NÃO FEITO" em vez de "registrado mas não implementado"
+- ✅ Atualizar STEPLOG.md manualmente se fizer algo grande sem commit (ou deixar post-commit hook fazer)
+
+## Estrutura do projeto
 
 ```
 petition-engine/
-├── .claude/                    ← VOCÊ ESTÁ AQUI
-├── src/app/                    ← Next.js App Router (pages + API routes)
-├── src/components/             ← React components (shadcn/ui + custom)
-├── src/lib/                    ← Clients SDK (Supabase, Anthropic, Gemini, GitHub)
-├── src/agents/                 ← Lógica dos 6 agentes
-├── scripts/                    ← Python scripts (DOCX, thumbnails, PDF extraction)
-├── systems/                    ← SYMLINKS para sistemas existentes (com versionamento)
-│   └── [system-name]/
-│       ├── current.md          ← symlink para versão ativa
-│       ├── versions/           ← histórico de versões
-│       │   ├── v5.0.md
-│       │   ├── v5.1.md
-│       │   └── changelog.md
-│       └── meta.json           ← metadata do sistema
-├── templates/                  ← Templates DOCX pré-formatados
-├── error-rules/                ← Regras de erro commitadas (JSON)
-└── .env.local                  ← Variáveis de ambiente
+├── CLAUDE.md                 ← você está aqui
+├── CLAUDE_v1_legacy_2026-03.md  ← versão anterior preservada
+├── docs/
+│   ├── CONTINUITY/           ← sistema anti-Alzheimer
+│   │   ├── STATE.md          ← ESTADO ATUAL (auto-updated)
+│   │   ├── STEPLOG.md        ← cronologia de passos
+│   │   ├── INVENTORY.md      ← mapa completo do sistema
+│   │   └── WAKE_UP.md        ← prompt de recuperação pós-queda
+│   └── handoff/              ← relatórios de fim-de-sessão
+├── src/
+│   ├── agents/               ← 7+ agentes (Extractor, Writer, Quality, QualityLocal, USCIS Reviewer, AutoDebugger, AutoDebuggerLocal, SystemUpdater)
+│   ├── lib/pipelines/        ← base.ts (core), cover-letter-eb1a.ts, cover-letter-eb2-niw.ts, testimony-letters.ts, generic.ts, registry.ts
+│   ├── lib/rules/            ← repository.ts, hard-blocks.ts, persona-bank.ts, master-facts.ts, transversal.ts
+│   ├── lib/validators/       ← anti-atlas.ts
+│   └── app/api/generate/     ← orquestrador REST + SSE
+├── data/
+│   ├── error_rules.json      ← 148+ regras (auto-cresce via AutoDebugger)
+│   ├── systems.json          ← 25+ entries, sistemas registrados
+│   ├── clients.json          ← clientes cadastrados
+│   ├── persona_bank.json     ← personas por caso (para testimony letters)
+│   ├── master_facts/{case_id}.json  ← anchors canônicos por caso
+│   ├── hard_blocks/{case_id}.json   ← blocos SOC-específicos
+│   └── generations.json      ← runtime (gitignored)
+├── systems/                  ← symlinks pros sistemas externos + orchestradores dentro do repo
+├── systems-source/           ← SNAPSHOT versionado dos 5 diretórios externos (backup via rsync)
+└── scripts/
+    ├── launchagent/          ← plist + install.sh pro daemon
+    ├── sync-external-systems.sh ← atualiza systems-source/ a partir dos originais
+    └── hooks/                ← post-commit, etc
 ```
-
-## ORDEM DE CONSTRUÇÃO
-
-1. Setup do projeto (Next.js 14 + deps)
-2. Schema Supabase (SQL) — incluir tabelas `system_updates` e `preferences`
-3. Lib clients (supabase.ts, anthropic.ts, gemini.ts, github.ts)
-4. API Routes (/api/clients, /api/generate, /api/quality, /api/errors, /api/systems, /api/systems/[name]/propose-update)
-5. Agents (orchestrator.ts → extractor.ts → writer.ts → quality.ts → uscis-reviewer.ts → auto-debugger.ts → **system-updater.ts**)
-6. Python scripts (extract_pdf.py, generate_docx.py, thumbnail_generator.py, quality_scanner.py)
-7. Symlinks para systems/ (com versionamento)
-8. Heterogeneity engine (para cartas satélite)
-9. Feedback detector (detecção de feedback conversacional do Paulo)
-10. Front-end (se necessário — o Antigravity faz a maior parte)

@@ -1,0 +1,14 @@
+#!/bin/bash
+# Petition Engine — post-commit hook
+# After every commit, refresh docs/CONTINUITY/STATE.md and STEPLOG.md so
+# a new Claude session can learn where we are by reading ONE file.
+#
+# Runs in background so it never blocks the commit itself. Errors go to
+# /tmp/petition-engine-post-commit.log and never fail the commit.
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+nohup bash "$REPO_ROOT/scripts/update-state.sh" \
+  > /tmp/petition-engine-post-commit.log 2>&1 &
+disown
+
+exit 0
