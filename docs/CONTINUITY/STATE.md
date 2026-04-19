@@ -1,6 +1,6 @@
 # STATE.md — Estado atual do Petition Engine
 
-**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-19T15:12:11Z
+**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-19T16:19:55Z
 
 > Esta página é regenerada a cada commit (via git hook post-commit). Para ver cronologia, consultar `STEPLOG.md`. Para o mapa completo do que existe, `INVENTORY.md`.
 
@@ -8,9 +8,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Último commit | `fa67572115fe7a1bcc09b14e51534ec86bc392b4` — feat(backup): initial systems-source snapshot — 594 files, 167MB from 5 external folders |
+| Último commit | `5b66193c13c422f670361c84d706a4ec22d30d13` — feat(pipelines): generic.ts injects hard_blocks + master_facts when caseId present |
 | Autor | paulorenatolimax-ctrl |
-| Total de commits | 111 |
+| Total de commits | 115 |
 | Sincronização | ✅ local = remote |
 | Último handoff | SESSAO_2026-04-19_RESUMO.md |
 
@@ -18,7 +18,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Daemon `com.paulo.petitionengine.dev` | ✅ running |
+| Daemon `com.paulo.petitionengine.dev` | ❌ not loaded |
 | Port 3000 | ✅ serving |
 
 ## Números do sistema
@@ -27,10 +27,10 @@
 |---------|-------|
 | error_rules.json | 148 regras |
 | systems.json | 25 entries |
-| clients.json | 37 clientes cadastrados |
-| persona_bank.json | 5 personas |
-| master_facts/ | 1 casos |
-| hard_blocks/ | 2 configs (default + por caso) |
+| clients.json | 39 clientes cadastrados |
+| persona_bank.json | 12 personas |
+| master_facts/ | 2 casos |
+| hard_blocks/ | 3 configs (default + por caso) |
 | Agentes | 8 em src/agents/ |
 | Test files | 10 |
 
@@ -42,6 +42,7 @@ Ver `STEPLOG.md` seção "Pendências ativas" e o handoff mais recente em `docs/
 
 (auto-detecção simples — revisar manualmente se algo aparecer)
 
+- ⚠️ Daemon não está rodando. `bash scripts/launchagent/install.sh` para reinstalar.
 
 ## Pointers rápidos (quando precisar encontrar algo)
 
