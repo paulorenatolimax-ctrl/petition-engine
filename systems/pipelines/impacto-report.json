@@ -1,0 +1,49 @@
+{
+  "doc_type": "impacto_report",
+  "name": "IMPACTO® Economic Impact Intelligence Suite",
+  "version": "1.0",
+  "description": "5-phase multi-agent pipeline. Gera client_config via INTAKE+RESEARCH+CALCULATOR, renderiza via build_impacto_universal.js (design premium pixel-perfect), valida via QA comparando com benchmark Luciano VF.",
+  "phases": [
+    {
+      "id": "1",
+      "name": "AGENT_01 INTAKE — ler docs do cliente + preencher client_config",
+      "type": "claude",
+      "prompt": "Você é o AGENT_01 INTAKE do sistema IMPACTO®. LEIA PRIMEIRO esses arquivos integralmente:\n\n1. {systemPath}/AGENT_01_INTAKE.md — suas instruções\n2. {systemPath}/AGENT_MASTER.md — pipeline completo\n3. {systemPath}/client_config_luciano.json — BENCHMARK preenchido (schema de referência)\n4. {systemPath}/client_config_template.json — schema em branco\n\nEm seguida, LEIA TUDO da pasta do cliente: {clientDocsPath}\n- Business Plan EB-2\n- Full Documents PDF\n- RFE (se houver)\n\nExtraia dados conforme AGENT_01_INTAKE.md STEP 1. Produza {outputDir}/client_config_{clientSlug}.json seguindo EXATAMENTE o schema de client_config_luciano.json (todas as 20 seções: meta, client, location, industry, financials, multipliers, m1 a m13, dhanasar_analysis, notes_and_instructions). Use os MESMOS campos, nomes, estrutura. Sem inventar seções.\n\nNão gere o DOCX ainda. Só preencha o JSON. Termine listando a quantidade de seções preenchidas e campos críticos faltantes.",
+      "validation": { "type": "exists", "file": "{outputDir}/client_config_{clientSlug}.json" },
+      "fail_action": "block"
+    },
+    {
+      "id": "2",
+      "name": "AGENT_02 RESEARCH — NAICS + BLS + IMPLAN multipliers",
+      "type": "claude",
+      "prompt": "Você é o AGENT_02 RESEARCH. LEIA {systemPath}/AGENT_02_RESEARCH.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json (gerado na Fase 1).\n\nEnriqueça o JSON com:\n- NAICS code confirmado (6 dígitos)\n- BLS OES multipliers atualizados\n- IMPLAN Type-SAM multipliers (output, employment, earnings, tax)\n- MSA/FIPS code preciso\n- Industry benchmark data\n\nCOMPARE com client_config_luciano.json — os multipliers do Luciano são referência de qualidade. Use WebSearch se necessário pra validar números atualizados.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json com dados enriquecidos. Confirme no final: NAICS code, 4 multipliers principais, MSA.",
+      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["naics_code", "multiplier"] },
+      "fail_action": "warn"
+    },
+    {
+      "id": "3",
+      "name": "AGENT_03 CALCULATOR — computar M1-M13 módulos",
+      "type": "claude",
+      "prompt": "Você é o AGENT_03 CALCULATOR. LEIA {systemPath}/AGENT_03_CALCULATOR.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json.\n\nCalcule os 13 módulos (M1 Economic Output, M2 Employment, M3 Earnings, M4 Tax, M5 Supply Chain, M6 Innovation, M7 Industry Comparison, M8 Government Alignment, M9 Sensitivity, M10 RFE Mapping, M11 SROI, M12 Cultural, M13 Broader Field). Cada M deve ter year1, year3, year5 e cumulative quando aplicável.\n\nUse as fórmulas EXATAS do AGENT_03_CALCULATOR.md. Referência cruzada com client_config_luciano.json — a ESTRUTURA dos Ms deve ser idêntica.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json. Confirme: M1 output_total_year5, M2 jobs_total_year5, M4 total_tax_year5.",
+      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["m1_economic_output", "m2_employment", "m11_sroi"] },
+      "fail_action": "warn"
+    },
+    {
+      "id": "4",
+      "name": "AGENT_04 BUILDER — gerar DOCX via build_impacto_universal.js",
+      "type": "python",
+      "script": "scripts/run_impacto_build.py",
+      "args": ["{systemPath}/build_impacto_universal.js", "{outputDir}/client_config_{clientSlug}.json", "{outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx"],
+      "validation": { "type": "exists", "file": "{outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx" },
+      "fail_action": "block"
+    },
+    {
+      "id": "5",
+      "name": "AGENT_05 QA — validar contra benchmark Luciano VF",
+      "type": "claude",
+      "prompt": "Você é o AGENT_05 QA. LEIA {systemPath}/AGENT_05_QA.md integralmente.\n\nCompare via python-docx os 2 arquivos:\n- GERADO: {outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx\n- BENCHMARK: /Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/_VFs/Ajustado/NOVO AJUSTE PARA LUCIANO/VF_IMPACTO_Exemplo_Produto_Luciano_Costa_Ricci_PT_FINAL.docx\n\nMétrica-a-métrica: paragraphs, tables, inline images, sections, file_size, footnotes. O gerado deve ter 80-120% dos valores do benchmark em cada dimensão.\n\nScan HARD BLOCKs: PROEX, Kortix, Petition Engine, Obsidian, consulting, advisory, Kazarian, extraordinary ability. ZERO tolerância.\n\nSe algum check falhar → gere {outputDir}/IMPACTO_QA_REPORT.md listando exatamente o que falhou e recomendação.\nSe passar → gere {outputDir}/IMPACTO_QA_REPORT.md com 'PASSED' e números.\n\nNÃO reescreva o DOCX. Só relatório.",
+      "validation": { "type": "exists", "file": "{outputDir}/IMPACTO_QA_REPORT.md" },
+      "fail_action": "warn"
+    }
+  ]
+}
