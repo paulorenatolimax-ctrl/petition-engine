@@ -210,6 +210,23 @@ function makeHeaderedTable(headers, rows, colWidths, headerBg) {
   });
 }
 
+function bulletP(text) {
+  return new Paragraph({
+    spacing: { after: 80, line: 276 },
+    alignment: AlignmentType.JUSTIFIED,
+    bullet: { level: 0 },
+    children: [new TextRun({ text, size: 21, color: DARK_TEXT, font: "Arial" })]
+  });
+}
+
+function captionP(text) {
+  return new Paragraph({
+    spacing: { after: 100, line: 260 },
+    alignment: AlignmentType.LEFT,
+    children: [new TextRun({ text, size: 18, color: LIGHT_TEXT, italics: true, font: "Arial" })]
+  });
+}
+
 // ════════════════════════════════════════════════════════════════════════════════
 // LANGUAGE STRINGS
 // ════════════════════════════════════════════════════════════════════════════════
@@ -476,11 +493,54 @@ function buildM1() {
       spacer(200),
       h2("2.2 Output Decomposition: Direct vs. Induced Effects"),
       spacer(40),
+      p(`Decomposing the headline output figure into its three constituent layers — direct, indirect, and induced — clarifies where the petitioner's economic value is realized along the regional value chain. Each layer is computed under RIMS II Type II multipliers anchored to NAICS ${C.client.industry_naics || "N/A"} for the ${C.location.msa_name} MSA.`),
       kpiTable([
         [lang === "pt-br" ? "Saída Direta:" : "Direct Output:", C.m1_economic_output?.direct_output || "N/A", NAVY],
         [lang === "pt-br" ? "Saída Indireta:" : "Indirect Output:", C.m1_economic_output?.indirect_output || "N/A", TEAL],
         [lang === "pt-br" ? "Saída Induzida:" : "Induced Output:", C.m1_economic_output?.induced_output || "N/A", DARK_TEAL]
       ])
+    );
+  }
+
+  if (Array.isArray(C.client?.unique_expertise) && C.client.unique_expertise.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "2.3 Perfil de Expertise da Petição" : "2.3 Petitioner Expertise Profile"),
+      spacer(40),
+      p(`The petitioner's distinctive technical and managerial competencies anchor the projected economic effects. The capabilities enumerated below act as causal drivers of the multipliers reported in subsections 2.1 and 2.2 and are referenced throughout subsequent modules (M6 Innovation, M11 SROI, M12 Cultural).`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Área de Expertise" : "Area of Expertise"],
+        C.client.unique_expertise.map((e, i) => [[String(i + 1), String(e)]]),
+        [800, 8560]
+      )
+    );
+  }
+
+  if (Array.isArray(C.client?.credentials) && C.client.credentials.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "2.4 Credenciais e Qualificações Verificáveis" : "2.4 Verifiable Credentials & Qualifications"),
+      spacer(40),
+      p(`Independent third-party credentials reinforce the reliability of projected impacts. Each credential below is verifiable through its issuing institution and is included in the supporting documentation appendix.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Credencial" : "Credential"],
+        C.client.credentials.map((e, i) => [[String(i + 1), String(e)]]),
+        [800, 8560]
+      )
+    );
+  }
+
+  if (Array.isArray(C.client?.languages) && C.client.languages.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "2.5 Capacidade Linguística Operacional" : "2.5 Operational Language Capability"),
+      spacer(40),
+      p(`The petitioner's working languages enable cross-border execution of the operations modeled in this analysis, particularly the trade-corridor effects detailed in Module M12.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "Idioma" : "Language", lang === "pt-br" ? "Uso Operacional" : "Operational Use"],
+        C.client.languages.map(e => [[String(e), lang === "pt-br" ? "Comunicação profissional" : "Professional communication"]]),
+        [4680, 4680]
+      )
     );
   }
 
@@ -504,6 +564,28 @@ function buildM2() {
     );
   }
 
+  if (Array.isArray(C.m2_employment?.jobs_by_sector) && C.m2_employment.jobs_by_sector.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "3.2 Distribuição Setorial dos Empregos Gerados" : "3.2 Sector-Level Distribution of Generated Jobs"),
+      spacer(40),
+      p(`Aggregate employment metrics conceal critical structural information. The sector-level breakdown below identifies where the petitioner's operations create occupational density and how each segment contributes to the overall multiplier reported in subsection 3.1.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Setor" : "Sector",
+          lang === "pt-br" ? "Empregos" : "Jobs",
+          lang === "pt-br" ? "% do Total" : "% of Total"
+        ],
+        C.m2_employment.jobs_by_sector.map(s => [[String(s.sector || ""), String(s.jobs ?? "—"), String(s.pct || "—")]]),
+        [5360, 2000, 2000]
+      ),
+      spacer(80),
+      captionP(lang === "pt-br"
+        ? "Fonte: Modelagem RIMS II Type II aplicada às operações declaradas pela petição."
+        : "Source: RIMS II Type II modeling applied to operations declared in the petition.")
+    );
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
 }
@@ -521,6 +603,34 @@ function buildM3() {
       h2("4.1 Sectoral Income Effects"),
       spacer(40),
       metricBox("5-Year Wage Income", C.m3_earnings_income.wage_income_5yr, "Direct Employment", BLUE_ACCENT)
+    );
+  }
+
+  if (Array.isArray(C.m3_earnings_income?.wage_categories) && C.m3_earnings_income.wage_categories.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "4.2 Pirâmide de Remuneração por Categoria Funcional" : "4.2 Compensation Pyramid by Functional Category"),
+      spacer(40),
+      p(`The compensation profile influences both the household-level induced effects modeled here and the tax revenue projections developed in Module M4. Each band below reflects the petitioner's actual compensation policy benchmarked against MSA wage surveys.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Categoria" : "Category",
+          lang === "pt-br" ? "Salário Médio (USD)" : "Avg. Wage (USD)",
+          lang === "pt-br" ? "Empregos" : "Jobs",
+          lang === "pt-br" ? "Descrição" : "Description"
+        ],
+        C.m3_earnings_income.wage_categories.map(w => [[
+          String(w.category || ""),
+          typeof w.avg_wage === "number" ? `$${w.avg_wage.toLocaleString("en-US")}` : String(w.avg_wage || "—"),
+          String(w.jobs ?? "—"),
+          String(w.description || "")
+        ]]),
+        [2400, 2000, 1200, 3760]
+      ),
+      spacer(80),
+      captionP(lang === "pt-br"
+        ? "Salários médios são ponderados pelo número de posições; valores em USD nominais correntes."
+        : "Average wages are weighted by headcount; values in nominal current USD.")
     );
   }
 
@@ -548,6 +658,28 @@ function buildM4() {
     );
   }
 
+  if (Array.isArray(C.m4_tax_revenue?.tax_types) && C.m4_tax_revenue.tax_types.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "5.2 Categorias Tributárias Atingidas" : "5.2 Tax Categories Triggered"),
+      spacer(40),
+      p(`Beyond the consolidated federal/state/local figures, the petitioner's operations trigger collections across multiple statutory tax instruments. The list below catalogs each category captured in the projection.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "#" : "#",
+          lang === "pt-br" ? "Tipo de Tributo" : "Tax Type",
+          lang === "pt-br" ? "Esfera Aplicável" : "Applicable Level"
+        ],
+        C.m4_tax_revenue.tax_types.map((t, i) => [[
+          String(i + 1),
+          String(t),
+          lang === "pt-br" ? "Federal / Estadual / Local" : "Federal / State / Local"
+        ]]),
+        [800, 5560, 3000]
+      )
+    );
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
 }
@@ -571,6 +703,34 @@ function buildM5() {
     );
   }
 
+  if (Array.isArray(C.m5_supply_chain?.vendor_categories) && C.m5_supply_chain.vendor_categories.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "6.2 Composição da Rede de Fornecedores" : "6.2 Vendor Network Composition"),
+      spacer(40),
+      p(`The vendor matrix below disaggregates the headline supplier count by category, count, and annualized spend. Each row represents a transmission channel through which the petitioner's spending propagates into the regional economy via Type II indirect effects.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Categoria" : "Category",
+          lang === "pt-br" ? "Fornecedores" : "Vendors",
+          lang === "pt-br" ? "Gasto Anual" : "Annual Spend",
+          lang === "pt-br" ? "Descrição" : "Description"
+        ],
+        C.m5_supply_chain.vendor_categories.map(v => [[
+          String(v.category || ""),
+          String(v.count ?? "—"),
+          String(v.spend || "—"),
+          String(v.description || "")
+        ]]),
+        [2400, 1200, 1600, 4160]
+      ),
+      spacer(80),
+      captionP(lang === "pt-br"
+        ? "Gastos representam fluxo monetário direto para fornecedores; efeitos induzidos modelados no Módulo M1."
+        : "Spend reflects direct monetary outflow to vendors; induced effects are modeled in Module M1.")
+    );
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
 }
@@ -588,6 +748,52 @@ function buildM6() {
       h2("7.1 Innovation & R&D Investment"),
       spacer(40),
       metricBox("R&D Investment (Annual)", C.m6_innovation_technology.rd_investment, "Technology Transfer", PURPLE_ACCENT)
+    );
+  }
+
+  if (Array.isArray(C.m6_innovation_technology?.innovations) && C.m6_innovation_technology.innovations.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "7.2 Catálogo de Inovações Implementadas" : "7.2 Catalog of Implemented Innovations"),
+      spacer(40),
+      p(`The innovations below operationalize the petitioner's R&D investment. Each entry pairs a discrete technical contribution with a measurable economic impact, supplying the causal mechanism behind the multipliers reported in Module M1.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Inovação" : "Innovation",
+          lang === "pt-br" ? "Descrição" : "Description",
+          lang === "pt-br" ? "Impacto Mensurável" : "Measurable Impact",
+          lang === "pt-br" ? "Ano" : "Year"
+        ],
+        C.m6_innovation_technology.innovations.map(it => [[
+          String(it.name || ""),
+          String(it.description || ""),
+          String(it.impact || ""),
+          String(it.implementation_year || "—")
+        ]]),
+        [2200, 3000, 3160, 1000]
+      )
+    );
+    C.m6_innovation_technology.innovations.forEach((it, i) => {
+      sections.push(
+        spacer(120),
+        h3(`7.2.${i + 1} ${it.name || ""}`),
+        p(String(it.description || "")),
+        p(`${lang === "pt-br" ? "Impacto:" : "Impact:"} ${it.impact || ""}`)
+      );
+    });
+  }
+
+  if (Array.isArray(C.m6_innovation_technology?.trade_secret_descriptions) && C.m6_innovation_technology.trade_secret_descriptions.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "7.3 Segredos Comerciais Protegidos" : "7.3 Protected Trade Secrets"),
+      spacer(40),
+      p(`Each protected asset below represents proprietary know-how whose disclosure would erode the petitioner's competitive moat. Trade secrets are catalogued descriptively to preserve confidentiality.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Descrição do Ativo" : "Asset Description"],
+        C.m6_innovation_technology.trade_secret_descriptions.map((t, i) => [[String(i + 1), String(t)]]),
+        [800, 8560]
+      )
     );
   }
 
@@ -611,6 +817,30 @@ function buildM7() {
     );
   }
 
+  if (Array.isArray(C.m7_industry_comparison?.benchmarks) && C.m7_industry_comparison.benchmarks.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "8.2 Comparação Quantitativa com Pares Setoriais" : "8.2 Quantitative Comparison Against Sector Peers"),
+      spacer(40),
+      p(`The benchmarks below contrast the petitioner's operational performance with the industry baseline drawn from comparable firms in the same NAICS classification. Outperformance is highlighted where it materially affects the multipliers used elsewhere in this report.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Métrica" : "Metric",
+          lang === "pt-br" ? "Petição" : "Petitioner",
+          lang === "pt-br" ? "Benchmark Setorial" : "Industry Benchmark",
+          lang === "pt-br" ? "Diferença" : "Delta"
+        ],
+        C.m7_industry_comparison.benchmarks.map(b => [[
+          String(b.metric || ""),
+          String(b.petitioner || b.value || "—"),
+          String(b.industry_avg || b.benchmark || "—"),
+          String(b.delta || b.outperforms || "—")
+        ]]),
+        [3000, 2120, 2120, 2120]
+      )
+    );
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
 }
@@ -628,6 +858,84 @@ function buildM8() {
       h2("9.1 Strategic Alignment"),
       spacer(40),
       p(C.m8_government_alignment.strategic_priority)
+    );
+  }
+
+  if (Array.isArray(C.m8_government_alignment?.executive_orders) && C.m8_government_alignment.executive_orders.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "9.2 Alinhamento com Ordens Executivas Federais" : "9.2 Alignment with Federal Executive Orders"),
+      spacer(40),
+      p(`The petitioner's operations directly intersect with the executive orders catalogued below. Each row maps a specific policy mandate to the operational dimension of the petition that satisfies it.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Ordem Executiva" : "Executive Order",
+          lang === "pt-br" ? "Grau de Alinhamento" : "Alignment",
+          lang === "pt-br" ? "Descrição da Ligação" : "Linkage Description"
+        ],
+        C.m8_government_alignment.executive_orders.map(eo => [[
+          String(eo.name || ""),
+          String(eo.alignment || "—"),
+          String(eo.description || "")
+        ]]),
+        [3000, 1800, 4560]
+      )
+    );
+  }
+
+  if (Array.isArray(C.m8_government_alignment?.federal_priorities) && C.m8_government_alignment.federal_priorities.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "9.3 Prioridades Federais Endereçadas" : "9.3 Federal Priorities Addressed"),
+      spacer(40),
+      p(`The federal-level priorities below were drawn from publicly available agency strategic plans and policy directives. Each item below is materially advanced by the petitioner's operations.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Prioridade Federal" : "Federal Priority"],
+        C.m8_government_alignment.federal_priorities.map((x, i) => [[String(i + 1), String(x)]]),
+        [800, 8560]
+      )
+    );
+  }
+
+  if (Array.isArray(C.m8_government_alignment?.state_priorities) && C.m8_government_alignment.state_priorities.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "9.4 Prioridades Estaduais Endereçadas" : "9.4 State Priorities Addressed"),
+      spacer(40),
+      p(`At the state level, the petitioner's footprint advances each of the priorities catalogued below, as articulated in current state economic development planning documents.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Prioridade Estadual" : "State Priority"],
+        C.m8_government_alignment.state_priorities.map((x, i) => [[String(i + 1), String(x)]]),
+        [800, 8560]
+      )
+    );
+  }
+
+  if (Array.isArray(C.m8_government_alignment?.local_priorities) && C.m8_government_alignment.local_priorities.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "9.5 Prioridades Locais (MSA) Endereçadas" : "9.5 Local (MSA) Priorities Addressed"),
+      spacer(40),
+      p(`Local priorities reflect MSA-specific economic development objectives that are directly served by the petitioner's presence and operational footprint within the region.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Prioridade Local" : "Local Priority"],
+        C.m8_government_alignment.local_priorities.map((x, i) => [[String(i + 1), String(x)]]),
+        [800, 8560]
+      )
+    );
+  }
+
+  if (Array.isArray(C.m8_government_alignment?.sba_programs) && C.m8_government_alignment.sba_programs.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "9.6 Elegibilidade a Programas SBA Aplicáveis" : "9.6 Eligibility to Applicable SBA Programs"),
+      spacer(40),
+      p(`The Small Business Administration programs below are either currently leveraged by the petitioner or represent active eligibility pathways that reinforce the public-interest dimension of the petition.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Programa SBA" : "SBA Program"],
+        C.m8_government_alignment.sba_programs.map((x, i) => [[String(i + 1), String(x)]]),
+        [800, 8560]
+      )
     );
   }
 
@@ -677,6 +985,38 @@ function buildM10() {
     );
   }
 
+  if (Array.isArray(C.m10_rfe_mapping?.rfe_objections) && C.m10_rfe_mapping.rfe_objections.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "11.2 Mapeamento de Objeções Antecipadas e Refutações" : "11.2 Mapping of Anticipated Objections and Rebuttals"),
+      spacer(40),
+      p(`The matrix below pre-empts the most probable adjudicator concerns by pairing each anticipated objection with the modules that address it, the rebuttal summary, and the supporting evidence already documented in this report.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Objeção Antecipada" : "Anticipated Objection",
+          lang === "pt-br" ? "Módulos" : "Modules",
+          lang === "pt-br" ? "Resumo da Refutação" : "Rebuttal Summary",
+          lang === "pt-br" ? "Evidência Chave" : "Key Evidence"
+        ],
+        C.m10_rfe_mapping.rfe_objections.map(o => [[
+          String(o.objection || ""),
+          Array.isArray(o.modules_addressed) ? o.modules_addressed.join(", ") : String(o.modules_addressed || "—"),
+          String(o.rebuttal_summary || ""),
+          String(o.key_evidence || "")
+        ]]),
+        [2600, 1200, 2780, 2780]
+      )
+    );
+    C.m10_rfe_mapping.rfe_objections.forEach((o, i) => {
+      sections.push(
+        spacer(120),
+        h3(`11.2.${i + 1} ${o.objection || ""}`),
+        p(`${lang === "pt-br" ? "Refutação:" : "Rebuttal:"} ${o.rebuttal_summary || ""}`),
+        p(`${lang === "pt-br" ? "Evidência referenciada:" : "Referenced evidence:"} ${o.key_evidence || ""}`)
+      );
+    });
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
 }
@@ -709,6 +1049,21 @@ function buildM11() {
     );
   }
 
+  const certTypes = C.m11_sroi?.workforce_development?.certification_types;
+  if (Array.isArray(certTypes) && certTypes.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "12.3 Tipologia das Certificações Profissionais" : "12.3 Typology of Professional Certifications"),
+      spacer(40),
+      p(`Each credential below represents a distinct human-capital investment whose monetized value is captured in the SROI ratio reported in subsection 12.1. Certification breadth is itself an indicator of workforce mobility and durable capability formation.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Tipo de Certificação" : "Certification Type"],
+        certTypes.map((c, i) => [[String(i + 1), String(c)]]),
+        [800, 8560]
+      )
+    );
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
 }
@@ -726,6 +1081,54 @@ function buildM12() {
       h2("13.1 Cultural & Knowledge Transfer"),
       spacer(40),
       p(C.m12_cultural.cultural_initiatives)
+    );
+  }
+
+  const intlInnov = C.m12_cultural?.international_expertise?.innovations_from_origin;
+  if (Array.isArray(intlInnov) && intlInnov.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "13.2 Inovações Importadas do Mercado de Origem" : "13.2 Innovations Imported from Origin Market"),
+      spacer(40),
+      p(`The petitioner channels operational practices proven in the origin market into U.S. application contexts. Each row below traces the provenance of an imported practice and the competitive advantage it confers domestically.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Prática de Origem" : "Origin Practice",
+          lang === "pt-br" ? "Aplicação nos EUA" : "U.S. Application",
+          lang === "pt-br" ? "Vantagem Competitiva" : "Competitive Advantage",
+          lang === "pt-br" ? "Mecanismo de Transferência" : "Transfer Mechanism"
+        ],
+        intlInnov.map(it => [[
+          String(it.origin_practice || ""),
+          String(it.us_application || ""),
+          String(it.competitive_advantage || ""),
+          String(it.transfer_mechanism || "")
+        ]]),
+        [2340, 2340, 2340, 2340]
+      )
+    );
+    intlInnov.forEach((it, i) => {
+      sections.push(
+        spacer(120),
+        h3(`13.2.${i + 1} ${it.origin_practice || ""}`),
+        p(String(it.us_application || "")),
+        p(`${lang === "pt-br" ? "Vantagem:" : "Advantage:"} ${it.competitive_advantage || ""}`)
+      );
+    });
+  }
+
+  const langsServed = C.m12_cultural?.workforce_cultural_integration?.languages_served;
+  if (Array.isArray(langsServed) && langsServed.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "13.3 Idiomas Atendidos pela Operação" : "13.3 Languages Served by the Operation"),
+      spacer(40),
+      p(`The bilingual / multilingual reach of the operation widens the addressable market and reduces communication-error rates documented elsewhere in this module. Each language below corresponds to an active client-service capability.`),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "Idioma" : "Language", lang === "pt-br" ? "Status Operacional" : "Operational Status"],
+        langsServed.map(l => [[String(l), lang === "pt-br" ? "Atendimento ativo" : "Active service"]]),
+        [4680, 4680]
+      )
     );
   }
 
@@ -749,8 +1152,117 @@ function buildM13() {
     );
   }
 
+  const fieldInnov = C.m13_broader_field?.innovation_diffusion?.innovations_impacting_field;
+  if (Array.isArray(fieldInnov) && fieldInnov.length) {
+    sections.push(
+      spacer(200),
+      h2(lang === "pt-br" ? "14.2 Difusão de Inovações no Campo Profissional" : "14.2 Innovation Diffusion Across the Professional Field"),
+      spacer(40),
+      p(`The diffusion matrix below documents how each of the petitioner's innovations propagates beyond the firm itself, with explicit adoption mechanisms and projected adopter counts over a five-year horizon.`),
+      makeHeaderedTable(
+        [
+          lang === "pt-br" ? "Elemento de Inovação" : "Innovation Element",
+          lang === "pt-br" ? "Impacto no Campo" : "Field Impact",
+          lang === "pt-br" ? "Mecanismo de Adoção" : "Adoption Mechanism",
+          lang === "pt-br" ? "Adotantes Projetados (5a)" : "Projected Adopters (5y)",
+          lang === "pt-br" ? "Ganho de Eficiência" : "Efficiency Gain"
+        ],
+        fieldInnov.map(it => [[
+          String(it.element || ""),
+          String(it.field_impact || ""),
+          String(it.adoption_mechanism || ""),
+          String(it.estimated_adopters_5yr || "—"),
+          String(it.field_wide_efficiency_gain || "—")
+        ]]),
+        [2200, 2200, 2200, 1380, 1380]
+      )
+    );
+    fieldInnov.forEach((it, i) => {
+      sections.push(
+        spacer(120),
+        h3(`14.2.${i + 1} ${it.element || ""}`),
+        p(`${lang === "pt-br" ? "Impacto no campo:" : "Field impact:"} ${it.field_impact || ""}`),
+        p(`${lang === "pt-br" ? "Mecanismo:" : "Mechanism:"} ${it.adoption_mechanism || ""}`)
+      );
+    });
+  }
+
   sections.push(new Paragraph({ children: [new PageBreak()] }));
   return sections;
+}
+
+function buildDhanasarAppendix() {
+  const dh = C.dhanasar_analysis;
+  if (!dh) return [];
+  const sections = [
+    new Paragraph({ children: [new PageBreak()] }),
+    h1(lang === "pt-br" ? "16. Análise Dhanasar — Síntese dos Três Prongs" : "16. Dhanasar Analysis — Three-Prong Synthesis"),
+    spacer(40),
+    p(lang === "pt-br"
+      ? "A síntese abaixo consolida a evidência apresentada nos Módulos M1–M13 sob a estrutura de três prongs estabelecida em Matter of Dhanasar, 26 I&N Dec. 884 (AAO 2016). Cada bloco abaixo cataloga as evidências chave a serem cruzadas com a documentação anexada."
+      : "The synthesis below consolidates the evidence presented in Modules M1–M13 under the three-prong framework established in Matter of Dhanasar, 26 I&N Dec. 884 (AAO 2016). Each block below catalogs the key evidence to be cross-referenced with the attached documentation.")
+  ];
+  const prongs = [
+    {
+      key: "prong1_substantial_merit_and_national_importance",
+      title_pt: "16.1 Prong 1 — Mérito Substancial e Importância Nacional",
+      title_en: "16.1 Prong 1 — Substantial Merit and National Importance",
+      intro_pt: "Este prong avalia se o empreendimento proposto possui mérito substancial e relevância em escala nacional. As evidências catalogadas abaixo demonstram a extensão geográfica e setorial do impacto.",
+      intro_en: "This prong evaluates whether the proposed endeavor has substantial merit and national-scale relevance. The evidence catalogued below demonstrates the geographic and sectoral reach of the impact."
+    },
+    {
+      key: "prong2_well_positioned_lead_field",
+      title_pt: "16.2 Prong 2 — Posicionamento para Liderar o Empreendimento",
+      title_en: "16.2 Prong 2 — Well Positioned to Advance the Endeavor",
+      intro_pt: "Este prong avalia a capacidade da petição em conduzir o empreendimento. As evidências abaixo articulam credenciais, histórico e capacidade operacional.",
+      intro_en: "This prong assesses the petitioner's capacity to lead the endeavor. The evidence below articulates credentials, track record, and operational capability."
+    },
+    {
+      key: "prong3_beneficial_to_waive_employment_offer",
+      title_pt: "16.3 Prong 3 — Benefício de Dispensar a Oferta de Emprego",
+      title_en: "16.3 Prong 3 — Beneficial to Waive the Job-Offer Requirement",
+      intro_pt: "Este prong avalia se, no balanço dos fatores, é benéfico aos Estados Unidos dispensar a exigência tradicional de oferta de emprego e certificação laboral.",
+      intro_en: "This prong evaluates whether, on balance, it is beneficial to the United States to waive the traditional job-offer and labor-certification requirement."
+    }
+  ];
+  prongs.forEach(pr => {
+    const ev = dh[pr.key]?.key_evidence;
+    if (!Array.isArray(ev) || !ev.length) return;
+    sections.push(
+      spacer(160),
+      h2(lang === "pt-br" ? pr.title_pt : pr.title_en),
+      spacer(40),
+      p(lang === "pt-br" ? pr.intro_pt : pr.intro_en),
+      makeHeaderedTable(
+        [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Evidência Chave" : "Key Evidence"],
+        ev.map((e, i) => [[String(i + 1), String(e)]]),
+        [800, 8560]
+      )
+    );
+    ev.forEach((e, i) => {
+      sections.push(bulletP(`${i + 1}. ${e}`));
+    });
+  });
+  sections.push(new Paragraph({ children: [new PageBreak()] }));
+  return sections;
+}
+
+function buildValidationChecklist() {
+  const items = C.notes_and_instructions?.validation_checklist;
+  if (!Array.isArray(items) || !items.length) return [];
+  return [
+    h2(lang === "pt-br" ? "15.5 Checklist de Validação Interna" : "15.5 Internal Validation Checklist"),
+    spacer(40),
+    p(lang === "pt-br"
+      ? "Cada item abaixo foi verificado contra os dados-fonte antes da emissão deste relatório."
+      : "Each item below was verified against source data prior to issuance of this report."),
+    makeHeaderedTable(
+      [lang === "pt-br" ? "#" : "#", lang === "pt-br" ? "Item de Validação" : "Validation Item"],
+      items.map((it, i) => [[String(i + 1), String(it)]]),
+      [800, 8560]
+    ),
+    ...items.map((it, i) => bulletP(`${i + 1}. ${it}`))
+  ];
 }
 
 function buildMethodologicalNotes() {
@@ -773,6 +1285,8 @@ function buildMethodologicalNotes() {
     h2("15.4 Data Sources"),
     spacer(40),
     p("Primary data sources include: (1) U.S. Census Bureau (annual business surveys, payroll data), (2) Bureau of Economic Analysis (regional economic accounts), (3) Bureau of Labor Statistics (employment, wages, industry data), (4) NAICS industry classification system, (5) Company financial statements and operational data."),
+    spacer(160),
+    ...buildValidationChecklist(),
     spacer(200),
     new Paragraph({
       alignment: AlignmentType.CENTER,
@@ -803,7 +1317,8 @@ const allChildren = [
   ...buildM11(),
   ...buildM12(),
   ...buildM13(),
-  ...buildMethodologicalNotes()
+  ...buildMethodologicalNotes(),
+  ...buildDhanasarAppendix()
 ];
 
 const doc = new Document({

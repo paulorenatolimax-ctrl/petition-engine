@@ -1,6 +1,6 @@
 # systems-source — GitHub backup dos sistemas externos
 
-Última sincronização: 2026-04-19T14:47:34Z
+Última sincronização: 2026-04-20T18:05:26Z
 
 **NÃO edite arquivos aqui.** Este diretório é um snapshot. Edite nas pastas originais:
 

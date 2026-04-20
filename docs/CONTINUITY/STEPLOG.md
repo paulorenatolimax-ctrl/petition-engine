@@ -7,6 +7,22 @@ Cada entrada é um commit (auto-append pelo post-commit hook) ou uma anotação 
 Para saber onde estamos: ler as últimas 10-15 entradas. Cada entrada tem o `sha`, a mensagem, e a data.
 
 
+### 2026-04-20T16:43:23Z — `76336dacfcc1b6493d3a128264907002fac6e948`
+
+feat(impacto): 5-phase multi-agent pipeline spec + node builder wrapper
+
+- Rules: 148 · Systems: 25 · Clients: 41 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
+### 2026-04-19T19:50:28Z — `f2a60f5079a37b55764106e8f43d051831d90c99`
+
+docs(continuity): Deni CL EB-2 NIW V5 validated + Fernando Met/Dec shipped
+
+- Rules: 148 · Systems: 25 · Clients: 39 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
 ### 2026-04-19T16:20:24Z — `f00f8be82d4ffb1b398827a8d160e17c9fb52f3a`
 
 docs(continuity): refresh STATE + STEPLOG after Deni+Fernando generations

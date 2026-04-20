@@ -1,6 +1,6 @@
 # STATE.md — Estado atual do Petition Engine
 
-**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-19T19:50:27Z
+**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-20T18:05:26Z
 
 > Esta página é regenerada a cada commit (via git hook post-commit). Para ver cronologia, consultar `STEPLOG.md`. Para o mapa completo do que existe, `INVENTORY.md`.
 
@@ -8,9 +8,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Último commit | `f00f8be82d4ffb1b398827a8d160e17c9fb52f3a` — docs(continuity): refresh STATE + STEPLOG after Deni+Fernando generations |
+| Último commit | `76336dacfcc1b6493d3a128264907002fac6e948` — feat(impacto): 5-phase multi-agent pipeline spec + node builder wrapper |
 | Autor | paulorenatolimax-ctrl |
-| Total de commits | 116 |
+| Total de commits | 118 |
 | Sincronização | ✅ local = remote |
 | Último handoff | SESSAO_2026-04-19_RESUMO.md |
 
@@ -18,7 +18,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Daemon `com.paulo.petitionengine.dev` | ❌ not loaded |
+| Daemon `com.paulo.petitionengine.dev` | ✅ running |
 | Port 3000 | ✅ serving |
 
 ## Números do sistema
@@ -27,7 +27,7 @@
 |---------|-------|
 | error_rules.json | 148 regras |
 | systems.json | 25 entries |
-| clients.json | 39 clientes cadastrados |
+| clients.json | 41 clientes cadastrados |
 | persona_bank.json | 12 personas |
 | master_facts/ | 2 casos |
 | hard_blocks/ | 3 configs (default + por caso) |
@@ -42,7 +42,6 @@ Ver `STEPLOG.md` seção "Pendências ativas" e o handoff mais recente em `docs/
 
 (auto-detecção simples — revisar manualmente se algo aparecer)
 
-- ⚠️ Daemon não está rodando. `bash scripts/launchagent/install.sh` para reinstalar.
 
 ## Pointers rápidos (quando precisar encontrar algo)
 
