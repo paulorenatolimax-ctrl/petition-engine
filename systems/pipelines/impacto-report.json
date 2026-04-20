@@ -1,14 +1,18 @@
 {
   "doc_type": "impacto_report",
   "name": "IMPACTO® Economic Impact Intelligence Suite",
-  "version": "1.0",
-  "description": "5-phase multi-agent pipeline. Gera client_config via INTAKE+RESEARCH+CALCULATOR, renderiza via build_impacto_universal.js (design premium pixel-perfect), valida via QA comparando com benchmark Luciano VF.",
+  "version": "3.0",
+  "description": "5-phase multi-agent pipeline. Gera client_config via INTAKE+RESEARCH+CALCULATOR, gera 2 charts via Python (matplotlib), renderiza DOCX via build_impacto_universal_v3.js (VF-aligned: 10 módulos, logo PROEX na capa, charts embutidos, ZERO terminologia imigratória — o IMPACTO® é relatório econométrico INDEPENDENTE, não peça imigratória), valida via QA contra Luciano VF.",
+  "builder": "build_impacto_universal_v3.js",
+  "chart_generator": "generate_impacto_charts.py",
+  "assets": ["assets/proex_logo.png"],
+  "hard_blocks_terminology": ["EB-2", "EB-1", "NIW", "Dhanasar", "Prong", "USCIS", "petitioner", "peticionário", "I-140", "waiver", "waive", "National Interest Waiver", "8 CFR", "immigration", "imigração", "labor certification", "adjudicator"],
   "phases": [
     {
       "id": "1",
       "name": "AGENT_01 INTAKE — ler docs do cliente + preencher client_config",
       "type": "claude",
-      "prompt": "Você é o AGENT_01 INTAKE do sistema IMPACTO®. LEIA PRIMEIRO esses arquivos integralmente:\n\n1. {systemPath}/AGENT_01_INTAKE.md — suas instruções\n2. {systemPath}/AGENT_MASTER.md — pipeline completo\n3. {systemPath}/client_config_luciano.json — BENCHMARK preenchido (schema de referência)\n4. {systemPath}/client_config_template.json — schema em branco\n\nEm seguida, LEIA TUDO da pasta do cliente: {clientDocsPath}\n- Business Plan EB-2\n- Full Documents PDF\n- RFE (se houver)\n\nExtraia dados conforme AGENT_01_INTAKE.md STEP 1. Produza {outputDir}/client_config_{clientSlug}.json seguindo EXATAMENTE o schema de client_config_luciano.json (todas as 20 seções: meta, client, location, industry, financials, multipliers, m1 a m13, dhanasar_analysis, notes_and_instructions). Use os MESMOS campos, nomes, estrutura. Sem inventar seções.\n\nNão gere o DOCX ainda. Só preencha o JSON. Termine listando a quantidade de seções preenchidas e campos críticos faltantes.",
+      "prompt": "Você é o AGENT_01 INTAKE do sistema IMPACTO®. LEIA PRIMEIRO esses arquivos integralmente:\n\n1. {systemPath}/AGENT_01_INTAKE.md — suas instruções\n2. {systemPath}/AGENT_MASTER.md — pipeline completo\n3. {systemPath}/client_config_luciano.json — BENCHMARK preenchido (schema de referência)\n4. {systemPath}/client_config_template.json — schema em branco\n\nEm seguida, LEIA TUDO da pasta do cliente: {clientDocsPath}\n- Business Plan\n- Full Documents PDF\n- RFE se houver (só pra EXTRAIR CONTEXTO INTERNO — NADA desse conteúdo vai pro DOCX final)\n\nExtraia dados conforme AGENT_01_INTAKE.md STEP 1. Produza {outputDir}/client_config_{clientSlug}.json seguindo EXATAMENTE o schema de client_config_luciano.json (todas as 20 seções). O IMPACTO® é documento econométrico INDEPENDENTE — NADA de referência a processo imigratório deve aparecer no texto final. Os campos imigratórios (dhanasar_analysis, m10_rfe_mapping) podem existir no JSON como contexto interno mas o builder v3 NÃO os renderiza.\n\nNão gere o DOCX ainda. Só preencha o JSON. Termine listando seções preenchidas e campos críticos faltantes.",
       "validation": { "type": "exists", "file": "{outputDir}/client_config_{clientSlug}.json" },
       "fail_action": "block"
     },
@@ -16,32 +20,41 @@
       "id": "2",
       "name": "AGENT_02 RESEARCH — NAICS + BLS + IMPLAN multipliers",
       "type": "claude",
-      "prompt": "Você é o AGENT_02 RESEARCH. LEIA {systemPath}/AGENT_02_RESEARCH.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json (gerado na Fase 1).\n\nEnriqueça o JSON com:\n- NAICS code confirmado (6 dígitos)\n- BLS OES multipliers atualizados\n- IMPLAN Type-SAM multipliers (output, employment, earnings, tax)\n- MSA/FIPS code preciso\n- Industry benchmark data\n\nCOMPARE com client_config_luciano.json — os multipliers do Luciano são referência de qualidade. Use WebSearch se necessário pra validar números atualizados.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json com dados enriquecidos. Confirme no final: NAICS code, 4 multipliers principais, MSA.",
-      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["naics_code", "multiplier"] },
+      "prompt": "Você é o AGENT_02 RESEARCH. LEIA {systemPath}/AGENT_02_RESEARCH.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json (gerado na Fase 1).\n\nEnriqueça o JSON com:\n- NAICS code confirmado (6 dígitos) — PESQUISE NA INTERNET o código real (bureau de census us gov naics lookup)\n- BLS OES multipliers atualizados para NAICS e MSA específicos — PESQUISAR valores reais (bea.gov rims_online, epi.org multipliers)\n- IMPLAN Type-SAM multipliers (output, employment, earnings, tax) específicos do NAICS do cliente\n- MSA/FIPS code preciso (census.gov geography)\n- Industry benchmark data (dados atualizados do setor)\n\nSe os multipliers do cliente forem iguais aos do Luciano (copiados ao invés de calibrados ao NAICS), FLAG NO CONSOLE COMO WARNING. Use WebSearch ativamente — NAICS diferentes têm multiplicadores MUITO diferentes.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json. Confirme no final: NAICS code, 4 multipliers principais, MSA, e FONTES consultadas na web.",
+      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["industry_naics", "type_ii_output"] },
       "fail_action": "warn"
     },
     {
       "id": "3",
-      "name": "AGENT_03 CALCULATOR — computar M1-M13 módulos",
+      "name": "AGENT_03 CALCULATOR — computar M1-M10 módulos (V3 usa só 10, não 13)",
       "type": "claude",
-      "prompt": "Você é o AGENT_03 CALCULATOR. LEIA {systemPath}/AGENT_03_CALCULATOR.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json.\n\nCalcule os 13 módulos (M1 Economic Output, M2 Employment, M3 Earnings, M4 Tax, M5 Supply Chain, M6 Innovation, M7 Industry Comparison, M8 Government Alignment, M9 Sensitivity, M10 RFE Mapping, M11 SROI, M12 Cultural, M13 Broader Field). Cada M deve ter year1, year3, year5 e cumulative quando aplicável.\n\nUse as fórmulas EXATAS do AGENT_03_CALCULATOR.md. Referência cruzada com client_config_luciano.json — a ESTRUTURA dos Ms deve ser idêntica.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json. Confirme: M1 output_total_year5, M2 jobs_total_year5, M4 total_tax_year5.",
-      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["m1_economic_output", "m2_employment", "m11_sroi"] },
+      "prompt": "Você é o AGENT_03 CALCULATOR. LEIA {systemPath}/AGENT_03_CALCULATOR.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json.\n\nCalcule os 10 módulos que o builder v3 renderiza (M1-M10):\n- M1 Economic Output (direct/indirect/induced)\n- M2 Employment (jobs_by_sector)\n- M3 Earnings (wage_categories)\n- M4 Tax Revenue (federal/state/local + tax_types)\n- M5 Supply Chain (vendor_count + vendor_categories)\n- M6 EPI Employment Multipliers (usa os multiplicadores direto)\n- M7 Policy Alignment (executive_orders + federal/state/local priorities) — o antigo M8 do schema\n- M8 Comparative Regional Advantage (benchmarks) — o antigo M7 do schema\n- M9 Sensitivity (base/upside/downside)\n- M10 Executive Panel (sumarização de M1-M9)\n\nOs módulos antigos M10 RFE, M11 SROI, M12 Cultural, M13 Broader Field, e dhanasar_analysis podem existir no JSON como contexto interno (alguns usam dados sobrepostos) mas o BUILDER V3 NÃO OS RENDERIZA — são puramente para calibração interna.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json. Confirme: M1 output_5yr, M2 total_jobs, M4 total_5yr ou federal_5yr.",
+      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["m1_economic_output", "m2_employment", "m9_sensitivity_analysis"] },
+      "fail_action": "warn"
+    },
+    {
+      "id": "3.5",
+      "name": "CHART GENERATOR — 2 PNGs via matplotlib",
+      "type": "python",
+      "script": "scripts/run_impacto_charts.py",
+      "args": ["{systemPath}/generate_impacto_charts.py", "{outputDir}/client_config_{clientSlug}.json", "{systemPath}/_charts_cache"],
+      "validation": { "type": "exists", "file": "{systemPath}/_charts_cache/chart_impact_layers.png" },
       "fail_action": "warn"
     },
     {
       "id": "4",
-      "name": "AGENT_04 BUILDER — gerar DOCX via build_impacto_universal.js",
+      "name": "AGENT_04 BUILDER — gerar DOCX via build_impacto_universal_v3.js (VF-aligned)",
       "type": "python",
       "script": "scripts/run_impacto_build.py",
-      "args": ["{systemPath}/build_impacto_universal.js", "{outputDir}/client_config_{clientSlug}.json", "{outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx"],
+      "args": ["{systemPath}/build_impacto_universal_v3.js", "{outputDir}/client_config_{clientSlug}.json", "{outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx"],
       "validation": { "type": "exists", "file": "{outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx" },
       "fail_action": "block"
     },
     {
       "id": "5",
-      "name": "AGENT_05 QA — validar contra benchmark Luciano VF",
+      "name": "AGENT_05 QA — validar contra benchmark Luciano VF + HARD BLOCKS imigratórios",
       "type": "claude",
-      "prompt": "Você é o AGENT_05 QA. LEIA {systemPath}/AGENT_05_QA.md integralmente.\n\nCompare via python-docx os 2 arquivos:\n- GERADO: {outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx\n- BENCHMARK: /Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/_VFs/Ajustado/NOVO AJUSTE PARA LUCIANO/VF_IMPACTO_Exemplo_Produto_Luciano_Costa_Ricci_PT_FINAL.docx\n\nMétrica-a-métrica: paragraphs, tables, inline images, sections, file_size, footnotes. O gerado deve ter 80-120% dos valores do benchmark em cada dimensão.\n\nScan HARD BLOCKs: PROEX, Kortix, Petition Engine, Obsidian, consulting, advisory, Kazarian, extraordinary ability. ZERO tolerância.\n\nSe algum check falhar → gere {outputDir}/IMPACTO_QA_REPORT.md listando exatamente o que falhou e recomendação.\nSe passar → gere {outputDir}/IMPACTO_QA_REPORT.md com 'PASSED' e números.\n\nNÃO reescreva o DOCX. Só relatório.",
+      "prompt": "Você é o AGENT_05 QA. LEIA {systemPath}/AGENT_05_QA.md integralmente.\n\nCompare via python-docx os 2 arquivos:\n- GERADO: {outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx\n- BENCHMARK: /Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/_VFs/Ajustado/NOVO AJUSTE PARA LUCIANO/VF_IMPACTO_Exemplo_Produto_Luciano_Costa_Ricci_PT_FINAL.docx\n\nMétricas a verificar: paragraphs (60-120% do VF), tables (50-250% — V3 usa mais tables), inline images (≥1 — logo PROEX é obrigatório), file_size (≥200KB com charts), footnotes.\n\nHARD BLOCKS TERMINOLÓGICOS — ZERO TOLERÂNCIA. Scan para QUALQUER ocorrência:\n  Imigratório: EB-2, EB-1, NIW, Dhanasar, Prong, prong, USCIS, petitioner, peticionário, I-140, waiver, waive, National Interest Waiver, 8 CFR, immigration, imigração, labor certification, adjudicator\n  Infra: PROEX (menção interna do sistema), Kortix, Petition Engine, Obsidian\n  EB-1: Kazarian, extraordinary ability, unique ability\n\nSe QUALQUER termo imigratório ou infra for encontrado → STATUS=FAIL no QA_REPORT com localização exata (página, parágrafo).\nSe tudo passar → QA_REPORT com 'PASSED' + números.\n\nSalve {outputDir}/IMPACTO_QA_REPORT.md. NÃO reescreva o DOCX.",
       "validation": { "type": "exists", "file": "{outputDir}/IMPACTO_QA_REPORT.md" },
       "fail_action": "warn"
     }
