@@ -36,12 +36,43 @@ except ImportError:
 # CONSTANTS
 # ═══════════════════════════════════════════════════════════════
 
-EXCLUDED_DIRS = {
+EXCLUDED_DIRS_EXACT = {
     '_Forjado por Petition Engine', 'phases', 'Evidence', 'Evidências',
-    '__MACOSX', '.git', 'node_modules', '_AUTOMAÇÃO',
+    '__MACOSX', '.git', 'node_modules',
 }
+# Partial match — if any of these substrings appear in a folder name, skip it
+EXCLUDED_DIRS_PARTIAL = [
+    'qualidade', 'confidencial', 'documentos pessoais', 'pessoais',
+    'tradução', 'traducao', 'cover letter', 'resumé', 'resume',
+    'rascunho', 'versões anteriores', '_automação', '_met e dec',
+    'espelho de impressão', 'espelho', 'aprovações', 'aprovacoes',
+    'processo anterior', 'eb-2', 'eb2',
+]
 EXCLUDED_FILES = {'.DS_Store', 'Thumbs.db', 'desktop.ini'}
-VALID_EXTENSIONS = {'.pdf', '.docx', '.doc', '.png', '.jpg', '.jpeg', '.tiff', '.pptx'}
+
+# ONLY these extensions are valid evidence. DOCX is NEVER evidence
+# (signed documents are always PDF; DOCX = unsigned draft)
+VALID_EXTENSIONS = {'.pdf', '.png', '.jpg', '.jpeg', '.tiff'}
+
+# Folders that ARE evidence sources (whitelist approach)
+EVIDENCE_SOURCE_FOLDERS = {
+    'cartas assinadas', 'signed', 'assinadas',
+    'critério 1', 'critério 2', 'critério 3', 'critério 4', 'critério 5',
+    'critério 6', 'critério 7', 'critério 8', 'critério 9', 'critério 10',
+    'criterion 1', 'criterion 2', 'criterion 3', 'criterion 4', 'criterion 5',
+    'criterion 6', 'criterion 7', 'criterion 8', 'criterion 9', 'criterion 10',
+    'artigos', 'publicações', 'publications', 'articles',
+    'matérias', 'media', 'press',
+    'prêmios', 'awards',
+    'patentes', 'patents', 'marcas', 'trademarks', 'inpi',
+    'traduzidos', 'translated',
+    'ebook', 'livro', 'book',
+    'declarações de aceite',
+    # Generic evidence containers
+    'cartas', '1. carregue aqui seus documentos', 'carregue aqui',
+    'formação acadêmica', 'formação', 'formacao',
+    'ebook', 'livros',
+}
 
 LETTER_KEYWORDS = {
     'carta', 'letter', 'recomendação', 'recommendation', 'apoio', 'support',
@@ -106,8 +137,10 @@ class EvidenceOrganizer:
         """Recursively discover all files."""
         files = []
         for root, dirs, filenames in os.walk(self.client_folder):
-            # Skip excluded directories
-            dirs[:] = [d for d in dirs if d not in EXCLUDED_DIRS]
+            # Skip excluded directories (exact + partial match)
+            dirs[:] = [d for d in dirs
+                       if d not in EXCLUDED_DIRS_EXACT
+                       and not any(exc in d.lower() for exc in EXCLUDED_DIRS_PARTIAL)]
 
             rel_root = Path(root).relative_to(self.client_folder)
             for fname in filenames:
@@ -168,6 +201,52 @@ class EvidenceOrganizer:
 
     # ─── Step 3: Filter ───
 
+    # NEVER EVIDENCE — explicit exclusion patterns (EB-1A domain knowledge)
+    NEVER_EVIDENCE_KEYWORDS = [
+        # Personal identity documents
+        'passaporte', 'passport', 'i-94', 'i-20', 'i-539', 'visa', 'visto',
+        'work permit', 'workpermit', 'ead', 'travel document',
+        'birth certificate', 'certidão de nascimento', 'vacinação', 'vaccination',
+        'marriage certificate', 'certidão de casamento',
+        # Internal/admin documents
+        'auditoria', 'audit', 'consultora', 'consultant notes',
+        'aprovação', 'aprovacao', 'aprovado', 'comentários', 'comentarios',
+        'roundcube', 'webmail', 'whatsapp', 'email', 'meeting', 'zoom',
+        'formulário', 'form', 'modelos de documentos', 'template',
+        'evidências documentais necessárias', 'guia', 'checklist',
+        'contexto', 'plano estratégico', 'plano_estrategico',
+        'anteprojeto', 'projeto base', 'projeto-base',
+        'scope', 'escopo',
+        # Immigration forms (not evidence, they ARE the petition)
+        'advanced degree', 'i-140', 'i-485', 'g-28', 'checklist',
+        'criminal', 'antecedentes',
+        # Personal photos not tied to criteria
+        'documentos pessoais',
+    ]
+
+    # NEVER EVIDENCE — folder-level exclusions
+    NEVER_EVIDENCE_FOLDERS = [
+        'documentos pessoais', '1.documentos pessoais', 'pessoais',
+        'passaporte', 'qualidade - confidencial', 'qualidade',
+        'tradução', 'traducao',  # translation folder has certificates of translation, not evidence
+    ]
+
+    def is_never_evidence(self, f: dict) -> Optional[str]:
+        """Returns rejection reason if file should NEVER be evidence, None if OK."""
+        combined = (f['clean_name'] + ' ' + f['parent_folder']).lower()
+
+        # Check explicit keywords
+        for kw in self.NEVER_EVIDENCE_KEYWORDS:
+            if kw in combined:
+                return f'not_evidence_{kw}'
+
+        # Check folder-level exclusions
+        for folder_kw in self.NEVER_EVIDENCE_FOLDERS:
+            if folder_kw in f['parent_name']:
+                return f'excluded_folder_{folder_kw}'
+
+        return None
+
     def is_letter(self, f: dict) -> bool:
         """Check if file is a recommendation/support letter."""
         combined = (f['clean_name'] + ' ' + f['parent_folder']).lower()
@@ -176,6 +255,54 @@ class EvidenceOrganizer:
     def is_in_signed_folder(self, f: dict) -> bool:
         """Check if file is in a folder for signed documents."""
         return any(kw in f['parent_name'] for kw in SIGNED_FOLDER_KEYWORDS)
+
+    def has_signature_indicators(self, pdf_path: str) -> bool:
+        """Check if a PDF appears to have a signature (scanned or digital)."""
+        try:
+            doc = fitz.open(pdf_path)
+            if doc.page_count == 0:
+                doc.close()
+                return False
+            # Check last page for signature indicators
+            last_page = doc[-1]
+            text = last_page.get_text().lower()
+            doc.close()
+            sig_indicators = ['sincerely', 'atenciosamente', 'signature', 'assinatura',
+                              'signed', 'assinado', 'respectfully']
+            return any(ind in text for ind in sig_indicators)
+        except:
+            return True  # If can't read, don't reject on this basis
+
+    def is_older_version(self, f: dict, all_files: List[dict]) -> bool:
+        """Check if there's a newer version of the same document (V1 < V2 < VF)."""
+        name = f['clean_name'].lower()
+        # Extract version info
+        version_match = re.search(r'v(\d+)|versão\s*(\d+)|version\s*(\d+)', name)
+        if not version_match:
+            return False
+
+        current_v = int(next(g for g in version_match.groups() if g))
+        base_name = re.sub(r'v\d+[_\s-]*|versão\s*\d+|version\s*\d+', '', name).strip()
+
+        # Check if there's a higher version or a VF
+        for other in all_files:
+            other_name = other['clean_name'].lower()
+            if other['original_path'] == f['original_path']:
+                continue
+            other_base = re.sub(r'v\d+[_\s-]*|versão\s*\d+|version\s*\d+|vf[_\s-]*', '', other_name).strip()
+
+            # Same base document?
+            if base_name[:20] in other_base or other_base[:20] in base_name:
+                # VF (versão final) always wins
+                if 'vf' in other_name or 'versão final' in other_name or 'final' in other_name:
+                    return True
+                # Higher version number wins
+                other_v_match = re.search(r'v(\d+)', other_name)
+                if other_v_match:
+                    other_v = int(other_v_match.group(1))
+                    if other_v > current_v:
+                        return True
+        return False
 
     def compute_hash(self, filepath: str) -> str:
         """SHA-256 hash."""
@@ -211,53 +338,130 @@ class EvidenceOrganizer:
         except:
             return 0
 
+    def _is_in_evidence_source_folder(self, f: dict) -> bool:
+        """WHITELIST: check if file is in a folder that contains real evidence."""
+        full_path_lower = f['parent_folder'].lower()
+
+        # Check full path for evidence source keywords
+        for src in EVIDENCE_SOURCE_FOLDERS:
+            if src in full_path_lower:
+                return True
+
+        # Also check each individual folder component
+        for part in Path(f['parent_folder']).parts:
+            part_lower = part.lower()
+            # Direct match
+            if part_lower in EVIDENCE_SOURCE_FOLDERS:
+                return True
+            # Partial match (e.g., "Critério 5 - Criação original" matches "critério 5")
+            for src in EVIDENCE_SOURCE_FOLDERS:
+                if src in part_lower:
+                    return True
+            # Generic "Critério N" pattern
+            if re.match(r'critério\s+\d+', part_lower) or re.match(r'criterion\s+\d+', part_lower):
+                return True
+            # CARTAS folder (signed letters)
+            if part_lower == 'cartas':
+                return True
+
+        return False
+
     def filter_valid_evidence(self, files: List[dict]) -> Tuple[List[dict], List[dict]]:
-        """Apply all filtering rules."""
+        """WHITELIST approach: ONLY accept files from known evidence folders."""
         valid = []
         rejected = []
         seen_hashes: Dict[str, dict] = {}
 
         for f in files:
             ext = f['extension']
-            path = f['original_path']
+            fpath = f['original_path']
 
-            # Skip non-evidence extensions
+            # 1. ONLY valid extensions (PDF, images — NEVER DOCX)
             if ext not in VALID_EXTENSIONS:
-                rejected.append({**f, 'reason': 'invalid_extension', 'details': f'Extension {ext} not in valid list'})
+                rejected.append({**f, 'reason': 'invalid_extension', 'details': f'{ext} — only PDF and images accepted as evidence'})
                 continue
 
-            # Skip empty files
+            # 2. Skip empty
             if f['size_bytes'] == 0:
                 rejected.append({**f, 'reason': 'empty_file', 'details': '0 bytes'})
                 continue
 
-            # CRITICAL: DOCX letters are ALWAYS rejected
-            if self.is_letter(f) and ext == '.docx':
-                rejected.append({**f, 'reason': 'unsigned_docx_letter', 'details': 'DOCX letter — only signed PDF letters accepted'})
+            # 3. WHITELIST — must be in a known evidence folder
+            if not self._is_in_evidence_source_folder(f):
+                # Exception: signed letters folder at root level
+                if not self.is_in_signed_folder(f):
+                    rejected.append({**f, 'reason': 'not_in_evidence_folder', 'details': f'Folder "{f["parent_folder"]}" is not a known evidence source'})
+                    continue
+
+            # 4. NEVER EVIDENCE — domain exclusions even inside evidence folders
+            never_reason = self.is_never_evidence(f)
+            if never_reason:
+                rejected.append({**f, 'reason': never_reason, 'details': 'Excluded by EB-1A domain rules'})
                 continue
 
-            # Dedup by hash
-            file_hash = self.compute_hash(path)
+            # 5. Letters must show signature indicators
+            if self.is_letter(f):
+                if not self.has_signature_indicators(fpath):
+                    rejected.append({**f, 'reason': 'likely_unsigned', 'details': 'Letter PDF without signature indicators'})
+                    continue
+
+            # 6. Older versions — only VF/latest
+            if self.is_older_version(f, files):
+                rejected.append({**f, 'reason': 'older_version', 'details': 'Superseded by newer version'})
+                continue
+
+            # 7. Dedup by hash
+            file_hash = self.compute_hash(fpath)
             if file_hash and file_hash in seen_hashes:
                 existing = seen_hashes[file_hash]
                 rejected.append({**f, 'reason': 'duplicate_exact', 'details': f'Same hash as {existing["clean_name"]}'})
                 continue
-
             if file_hash:
                 seen_hashes[file_hash] = f
 
-            # Classify
+            # 8. Check for placeholders
+            if ext == '.pdf':
+                try:
+                    doc = fitz.open(fpath)
+                    text = doc[0].get_text() if doc.page_count > 0 else ''
+                    doc.close()
+                    if any(ph in text for ph in ['[PREENCHER]', '[XXX]', '[Nome Completo]', '[VERIFICAR]']):
+                        rejected.append({**f, 'reason': 'placeholder_detected', 'details': 'Unfilled placeholders'})
+                        continue
+                except:
+                    pass
+
+            # PASSED ALL FILTERS
             f['evidence_type'] = self.classify_file(f)
             f['criteria'] = self.map_criteria(f)
             f['is_letter'] = self.is_letter(f)
-            f['has_translation_cover'] = self.detect_translation_cover(path) if ext == '.pdf' else False
-            f['page_count'] = self.get_page_count(path) if ext == '.pdf' else 0
+            f['has_translation_cover'] = self.detect_translation_cover(fpath) if ext == '.pdf' else False
+            f['page_count'] = self.get_page_count(fpath) if ext == '.pdf' else 0
             f['file_hash'] = file_hash
+            f['needs_certified_translation'] = self._needs_translation(f, fpath)
 
             valid.append(f)
 
         self._log(f"✅ Valid: {len(valid)} | ❌ Rejected: {len(rejected)}")
         return valid, rejected
+
+    def _needs_translation(self, f: dict, fpath: str) -> bool:
+        """Check if document is in Portuguese and needs certified translation."""
+        if f['extension'] != '.pdf':
+            return False
+        try:
+            doc = fitz.open(fpath)
+            text = doc[0].get_text()[:500].lower() if doc.page_count > 0 else ''
+            doc.close()
+            pt_indicators = ['certifico', 'declaração', 'diploma', 'universidade', 'república federativa',
+                             'cartório', 'registro', 'brasil', 'são paulo', 'rio de janeiro']
+            en_indicators = ['certificate', 'university', 'declaration', 'hereby', 'united states',
+                             'this is to certify', 'translated']
+            pt_score = sum(1 for w in pt_indicators if w in text)
+            en_score = sum(1 for w in en_indicators if w in text)
+            return pt_score > en_score
+        except:
+            return False
 
     # ─── Step 4: Number and Copy ───
 
@@ -292,23 +496,43 @@ class EvidenceOrganizer:
         return files
 
     def copy_to_evidence_folder(self, files: List[dict]):
-        """Copy files to Evidence/ folder. NEVER deletes originals."""
+        """Copy files to Evidence/ folder with translation subfolders. NEVER deletes originals."""
         if self.dry_run:
+            needs_trans = sum(1 for f in files if f.get('needs_certified_translation'))
+            no_trans = len(files) - needs_trans
             self._log(f"🔍 DRY RUN — would create {self.output_dir} with {len(files)} files")
+            self._log(f"  📁 Needs Certified Translation: {needs_trans}")
+            self._log(f"  📁 No Translation Needed: {no_trans}")
             return
 
         self.output_dir.mkdir(parents=True, exist_ok=True)
         (self.output_dir / '_thumbnails').mkdir(exist_ok=True)
+        needs_trans_dir = self.output_dir / 'Needs_Certified_Translation'
+        no_trans_dir = self.output_dir / 'No_Translation_Needed'
+        needs_trans_dir.mkdir(exist_ok=True)
+        no_trans_dir.mkdir(exist_ok=True)
 
         copied = 0
         for f in files:
             try:
+                # Copy to main Evidence/ folder (flat, for pipeline)
                 shutil.copy2(f['original_path'], f['new_path'])
+
+                # Also copy to appropriate translation subfolder
+                if f.get('needs_certified_translation'):
+                    sub_path = needs_trans_dir / f['new_name']
+                else:
+                    sub_path = no_trans_dir / f['new_name']
+                shutil.copy2(f['original_path'], str(sub_path))
+
                 copied += 1
             except Exception as e:
                 self._log(f"  ❌ Failed to copy {f['original_name']}: {e}")
 
+        needs_count = sum(1 for f in files if f.get('needs_certified_translation'))
         self._log(f"📁 Copied {copied}/{len(files)} files to {self.output_dir}")
+        self._log(f"  📁 Needs Certified Translation: {needs_count}")
+        self._log(f"  📁 No Translation Needed: {len(files) - needs_count}")
 
     # ─── Step 5: Produce JSONs ───
 

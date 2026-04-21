@@ -7,6 +7,39 @@ Cada entrada é um commit (auto-append pelo post-commit hook) ou uma anotação 
 Para saber onde estamos: ler as últimas 10-15 entradas. Cada entrada tem o `sha`, a mensagem, e a data.
 
 
+### 2026-04-21T01:05Z — manual note — IMPACTO v3 builder: chart bugfix + narrativa + charts em inglês
+
+Arquivos em `systems/impacto/` (symlink → `agents/`, fora do git petition-engine):
+- `generate_impacto_charts.py`: fix parser money BR ("US$ 8.290.426" retornava 0.0 → chart 1 zerado). Agora prioriza campos numéricos `*_5yr` e parser robusto BR/US. Labels/títulos **100% em inglês** (Economic Impact Decomposition, Type II Multipliers) — charts são PNG não-editável, viajam com doc traduzido pro USCIS.
+- `build_impacto_universal_v3.js`: adicionada `moduleNarrative(Mx)` com bloco narrativo econométrico PT/EN por módulo M1-M10. Recupera densidade perdida ao remover módulos imigratórios do builder v2.
+
+V6 Rodrigo: paras 194 → 244 (+26%), words 2.196 → 3.345 (+52%), chart 1 com valores reais (US$ 8.3M/2.2M/1.5M, antes zerados), labels EN. V5 arquivado em _LIXO_V5_charts_zerados_PT/.
+
+
+### 2026-04-21T00:35:56Z — `ddd71111399fd99f66efc119294b642d74ca6295`
+
+fix(impacto): WebSearch em tempo real agora OBRIGATÓRIO no AGENT_02
+
+- Rules: 148 · Systems: 25 · Clients: 42 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
+### 2026-04-20T23:39:40Z — `90a15f810ed0831f08e2f6600bf63ff57f90f6c0`
+
+feat(impacto): v3 builder VF-aligned — logo PROEX + charts + zero imigratório
+
+- Rules: 148 · Systems: 25 · Clients: 42 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
+### 2026-04-20T18:05:28Z — `fad649d5348ea74f4ec87ed804ebd17cd66e3f00`
+
+feat(impacto): builder_v2 with array iteration — Rodrigo V3 validated at Luciano RAW level
+
+- Rules: 148 · Systems: 25 · Clients: 41 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
 ### 2026-04-20T16:43:23Z — `76336dacfcc1b6493d3a128264907002fac6e948`
 
 feat(impacto): 5-phase multi-agent pipeline spec + node builder wrapper
