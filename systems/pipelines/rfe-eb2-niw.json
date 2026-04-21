@@ -1,0 +1,91 @@
+{
+  "doc_type": "rfe_response_eb2_niw",
+  "name": "RFE Response EB-2 NIW — 3-Prong Dhanasar",
+  "version": "1.0",
+  "description": "Pipeline formal para resposta de RFE EB-2 NIW. Benchmark: Deni Rubens (VF 27.852 palavras, 92p, 19t, 53img, 811p). Estrutura: quotes literais do oficial + resposta por Prong questionado + novas evidências com numeração CONTÍNUA da cover letter original + deep research tempo real + validator determinístico bloqueante anti-afrontoso.",
+  "output_format": "docx",
+  "builder": "rfe_response_builder_v1.js (a implementar baseado no orchestrator)",
+  "orchestrator": "systems/rfe-eb2niw-orchestrator/ORCHESTRATOR_RFE_EB2NIW.md",
+  "benchmark_reference": {
+    "client": "Deni Rubens",
+    "metrics": {"paragraphs": 811, "tables": 19, "images": 53, "words": 27852, "pages": 92},
+    "known_bug": "Sumário com numeração divergente do corpo — regra r82 força numeração contínua"
+  },
+  "hard_rules_terminology": [
+    "NUNCA usar 'The officer erred', 'foi refutado', 'oficial equivocado', 'refutação', 'incorreto'",
+    "SEMPRE usar 'The record contains Evidence XX, which demonstrates...', 'respectfully clarify', 'addresses the concern'",
+    "NUNCA confrontativo — tom deferencial constante",
+    "NUNCA mencionar denial/RFE anterior/refile/petição anterior (regra r81)",
+    "Numeração de Exhibits CONTÍNUA da cover letter original — novas evidências ao FINAL (regra r82)",
+    "NUNCA citar Kazarian / extraordinary ability / top of the field (terminologia EB-1A)",
+    "Zero exposição de infra: PROEX (interno), Kortix, Petition Engine, Obsidian, RAG"
+  ],
+  "phases": [
+    {
+      "id": "0",
+      "name": "INTAKE — ler RFE original + CL original + evidências + orchestrator",
+      "type": "claude",
+      "prompt": "Fase 0: Ler integralmente: (1) {rfePath} RFE original do oficial (PDF traduzido), (2) {coverLetterPath} cover letter EB-2 NIW original enviada, (3) {systemPath}/rfe-eb2niw-orchestrator/ORCHESTRATOR_RFE_EB2NIW.md, (4) Benchmark Deni Rubens (se acessível), (5) Pasta de evidências do cliente — listar todos .pdf/.docx/.jpg com ls -la recursivo. Extrair inventário: qual é o último Exhibit number da CL original? (crítico — novas evidências começam em N+1).",
+      "validation": { "type": "exists", "file": "{outputDir}/_rfe_intake.json" },
+      "fail_action": "block"
+    },
+    {
+      "id": "0.5",
+      "name": "EXTRACT OFFICER QUOTES — extrair trechos literais do RFE PDF",
+      "type": "python",
+      "script": "scripts/extract_officer_quotes.py",
+      "args": ["{rfePath}", "{outputDir}/_officer_quotes.json"],
+      "validation": { "type": "exists", "file": "{outputDir}/_officer_quotes.json" },
+      "fail_action": "block"
+    },
+    {
+      "id": "1",
+      "name": "ANÁLISE POR PRONG — decompor objeções",
+      "type": "claude",
+      "prompt": "Fase 1: Com base em {outputDir}/_officer_quotes.json e {outputDir}/_rfe_intake.json, decompor objeções POR PRONG. Output {outputDir}/_rfe_analysis.json com formato: [{prong: 1|2|3, objection_verbatim: string, officer_quote_id: string, type: falta_evidencia|insuficiente|interpretacao|ignorada, existing_evidence_refs: [exhibit_ids], new_evidence_needed: [descriptions], response_strength: FORTE|MEDIA|FRACA}]. Aprovação do Paulo opcional (APROVAÇÃO_PLANO.md no folder) antes de Fase 2.",
+      "validation": { "type": "exists", "file": "{outputDir}/_rfe_analysis.json" },
+      "fail_action": "block"
+    },
+    {
+      "id": "2",
+      "name": "DEEP RESEARCH — WebSearch obrigatório tempo real",
+      "type": "claude",
+      "prompt": "Fase 2: Para CADA objeção mapeada na fase 1, executar WebSearch real contra fontes primárias: BLS OEWS May 2024 (posições, wages), BLS OOH (projeções 2034), Census Bureau (NAICS data), USCIS Policy Manual PA-2025-03 (15/01/2025 EB-2 NIW update), Matter of Dhanasar 26 I&N Dec. 884, precedentes AAO recentes, Executive Orders vigentes, White House Fact Sheets correlatas ao endeavor, federalregister.gov. Output {outputDir}/_research_sources.json com ≥15 URLs autoritativas + extractos usados. Cada número/percentual que entrará no DOCX deve ter source URL registrada.",
+      "validation": { "type": "contains", "file": "{outputDir}/_research_sources.json", "patterns": ["uscis.gov", "bls.gov", "access_date"] },
+      "fail_action": "block"
+    },
+    {
+      "id": "3",
+      "name": "DRAFT POR PRONG — gerar .docx (Prong 1 / 2 / 3 conforme questionado)",
+      "type": "claude",
+      "prompt": "Fase 3: Para CADA Prong questionado, gerar .docx separado seguindo ORCHESTRATOR_RFE_EB2NIW.md. REGRAS INVIOLÁVEIS:\n(a) iniciar cada subseção reproduzindo o quote verbatim do oficial em quote-box visual distinto (fundo cinza claro, borda lateral, fonte diferente) — usar officer_quotes.json\n(b) responder ponto-por-ponto com frase de abertura 'The record contains Evidence XX, which demonstrates...' — NUNCA 'The officer erred'\n(c) citar precedentes com Bluebook format + USCIS PM + Matter of Dhanasar\n(d) novas evidências numeradas CONTINUANDO da CL original (se CL terminou em Exhibit 46, novas começam em 47)\n(e) cada claim numérico com footnote ou [Source: url, accessed YYYY-MM-DD] inline\n(f) anti-Cristine: beneficiário é motor, não peça substituível\n(g) zero termos afrontosos.\nPalavras alvo: Prong 1 8-15K, Prong 2 10-18K, Prong 3 8-12K.",
+      "validation": { "type": "exists", "file": "{outputDir}/RFE_NIW_PRONG1.docx" },
+      "fail_action": "block"
+    },
+    {
+      "id": "4",
+      "name": "THUMBNAILS + MERGE — aglutinar com anchors validadas",
+      "type": "claude",
+      "prompt": "Fase 4: Aglutinar Prong .docx files em RFE_Resposta_Completa_{clientSlug}.docx. Inserir thumbnails das novas evidências com wp:anchor + wrapSquare, cada thumbnail em local específico rastreando o Exhibit citado (não gen genérico no fim). Verificar: cada thumbnail bate com a descrição do evidence block (não pode ter thumbnail de certificado onde o texto fala de foto, por exemplo). Gerar thumbnail_map.json {exhibit_number, description, pdf_path, docx_position}.",
+      "validation": { "type": "exists", "file": "{outputDir}/RFE_Resposta_Completa_{clientSlug}.docx" },
+      "fail_action": "block"
+    },
+    {
+      "id": "5",
+      "name": "VALIDATE RFE RESPONSE — determinístico bloqueante (BLOCK)",
+      "type": "python",
+      "script": "scripts/validate_rfe_response.py",
+      "args": ["{outputDir}/RFE_Resposta_Completa_{clientSlug}.docx", "{outputDir}/_officer_quotes.json", "{outputDir}/_research_sources.json", "{coverLetterExhibitCount}", "{outputDir}/RFE_VALIDATION.md"],
+      "validation": { "type": "exists", "file": "{outputDir}/RFE_VALIDATION.md" },
+      "fail_action": "block"
+    },
+    {
+      "id": "6",
+      "name": "SOC 4 AGENTES QA — revisão qualitativa por persona",
+      "type": "claude",
+      "prompt": "Fase 6: Rodar SOC 4 agentes (USCIS Officer adjudicator persona; General Counsel litigator persona; Subject Matter Expert persona; Translator/Lingua persona) sobre RFE_Resposta_Completa. Cada persona gera crítica com foco: officer — 'a resposta endereça cada objeção?'; counsel — 'o argumento jurídico sustenta challenge?'; SME — 'os números e conceitos técnicos são corretos?'; translator — 'o inglês é natural, formal, sem erros?'. Consolidar em RFE_SOC_REVIEW.md. Se alguma persona indicar BLOQUEIO, voltar à Fase 3.",
+      "validation": { "type": "exists", "file": "{outputDir}/RFE_SOC_REVIEW.md" },
+      "fail_action": "warn"
+    }
+  ]
+}
