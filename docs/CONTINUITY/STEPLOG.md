@@ -7,6 +7,28 @@ Cada entrada é um commit (auto-append pelo post-commit hook) ou uma anotação 
 Para saber onde estamos: ler as últimas 10-15 entradas. Cada entrada tem o `sha`, a mensagem, e a data.
 
 
+### 2026-04-21T15:00Z — manual note — IMPACTO v3 VF V8 (Rodrigo): callouts metodológicos + glossário
+
+Evolução V7 → V8 solicitada por Paulo ("questões metodológicas explicadas de modo sucinto, pois COMO se chegou aos números é praticamente tão importante quanto os próprios números").
+
+Adições em `systems/impacto/build_impacto_universal_v3.js` (symlink → agents/):
+- `methodCallout(title, bodyLines)`: callout box com borda lateral GOLD, fundo amarelo pálido (#FFFBF0), render de 4 linhas `label: value`
+- `calculationNote(Mx)`: bank bilíngue PT/EN com 10 entradas (M1-M10), cada uma: Fórmula, Inputs, Decomposição/Triangulação/Calibração/Método, Implicação
+- `buildGlossary()`: seção 12.7 com tabela de 12 termos técnicos (NAICS, MSA, FIPS, IMPLAN, RIMS II, Type I/II, Direct/Indirect/Induced, EPI, BLS OES, Leakage)
+- Hook em buildM1-M10: `...calculationNote("Mx")` injetado antes de `...moduleNarrative("Mx")`
+- Hook em buildMethodologicalNotes: `...buildGlossary()` injetado após `...buildSourcesSection()`
+
+V8 Rodrigo validado com scripts determinísticos (validator exit 0 + qa_docx 8/8 checks). Delta V7→V8: paras 239→258 (+19), tables 23→34 (+11), words 3345→4275 (+930). Obs: paras abaixo do target de 290+ porque bodies dos callouts ficam dentro de cells de tabela (não contam como top-level paras no python-docx); conteúdo presente e confirmado pelo word count acima do teto. V7 arquivado em `_LIXO_V7_sem_glossario/`.
+
+
+### 2026-04-21T01:06:28Z — `c3f7b9178381f78bb9da2829c41155870f499388`
+
+feat(impacto): deterministic QA layers — validator + qa-docx + smoke test
+
+- Rules: 148 · Systems: 25 · Clients: 42 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
 ### 2026-04-21T01:30Z — manual note — IMPACTO v3 camadas determinísticas de QA
 
 Paulo aprovou "esse troço tem que estar 100%". Adicionadas 3 camadas de QA determinístico, pegando 80-90% dos bugs antes da revisão humana:
