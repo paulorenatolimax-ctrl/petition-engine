@@ -42,6 +42,15 @@
       "fail_action": "warn"
     },
     {
+      "id": "3.7",
+      "name": "VALIDATE CONFIG — schema + ranges + sources + no-immigration (BLOQUEANTE)",
+      "type": "python",
+      "script": "scripts/validate_impacto_config.py",
+      "args": ["{outputDir}/client_config_{clientSlug}.json", "{outputDir}/CONFIG_VALIDATION.txt"],
+      "validation": { "type": "exists", "file": "{outputDir}/CONFIG_VALIDATION.txt" },
+      "fail_action": "block"
+    },
+    {
       "id": "4",
       "name": "AGENT_04 BUILDER — gerar DOCX via build_impacto_universal_v3.js (VF-aligned)",
       "type": "python",
@@ -52,7 +61,16 @@
     },
     {
       "id": "5",
-      "name": "AGENT_05 QA — validar contra benchmark Luciano VF + HARD BLOCKS imigratórios",
+      "name": "QA DOCX — validação determinística python-docx (BLOQUEANTE)",
+      "type": "python",
+      "script": "scripts/qa_impacto_docx.py",
+      "args": ["{outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx", "{outputDir}/IMPACTO_QA_REPORT.md"],
+      "validation": { "type": "exists", "file": "{outputDir}/IMPACTO_QA_REPORT.md" },
+      "fail_action": "block"
+    },
+    {
+      "id": "6",
+      "name": "AGENT_06 QA QUALITATIVO — Claude revisa tom/argumento (complementar ao QA determinístico)",
       "type": "claude",
       "prompt": "Você é o AGENT_05 QA. LEIA {systemPath}/AGENT_05_QA.md integralmente.\n\nCompare via python-docx os 2 arquivos:\n- GERADO: {outputDir}/IMPACTO_{clientSlug}_Analise_Impacto_Economico_PT.docx\n- BENCHMARK: /Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/_VFs/Ajustado/NOVO AJUSTE PARA LUCIANO/VF_IMPACTO_Exemplo_Produto_Luciano_Costa_Ricci_PT_FINAL.docx\n\nMétricas a verificar: paragraphs (60-120% do VF), tables (50-250% — V3 usa mais tables), inline images (≥1 — logo PROEX é obrigatório), file_size (≥200KB com charts), footnotes.\n\nHARD BLOCKS TERMINOLÓGICOS — ZERO TOLERÂNCIA. Scan para QUALQUER ocorrência:\n  Imigratório: EB-2, EB-1, NIW, Dhanasar, Prong, prong, USCIS, petitioner, peticionário, I-140, waiver, waive, National Interest Waiver, 8 CFR, immigration, imigração, labor certification, adjudicator\n  Infra: PROEX (menção interna do sistema), Kortix, Petition Engine, Obsidian\n  EB-1: Kazarian, extraordinary ability, unique ability\n\nSe QUALQUER termo imigratório ou infra for encontrado → STATUS=FAIL no QA_REPORT com localização exata (página, parágrafo).\nSe tudo passar → QA_REPORT com 'PASSED' + números.\n\nSalve {outputDir}/IMPACTO_QA_REPORT.md. NÃO reescreva o DOCX.",
       "validation": { "type": "exists", "file": "{outputDir}/IMPACTO_QA_REPORT.md" },

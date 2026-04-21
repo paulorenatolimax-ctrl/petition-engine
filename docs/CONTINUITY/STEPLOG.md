@@ -7,6 +7,36 @@ Cada entrada é um commit (auto-append pelo post-commit hook) ou uma anotação 
 Para saber onde estamos: ler as últimas 10-15 entradas. Cada entrada tem o `sha`, a mensagem, e a data.
 
 
+### 2026-04-21T01:30Z — manual note — IMPACTO v3 camadas determinísticas de QA
+
+Paulo aprovou "esse troço tem que estar 100%". Adicionadas 3 camadas de QA determinístico, pegando 80-90% dos bugs antes da revisão humana:
+
+1. **scripts/validate_impacto_config.py** (bloqueante, pipeline fase 3.7):
+   - Schema, ranges de multipliers, sources[] ≥4 com ≥3 autoritativos
+   - research_timestamp <72h, consistência cruzada, zero leak imigratório
+
+2. **scripts/qa_impacto_docx.py** (bloqueante, pipeline fase 5):
+   - Paras/tables/images ranges vs VF Luciano
+   - Zero termos imigratórios em texto extraído
+   - Seção 12.6 Fontes presente + ≥2 domínios autoritativos
+   - Detecção de charts all-zeros via variância PIL
+
+3. **scripts/test_builder_v3.py** + fixture: smoke test end-to-end em 1s
+   (validator → charts → builder → qa_docx → tudo deve passar)
+
+Testes destrutivos confirmam: injetar "petitioner" no config, multipliers 5.0, sources[]=[] → todos retornam exit 1 com localização exata.
+
+V7 Rodrigo regenerado após validator detectar 2 leaks "peticionário" no config (campos ignorados pelo builder mas ainda poluíam JSON): PASSED em 8/8 checks.
+
+
+### 2026-04-21T00:53:01Z — `275385c0aa668066cc6f51985dcd74b262627f8b`
+
+fix(impacto): chart parser bug (zeros) + builder narrative + charts EN
+
+- Rules: 148 · Systems: 25 · Clients: 42 · Personas: 12
+- Daemon: ❌ not loaded · Port 3000: ✅ serving
+
+
 ### 2026-04-21T01:05Z — manual note — IMPACTO v3 builder: chart bugfix + narrativa + charts em inglês
 
 Arquivos em `systems/impacto/` (symlink → `agents/`, fora do git petition-engine):
