@@ -545,5 +545,4135 @@
     "stages": [],
     "current_phase": "phase_2",
     "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775223070703_lnmmeb",
+    "client_id": "c1774523018891",
+    "client_name": "Rafaella Cristina Telles de Oliveira",
+    "doc_type": "resume_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB1A_Rafaella_Cristina_Telles_de_Oliveira.md",
+    "status": "completed",
+    "started_at": "2026-04-03T13:31:10.703Z",
+    "completed_at": "2026-04-03T13:54:18.783Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/Rafaella/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb1a_Rafaella_Cristina_Telles_de_Oliveira.docx",
+      "~$SUME_EB1A_RAFAELLA_TELLES_V4.docx",
+      "REVISAO_EXAUSTIVA_EB1A_RAFAELLA_TELLES_ABR2026.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1388,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775223097762_huihpz",
+    "client_id": "c1774523018891",
+    "client_name": "Rafaella Cristina Telles de Oliveira",
+    "doc_type": "satellite_letter_eb1",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SATELLITE_LETTER_EB1_Rafaella_Cristina_Telles_de_Oliveira.md",
+    "status": "failed",
+    "started_at": "2026-04-03T13:31:37.762Z",
+    "completed_at": "2026-04-03T13:36:17.843Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/Rafaella/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Exit 0 mas nenhum documento criado",
+    "duration_seconds": 280,
+    "stages": [],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775232027668_y4cf6v",
+    "client_id": "c1774523018891",
+    "client_name": "Rafaella Cristina Telles de Oliveira",
+    "doc_type": "satellite_letter_eb1",
+    "prompt_file": "/Users/paulo1844/Documents/OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SATELLITE_LETTER_EB1_Rafaella_Cristina_Telles_de_Oliveira.md",
+    "status": "failed",
+    "started_at": "2026-04-03T16:00:27.668Z",
+    "completed_at": "2026-04-03T16:14:52.914Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/Rafaella/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Geracao falhou (exit 1)",
+    "duration_seconds": 865,
+    "stages": [],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775441238856_myzq2v",
+    "client_id": "c1775441169698",
+    "client_name": "Cristine Correa",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Cristine_Correa.md",
+    "status": "failed",
+    "started_at": "2026-04-06T02:07:18.856Z",
+    "completed_at": "2026-04-08T15:16:08.893Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775450998616_tc2oav",
+    "client_id": "c1775441169698",
+    "client_name": "Cristine Correa",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Cristine_Correa.md",
+    "status": "completed",
+    "started_at": "2026-04-06T04:49:58.616Z",
+    "completed_at": "2026-04-06T05:34:29.957Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/",
+    "output_files": [
+      "PERFIL_COMPLETO_CRISTINE_CORREA_V2.md",
+      "resume_eb2_niw_Cristine_Correa.docx",
+      "PERFIL_COMPLETO_CRISTINE_CORREA_V3_REVIEWED.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 2671,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775453332736_qoiqx6",
+    "client_id": "c1775453301008",
+    "client_name": "Camilla Santana Pereira Paes de Barros",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Camilla_Santana_Pereira_Paes_de_Barros.md",
+    "status": "failed",
+    "started_at": "2026-04-06T05:28:52.736Z",
+    "completed_at": "2026-04-08T15:16:08.893Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775506983760_t8r27l",
+    "client_id": "c1775506955804",
+    "client_name": "Regiane Glory",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Regiane_Glory.md",
+    "status": "failed",
+    "started_at": "2026-04-06T20:23:03.760Z",
+    "completed_at": "2026-04-06T20:31:40.069Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Exit 0 mas nenhum documento criado",
+    "duration_seconds": 516,
+    "stages": [],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775507165195_sf7zez",
+    "client_id": "c1775506955804",
+    "client_name": "Regiane Glory",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Regiane_Glory.md",
+    "status": "completed",
+    "started_at": "2026-04-06T20:26:05.195Z",
+    "completed_at": "2026-04-06T20:51:54.689Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs/_Forjado por Petition Engine/",
+    "output_files": [
+      "Projeto_Base_EB2_NIW_Regiane_Glory.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1549,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775571101618_i7rqxg",
+    "client_id": "c1775115598005",
+    "client_name": "Rebeka Cunha",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Rebeka_Cunha.md",
+    "status": "completed",
+    "started_at": "2026-04-07T14:11:41.618Z",
+    "completed_at": "2026-04-07T14:31:02.729Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [
+      "Projeto_Base_EB2_NIW_Rebeka_Cunha.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1161,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775689200000_rb3ka",
+    "client_id": "c_rebeka_cunha",
+    "client_name": "Rebeka Gomes Pinto Cunha",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Rebeka_Cunha.md",
+    "status": "completed",
+    "started_at": "2026-04-07T12:00:00.000Z",
+    "completed_at": "2026-04-07T12:45:00.000Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [
+      "Projeto_Base_EB2_NIW_Rebeka_Cunha.md"
+    ],
+    "error_message": null,
+    "duration_seconds": null,
+    "stages": [
+      "leitura_prompts_1_a_9",
+      "leitura_rags_eb2_niw",
+      "leitura_docs_cliente",
+      "leitura_benchmark_thayse",
+      "pesquisa_web_uscis_bls_sba",
+      "pesquisa_web_ai_executive_orders",
+      "pesquisa_web_hispanic_smb_stats",
+      "pesquisa_web_ai_saas_market",
+      "geracao_9_secoes_integradas",
+      "validacao_18_error_rules"
+    ],
+    "current_phase": "completed",
+    "current_phase_label": "Projeto-Base completo — 9 seções geradas"
+  },
+  {
+    "id": "gen_1775649110454_lzbard",
+    "client_id": "c1775649092158",
+    "client_name": "Ricardo Augusto Borges Porfirio Pereira",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+    "status": "completed",
+    "started_at": "2026-04-08T11:51:50.454Z",
+    "completed_at": "2026-04-08T12:18:16.269Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+      "01_Hirata_Associados_Carta_Satelite.docx",
+      "02_Carlos_Eduardo_Assis_Carta_Satelite.docx",
+      "03_Antonio_Claret_Gama_Carta_Satelite.docx",
+      "04_David_Karins_Carta_Satelite.docx",
+      "05_Thiago_Avelino_Carta_Satelite.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1586,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775649441792_6kyapd",
+    "client_id": "c1775649092158",
+    "client_name": "Ricardo Augusto Borges Porfirio Pereira",
+    "doc_type": "satellite_letter_eb2",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SATELLITE_LETTER_EB2_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+    "status": "completed",
+    "started_at": "2026-04-08T11:57:21.792Z",
+    "completed_at": "2026-04-08T12:26:05.754Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+    "output_files": [
+      "01_Hirata_Associados_Carta_Satelite.docx",
+      "02_Carlos_Eduardo_Assis_Carta_Satelite.docx",
+      "03_Antonio_Claret_Gama_Carta_Satelite.docx",
+      "04_David_Karins_Carta_Satelite.docx",
+      "05_Thiago_Avelino_Carta_Satelite.docx",
+      "Anteprojeto_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1724,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775651532020_ghlh16",
+    "client_id": "c1775649092158",
+    "client_name": "Ricardo Augusto Borges Porfirio Pereira",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+    "status": "completed",
+    "started_at": "2026-04-08T12:32:12.020Z",
+    "completed_at": "2026-04-08T13:02:44.922Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+    "output_files": [
+      "LOVABLE_BUILD_SPEC.md",
+      "saas_evidence_Ricardo_Augusto_Borges_Porfirio_Pereira.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1833,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775651736377_sygvbn",
+    "client_id": "c1775651647098",
+    "client_name": "Flavia Tenório",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Flavia_Tenório.md",
+    "status": "completed",
+    "started_at": "2026-04-08T12:35:36.377Z",
+    "completed_at": "2026-04-08T13:12:00.419Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/DEBORAH/Flávia Tenório/_Forjado por Petition Engine/",
+    "output_files": [
+      "Projeto_Base_EB1A_Flavia_Tenório.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 2184,
+    "stages": [],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1775667136351_z247sc",
+    "client_id": "c1775649092158",
+    "client_name": "Ricardo Augusto Borges Porfirio Pereira",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+    "status": "failed",
+    "started_at": "2026-04-08T16:52:16.351Z",
+    "completed_at": "2026-04-08T18:21:37.257Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Geracao falhou (exit 1)",
+    "duration_seconds": 5361,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-08T16:52:16.357Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-08T16:52:16.362Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-08T16:52:16.365Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_ANTEPROJETO_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+        "timestamp": "2026-04-08T16:52:16.365Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-08T16:52:16.365Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-08T16:52:16.366Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-08T16:52:16.366Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Request timed out",
+        "timestamp": "2026-04-08T18:21:36.776Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "claude -p saiu com codigo 1",
+        "timestamp": "2026-04-08T18:21:37.247Z"
+      },
+      {
+        "event": "complete",
+        "phase": 0,
+        "message": "Geracao falhou (exit 1) — nenhum documento criado",
+        "timestamp": "2026-04-08T18:21:37.275Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775741153699_nl3qte",
+    "client_id": "c1775741101105",
+    "client_name": "DANIELLE CEDINI",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_DANIELLE_CEDINI.md",
+    "status": "completed",
+    "started_at": "2026-04-09T13:25:53.699Z",
+    "completed_at": "2026-04-09T14:00:32.358Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/DANIELLE CEDINI (Refile - EB-2 NIW - DIRETO)/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb2_niw_DANIELLE_CEDINI.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 2079,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-09T13:25:53.702Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-09T13:25:53.703Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-09T13:25:53.706Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_DANIELLE_CEDINI.md",
+        "timestamp": "2026-04-09T13:25:53.706Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/DANIELLE CEDINI (Refile - EB-2 NIW - DIRETO)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-09T13:25:53.706Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-09T13:25:53.707Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-09T13:25:53.707Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: resume_eb2_niw_DANIELLE_CEDINI.docx (1753s)",
+        "timestamp": "2026-04-09T13:55:06.254Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-09T13:55:06.257Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 99/100 — APROVADO",
+        "timestamp": "2026-04-09T13:55:07.289Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "1 auto-fixes aplicados: Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-09T13:55:07.300Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-09T13:55:07.301Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-09T13:55:07.301Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (326s)",
+        "timestamp": "2026-04-09T14:00:32.356Z"
+      },
+      {
+        "event": "complete",
+        "phase": 0,
+        "message": "{\"success\":true,\"output_path\":\"/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/DANIELLE CEDINI (Refile - EB-2 NIW - DIRETO)/_Forjado por Petition Engine/\",\"docx_original\":\"/Use",
+        "timestamp": "2026-04-09T14:00:32.362Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 99,
+    "quality_passed": true,
+    "quality_violations": [],
+    "quality_auto_fixes": 1
+  },
+  {
+    "id": "gen_1775747041983_ev1t6r",
+    "client_id": "c1775746961942",
+    "client_name": "Vitor Mourão Rocha",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_Vitor_Mourão_Rocha.md",
+    "status": "failed",
+    "started_at": "2026-04-09T15:04:01.983Z",
+    "completed_at": "2026-04-09T17:05:41.403Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-09T15:04:01.984Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-09T15:04:01.985Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-09T15:04:01.988Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_ANTEPROJETO_EB2_NIW_Vitor_Mourão_Rocha.md",
+        "timestamp": "2026-04-09T15:04:01.988Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-09T15:04:01.988Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775754349193_qjt67n",
+    "client_id": "c1775746961942",
+    "client_name": "Vitor Mourão Rocha",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_Vitor_Mourão_Rocha.md",
+    "status": "failed",
+    "started_at": "2026-04-09T17:05:49.193Z",
+    "completed_at": "2026-04-09T17:51:51.843Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-09T17:05:49.195Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-09T17:05:49.196Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-09T17:05:49.198Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_ANTEPROJETO_EB2_NIW_Vitor_Mourão_Rocha.md",
+        "timestamp": "2026-04-09T17:05:49.198Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-09T17:05:49.198Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-09T17:05:49.199Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-09T17:05:49.199Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Anteprojeto gerado e salvo com sucesso. Aqui está o resumo:  **Arquivo salvo:** `/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/20",
+        "timestamp": "2026-04-09T17:17:20.331Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: Anteprojeto_EB2_NIW_Vitor_Mourão_Rocha.md (691s)",
+        "timestamp": "2026-04-09T17:17:20.609Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-09T17:17:20.611Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Arquivo .md detectado — leitura direta (33630 chars)",
+        "timestamp": "2026-04-09T17:17:20.617Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 85/100 — APROVADO",
+        "timestamp": "2026-04-09T17:17:20.626Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "2 auto-fixes aplicados: Remover headings orfaos, Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-09T17:17:20.631Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 33 headings orfaos",
+        "timestamp": "2026-04-09T17:17:20.631Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-09T17:17:20.632Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 85,
+    "quality_passed": true,
+    "quality_violations": [
+      "[high] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 33 headings orfaos"
+    ],
+    "quality_auto_fixes": 2
+  },
+  {
+    "id": "gen_1775766365043_c3o48z",
+    "client_id": "c1775766330613",
+    "client_name": "Gustavo - G",
+    "doc_type": "cover_letter_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_COVER_LETTER_EB2_NIW_Gustavo_-_G.md",
+    "status": "completed",
+    "started_at": "2026-04-09T20:26:05.043Z",
+    "completed_at": "2026-04-09T20:58:20.780Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/",
+    "output_files": [
+      "cover_letter_eb2_niw_Gustavo_-_G.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1936,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-09T20:26:05.044Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-09T20:26:05.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-09T20:26:05.049Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_COVER_LETTER_EB2_NIW_Gustavo_-_G.md",
+        "timestamp": "2026-04-09T20:26:05.049Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-09T20:26:05.049Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-09T20:26:05.049Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-09T20:26:05.049Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "**VERDICT: PASS** — Cover Letter gerada e validada com sucesso.  ---  ## Relatório de Entrega  **Cover Letter gerada para Gustavo Lopes Esteves.**  | ",
+        "timestamp": "2026-04-09T20:50:02.046Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: cover_letter_eb2_niw_Gustavo_-_G.docx (1437s)",
+        "timestamp": "2026-04-09T20:50:02.320Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-09T20:50:02.328Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 100/100 — APROVADO",
+        "timestamp": "2026-04-09T20:50:02.609Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "1 auto-fixes aplicados: Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-09T20:50:02.610Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "FASE 1.7: INSERÇÃO DE THUMBNAILS",
+        "timestamp": "2026-04-09T20:50:02.613Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Inserindo thumbnails em cover_letter_eb2_niw_Gustavo_-_G.docx...",
+        "timestamp": "2026-04-09T20:50:02.613Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Thumbnails inseridos com sucesso",
+        "timestamp": "2026-04-09T20:50:03.124Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "======================================================================\nINSERT THUMBNAILS (Universal)\n======================================================================\nDOCX: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/cover_letter_eb2_niw_Gustavo_-_G.docx\nEvidence: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo\n\n[0/5] Found 1 PDFs in evidence directory\n[1/5] Loading override map...\n  No overrides ",
+        "timestamp": "2026-04-09T20:50:03.125Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-09T20:50:03.126Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-09T20:50:03.126Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (499s)",
+        "timestamp": "2026-04-09T20:58:20.779Z"
+      },
+      {
+        "event": "complete",
+        "phase": 0,
+        "message": "{\"success\":true,\"output_path\":\"/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/\",\"docx_original\":\"/Users/paulo1844/Documents/3_OMNI/_IMIGRAC",
+        "timestamp": "2026-04-09T20:58:20.783Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 100,
+    "quality_passed": true,
+    "quality_violations": [],
+    "quality_auto_fixes": 1
+  },
+  {
+    "id": "gen_1775766378673_rvnb2y",
+    "client_id": "c1775766356394",
+    "client_name": "Pedro - G",
+    "doc_type": "cover_letter_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_COVER_LETTER_EB2_NIW_Pedro_-_G.md",
+    "status": "completed",
+    "started_at": "2026-04-09T20:26:18.673Z",
+    "completed_at": "2026-04-09T21:03:16.257Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Pedro/_Forjado por Petition Engine/",
+    "output_files": [
+      "cover_letter_eb2_niw_Pedro_-_G.docx",
+      "cover_letter_eb2_niw_Pedro_-_G_REVIEWED.docx",
+      "cover_letter_eb2_niw_Pedro_-_G_with_thumbnails.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 2218,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-09T20:26:18.673Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-09T20:26:18.674Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-09T20:26:18.677Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_COVER_LETTER_EB2_NIW_Pedro_-_G.md",
+        "timestamp": "2026-04-09T20:26:18.677Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Pedro/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-09T20:26:18.677Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-09T20:26:18.679Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-09T20:26:18.679Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "## Resumo da Execução  **Documento gerado com sucesso:** `/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Pedro/_Forjado por Peti",
+        "timestamp": "2026-04-09T20:56:18.804Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: cover_letter_eb2_niw_Pedro_-_G.docx (1800s)",
+        "timestamp": "2026-04-09T20:56:19.057Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-09T20:56:19.059Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 85/100 — APROVADO",
+        "timestamp": "2026-04-09T20:56:19.238Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "2 auto-fixes aplicados: Remover headings orfaos, Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-09T20:56:19.239Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 1 headings orfaos",
+        "timestamp": "2026-04-09T20:56:19.239Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "FASE 1.7: INSERÇÃO DE THUMBNAILS",
+        "timestamp": "2026-04-09T20:56:19.239Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Inserindo thumbnails em cover_letter_eb2_niw_Pedro_-_G.docx...",
+        "timestamp": "2026-04-09T20:56:19.239Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Thumbnails inseridos com sucesso",
+        "timestamp": "2026-04-09T20:56:19.619Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "======================================================================\nINSERT THUMBNAILS (Universal)\n======================================================================\nDOCX: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Pedro/_Forjado por Petition Engine/cover_letter_eb2_niw_Pedro_-_G.docx\nEvidence: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Pedro\n\n[0/5] Found 0 PDFs in evidence directory\n[1/5] Loading override map...\n  No overrides loaded",
+        "timestamp": "2026-04-09T20:56:19.619Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-09T20:56:19.620Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-09T20:56:19.620Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao concluida: cover_letter_eb2_niw_Pedro_-_G_REVIEWED.docx (418s)",
+        "timestamp": "2026-04-09T21:03:16.251Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 85,
+    "quality_passed": true,
+    "quality_violations": [
+      "[high] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 1 headings orfaos"
+    ],
+    "quality_auto_fixes": 2
+  },
+  {
+    "id": "gen_1775770560041_u01g2g",
+    "client_id": "c1775766330613",
+    "client_name": "Gustavo - G",
+    "doc_type": "cover_letter_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_COVER_LETTER_EB2_NIW_Gustavo_-_G.md",
+    "status": "failed",
+    "started_at": "2026-04-09T21:36:00.041Z",
+    "completed_at": "2026-04-12T16:17:56.076Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-09T21:36:00.042Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-09T21:36:00.043Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase EB-2 NIW ativado (8 fases + thumbnails + consolidation)",
+        "timestamp": "2026-04-09T21:36:00.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Orchestrator: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/systems/cover-letter-eb2niw-orchestrator/ORCHESTRATOR_COVER_LETTER_EB2NIW.md",
+        "timestamp": "2026-04-09T21:36:00.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Sistema EB-2 NIW: /Users/paulo1844/Documents/AIOS_Petition Engine/CONSTRUTOR COVER EB-2 NIW/V3_Project Instructions",
+        "timestamp": "2026-04-09T21:36:00.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Client docs: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo",
+        "timestamp": "2026-04-09T21:36:00.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-09T21:36:00.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "RAGs EB-2: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs",
+        "timestamp": "2026-04-09T21:36:00.045Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "FASE 0: Inventário e Mapeamento EB-2 NIW",
+        "timestamp": "2026-04-09T21:36:00.046Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "Iniciando fase 0...",
+        "timestamp": "2026-04-09T21:36:00.046Z"
+      }
+    ],
+    "current_phase": "phase_0",
+    "current_phase_label": "Inventário e Mapeamento EB-2 NIW"
+  },
+  {
+    "id": "gen_1775825181547_e6bjs2",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos ",
+    "doc_type": "satellite_letter_eb1",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SATELLITE_LETTER_EB1_Thiago_Fernandes_dos_Santos_.md",
+    "status": "completed_retroactively",
+    "started_at": "2026-04-10T12:46:21.547Z",
+    "completed_at": "2026-04-10T12:52:13.247Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [
+      "01_Kennedy.docx",
+      "02_Nivaldo.docx",
+      "03_Ana_Cristina.docx",
+      "04_Carlos_Eduardo.docx",
+      "05_Rodrigo_Bressane.docx",
+      "06_Vereador_Paulo.docx",
+      "07_Marcus_Francis.docx",
+      "08_Loivo.docx",
+      "09_Samuel.docx",
+      "10_Cacique_Rony.docx",
+      "11_Delegado_Marcos.docx",
+      "12_Mairlon.docx",
+      "13_Sonia.docx"
+    ],
+    "error_message": "Exit 0 mas nenhum documento criado",
+    "duration_seconds": 352,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T12:46:21.548Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T12:46:21.548Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T12:46:21.551Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_SATELLITE_LETTER_EB1_Thiago_Fernandes_dos_Santos_.md",
+        "timestamp": "2026-04-10T12:46:21.551Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T12:46:21.551Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-10T12:46:21.552Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-10T12:46:21.552Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "## Diagnóstico de Pré-Requisitos (Error Rules BLOCK)  Analisei todos os documentos na pasta do Thiago. Antes de gerar as cartas, preciso reportar os g",
+        "timestamp": "2026-04-10T12:52:12.971Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "claude -p retornou 0 mas NENHUM documento foi criado no disco",
+        "timestamp": "2026-04-10T12:52:13.239Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Pasta verificada: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T12:52:13.239Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento...",
+    "retroactive_note": "Salvaged 2026-04-19 — findNewDocx was non-recursive and missed subdir CARTAS/. Fix applied in base.ts (recursive findNewDocx with depth=4 + skip node_modules/.git/.next). 13 letters were on disk since 2026-04-10 but never associated with this generation.",
+    "retroactive_at": "2026-04-19T11:05:27.553752Z",
+    "retroactive_output_dir": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/CARTAS/"
+  },
+  {
+    "id": "gen_1775837151980_npyvmt",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+    "status": "failed",
+    "started_at": "2026-04-10T16:05:51.980Z",
+    "completed_at": "2026-04-10T16:08:06.788Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Geracao falhou (exit 1)",
+    "duration_seconds": 135,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T16:05:51.981Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T16:05:51.981Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T16:05:51.986Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+        "timestamp": "2026-04-10T16:05:51.986Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T16:05:51.986Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-10T16:05:51.987Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-10T16:05:51.987Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "You've hit your limit · resets 2pm (America/Sao_Paulo)",
+        "timestamp": "2026-04-10T16:08:06.525Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "claude -p saiu com codigo 1",
+        "timestamp": "2026-04-10T16:08:06.784Z"
+      },
+      {
+        "event": "complete",
+        "phase": 0,
+        "message": "Geracao falhou (exit 1) — nenhum documento criado",
+        "timestamp": "2026-04-10T16:08:06.792Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775837190019_bjp7yq",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+    "status": "failed",
+    "started_at": "2026-04-10T16:06:30.019Z",
+    "completed_at": "2026-04-12T16:17:56.076Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T16:06:30.020Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T16:06:30.020Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T16:06:30.023Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+        "timestamp": "2026-04-10T16:06:30.023Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T16:06:30.023Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775837197682_gub6rs",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+    "status": "failed",
+    "started_at": "2026-04-10T16:06:37.682Z",
+    "completed_at": "2026-04-12T16:17:56.076Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T16:06:37.683Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T16:06:37.683Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T16:06:37.685Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+        "timestamp": "2026-04-10T16:06:37.685Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T16:06:37.685Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775837205454_1vml31",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+    "status": "failed",
+    "started_at": "2026-04-10T16:06:45.454Z",
+    "completed_at": "2026-04-12T16:17:56.076Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T16:06:45.454Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T16:06:45.454Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T16:06:45.456Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+        "timestamp": "2026-04-10T16:06:45.456Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T16:06:45.456Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775840879248_ohsii8",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+    "status": "failed",
+    "started_at": "2026-04-10T17:07:59.248Z",
+    "completed_at": "2026-04-12T16:17:56.076Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T17:07:59.249Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T17:07:59.250Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T17:07:59.254Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos.md",
+        "timestamp": "2026-04-10T17:07:59.254Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T17:07:59.254Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1775849614769_ufp5ws",
+    "client_id": "c1775849407090",
+    "client_name": "MARCIO ELIAS BARBOSA ",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_MARCIO_ELIAS_BARBOSA_.md",
+    "status": "quality_blocked",
+    "started_at": "2026-04-10T19:33:34.769Z",
+    "completed_at": "2026-04-10T19:55:58.511Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": null,
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-10T19:33:34.770Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-10T19:33:34.770Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-10T19:33:34.773Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_ANTEPROJETO_EB2_NIW_MARCIO_ELIAS_BARBOSA_.md",
+        "timestamp": "2026-04-10T19:33:34.773Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /_Forjado por Petition Engine/",
+        "timestamp": "2026-04-10T19:33:34.773Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-10T19:33:34.775Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-10T19:33:34.775Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Zero violations. All 27 error rules pass. Here's the summary:  ---  **Anteprojeto gerado e salvo com sucesso.**  **Arquivo:** `/Users/paulo1844/Docume",
+        "timestamp": "2026-04-10T19:55:58.183Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: Anteprojeto_EB2_NIW_MARCIO_ELIAS_BARBOSA_.md (1344s)",
+        "timestamp": "2026-04-10T19:55:58.458Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-10T19:55:58.462Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Arquivo .md detectado — leitura direta (61280 chars)",
+        "timestamp": "2026-04-10T19:55:58.485Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 19/100 — REPROVADO",
+        "timestamp": "2026-04-10T19:55:58.507Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "2 auto-fixes aplicados: Remover headings orfaos, Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-10T19:55:58.508Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] Nunca mencionar PROEX, Carlos Avelino, nomes de outros clientes, Kortix, ou qualquer referencia interna do sistema nos documentos de saida.: ProEx, ProEx, ProEx",
+        "timestamp": "2026-04-10T19:55:58.509Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] NUNCA usar 'consultoria' ou 'consulting' isolado em documentos EB-2 NIW — dispara flag no sistema VIBE/Dun & Bradstreet do USCIS. Usar: 'prestação de serviços técnicos especializados' ou 'soluções baseadas em metodologia proprietária'.: Consulting, Consulting, Consulting",
+        "timestamp": "2026-04-10T19:55:58.509Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 43 headings orfaos",
+        "timestamp": "2026-04-10T19:55:58.510Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] Termo proibido \"PROEX\" encontrado no documento: ProEx",
+        "timestamp": "2026-04-10T19:55:58.510Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "QUALITY GATE BLOQUEADO — 2 violacao(oes) critica(s) encontrada(s). Documento NAO sera entregue.",
+        "timestamp": "2026-04-10T19:55:58.510Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] Nunca mencionar PROEX, Carlos Avelino, nomes de outros clientes, Kortix, ou qualquer referencia interna do sistema nos documentos de saida.: ProEx, ProEx, ProEx",
+        "timestamp": "2026-04-10T19:55:58.510Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] Termo proibido \"PROEX\" encontrado no documento: ProEx",
+        "timestamp": "2026-04-10T19:55:58.510Z"
+      }
+    ],
+    "current_phase": "phase_1.5",
+    "current_phase_label": "Quality Gate — Validacao automatica",
+    "quality_score": 19,
+    "quality_passed": false,
+    "quality_violations": [
+      "Nunca mencionar PROEX, Carlos Avelino, nomes de outros clientes, Kortix, ou qualquer referencia interna do sistema nos documentos de saida.",
+      "Termo proibido \"PROEX\" encontrado no documento"
+    ],
+    "quality_auto_fixes": 2
+  },
+  {
+    "id": "gen_1775939897060_ulif1q",
+    "client_id": "c1775649092158",
+    "client_name": "Ricardo Augusto Borges Porfirio Pereira",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+    "status": "completed",
+    "started_at": "2026-04-11T20:38:17.060Z",
+    "completed_at": "2026-04-11T21:10:18.751Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb2_niw_Ricardo_Augusto_Borges_Porfirio_Pereira.docx",
+      "resume_eb2_niw_Ricardo_Augusto_Borges_Porfirio_Pereira.docx",
+      "resume_eb2_niw_Ricardo_Augusto_Borges_Porfirio_Pereira_with_thumbnails.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1922,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-11T20:38:17.062Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-11T20:38:17.063Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-11T20:38:17.067Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+        "timestamp": "2026-04-11T20:38:17.068Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-11T20:38:17.068Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-11T20:38:17.068Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-11T20:38:17.068Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento gerado e validado com sucesso. Resumo:  **Arquivo gerado:** `/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo",
+        "timestamp": "2026-04-11T21:02:59.799Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: resume_eb2_niw_Ricardo_Augusto_Borges_Porfirio_Pereira.docx (1483s)",
+        "timestamp": "2026-04-11T21:03:00.052Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-11T21:03:00.056Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 100/100 — APROVADO",
+        "timestamp": "2026-04-11T21:03:00.364Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "1 auto-fixes aplicados: Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-11T21:03:00.368Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "FASE 1.7: INSERÇÃO DE THUMBNAILS",
+        "timestamp": "2026-04-11T21:03:00.369Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Inserindo thumbnails em resume_eb2_niw_Ricardo_Augusto_Borges_Porfirio_Pereira.docx...",
+        "timestamp": "2026-04-11T21:03:00.370Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Thumbnails inseridos com sucesso",
+        "timestamp": "2026-04-11T21:03:01.322Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "======================================================================\nINSERT THUMBNAILS (Universal)\n======================================================================\nDOCX: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/resume_eb2_niw_Ricardo_Augusto_Borges_Porfirio_Pereira.docx\nEvidence: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfir",
+        "timestamp": "2026-04-11T21:03:01.324Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "FASE 1.8: FIX FORMATAÇÃO (spacing + anchor + cleanup)",
+        "timestamp": "2026-04-11T21:03:01.324Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "============================================================",
+        "timestamp": "2026-04-11T21:03:01.472Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-11T21:03:01.474Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-11T21:03:01.474Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (439s)",
+        "timestamp": "2026-04-11T21:10:18.751Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 100,
+    "quality_passed": true,
+    "quality_violations": [],
+    "quality_auto_fixes": 1
+  },
+  {
+    "id": "gen_1775941365911_8zwcwf",
+    "client_id": "c1775941358526",
+    "client_name": "Márcio Elias Barbosa (O1) ",
+    "doc_type": "resume_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB1A_Márcio_Elias_Barbosa_(O1)_.md",
+    "status": "completed",
+    "started_at": "2026-04-11T21:02:45.911Z",
+    "completed_at": "2026-04-11T21:21:34.075Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Consultoras GIU e Karina Mariano/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb1a_Márcio_Elias_Barbosa_(O1)_.docx",
+      "resume_eb1a_Márcio_Elias_Barbosa_(O1)_.docx",
+      "resume_eb1a_Márcio_Elias_Barbosa_(O1)_REVIEWED.docx",
+      "resume_eb1a_Márcio_Elias_Barbosa_(O1)__with_thumbnails.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1128,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-11T21:02:45.912Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-11T21:02:45.913Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-11T21:02:45.918Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB1A_Márcio_Elias_Barbosa_(O1)_.md",
+        "timestamp": "2026-04-11T21:02:45.918Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Consultoras GIU e Karina Mariano/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-11T21:02:45.918Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-11T21:02:45.920Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-11T21:02:45.920Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "**Résumé gerado e validado com sucesso.**  ## Resultado  **Arquivo:** `/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ",
+        "timestamp": "2026-04-11T21:15:39.868Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: resume_eb1a_Márcio_Elias_Barbosa_(O1)_.docx (774s)",
+        "timestamp": "2026-04-11T21:15:40.101Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-11T21:15:40.103Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 100/100 — APROVADO",
+        "timestamp": "2026-04-11T21:15:40.251Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "1 auto-fixes aplicados: Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-11T21:15:40.252Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "FASE 1.7: INSERÇÃO DE THUMBNAILS",
+        "timestamp": "2026-04-11T21:15:40.253Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Inserindo thumbnails em resume_eb1a_Márcio_Elias_Barbosa_(O1)_.docx...",
+        "timestamp": "2026-04-11T21:15:40.253Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Thumbnails inseridos com sucesso",
+        "timestamp": "2026-04-11T21:15:40.671Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "======================================================================\nINSERT THUMBNAILS (Universal)\n======================================================================\nDOCX: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Consultoras GIU e Karina Mariano/_Forjado por Petition Engine/resume_eb1a_Márcio_Elias_Barbosa_(O1)_.docx\nEvidence: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Cons",
+        "timestamp": "2026-04-11T21:15:40.672Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "FASE 1.8: FIX FORMATAÇÃO (spacing + anchor + cleanup)",
+        "timestamp": "2026-04-11T21:15:40.672Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "============================================================",
+        "timestamp": "2026-04-11T21:15:40.801Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-11T21:15:40.802Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-11T21:15:40.802Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao concluida: resume_eb1a_Márcio_Elias_Barbosa_(O1)_REVIEWED.docx (354s)",
+        "timestamp": "2026-04-11T21:21:34.075Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 100,
+    "quality_passed": true,
+    "quality_violations": [],
+    "quality_auto_fixes": 1
+  },
+  {
+    "id": "gen_1775965503921_dkhnnu",
+    "client_id": "c1775965492262",
+    "client_name": "Bruno da Silva Ucella",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+    "status": "completed",
+    "started_at": "2026-04-12T03:45:03.921Z",
+    "completed_at": "2026-04-12T04:10:12.848Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+    "output_files": [
+      "resume_eb2_niw_Bruno_da_Silva_Ucella.docx",
+      "resume_eb2_niw_Bruno_da_Silva_Ucella.docx",
+      "resume_eb2_niw_Bruno_da_Silva_Ucella_with_thumbnails.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1509,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T03:45:03.922Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T03:45:03.922Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T03:45:03.925Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+        "timestamp": "2026-04-12T03:45:03.925Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T03:45:03.925Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-12T03:45:03.926Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-12T03:45:03.926Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "**Résumé EB-2 NIW — Bruno da Silva Ucella** gerado e validado com sucesso.  **Resultado:** - **Arquivo:** `/Users/paulo1844/Documents/2_PROEX (A COMPL",
+        "timestamp": "2026-04-12T04:03:23.928Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: resume_eb2_niw_Bruno_da_Silva_Ucella.docx (1100s)",
+        "timestamp": "2026-04-12T04:03:24.190Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-12T04:03:24.195Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 100/100 — APROVADO",
+        "timestamp": "2026-04-12T04:03:24.417Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "1 auto-fixes aplicados: Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-12T04:03:24.420Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "FASE 1.7: INSERÇÃO DE THUMBNAILS",
+        "timestamp": "2026-04-12T04:03:24.421Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Inserindo thumbnails em resume_eb2_niw_Bruno_da_Silva_Ucella.docx...",
+        "timestamp": "2026-04-12T04:03:24.421Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "Thumbnails inseridos com sucesso",
+        "timestamp": "2026-04-12T04:03:25.075Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.7,
+        "message": "======================================================================\nINSERT THUMBNAILS (Universal)\n======================================================================\nDOCX: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/resume_eb2_niw_Bruno_da_Silva_Ucella.docx\nEvidence: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)\n\n[0/5] Found 105 PDFs in eviden",
+        "timestamp": "2026-04-12T04:03:25.077Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "FASE 1.8: FIX FORMATAÇÃO (spacing + anchor + cleanup)",
+        "timestamp": "2026-04-12T04:03:25.077Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "============================================================",
+        "timestamp": "2026-04-12T04:03:25.233Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-12T04:03:25.234Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-12T04:03:25.234Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (409s)",
+        "timestamp": "2026-04-12T04:10:12.848Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 100,
+    "quality_passed": true,
+    "quality_violations": [],
+    "quality_auto_fixes": 1
+  },
+  {
+    "id": "gen_1776001076753_j5antx",
+    "client_id": "c1775965492262",
+    "client_name": "Bruno da Silva Ucella",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+    "status": "failed",
+    "started_at": "2026-04-12T13:37:56.753Z",
+    "completed_at": "2026-04-12T16:17:56.076Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T13:37:56.755Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T13:37:56.760Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T13:37:56.764Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+        "timestamp": "2026-04-12T13:37:56.764Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T13:37:56.764Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776002995595_oa89cq",
+    "client_id": "c1776002982474",
+    "client_name": "Daphne Carolini Catunda Bispo",
+    "doc_type": "methodology",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_METHODOLOGY_Daphne_Carolini_Catunda_Bispo.md",
+    "status": "completed",
+    "started_at": "2026-04-12T14:09:55.595Z",
+    "completed_at": "2026-04-12T14:29:38.297Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/KARINA S./Daphne Carolini Catunda Bispo/_Forjado por Petition Engine/",
+    "output_files": [
+      "methodology_Daphne_Carolini_Catunda_Bispo.pptx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1183,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T14:09:55.596Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T14:09:55.597Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T14:09:55.600Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_METHODOLOGY_Daphne_Carolini_Catunda_Bispo.md",
+        "timestamp": "2026-04-12T14:09:55.600Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/KARINA S./Daphne Carolini Catunda Bispo/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T14:09:55.600Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-12T14:09:55.601Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-12T14:09:55.601Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Pipeline completo executado com sucesso. Aqui está o resumo:  ---  ## Resultado da Geração  **Cliente:** Daphne Carolini Catunda Bispo **Documento:** ",
+        "timestamp": "2026-04-12T14:23:09.402Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: methodology_Daphne_Carolini_Catunda_Bispo.pptx (794s)",
+        "timestamp": "2026-04-12T14:23:09.688Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-12T14:23:09.692Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Nao foi possivel extrair texto do .docx para quality check",
+        "timestamp": "2026-04-12T14:23:09.886Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-12T14:23:09.888Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-12T14:23:09.888Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (389s)",
+        "timestamp": "2026-04-12T14:29:38.297Z"
+      },
+      {
+        "event": "complete",
+        "phase": 0,
+        "message": "{\"success\":true,\"output_path\":\"/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/KARINA S./Daphne Carolini Catunda Bispo/_Forjado por Petition Engine/\",\"docx_original\":\"/",
+        "timestamp": "2026-04-12T14:29:38.302Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1776017566303_g7daw2",
+    "client_id": "c1775453301008",
+    "client_name": "Camilla Santana Pereira Paes de Barros",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Camilla_Santana_Pereira_Paes_de_Barros.md",
+    "status": "failed",
+    "started_at": "2026-04-12T18:12:46.303Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T18:12:46.304Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T18:12:46.305Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T18:12:46.308Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_SAAS_EVIDENCE_Camilla_Santana_Pereira_Paes_de_Barros.md",
+        "timestamp": "2026-04-12T18:12:46.308Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T18:12:46.308Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776020123166_vbes9b",
+    "client_id": "c1775825159915",
+    "client_name": "Thiago Fernandes dos Santos ",
+    "doc_type": "projeto_base_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos_.md",
+    "status": "quality_blocked",
+    "started_at": "2026-04-12T18:55:23.166Z",
+    "completed_at": "2026-04-12T19:10:04.537Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": null,
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T18:55:23.167Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T18:55:23.168Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T18:55:23.173Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB1A_Thiago_Fernandes_dos_Santos_.md",
+        "timestamp": "2026-04-12T18:55:23.173Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T18:55:23.173Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-12T18:55:23.197Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-12T18:55:23.197Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Validação das error rules completa. Resultados:  | Regra | Status | |-------|--------| | \"I/we believe\" | ✅ Zero ocorrências | | Palavra \"prompt\" | ✅ ",
+        "timestamp": "2026-04-12T19:10:04.123Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: Projeto_Base_EB1A_Thiago_Fernandes_dos_Santos_.md (881s)",
+        "timestamp": "2026-04-12T19:10:04.437Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-12T19:10:04.446Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Arquivo .md detectado — leitura direta (45390 chars)",
+        "timestamp": "2026-04-12T19:10:04.469Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 0/100 — REPROVADO",
+        "timestamp": "2026-04-12T19:10:04.515Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "2 auto-fixes aplicados: Remover headings orfaos, Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-12T19:10:04.518Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] SaaS Evidence, Met e Dec NUNCA devem ter 'Version X.X', 'Generated: date', ou 'SaaS Evidence Architect' no documento. São termos internos do sistema. O documento deve parecer produzido profissionalmente pela empresa, não por um gerador automático.: Petition Engine",
+        "timestamp": "2026-04-12T19:10:04.518Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] NUNCA usar 'consultoria' ou 'consulting' isolado em documentos EB-2 NIW — dispara flag no sistema VIBE/Dun & Bradstreet do USCIS. Usar: 'prestação de serviços técnicos especializados' ou 'soluções baseadas em metodologia proprietária'.: Consultoria, Consultoria, consultoria",
+        "timestamp": "2026-04-12T19:10:04.518Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] PROEX é CONSULTORIA, NÃO escritório de advocacia. NUNCA usar terminologia jurídica/advocatícia. Substituir: 'equipe jurídica' → 'equipe técnica', 'advogado' → 'consultor', 'escritório de advocacia' → 'consultoria especializada', 'representação legal' → 'suporte técnico'.: Advogado, Parecer Jurídico, advogado",
+        "timestamp": "2026-04-12T19:10:04.526Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] USCIS é processo ADMINISTRATIVO, NÃO judicial. NUNCA usar terminologia de tribunal. Substituir: 'tribunal' → 'USCIS/processo administrativo', 'juiz' → 'oficial de imigração/adjudicador', 'sentença' → 'decisão administrativa', 'julgamento' → 'adjudicação'.: Corte, tribunal, julgamento",
+        "timestamp": "2026-04-12T19:10:04.526Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] NUNCA mencionar Petition Engine, Forjado por Petition Engine, ou qualquer referência ao sistema de geração nos documentos. O documento deve parecer produzido por especialista humano, não por sistema automatizado.: Petition Engine",
+        "timestamp": "2026-04-12T19:10:04.526Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "QUALITY GATE BLOQUEADO — 5 violacao(oes) critica(s) encontrada(s). Documento NAO sera entregue.",
+        "timestamp": "2026-04-12T19:10:04.526Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] SaaS Evidence, Met e Dec NUNCA devem ter 'Version X.X', 'Generated: date', ou 'SaaS Evidence Architect' no documento. São termos internos do sistema. O documento deve parecer produzido profissionalmente pela empresa, não por um gerador automático.: Petition Engine",
+        "timestamp": "2026-04-12T19:10:04.526Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] PROEX é CONSULTORIA, NÃO escritório de advocacia. NUNCA usar terminologia jurídica/advocatícia. Substituir: 'equipe jurídica' → 'equipe técnica', 'advogado' → 'consultor', 'escritório de advocacia' → 'consultoria especializada', 'representação legal' → 'suporte técnico'.: Advogado, Parecer Jurídico, advogado",
+        "timestamp": "2026-04-12T19:10:04.530Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] USCIS é processo ADMINISTRATIVO, NÃO judicial. NUNCA usar terminologia de tribunal. Substituir: 'tribunal' → 'USCIS/processo administrativo', 'juiz' → 'oficial de imigração/adjudicador', 'sentença' → 'decisão administrativa', 'julgamento' → 'adjudicação'.: Corte, tribunal, julgamento",
+        "timestamp": "2026-04-12T19:10:04.530Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] NUNCA mencionar Petition Engine, Forjado por Petition Engine, ou qualquer referência ao sistema de geração nos documentos. O documento deve parecer produzido por especialista humano, não por sistema automatizado.: Petition Engine",
+        "timestamp": "2026-04-12T19:10:04.530Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL/BLOCK] NUNCA incluir meta-informação de versionamento ou processo nos documentos do cliente. Nada de 'Versão 3.0 — Descontaminada', 'Revisada (SoC aplicado)', 'Para Revisão', 'Rascunho Interno'. O documento é FINAL, ponto.: para revisão, para revisão, para revisão",
+        "timestamp": "2026-04-12T19:10:04.530Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 0/100. O documento foi gerado em /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/_Forjado por Petition Engine/Projeto_Base_EB1A_Thiago_Fernandes_dos_Santos_.md mas REPROVOU no quality gate. Corrija as violacoes e re-gere.",
+        "timestamp": "2026-04-12T19:10:04.531Z"
+      }
+    ],
+    "current_phase": "phase_1.5",
+    "current_phase_label": "Quality Gate — Validacao automatica",
+    "quality_score": 0,
+    "quality_passed": false,
+    "quality_violations": [
+      "SaaS Evidence, Met e Dec NUNCA devem ter 'Version X.X', 'Generated: date', ou 'SaaS Evidence Architect' no documento. São termos internos do sistema. O documento deve parecer produzido profissionalmente pela empresa, não por um gerador automático.",
+      "PROEX é CONSULTORIA, NÃO escritório de advocacia. NUNCA usar terminologia jurídica/advocatícia. Substituir: 'equipe jurídica' → 'equipe técnica', 'advogado' → 'consultor', 'escritório de advocacia' → 'consultoria especializada', 'representação legal' → 'suporte técnico'.",
+      "USCIS é processo ADMINISTRATIVO, NÃO judicial. NUNCA usar terminologia de tribunal. Substituir: 'tribunal' → 'USCIS/processo administrativo', 'juiz' → 'oficial de imigração/adjudicador', 'sentença' → 'decisão administrativa', 'julgamento' → 'adjudicação'.",
+      "NUNCA mencionar Petition Engine, Forjado por Petition Engine, ou qualquer referência ao sistema de geração nos documentos. O documento deve parecer produzido por especialista humano, não por sistema automatizado.",
+      "NUNCA incluir meta-informação de versionamento ou processo nos documentos do cliente. Nada de 'Versão 3.0 — Descontaminada', 'Revisada (SoC aplicado)', 'Para Revisão', 'Rascunho Interno'. O documento é FINAL, ponto."
+    ],
+    "quality_auto_fixes": 2
+  },
+  {
+    "id": "gen_1776020410983_ltcwek",
+    "client_id": "c1776020379063",
+    "client_name": "Ricardo de Moura Pinton",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_Ricardo_de_Moura_Pinton.md",
+    "status": "completed",
+    "started_at": "2026-04-12T19:00:10.983Z",
+    "completed_at": "2026-04-12T19:31:28.401Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Ricardo de Moura Pinton (DIRETO)/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_Ricardo_de_Moura_Pinton.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1877,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T19:00:10.984Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T19:00:10.985Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T19:00:10.990Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_ANTEPROJETO_EB2_NIW_Ricardo_de_Moura_Pinton.md",
+        "timestamp": "2026-04-12T19:00:10.990Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Ricardo de Moura Pinton (DIRETO)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T19:00:10.990Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-12T19:00:10.991Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-12T19:00:10.991Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "**Validação completa — 12/12 regras de erro: ZERO violações.**  O Anteprojeto foi gerado e validado com sucesso.  ---  **Arquivo salvo em:** `/Users/p",
+        "timestamp": "2026-04-12T19:25:43.724Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: Anteprojeto_EB2_NIW_Ricardo_de_Moura_Pinton.md (1533s)",
+        "timestamp": "2026-04-12T19:25:43.998Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-12T19:25:44.005Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Arquivo .md detectado — leitura direta (62126 chars)",
+        "timestamp": "2026-04-12T19:25:44.013Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 85/100 — APROVADO",
+        "timestamp": "2026-04-12T19:25:44.034Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "2 auto-fixes aplicados: Remover headings orfaos, Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-12T19:25:44.035Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 39 headings orfaos",
+        "timestamp": "2026-04-12T19:25:44.035Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-12T19:25:44.042Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-12T19:25:44.044Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (344s)",
+        "timestamp": "2026-04-12T19:31:28.400Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada",
+    "quality_score": 85,
+    "quality_passed": true,
+    "quality_violations": [
+      "[high] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 39 headings orfaos"
+    ],
+    "quality_auto_fixes": 2
+  },
+  {
+    "id": "gen_1776023374582_327220",
+    "client_id": "c1775746961942",
+    "client_name": "Vitor Mourão Rocha",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Vitor_Mourão_Rocha.md",
+    "status": "failed",
+    "started_at": "2026-04-12T19:49:34.582Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T19:49:34.583Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T19:49:34.583Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T19:49:34.588Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Vitor_Mourão_Rocha.md",
+        "timestamp": "2026-04-12T19:49:34.588Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T19:49:34.588Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776023461117_7xzokk",
+    "client_id": "c1775965492262",
+    "client_name": "Bruno da Silva Ucella",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+    "status": "failed",
+    "started_at": "2026-04-12T19:51:01.117Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T19:51:01.118Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T19:51:01.120Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T19:51:01.123Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+        "timestamp": "2026-04-12T19:51:01.123Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T19:51:01.123Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776027745705_yce8ue",
+    "client_id": "c1775453301008",
+    "client_name": "Camilla Santana Pereira Paes de Barros",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Camilla_Santana_Pereira_Paes_de_Barros.md",
+    "status": "failed",
+    "started_at": "2026-04-12T21:02:25.705Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T21:02:25.707Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T21:02:25.713Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T21:02:25.717Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_SAAS_EVIDENCE_Camilla_Santana_Pereira_Paes_de_Barros.md",
+        "timestamp": "2026-04-12T21:02:25.717Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/CAMILLA/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T21:02:25.717Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776027779666_ztybef",
+    "client_id": "c1775965492262",
+    "client_name": "Bruno da Silva Ucella",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+    "status": "failed",
+    "started_at": "2026-04-12T21:02:59.666Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T21:02:59.667Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T21:02:59.669Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T21:02:59.672Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+        "timestamp": "2026-04-12T21:02:59.672Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T21:02:59.672Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776027794870_46gud0",
+    "client_id": "c1775746961942",
+    "client_name": "Vitor Mourão Rocha",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Vitor_Mourão_Rocha.md",
+    "status": "failed",
+    "started_at": "2026-04-12T21:03:14.870Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-12T21:03:14.871Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-12T21:03:14.873Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-12T21:03:14.877Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Vitor_Mourão_Rocha.md",
+        "timestamp": "2026-04-12T21:03:14.877Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Vitor Mourão Rocha/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-12T21:03:14.877Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776084158281_xc7y4i",
+    "client_id": "c1775649092158",
+    "client_name": "Ricardo Augusto Borges Porfirio Pereira",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+    "status": "quality_blocked",
+    "started_at": "2026-04-13T12:42:38.281Z",
+    "completed_at": "2026-04-13T13:01:21.454Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": null,
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-13T12:42:38.283Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-13T12:42:38.289Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-13T12:42:38.295Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md",
+        "timestamp": "2026-04-13T12:42:38.295Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-13T12:42:38.295Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-13T12:42:38.298Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-13T12:42:38.298Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "**Validação completa — TODAS as 45 regras de erro passaram com 0 violações.**  Documento gerado com sucesso:  **Arquivo:** `_Forjado por Petition Engi",
+        "timestamp": "2026-04-13T13:01:21.111Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: Projeto_Base_EB2_NIW_Ricardo_Augusto_Borges_Porfirio_Pereira.md (1123s)",
+        "timestamp": "2026-04-13T13:01:21.403Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-13T13:01:21.408Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Arquivo .md detectado — leitura direta (64116 chars)",
+        "timestamp": "2026-04-13T13:01:21.419Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Score: 60/100 — REPROVADO",
+        "timestamp": "2026-04-13T13:01:21.448Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "2 auto-fixes aplicados: Remover headings orfaos, Comprimir linhas vazias consecutivas",
+        "timestamp": "2026-04-13T13:01:21.450Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[CRITICAL] USCIS é processo ADMINISTRATIVO, NÃO judicial. NUNCA usar terminologia de tribunal. Substituir: 'tribunal' → 'USCIS/processo administrativo', 'juiz' → 'oficial de imigração/adjudicador', 'sentença' → 'decisão administrativa', 'julgamento' → 'adjudicação'.: Tribunal, Tribunal",
+        "timestamp": "2026-04-13T13:01:21.450Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "[HIGH] Headings orfaos encontrados (Introducao, Conclusao, Mapa Perceptual, ou markdown #): 47 headings orfaos",
+        "timestamp": "2026-04-13T13:01:21.450Z"
+      }
+    ],
+    "current_phase": "phase_1.5",
+    "current_phase_label": "Quality Gate — Validacao automatica",
+    "quality_score": 60,
+    "quality_passed": false,
+    "quality_violations": [
+      "USCIS é processo ADMINISTRATIVO, NÃO judicial. NUNCA usar terminologia de tribunal. Substituir: 'tribunal' → 'USCIS/processo administrativo', 'juiz' → 'oficial de imigração/adjudicador', 'sentença' → 'decisão administrativa', 'julgamento' → 'adjudicação'."
+    ],
+    "quality_auto_fixes": 2
+  },
+  {
+    "id": "gen_1776278783490_ihvbay",
+    "client_id": "c1775115598005",
+    "client_name": "Rebeka Cunha",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Rebeka_Cunha.md",
+    "status": "failed",
+    "started_at": "2026-04-15T18:46:23.490Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-15T18:46:23.494Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-15T18:46:23.497Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-15T18:46:23.506Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB2_NIW_Rebeka_Cunha.md",
+        "timestamp": "2026-04-15T18:46:23.506Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/REBEKA CUNHA Paulo AJUSTE/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-15T18:46:23.506Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776278818991_buhss2",
+    "client_id": "c4",
+    "client_name": "Gustavo Nelson",
+    "doc_type": "cover_letter_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/Claude/Projects/C.P./GERAR_COVER_EB1A_GUSTAVO_NELSON.md",
+    "status": "failed",
+    "started_at": "2026-04-15T18:46:58.991Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/GUSTAVO NELSON/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": []
+  },
+  {
+    "id": "gen_1776278834708_xx7vpx",
+    "client_id": "c4",
+    "client_name": "Gustavo Nelson Sales Chaves",
+    "doc_type": "cover_letter_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/Claude/Projects/C.P./GERAR_COVER_EB1A_GUSTAVO_NELSON.md",
+    "status": "failed",
+    "started_at": "2026-04-15T18:47:14.708Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/GUSTAVO NELSON/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": []
+  },
+  {
+    "id": "gen_1776278921022_tt63sb",
+    "client_id": "c4",
+    "client_name": "Gustavo Nelson Sales Chaves",
+    "doc_type": "cover_letter_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/Claude/Projects/C.P./GERAR_COVER_EB1A_GUSTAVO_NELSON.md",
+    "status": "failed",
+    "started_at": "2026-04-15T18:48:41.022Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/GUSTAVO NELSON/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-15T18:48:41.023Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-15T18:48:41.024Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "⚡ Pipeline multi-fase EB-1A ativado (10 fases)",
+        "timestamp": "2026-04-15T18:48:41.026Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Orchestrator: EB-1A multi-phase pipeline (extracted module)",
+        "timestamp": "2026-04-15T18:48:41.026Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Client docs: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/GUSTAVO NELSON/",
+        "timestamp": "2026-04-15T18:48:41.027Z"
+      }
+    ],
+    "current_phase": "phase_0",
+    "current_phase_label": "Inventário e Mapeamento"
+  },
+  {
+    "id": "gen_1776278967084_ql46y0",
+    "client_id": "c1775766330613",
+    "client_name": "Gustavo - G",
+    "doc_type": "cover_letter_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_COVER_LETTER_EB2_NIW_Gustavo_-_G.md",
+    "status": "failed",
+    "started_at": "2026-04-15T18:49:27.084Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-15T18:49:27.085Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-15T18:49:27.087Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase EB-2 NIW ativado (8 fases + thumbnails + consolidation)",
+        "timestamp": "2026-04-15T18:49:27.089Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Orchestrator: EB-2 NIW pipeline (extracted module)",
+        "timestamp": "2026-04-15T18:49:27.089Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Sistema EB-2 NIW: /Users/paulo1844/Documents/AIOS_Petition Engine/CONSTRUTOR COVER EB-2 NIW/V3_Project Instructions",
+        "timestamp": "2026-04-15T18:49:27.089Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Client docs: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo",
+        "timestamp": "2026-04-15T18:49:27.090Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Gustavo/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-15T18:49:27.090Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "RAGs EB-2: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs/",
+        "timestamp": "2026-04-15T18:49:27.090Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "FASE 0: Inventário e Mapeamento EB-2 NIW",
+        "timestamp": "2026-04-15T18:49:27.091Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "Iniciando fase 0...",
+        "timestamp": "2026-04-15T18:49:27.091Z"
+      }
+    ],
+    "current_phase": "phase_0",
+    "current_phase_label": "Inventário e Mapeamento EB-2 NIW"
+  },
+  {
+    "id": "gen_1776278982126_52kabe",
+    "client_id": "c1775965492262",
+    "client_name": "Bruno da Silva Ucella",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+    "status": "failed",
+    "started_at": "2026-04-15T18:49:42.126Z",
+    "completed_at": "2026-04-16T01:40:45.234Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Timeout: processo ficou mais de 30min sem concluir. Provavelmente o servidor ou sessao foram fechados.",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-15T18:49:42.128Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-15T18:49:42.134Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-15T18:49:42.141Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB2_NIW_Bruno_da_Silva_Ucella.md",
+        "timestamp": "2026-04-15T18:49:42.141Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Bruno da Silva Ucella (EB-2 NIW)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-15T18:49:42.141Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776302116018_4ccofh",
+    "client_id": "c1776302105497",
+    "client_name": "Vitor GZ",
+    "doc_type": "business_plan",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_BUSINESS_PLAN_Vitor_GZ.md",
+    "status": "completed",
+    "started_at": "2026-04-16T01:15:16.018Z",
+    "completed_at": "2026-04-16T01:40:11.605Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Vitor/_Forjado por Petition Engine/",
+    "output_files": [
+      "V1_business_plan_Vitor_GZ.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1496,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T01:15:16.019Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T01:15:16.019Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-16T01:15:16.024Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_BUSINESS_PLAN_Vitor_GZ.md",
+        "timestamp": "2026-04-16T01:15:16.024Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Vitor/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-16T01:15:16.024Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-16T01:15:16.026Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-16T01:15:16.026Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento gerado e validado com sucesso. Aqui está o resumo:  ## Output Gerado  **Documento:** `V1_business_plan_Vitor_GZ.docx` (556 KB) **Thumbnail M",
+        "timestamp": "2026-04-16T01:34:23.136Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: V1_business_plan_Vitor_GZ.docx (1147s)",
+        "timestamp": "2026-04-16T01:34:23.443Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-16T01:34:23.448Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Nao foi possivel extrair texto do .docx para quality check",
+        "timestamp": "2026-04-16T01:34:23.456Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "FASE 1.8: FIX FORMATAÇÃO (spacing + anchor + cleanup)",
+        "timestamp": "2026-04-16T01:34:23.456Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.8,
+        "message": "Fix formatação falhou: execSync is not defined",
+        "timestamp": "2026-04-16T01:34:23.456Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-16T01:34:23.457Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-16T01:34:23.457Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (349s)",
+        "timestamp": "2026-04-16T01:40:11.605Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1776304538789_5vy4q4",
+    "client_id": "c1775741101105",
+    "client_name": "DANIELLE CEDINI",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_DANIELLE_CEDINI.md",
+    "status": "failed",
+    "started_at": "2026-04-16T01:55:38.789Z",
+    "completed_at": "2026-04-18T23:27:00.836022+00:00",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/DANIELLE CEDINI (Refile - EB-2 NIW - DIRETO)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Process timed out (>4171min) — auto-marked failed by cleanup sweep 2026-04-18",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T01:55:38.790Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T01:55:38.791Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "⚡ Pipeline multi-fase genérico: Résumé EB-2 NIW — Multi-Phase Pipeline (6 fases)",
+        "timestamp": "2026-04-16T01:55:38.795Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase: Résumé EB-2 NIW — Multi-Phase Pipeline (6 fases)",
+        "timestamp": "2026-04-16T01:55:38.796Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "FASE 0: Evidence Organization",
+        "timestamp": "2026-04-16T01:55:38.796Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Síntese Profissional (500-700 palavras)"
+  },
+  {
+    "id": "gen_1776305072238_vymdzt",
+    "client_id": "c1776302105497",
+    "client_name": "Vitor GZ",
+    "doc_type": "business_plan",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_BUSINESS_PLAN_Vitor_GZ.md",
+    "status": "failed",
+    "started_at": "2026-04-16T02:04:32.238Z",
+    "completed_at": "2026-04-18T23:27:00.836022+00:00",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Vitor/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Process timed out (>4162min) — auto-marked failed by cleanup sweep 2026-04-18",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T02:04:32.238Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T02:04:32.238Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-16T02:04:32.242Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_BUSINESS_PLAN_Vitor_GZ.md",
+        "timestamp": "2026-04-16T02:04:32.242Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Vitor/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-16T02:04:32.242Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776305741247_og3v60",
+    "client_id": "c1776302105497",
+    "client_name": "Vitor GZ",
+    "doc_type": "business_plan",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_BUSINESS_PLAN_Vitor_GZ.md",
+    "status": "failed",
+    "started_at": "2026-04-16T02:15:41.247Z",
+    "completed_at": "2026-04-18T23:27:00.836022+00:00",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Vitor/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Process timed out (>4151min) — auto-marked failed by cleanup sweep 2026-04-18",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T02:15:41.249Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T02:15:41.251Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "⚡ Pipeline multi-fase genérico: Business Plan EB-2 NIW — Multi-Phase Pipeline (7 fases)",
+        "timestamp": "2026-04-16T02:15:41.258Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase: Business Plan EB-2 NIW — Multi-Phase Pipeline (7 fases)",
+        "timestamp": "2026-04-16T02:15:41.259Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "FASE 0: Inventário + Pesquisa de Mercado",
+        "timestamp": "2026-04-16T02:15:41.259Z"
+      }
+    ],
+    "current_phase": "phase_0",
+    "current_phase_label": "Inventário + Pesquisa de Mercado"
+  },
+  {
+    "id": "gen_1776308515314_2z8e86",
+    "client_id": "c1775741101105",
+    "client_name": "DANIELLE CEDINI",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_DANIELLE_CEDINI.md",
+    "status": "failed",
+    "started_at": "2026-04-16T03:01:55.314Z",
+    "completed_at": "2026-04-18T23:27:00.836022+00:00",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2025/DANIELLE CEDINI (Refile - EB-2 NIW - DIRETO)/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Process timed out (>4105min) — auto-marked failed by cleanup sweep 2026-04-18",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T03:01:55.316Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T03:01:55.317Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "⚡ Pipeline multi-fase genérico: Résumé EB-2 NIW — Multi-Phase Pipeline (6 fases)",
+        "timestamp": "2026-04-16T03:01:55.324Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase: Résumé EB-2 NIW — Multi-Phase Pipeline (6 fases)",
+        "timestamp": "2026-04-16T03:01:55.324Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "Fase 0 pulada — evidence_inventory.json já existe",
+        "timestamp": "2026-04-16T03:01:55.324Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Síntese Profissional (500-700 palavras)"
+  },
+  {
+    "id": "gen_1776308535250_33ee3v",
+    "client_id": "c1776302105497",
+    "client_name": "Vitor GZ",
+    "doc_type": "business_plan",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_BUSINESS_PLAN_Vitor_GZ.md",
+    "status": "failed",
+    "started_at": "2026-04-16T03:02:15.250Z",
+    "completed_at": "2026-04-18T23:27:00.836022+00:00",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Coisas Gizele/Vitor/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Process timed out (>4104min) — auto-marked failed by cleanup sweep 2026-04-18",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T03:02:15.250Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T03:02:15.251Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "⚡ Pipeline multi-fase genérico: Business Plan EB-2 NIW — Multi-Phase Pipeline (7 fases)",
+        "timestamp": "2026-04-16T03:02:15.255Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase: Business Plan EB-2 NIW — Multi-Phase Pipeline (7 fases)",
+        "timestamp": "2026-04-16T03:02:15.256Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "FASE 0: Inventário + Pesquisa de Mercado",
+        "timestamp": "2026-04-16T03:02:15.256Z"
+      }
+    ],
+    "current_phase": "phase_0",
+    "current_phase_label": "Inventário + Pesquisa de Mercado"
+  },
+  {
+    "id": "gen_1776359477059_6pnd1g",
+    "client_id": "c1775941358526",
+    "client_name": "Márcio Elias Barbosa (O1)",
+    "doc_type": "resume_eb1a",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB1A_Márcio_Elias_Barbosa_(O1)_.md",
+    "status": "failed",
+    "started_at": "2026-04-16T17:11:17.059Z",
+    "completed_at": "2026-04-18T23:27:00.836022+00:00",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Consultoras GIU e Karina Mariano/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Process timed out (>3255min) — auto-marked failed by cleanup sweep 2026-04-18",
+    "duration_seconds": null,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T17:11:17.062Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T17:11:17.071Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-16T17:11:17.091Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_RESUME_EB1A_Márcio_Elias_Barbosa_(O1)_.md",
+        "timestamp": "2026-04-16T17:11:17.091Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/MARCIO ELIAS BARBOSA /4. O-1 Consultoras GIU e Karina Mariano/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-16T17:11:17.091Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776363967190_tcucp9",
+    "client_id": "c1776363846650",
+    "client_name": "Ricardo Polanski ",
+    "doc_type": "projeto_base_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_PROJETO_BASE_EB2_NIW_Ricardo_Polanski_.md",
+    "status": "completed",
+    "started_at": "2026-04-16T18:26:07.190Z",
+    "completed_at": "2026-04-16T18:43:36.149Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/Ricardo Alves (DIRETO)/_Forjado por Petition Engine/",
+    "output_files": [
+      "Projeto_Base_EB2_NIW_Ricardo_Polanski_.md"
+    ],
+    "error_message": null,
+    "duration_seconds": 1049,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-16T18:26:07.192Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-16T18:26:07.193Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-16T18:26:07.214Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_PROJETO_BASE_EB2_NIW_Ricardo_Polanski_.md",
+        "timestamp": "2026-04-16T18:26:07.214Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/Ricardo Alves (DIRETO)/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-16T18:26:07.214Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-16T18:26:07.218Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-16T18:26:07.218Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Projeto-Base gerado e validado com sucesso.  ## Entrega  **Arquivo criado:** `/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA ",
+        "timestamp": "2026-04-16T18:37:57.238Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Documento criado: Projeto_Base_EB2_NIW_Ricardo_Polanski_.md (711s)",
+        "timestamp": "2026-04-16T18:37:57.805Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "FASE 1.5: QUALITY GATE — Validacao automatica",
+        "timestamp": "2026-04-16T18:37:57.812Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1.5,
+        "message": "Nao foi possivel extrair texto do .md para quality check",
+        "timestamp": "2026-04-16T18:37:57.834Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "FASE 2: REVISAO CRUZADA — Separation of Concerns",
+        "timestamp": "2026-04-16T18:37:57.836Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Iniciando sessao limpa para revisao cruzada...",
+        "timestamp": "2026-04-16T18:37:57.836Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Revisao executou mas nao gerou _REVIEWED.docx (338s)",
+        "timestamp": "2026-04-16T18:43:36.149Z"
+      },
+      {
+        "event": "complete",
+        "phase": 0,
+        "message": "{\"success\":true,\"output_path\":\"/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/MILENA/Ricardo Alves (DIRETO)/_Forjado por Petition Engine/\",\"docx_original\":\"/Users/paul",
+        "timestamp": "2026-04-16T18:43:36.192Z"
+      }
+    ],
+    "current_phase": "phase_2",
+    "current_phase_label": "Separation of Concerns — Revisao cruzada"
+  },
+  {
+    "id": "gen_1776553218869_qe1v6x",
+    "client_id": "c1775441169698",
+    "client_name": "Cristine Correa",
+    "doc_type": "saas_evidence",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_SAAS_EVIDENCE_Cristine_Correa.md",
+    "status": "failed",
+    "started_at": "2026-04-18T23:00:18.869Z",
+    "completed_at": "2026-04-18T23:18:02.494Z",
+    "output_path": "/Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/",
+    "output_files": [],
+    "error_message": "Exit 0 mas nenhum documento criado",
+    "duration_seconds": 1064,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-18T23:00:18.871Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-18T23:00:18.873Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-18T23:00:18.877Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_SAAS_EVIDENCE_Cristine_Correa.md",
+        "timestamp": "2026-04-18T23:00:18.877Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-18T23:00:18.877Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-18T23:00:18.878Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-18T23:00:18.878Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "---  ## ✅ ENTREGA COMPLETA — RECONFIGURAÇÃO 100% DO SaaS  ### Arquivos gerados em `/2_PROEX (A COMPLEMENTAR)/.../CRISTINE CORREA/_Forjado por Petition",
+        "timestamp": "2026-04-18T23:18:02.202Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "claude -p retornou 0 mas NENHUM documento foi criado no disco",
+        "timestamp": "2026-04-18T23:18:02.474Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Pasta verificada: /Users/paulo1844/Documents/_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/CRISTINE CORREA/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-18T23:18:02.474Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento..."
+  },
+  {
+    "id": "gen_1776682082764_lznqep",
+    "client_id": "c1776682069799",
+    "client_name": "Claudete Fernandes Libanio",
+    "doc_type": "resume_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_RESUME_EB2_NIW_Claudete_Fernandes_Libanio.md",
+    "status": "completed",
+    "started_at": "2026-04-20T10:48:02.764Z",
+    "completed_at": "2026-04-20T11:06:28.340Z",
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Claudete Fernandes Libanio (Direto)/_Forjado por Petition Engine/",
+    "output_files": [
+      "phase_1_sintese.md",
+      "phase_2_experiencia.md",
+      "phase_3_complementares.md",
+      "resume_eb2_niw_Claudete_Fernandes_Libanio.docx"
+    ],
+    "error_message": null,
+    "duration_seconds": 1106,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-20T10:48:02.766Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-20T10:48:02.767Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "⚡ Pipeline multi-fase genérico: Résumé EB-2 NIW — Multi-Phase Pipeline (6 fases)",
+        "timestamp": "2026-04-20T10:48:02.772Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Pipeline multi-fase: Résumé EB-2 NIW — Multi-Phase Pipeline (6 fases)",
+        "timestamp": "2026-04-20T10:48:02.774Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "FASE 0: Evidence Organization",
+        "timestamp": "2026-04-20T10:48:02.774Z"
+      },
+      {
+        "event": "stage",
+        "phase": "0",
+        "message": "✅ Evidence Organization: ============================================================",
+        "timestamp": "2026-04-20T10:48:03.873Z"
+      },
+      {
+        "event": "stage",
+        "phase": "1",
+        "message": "FASE 1: Síntese Profissional (500-700 palavras)",
+        "timestamp": "2026-04-20T10:48:03.875Z"
+      },
+      {
+        "event": "stage",
+        "phase": "1",
+        "message": "Executando claude -p (fase 1, case=claudete_fernandes_libanio)...",
+        "timestamp": "2026-04-20T10:48:03.879Z"
+      },
+      {
+        "event": "stage",
+        "phase": "1",
+        "message": "Síntese profissional gerada e salva.  **Arquivo:** `.../_Forjado por Petition Engine/phases/phase_1_sintese.md`  **Ações:** - Indexei pasta da cliente",
+        "timestamp": "2026-04-20T10:50:23.827Z"
+      },
+      {
+        "event": "stage",
+        "phase": "1",
+        "message": "✅ Fase 1 concluída",
+        "timestamp": "2026-04-20T10:50:24.148Z"
+      },
+      {
+        "event": "stage",
+        "phase": "1",
+        "message": "✅ Validação: Word count: 671 (min: 500)",
+        "timestamp": "2026-04-20T10:50:24.180Z"
+      },
+      {
+        "event": "stage",
+        "phase": "2",
+        "message": "FASE 2: Experiência Profissional (Responsabilidades + Resultados)",
+        "timestamp": "2026-04-20T10:50:24.206Z"
+      },
+      {
+        "event": "stage",
+        "phase": "2",
+        "message": "Executando claude -p (fase 2, case=claudete_fernandes_libanio)...",
+        "timestamp": "2026-04-20T10:50:24.216Z"
+      },
+      {
+        "event": "stage",
+        "phase": "2",
+        "message": "## Resumo  **Arquivo gerado:** `_Forjado por Petition Engine/phases/phase_2_experiencia.md`  **Seções criadas (6 posições em 2 empresas):** - **Faurec",
+        "timestamp": "2026-04-20T10:56:13.481Z"
+      },
+      {
+        "event": "stage",
+        "phase": "2",
+        "message": "✅ Fase 2 concluída",
+        "timestamp": "2026-04-20T10:56:13.930Z"
+      },
+      {
+        "event": "stage",
+        "phase": "2",
+        "message": "✅ Validação: All 2 patterns found",
+        "timestamp": "2026-04-20T10:56:13.939Z"
+      },
+      {
+        "event": "stage",
+        "phase": "2",
+        "message": "Hard-block scan: 1 critical match(es) em phase_2_experiencia.md",
+        "timestamp": "2026-04-20T10:56:13.945Z"
+      },
+      {
+        "event": "stage",
+        "phase": "3",
+        "message": "FASE 3: Seções Complementares",
+        "timestamp": "2026-04-20T10:56:13.946Z"
+      },
+      {
+        "event": "stage",
+        "phase": "3",
+        "message": "Executando claude -p (fase 3, case=claudete_fernandes_libanio)...",
+        "timestamp": "2026-04-20T10:56:13.951Z"
+      },
+      {
+        "event": "stage",
+        "phase": "3",
+        "message": "Arquivo gerado.  **Ações executadas:** - Indexei `evidence_inventory.json`, `phase_1_sintese.md`, `phase_2_experiencia.md` e o diretório-fonte `17 - C",
+        "timestamp": "2026-04-20T10:59:16.055Z"
+      },
+      {
+        "event": "stage",
+        "phase": "3",
+        "message": "✅ Fase 3 concluída",
+        "timestamp": "2026-04-20T10:59:16.512Z"
+      },
+      {
+        "event": "stage",
+        "phase": "3",
+        "message": "✅ Validação: File exists: phase_3_complementares.md",
+        "timestamp": "2026-04-20T10:59:16.512Z"
+      },
+      {
+        "event": "stage",
+        "phase": "3",
+        "message": "Hard-block scan: 1 critical match(es) em phase_3_complementares.md",
+        "timestamp": "2026-04-20T10:59:16.517Z"
+      },
+      {
+        "event": "stage",
+        "phase": "4",
+        "message": "FASE 4: Consolidação DOCX (python-docx)",
+        "timestamp": "2026-04-20T10:59:16.517Z"
+      },
+      {
+        "event": "stage",
+        "phase": "4",
+        "message": "Executando claude -p (fase 4, case=claudete_fernandes_libanio)...",
+        "timestamp": "2026-04-20T10:59:16.520Z"
+      },
+      {
+        "event": "stage",
+        "phase": "4",
+        "message": "Documento gerado. 4013 palavras (acima do mínimo 3.500), 20 evidências mapeadas — todas localizadas no dossiê primário.  ## Arquivos criados  - `/User",
+        "timestamp": "2026-04-20T11:06:27.435Z"
+      },
+      {
+        "event": "stage",
+        "phase": "4",
+        "message": "✅ Fase 4 concluída",
+        "timestamp": "2026-04-20T11:06:27.685Z"
+      },
+      {
+        "event": "stage",
+        "phase": "4",
+        "message": "✅ Validação: File exists: resume_eb2_niw_Claudete_Fernandes_Libanio.docx",
+        "timestamp": "2026-04-20T11:06:27.685Z"
+      },
+      {
+        "event": "stage",
+        "phase": "5",
+        "message": "FASE 5: Quality Gate (Python)",
+        "timestamp": "2026-04-20T11:06:28.228Z"
+      },
+      {
+        "event": "stage",
+        "phase": "5",
+        "message": "⚠️ Quality Gate (Python): Error: Command failed: python3 \"/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/scripts/core/quality_gate_resume.py\" \"/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Claudete Fernandes Libanio (Direto)/_Forjado por Petition Engine//resume_e",
+        "timestamp": "2026-04-20T11:06:28.338Z"
+      }
+    ],
+    "current_phase": "phase_5",
+    "current_phase_label": "Quality Gate (Python)"
+  },
+  {
+    "id": "gen_1776720925480_tuyfp1",
+    "client_id": "c1776720904406",
+    "client_name": "PATRÍCIA ALVES PIRES RIBEIRO",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_PATRÍCIA_ALVES_PIRES_RIBEIRO.md",
+    "status": "failed",
+    "started_at": "2026-04-20T21:35:25.480Z",
+    "completed_at": "2026-04-20T21:45:25.852Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Patricia/_Forjado por Petition Engine/",
+    "output_files": [
+      "Anteprojeto_EB2_NIW_PATRÍCIA_ALVES_PIRES_RIBEIRO.md"
+    ],
+    "error_message": "Timeout idle (600s) — processo morto — docx parcial",
+    "duration_seconds": 600,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "claude: /Users/paulo1844/.npm-global/bin/claude",
+        "timestamp": "2026-04-20T21:35:25.482Z"
+      },
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "Arquivos anteriores versionados automaticamente (V1, V2...)",
+        "timestamp": "2026-04-20T21:35:25.483Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "FASE 1: GERACAO DO DOCUMENTO",
+        "timestamp": "2026-04-20T21:35:25.493Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Instrucao: GERAR_ANTEPROJETO_EB2_NIW_PATRÍCIA_ALVES_PIRES_RIBEIRO.md",
+        "timestamp": "2026-04-20T21:35:25.493Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Output: /Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Patricia/_Forjado por Petition Engine/",
+        "timestamp": "2026-04-20T21:35:25.493Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Executando: claude -p \"Leia ... e execute tudo.\"",
+        "timestamp": "2026-04-20T21:35:25.495Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Aguarde — geracao real pode levar varios minutos...",
+        "timestamp": "2026-04-20T21:35:25.495Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "claude -p terminou com timeout (idle) após 600s",
+        "timestamp": "2026-04-20T21:45:25.832Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "stderr: \n[runClaude] idle timeout — no output for 600000ms — sending SIGTERM\n",
+        "timestamp": "2026-04-20T21:45:25.832Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Processo falhou mas encontrou 1 .docx criado(s)",
+        "timestamp": "2026-04-20T21:45:25.846Z"
+      }
+    ],
+    "current_phase": "phase_1",
+    "current_phase_label": "Gerando documento...",
+    "stdout_tail": "",
+    "stderr_tail": "\n[runClaude] idle timeout — no output for 600000ms — sending SIGTERM\n",
+    "timed_out": true,
+    "timeout_kind": "idle"
+  },
+  {
+    "id": "gen_1776787312414_v2ptc",
+    "client_id": "c1776720904406",
+    "client_name": "PATRÍCIA ALVES PIRES RIBEIRO",
+    "doc_type": "anteprojeto_eb2_niw",
+    "prompt_file": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/Sistema Automatizado/petition-engine/data/prompts/GERAR_ANTEPROJETO_EB2_NIW_PATRÍCIA_ALVES_PIRES_RIBEIRO.md",
+    "status": "success",
+    "version": "V2",
+    "pipeline_version": "anteprojeto-eb2-niw@2.0",
+    "generation_mode": "audit_and_correction",
+    "parent_generation_id": "gen_1776720925480_tuyfp1",
+    "started_at": "2026-04-21T16:01:52.414Z",
+    "completed_at": "2026-04-21T16:01:52.414Z",
+    "output_path": "/Users/paulo1844/Documents/3_OMNI/_IMIGRAÇÃO/_CLIENTES/Patricia/_Forjado por Petition Engine/",
+    "output_files": [
+      "V2_Anteprojeto_EB2_NIW_PATRÍCIA_ALVES_PIRES_RIBEIRO.md",
+      "ANTEPROJETO_PATRICIA_AUDIT_2026-04-21.md"
+    ],
+    "validation": {
+      "validator": "scripts/validate_anteprojeto_sources.py",
+      "status": "PASSED",
+      "inline_sources": 9,
+      "authoritative_domains": 13,
+      "domains_cited": [
+        "bls.gov",
+        "census.gov",
+        "dol.gov",
+        "cwc.org",
+        "littler.com",
+        "restaurant.org",
+        "td.org",
+        "eda.gov",
+        "sba.gov",
+        "commerce.gov",
+        "apprenticeship.gov",
+        "e-verify.gov",
+        "osha.gov"
+      ],
+      "ranking_terms_found": 0,
+      "forbidden_soc_found": 0,
+      "infra_exposure_found": 0
+    },
+    "corrections_applied": [
+      "BLS 11-9051 Food Service Managers: 431.950→244.230; $63.060→$65.310",
+      "BLS 11-3131 Training Managers: 55.770→46.400",
+      "BLS 13-1041 Compliance Officers: 360.520→418.000; $75.670→$78.420",
+      "DOL WHD AF2024: $274mi→$149,9mi (+ esclarecimento FY2023=$274mi)",
+      "Littler 2024 68%: atribuição reformulada (sobre impacto DOL WHD)",
+      "Census NAICS 722513 $371,4bi: reformulado como ~159k estabelecimentos 2022",
+      "NRA 73%: reformulado cautelosamente sem percentual não-verificável"
+    ],
+    "audit_report": "ANTEPROJETO_PATRICIA_AUDIT_2026-04-21.md",
+    "duration_seconds": 0,
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 0,
+        "message": "V2 via audit+correction — pipeline anteprojeto-eb2-niw v2.0",
+        "timestamp": "2026-04-21T16:01:52.414Z"
+      },
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "WebSearch real em 8 queries contra bls.gov/dol.gov/uscis.gov/census.gov/littler.com/restaurant.org/td.org",
+        "timestamp": "2026-04-21T16:01:52.414Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "5 erros materiais detectados no V1 + 3 alegações duvidosas",
+        "timestamp": "2026-04-21T16:01:52.414Z"
+      },
+      {
+        "event": "stage",
+        "phase": 3,
+        "message": "Correções cirúrgicas aplicadas; 9 [Source: url, accessed date] inline; audit report gerado",
+        "timestamp": "2026-04-21T16:01:52.414Z"
+      },
+      {
+        "event": "stage",
+        "phase": 4,
+        "message": "validate_anteprojeto_sources.py PASSED (0 errors, 1 warning não-bloqueante)",
+        "timestamp": "2026-04-21T16:01:52.414Z"
+      }
+    ]
+  },
+  {
+    "id": "gen_1776787419906_v8rod",
+    "client_id": "rodrigo_pires_correa_de_mattos",
+    "client_name": "RODRIGO PIRES CORRÊA DE MATTOS",
+    "doc_type": "impacto_report",
+    "status": "success",
+    "version": "V8",
+    "pipeline_version": "impacto-report@3.0 + V8 callouts+glossary",
+    "generation_mode": "builder_direct",
+    "builder": "build_impacto_universal_v3.js (v8 extension)",
+    "chart_generator": "generate_impacto_charts.py",
+    "started_at": "2026-04-21T15:40:00Z",
+    "completed_at": "2026-04-21T15:46:00Z",
+    "output_path": "/Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/Clientes/RODRIGO PIRES CORRÊA DE MATTOS/_Forjado por Petition Engine/",
+    "output_files": [
+      "V8_IMPACTO_Rodrigo_Pires_Corrêa_de_Mattos_Analise_Impacto_Economico_PT.docx"
+    ],
+    "output_size_bytes": 316723,
+    "archived_predecessors": [
+      "V1 (_LIXO_V1_config_raso/)",
+      "V3 (_LIXO_V3_imigratorio_nao_VF_aligned/)",
+      "V4 (_LIXO_V4_sem_fontes_web/)",
+      "V5 (_LIXO_V5_charts_zerados_PT/)",
+      "V7 (_LIXO_V7_sem_glossario/)"
+    ],
+    "validation": {
+      "validate_impacto_config": {
+        "exit": 0,
+        "errors": 0,
+        "warnings": 0
+      },
+      "qa_impacto_docx": {
+        "exit": 0,
+        "passed": 8,
+        "warnings": 0,
+        "errors": 0
+      },
+      "node_syntax_check": {
+        "exit": 0
+      }
+    },
+    "metrics": {
+      "paragraphs": 258,
+      "tables": 34,
+      "inline_images": 3,
+      "words": 4275,
+      "delta_vs_v7": {
+        "paras": "+19",
+        "tables": "+11",
+        "words": "+930"
+      }
+    },
+    "commit_sha": "79a0372c7e21225b48d6f9bdb3786e7579cc7127",
+    "stages": [
+      {
+        "event": "stage",
+        "phase": 1,
+        "message": "Extended build_impacto_universal_v3.js with methodCallout + calculationNote(Mx) PT/EN for M1-M10 + buildGlossary(12 terms)",
+        "timestamp": "2026-04-21T15:40:00Z"
+      },
+      {
+        "event": "stage",
+        "phase": 2,
+        "message": "Regenerated V8 DOCX with charts + logo PROEX + glossary section 12.7",
+        "timestamp": "2026-04-21T15:45:00Z"
+      },
+      {
+        "event": "stage",
+        "phase": 3,
+        "message": "Validation suite passed: validator (config) + qa_docx (DOCX) + node --check (syntax)",
+        "timestamp": "2026-04-21T15:46:00Z"
+      }
+    ]
   }
 ]
