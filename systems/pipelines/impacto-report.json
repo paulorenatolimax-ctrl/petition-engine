@@ -18,11 +18,11 @@
     },
     {
       "id": "2",
-      "name": "AGENT_02 RESEARCH — NAICS + BLS + IMPLAN multipliers",
+      "name": "AGENT_02 RESEARCH v3 — WebSearch OBRIGATÓRIO em tempo real",
       "type": "claude",
-      "prompt": "Você é o AGENT_02 RESEARCH. LEIA {systemPath}/AGENT_02_RESEARCH.md integralmente.\n\nLeia {outputDir}/client_config_{clientSlug}.json (gerado na Fase 1).\n\nEnriqueça o JSON com:\n- NAICS code confirmado (6 dígitos) — PESQUISE NA INTERNET o código real (bureau de census us gov naics lookup)\n- BLS OES multipliers atualizados para NAICS e MSA específicos — PESQUISAR valores reais (bea.gov rims_online, epi.org multipliers)\n- IMPLAN Type-SAM multipliers (output, employment, earnings, tax) específicos do NAICS do cliente\n- MSA/FIPS code preciso (census.gov geography)\n- Industry benchmark data (dados atualizados do setor)\n\nSe os multipliers do cliente forem iguais aos do Luciano (copiados ao invés de calibrados ao NAICS), FLAG NO CONSOLE COMO WARNING. Use WebSearch ativamente — NAICS diferentes têm multiplicadores MUITO diferentes.\n\nSalve overwrite {outputDir}/client_config_{clientSlug}.json. Confirme no final: NAICS code, 4 multipliers principais, MSA, e FONTES consultadas na web.",
-      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["industry_naics", "type_ii_output"] },
-      "fail_action": "warn"
+      "prompt": "Você é o AGENT_02 RESEARCH v3. LEIA {systemPath}/AGENT_02_RESEARCH_v3.md INTEGRALMENTE e siga à risca.\n\nREQUISITO INVIOLÁVEL: executar WebSearch / WebFetch (ou ctx_fetch_and_index) EM TEMPO REAL pra cada uma das 5 categorias:\n1. NAICS validation — census.gov\n2. RIMS II Type II multipliers — bea.gov\n3. BLS OES wages/employment MSA — bls.gov\n4. EPI employment multiplier — epi.org (Bivens 2019, valores: educational services 1.93, manufacturing durables 7.4, professional services 2.3, etc)\n5. MSA/state benchmarks + executive orders ativas — whitehouse.gov, state .gov\n\nAtualize {outputDir}/client_config_{clientSlug}.json com os valores reais. OBRIGATÓRIO preencher `multipliers.sources[]` com pelo menos 4 URLs reais acessadas nesta execução, cada uma com {url, consulted_for, access_date}. `research_timestamp` ISO 8601 UTC. `methodology_notes` explicando como cada multiplier foi calibrado ao NAICS/MSA do cliente.\n\nPROIBIDO usar multipliers idênticos aos de outro cliente — DEVE calibrar ao NAICS específico. Range esperado services MSA grande: Type II output 1.2-1.6, earnings 0.45-0.80, employment 12-20 jobs/$1M. EPI educational services ≈ 1.93 (NÃO 3.6).\n\nPROIBIDO terminologia imigratória no output (EB-2, NIW, Dhanasar, USCIS, petitioner, waiver, I-140).\n\nNo final imprima: NAICS + descrição, 4 multipliers, N URLs consultadas, timestamp, methodology_notes.",
+      "validation": { "type": "contains", "file": "{outputDir}/client_config_{clientSlug}.json", "patterns": ["\"sources\"", "research_timestamp", "methodology_notes"] },
+      "fail_action": "block"
     },
     {
       "id": "3",
