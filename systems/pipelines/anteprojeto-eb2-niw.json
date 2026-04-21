@@ -1,0 +1,60 @@
+{
+  "doc_type": "anteprojeto_eb2_niw",
+  "name": "Anteprojeto EB-2 NIW — 3 Endeavors Neutros",
+  "version": "2.0",
+  "description": "Pipeline de geração de anteprojeto estratégico EB-2 NIW com 3 Proposed Endeavors apresentados NEUTRAMENTE para deliberação da peticionária. Output .md (uso interno, não vai no dossier USCIS). v2.0 adiciona WebSearch obrigatório + validator determinístico de sources inline (inspirado no IMPACTO v3.0).",
+  "output_format": "md",
+  "output_destination": "internal_obsidian",
+  "hard_rules_terminology": [
+    "Cláusula pétrea: zero juízo de valor entre os 3 endeavors",
+    "Nunca recomendar um endeavor sobre outro (sem 'recomendamos', 'sugerimos', 'o mais forte', 'melhor opção')",
+    "Sem ranking de endeavors por preferência ou força",
+    "Sem seção 'Recomendação Estratégica' ou 'Recomendação Final'",
+    "Classificação de riscos apresentada como FATO, nunca como argumento de escolha",
+    "Nunca expor infraestrutura: PROEX, Kortix, Petition Engine, Obsidian, RAG, .md",
+    "Nunca usar SOC codes que exigem validação de diploma nos EUA: 23-1011 (advogado), 29-1069 (médico), 17-201X (engenheiro), 13-2011 (contador)"
+  ],
+  "phases": [
+    {
+      "id": "1",
+      "name": "INTAKE — ler documentos do cliente + RAGs + benchmarks",
+      "type": "claude",
+      "prompt": "Fase 1: Ler TODOS os documentos da pasta do cliente ({clientDocsPath}), os RAGs de EB-2 NIW em /Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_(RAGs) - ARGUMENTAÇÃO (ESTUDO)_LINKS QUE REFORÇAM/2025/EB-2 NIW - RAGs/, e o benchmark Anteprojeto Thayse. Produzir inventário de credenciais verificadas, trajetória profissional, eixos técnicos candidatos.",
+      "validation": { "type": "exists", "file": "{outputDir}/intake_inventory_{clientSlug}.json" },
+      "fail_action": "warn"
+    },
+    {
+      "id": "2",
+      "name": "WEBSEARCH OBRIGATÓRIO — dados BLS + Census + DOL + USCIS em tempo real",
+      "type": "claude",
+      "prompt": "Fase 2: Para CADA SOC/NAICS candidato aos 3 endeavors propostos, executar WebSearch REAL contra fontes primárias:\n\n1. BLS OEWS May 2024 — posições nacionais + mediana salarial por SOC (query: 'BLS OEWS May 2024 [SOC code] national employment')\n2. BLS OOH — projeção de crescimento até 2033 (query: '[occupation name] Occupational Outlook Handbook')\n3. Census Bureau — NAICS establishment count mais recente disponível\n4. DOL WHD — estatísticas FY mais recente\n5. USCIS — Policy Manual Volume 6 Part F Ch. 5 + updates 2025 (PA-2025-03 EB-2 NIW)\n6. State executive orders ativos no(s) estado(s)-alvo\n\nSalvar {outputDir}/sources_{clientSlug}.json com: [{url, consulted_for, access_date, extracted_value}] — MÍNIMO 10 URLs de domínios autoritativos.",
+      "validation": { "type": "contains", "file": "{outputDir}/sources_{clientSlug}.json", "patterns": ["bls.gov", "uscis.gov", "access_date"] },
+      "fail_action": "block"
+    },
+    {
+      "id": "3",
+      "name": "DRAFT — escrever o .md com 3 endeavors neutros + sources inline",
+      "type": "claude",
+      "prompt": "Fase 3: Escrever o anteprojeto seguindo o prompt completo em {promptFile}. REQUISITO INVIOLÁVEL: após CADA dado quantitativo (número absoluto, percentual, valor monetário) inserir INLINE `[Source: <url>, accessed YYYY-MM-DD]` usando as URLs coletadas na fase 2. Mínimo 5 sources inline únicos. Ranges plausibility sanity-check: BLS positions devem estar dentro de ±30% dos valores OOH oficiais; percentuais do NRA/ATD/Littler devem ser citações diretas do report, não inferências.",
+      "validation": { "type": "exists", "file": "{outputDir}/Anteprojeto_EB2_NIW_{clientSlug}.md" },
+      "fail_action": "block"
+    },
+    {
+      "id": "4",
+      "name": "VALIDATE SOURCES — determinístico python (BLOQUEANTE)",
+      "type": "python",
+      "script": "scripts/validate_anteprojeto_sources.py",
+      "args": ["{outputDir}/Anteprojeto_EB2_NIW_{clientSlug}.md", "{outputDir}/ANTEPROJETO_VALIDATION.txt"],
+      "validation": { "type": "exists", "file": "{outputDir}/ANTEPROJETO_VALIDATION.txt" },
+      "fail_action": "block"
+    },
+    {
+      "id": "5",
+      "name": "QA QUALITATIVO — Claude revisa neutralidade, estrutura, juízos de valor",
+      "type": "claude",
+      "prompt": "Fase 5: Revisar {outputDir}/Anteprojeto_EB2_NIW_{clientSlug}.md contra cláusula pétrea de neutralidade. Flagar: qualquer trecho que induza escolha ('recomendamos', 'se sobressai', 'menor risco'), ranking implícito de endeavors, seções de recomendação proibidas, SOC codes vedados. Gerar {outputDir}/ANTEPROJETO_QA_REPORT.md com PASS/FAIL.",
+      "validation": { "type": "exists", "file": "{outputDir}/ANTEPROJETO_QA_REPORT.md" },
+      "fail_action": "warn"
+    }
+  ]
+}
