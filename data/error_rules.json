@@ -1903,5 +1903,20 @@
     "active": true,
     "times_triggered": 0,
     "created_at": "2026-04-19T11:03:52.334168Z"
+  },
+  {
+    "rule_id": "r1",
+    "rule_category": "rfe_response_logic",
+    "severity": "critical",
+    "action": "block",
+    "doc_types": [
+      "rfe_response_eb2_niw",
+      "rfe_response_eb1a"
+    ],
+    "rule_description": "SILOGISMO BÁRBARA (Aristóteles): Prong 3 é a CONCLUSÃO do silogismo P1+P2→P3. Mesmo se o oficial não analisou P3 substantivamente na RFE (comum quando rejeita P1 e P2), a resposta DEVE fechar o argumento lógico com seção/argumentação explícita de P3. Fortalecer P1 e P2 sem fechar P3 deixa o silogismo incompleto e desperdiça o esforço probatório. Markers que indicam P3 presente: 'Prong 3', 'on balance', 'beneficial to waive', 'labor certification', 'conventional PERM'. Pelo menos 2 destes devem estar presentes na resposta.",
+    "rule_pattern": "response_must_address_all_three_prongs_even_if_officer_did_not",
+    "auto_fix": false,
+    "date_added": "2026-04-21",
+    "source": "Paulo Lima guidance — Mariana Kasza RFE execution"
   }
 ]

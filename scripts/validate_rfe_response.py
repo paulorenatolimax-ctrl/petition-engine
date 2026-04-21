@@ -72,7 +72,15 @@ SOURCE_MARKER = re.compile(
     re.IGNORECASE
 )
 
-EXHIBIT_REF = re.compile(r"\bExhibit\s+(\d+)\b", re.IGNORECASE)
+EXHIBIT_REF = re.compile(r"\b(?:Exhibit|Evidence|Anexo|Evidência|Attachment)\s+(\d+)\b", re.IGNORECASE)
+
+# Prong 3 must always be addressed (Barbara syllogism — conclusion of P1+P2)
+# Even if officer did not explicitly object to P3, response must close the logical chain
+PRONG3_MARKERS = [
+    r"\bProng\s+3\b", r"\bon\s+balance\b",
+    r"\bbeneficial\s+to\s+(?:the\s+United\s+States\s+to\s+)?waive\b",
+    r"\blabor\s+certification\b", r"\bconventional\s+PERM\b"
+]
 
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -179,6 +187,19 @@ def check_exhibit_numbering(text, cl_last_exhibit, errors, warnings, passed):
         _err(warnings, f"first new exhibit = {new_exhibits[0]}; expected {expected_start} (CL last was {cl_last_exhibit})")
     else:
         _err(passed, f"exhibit numbering continuous: CL ended Exhibit {cl_last_exhibit}; new evidence starts at Exhibit {expected_start}")
+
+
+def check_prong3_present(text, errors, warnings, passed):
+    """Silogismo Bárbara: P1+P2 válidos → P3 válido. Mesmo sem objeção explícita do
+    oficial, a resposta DEVE fechar o silogismo com seção/argumentação de P3."""
+    hits = sum(1 for p in PRONG3_MARKERS if re.search(p, text, re.IGNORECASE))
+    if hits < 2:
+        _err(errors,
+             f"Prong 3 absent or insufficiently addressed ({hits}/5 markers found). "
+             "Per silogismo Bárbara (Aristóteles), P3 is the conclusion of P1+P2 and must always close the logical chain, "
+             "even if the officer did not explicitly object to it.")
+    else:
+        _err(passed, f"Prong 3 addressed ({hits}/5 syllogism markers present)")
 
 
 def check_officer_quotes_embedded(text, quotes_json_path, errors, warnings, passed):
@@ -289,6 +310,7 @@ def main():
     check_legal_framework(text, errors, passed)
     check_sources(text, errors, warnings, passed)
     check_exhibit_numbering(text, cl_last, errors, warnings, passed)
+    check_prong3_present(text, errors, warnings, passed)
     check_officer_quotes_embedded(text, quotes_path, errors, warnings, passed)
     metrics = check_metrics(doc, file_size, errors, warnings, passed)
 
