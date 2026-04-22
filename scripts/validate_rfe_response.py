@@ -244,31 +244,42 @@ def check_metrics(doc, file_size, errors, warnings, passed):
     text = extract_all_text(doc)
     words = len(text.split())
 
-    # Benchmark Deni: 811p/19t/53i/27852w/92pg
-    if paras < 300:
-        _err(errors, f"paragraphs={paras} < 300 (benchmark Deni=811); response likely too thin")
-    elif paras > 1500:
-        _err(warnings, f"paragraphs={paras} > 1500; may be excessive")
-    else:
-        _err(passed, f"paragraphs={paras} in plausible range")
+    # Benchmarks: Deni Rubens (EB-2 NIW) 811p/19t/53i/27852w/92pg — Marcelo Góes (EB-1A) 90t/69i/39008w/327pg
+    # Paulo's guidance: RFE response must be IGUAL OU MELHOR than Deni (same visa type)
+    BENCH = {"paragraphs": 811, "tables": 19, "images": 53, "words": 27852, "bytes": 3_900_000}
 
-    if tables < 5:
-        _err(warnings, f"tables={tables} < 5 (benchmark=19); consider adding summary tables")
+    if paras < BENCH["paragraphs"] * 0.5:  # below 50% = block
+        _err(errors, f"paragraphs={paras} < {int(BENCH['paragraphs']*0.5)} (50% of Deni benchmark {BENCH['paragraphs']}); response below quality floor")
+    elif paras < BENCH["paragraphs"] * 0.75:
+        _err(warnings, f"paragraphs={paras} < {int(BENCH['paragraphs']*0.75)} (75% of Deni benchmark) — expand further to match benchmark")
+    elif paras < BENCH["paragraphs"]:
+        _err(warnings, f"paragraphs={paras} below Deni benchmark {BENCH['paragraphs']}")
     else:
-        _err(passed, f"tables={tables}")
+        _err(passed, f"paragraphs={paras} meets/exceeds Deni benchmark ({BENCH['paragraphs']})")
 
-    if images < 10:
-        _err(warnings, f"inline_images={images} < 10 (benchmark=53); thumbnails may be missing")
+    if tables < BENCH["tables"] * 0.5:
+        _err(errors, f"tables={tables} < {int(BENCH['tables']*0.5)} (50% of benchmark); missing structural tables")
+    elif tables < BENCH["tables"]:
+        _err(warnings, f"tables={tables} below Deni benchmark {BENCH['tables']}")
     else:
-        _err(passed, f"inline_images={images}")
+        _err(passed, f"tables={tables} meets Deni benchmark")
 
-    if words < 8000:
-        _err(errors, f"words={words} < 8000; response too brief for RFE EB-2 NIW")
+    if images < BENCH["images"] * 0.3:
+        _err(errors, f"inline_images={images} < {int(BENCH['images']*0.3)} (30% of benchmark); thumbnails critically missing")
+    elif images < BENCH["images"]:
+        _err(warnings, f"inline_images={images} below Deni benchmark {BENCH['images']} — thumbnails to add")
     else:
-        _err(passed, f"words={words}")
+        _err(passed, f"inline_images={images} meets Deni benchmark")
+
+    if words < BENCH["words"] * 0.5:
+        _err(errors, f"words={words} < {int(BENCH['words']*0.5)} (50% of Deni benchmark {BENCH['words']}); response not substantive enough")
+    elif words < BENCH["words"]:
+        _err(warnings, f"words={words} below Deni benchmark {BENCH['words']} — expand argumentation")
+    else:
+        _err(passed, f"words={words} meets/exceeds Deni benchmark")
 
     if file_size < 500_000:
-        _err(warnings, f"file_size={file_size:,} bytes < 500KB (benchmark ~3.9MB); thumbnails may be missing")
+        _err(warnings, f"file_size={file_size:,} bytes < 500KB (benchmark ~3.9MB); thumbnails will increase this")
 
     return {"paragraphs": paras, "tables": tables, "images": images, "words": words, "bytes": file_size}
 

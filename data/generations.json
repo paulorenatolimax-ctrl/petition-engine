@@ -4675,5 +4675,174 @@
         "timestamp": "2026-04-21T15:46:00Z"
       }
     ]
+  },
+  {
+    "id": "gen_1776821600348_v2mar",
+    "client_id": "mariana_kasza",
+    "client_name": "MARIANA DE OLIVEIRA KASZA",
+    "doc_type": "impacto_report",
+    "status": "success",
+    "version": "V2",
+    "pipeline_version": "impacto-report@3.0",
+    "builder": "build_impacto_universal_v3.js",
+    "case_meta": {
+      "receipt_number": "IOE8503621281",
+      "a_number": "A241-126-296",
+      "deadline": "2026-05-08",
+      "entity": "Champion Leapy LLC",
+      "naics": "541611"
+    },
+    "output_files": [
+      "V2_IMPACTO_Mariana_Kasza_Champion_Leapy_Economic_Impact_Analysis.docx"
+    ],
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)/_RFE/_Forjado por Petition Engine/",
+    "validation": {
+      "qa_impacto_docx": {
+        "exit": 0,
+        "passed": 8,
+        "errors": 0
+      }
+    },
+    "metrics": {
+      "paragraphs": 257,
+      "tables": 34,
+      "images": 3,
+      "words": 3949,
+      "bytes": 315768
+    },
+    "completed_at": "2026-04-22T01:33:20.348Z"
+  },
+  {
+    "id": "gen_1776821600349_v10mar",
+    "client_id": "mariana_kasza",
+    "client_name": "MARIANA DE OLIVEIRA KASZA",
+    "doc_type": "rfe_response_eb2_niw",
+    "status": "success",
+    "version": "V10",
+    "pipeline_version": "rfe-eb2-niw@1.0",
+    "builder": "build_rfe_response_v10.py",
+    "case_meta": {
+      "receipt_number": "IOE8503621281",
+      "a_number": "A241-126-296",
+      "officer": "XM1761 (Carrie M. Selby, Acting Associate Director)",
+      "service_center": "Texas Service Center",
+      "rfe_date": "2026-02-10",
+      "deadline": "2026-05-08",
+      "priority_date": "2023-07-11",
+      "advanced_degree": "APPROVED (USCIS finding)"
+    },
+    "iteration_log": [
+      {
+        "version": "V1",
+        "paras": 99,
+        "words": 7435,
+        "imgs": 0,
+        "footnotes": 0,
+        "status": "baseline"
+      },
+      {
+        "version": "V2",
+        "paras": 207,
+        "words": 10259,
+        "imgs": 0,
+        "footnotes": 46,
+        "status": "footnotes added"
+      },
+      {
+        "version": "V3",
+        "paras": 246,
+        "words": 12211,
+        "imgs": 27,
+        "footnotes": 80,
+        "status": "thumbnails added"
+      },
+      {
+        "version": "V4",
+        "paras": 274,
+        "words": 13630,
+        "imgs": 27,
+        "footnotes": 102,
+        "status": "precedents + content expand"
+      },
+      {
+        "version": "V5",
+        "paras": 292,
+        "words": 14729,
+        "imgs": 27,
+        "footnotes": 114,
+        "status": "conclusion expanded"
+      },
+      {
+        "version": "V6",
+        "paras": 316,
+        "words": 15981,
+        "imgs": 27,
+        "footnotes": 134,
+        "status": "Prong 1 sections 2.12-2.15"
+      },
+      {
+        "version": "V7",
+        "paras": 338,
+        "words": 17041,
+        "imgs": 27,
+        "footnotes": 146,
+        "status": "Prong 2 sections 3.10-3.13"
+      },
+      {
+        "version": "V8",
+        "paras": 366,
+        "words": 18219,
+        "imgs": 27,
+        "footnotes": 158,
+        "status": "Appendix E + F"
+      },
+      {
+        "version": "V9",
+        "paras": 390,
+        "words": 19118,
+        "imgs": 27,
+        "footnotes": 162,
+        "status": "Appendix G fact sheets"
+      },
+      {
+        "version": "V10",
+        "paras": 408,
+        "words": 19679,
+        "imgs": 27,
+        "footnotes": 164,
+        "status": "PASSED validator"
+      }
+    ],
+    "output_files": [
+      "V10_RFE_Resposta_Completa_Mariana_Kasza.docx"
+    ],
+    "output_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)/_RFE/_Forjado por Petition Engine/",
+    "validation": {
+      "validate_rfe_response": {
+        "exit": 0,
+        "passed": 9,
+        "warnings": 5,
+        "errors": 0,
+        "status": "PASSED"
+      }
+    },
+    "metrics": {
+      "paragraphs": 408,
+      "tables": 33,
+      "images": 27,
+      "words": 19679,
+      "footnotes": 164,
+      "authoritative_domains": 11,
+      "bytes": 277268
+    },
+    "deni_benchmark_ratio": {
+      "paras_pct": 50,
+      "tables_pct": 174,
+      "imgs_pct": 51,
+      "words_pct": 71
+    },
+    "evidences_cl_range": "1-35",
+    "evidences_new_range": "36-62",
+    "completed_at": "2026-04-22T01:33:20.348Z"
   }
 ]
