@@ -1,0 +1,97 @@
+{
+  "doc_type": "saas_evidence",
+  "name": "SaaS Evidence Architect — Platform Dossier",
+  "version": "1.0",
+  "description": "Pipeline de 7 fases para gerar dossier SaaS Evidence. Fluxo: research → product spec → LOVABLE_BUILD_SPEC → [GATE HUMANO — operador roda Lovable e cola URL] → capture screenshots (Playwright) → DOCX com screenshots inline → validator. Problema histórico resolvido: DOCX só pode ser gerado APÓS screenshots estarem capturados. Inspirado em impacto-report.json@3.0 e anteprojeto-eb2-niw.json@2.0.",
+  "architect": "systems/saas-evidence/SaaS_Evidence_Architect_V2.md",
+  "output_format": "docx",
+  "output_dossier_structure": [
+    "product_spec.md",
+    "impact_analysis.md",
+    "evidence_summary.json",
+    "pricing_table.md",
+    "one_pager_outline.md",
+    "LOVABLE_BUILD_SPEC.md",
+    "screenshots/SaaS_NN_*.png (≥10 imagens)",
+    "screenshot_map.json",
+    "thumbnail_map.json",
+    "V1_saas_evidence_{clientSlug}.docx"
+  ],
+  "hard_rules_terminology": [
+    "Zero termos imigratórios: petition, petitioner, USCIS, EB-2, EB-1, NIW, visa, I-140, green card, adjudicator, Dhanasar, Kazarian, extraordinary ability, national interest waiver (regra r141 do error_rules.json)",
+    "Zero termos anti-Prong-3: standardized, operates autonomously, self-sustaining, plug-and-play, train-the-trainer, white-label, client autonomy, scalable without founder, replicable by any, turnkey (ANTI-CRISTINE V2)",
+    "founder_dependency SEMPRE 'critical' — NUNCA 'low'",
+    "NAICS trigger warning: NUNCA 'consulting' isolado (USCIS VIBE flag). Usar 'specialized technical services' ou 'implementation under proprietary methodology'",
+    "Zero expostura de infra: PROEX, Kortix, Petition Engine, Obsidian, RAG, Forjado por",
+    "Documento deve parecer produzido pela empresa do cliente (não por sistema de imigração)"
+  ],
+  "phases": [
+    {
+      "id": "1",
+      "name": "RESEARCH & INGEST — ler cliente docs + WebSearch obrigatório",
+      "type": "claude",
+      "prompt": "Fase 1: Ler TODOS os documentos em {clientDocsPath} (CV, BP, certificados, contratos, partnerships). Fazer WebSearch ATIVO para: (a) tamanho do setor (BLS, IBISWorld, Statista), (b) Executive Orders federais relevantes 2025-2026, (c) competidores diretos, (d) estatísticas de adoção. Produzir {outputDir}/_research_findings.json com ≥15 fontes autoritativas. Extrair: proposed endeavor, métricas do cliente, partners documentados, tecnologia proprietária, vantagens competitivas.",
+      "validation": { "type": "contains", "file": "{outputDir}/_research_findings.json", "patterns": ["bls.gov|census.gov|federalregister.gov", "access_date"] },
+      "fail_action": "block"
+    },
+    {
+      "id": "2",
+      "name": "PRODUCT SPECIFICATION — gerar product_spec.md (Obsidian-ready)",
+      "type": "claude",
+      "prompt": "Fase 2: Ler INTEGRALMENTE {systemPath}/saas-evidence/SaaS_Evidence_Architect_V2.md. Gerar {outputDir}/product_spec.md com TODAS as 12 seções mandatórias: Executive Overview, The Systemic Problem, Platform Architecture, Why Beneficiary Indispensable, Deployment Model, National Reach Strategy, Evidence of Adoption, Competitive Landscape, Pricing & Accessibility (3-4 tiers com valores reais), Revenue Model & Financial Projections (MRR, CAC, LTV, churn), Growth Trajectory (3 cenários), Technical Differentiators, Scalability & Reach. Cada fato com source citation.",
+      "validation": { "type": "exists", "file": "{outputDir}/product_spec.md" },
+      "fail_action": "block"
+    },
+    {
+      "id": "3",
+      "name": "IMPACT + EVIDENCE + ARTIFACTS — gerar todos os side-files",
+      "type": "claude",
+      "prompt": "Fase 3: Gerar (a) {outputDir}/impact_analysis.md com 7 seções obrigatórias (Systemic Problem, Platform Solution, Multi-Institutional Adoption, Measurable Aggregate Impact, Federal Priorities Alignment, Accessibility, Beneficiary Indispensability = Prong 3 defense); (b) {outputDir}/evidence_summary.json estruturado (founder_dependency='critical' OBRIGATÓRIO); (c) {outputDir}/pricing_table.md; (d) {outputDir}/one_pager_outline.md.",
+      "validation": { "type": "contains", "file": "{outputDir}/evidence_summary.json", "patterns": ["\"founder_dependency\": \"critical\""] },
+      "fail_action": "block"
+    },
+    {
+      "id": "4",
+      "name": "LOVABLE_BUILD_SPEC.md — mega prompt pro Lovable (DETALHADO, não genérico)",
+      "type": "claude",
+      "prompt": "Fase 4: Gerar {outputDir}/LOVABLE_BUILD_SPEC.md seguindo INTEGRALMENTE a Phase 7 do Architect V2 (linhas 368-473 de SaaS_Evidence_Architect_V2.md). OBRIGATÓRIO ter: WHAT TO BUILD (1 parágrafo específico), TECH STACK, COLOR PALETTE com hex exatos (Navy #1B2A4A + Gold #B8860B), TYPOGRAPHY (Inter + JetBrains Mono), 7 PAGES TO BUILD descritas uma a uma com layouts específicos do domínio do cliente (Landing + Dashboard com KPIs REAIS do negócio + Módulos específicos dos produtos do cliente + Settings + Pricing), DATA TO SHOW (mock mas domínio-apropriado, zero Lorem ipsum), DESIGN PRINCIPLES, CRITICAL RULES (footer 'Methodology by {Beneficiary Name} | Proprietary Framework' em toda página, NO 'self-service' sem qualificação, NO 'automated' sem 'under beneficiary's quality framework'). Arquivo mínimo 200 linhas — se menor, Fase 5 bloqueia.",
+      "validation": { "type": "exists_min_lines", "file": "{outputDir}/LOVABLE_BUILD_SPEC.md", "min_lines": 200 },
+      "fail_action": "block"
+    },
+    {
+      "id": "5",
+      "name": "HUMAN GATE — operador cola LOVABLE_BUILD_SPEC no Lovable, gera SaaS, salva URL",
+      "type": "human_gate",
+      "instructions": "AÇÃO DO OPERADOR:\n1. Abrir {outputDir}/LOVABLE_BUILD_SPEC.md\n2. Copiar conteúdo INTEGRAL\n3. Colar no Lovable (https://lovable.dev) e gerar o SaaS\n4. Aguardar deploy — obter URL pública (ex: https://cliente-saas.lovable.app)\n5. Criar arquivo {outputDir}/lovable_url.txt contendo APENAS a URL deployada\n6. Validar visualmente o SaaS antes de prosseguir (todas as 7 páginas carregam? pricing page bate com product_spec?)\n\nO pipeline PAUSA aqui. Só avança para Fase 6 quando lovable_url.txt existir com URL válida.",
+      "validation": { "type": "contains", "file": "{outputDir}/lovable_url.txt", "patterns": ["https?://"] },
+      "fail_action": "block_until_manual"
+    },
+    {
+      "id": "6",
+      "name": "CAPTURE SCREENSHOTS — Playwright contra lovable_url",
+      "type": "node",
+      "script": "scripts/capture_saas.js",
+      "args": ["$(cat {outputDir}/lovable_url.txt)", "{outputDir}/screenshots", "{clientName}"],
+      "validation": { "type": "count_files", "directory": "{outputDir}/screenshots", "pattern": "SaaS_*.png", "min_count": 10 },
+      "fail_action": "block"
+    },
+    {
+      "id": "7",
+      "name": "BUILD DOCX + INSERT SCREENSHOTS — gerar V1 DOCX final",
+      "type": "python",
+      "script": "scripts/build_saas_evidence.py",
+      "args": ["{outputDir}/product_spec.md", "{outputDir}/evidence_summary.json", "{outputDir}/screenshots", "{outputDir}/V1_saas_evidence_{clientSlug}.docx"],
+      "validation": { "type": "exists", "file": "{outputDir}/V1_saas_evidence_{clientSlug}.docx" },
+      "fail_action": "block"
+    },
+    {
+      "id": "8",
+      "name": "VALIDATE — determinístico bloqueante",
+      "type": "python",
+      "script": "scripts/validate_saas_evidence.py",
+      "args": ["{outputDir}/V1_saas_evidence_{clientSlug}.docx", "{outputDir}/LOVABLE_BUILD_SPEC.md", "{outputDir}/evidence_summary.json", "{outputDir}/screenshots", "{outputDir}/SAAS_VALIDATION.md"],
+      "validation": { "type": "exists", "file": "{outputDir}/SAAS_VALIDATION.md" },
+      "fail_action": "block"
+    }
+  ]
+}
