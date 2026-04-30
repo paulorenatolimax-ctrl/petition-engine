@@ -132,13 +132,62 @@ def read_text(file_path: str) -> str:
         return f.read()
 
 
-URL_NEAR = re.compile(r"https?://|www\.|\.pdf|\.html|\.aspx|\]\(|uploads?/|/20[12][0-9]/|wp-content")
+URL_NEAR = re.compile(
+    r"https?://|www\.|\.pdf|\.html|\.aspx|\]\(|uploads?/|/20[12][0-9]/|wp-content|"
+    r"consultado\s+em|consulted\s+on|acesso\s+em|accessed\s+on|"
+    r"dispon[ií]vel\s+em|available\s+at|published\s+(?:in|on)|publicado\s+em|"
+    r"\[\^\d+\]\s*:",  # footnote definitions [^N]:
+    re.IGNORECASE,
+)
+
+# Citation/institutional antecedents — when a date is in a window dominated by
+# these tokens, it's a SOURCE reference, not a petitioner work claim.
+CITATION_ANTECEDENTS = re.compile(
+    r"(?:\b(?:USCIS|BLS|DOL|OFLC|Bureau|Policy\s+Manual|"
+    r"Vol\.|Volume\s+\d|Cap[ií]tulo|Chapter\s+\d|Pt\.|Part\s+\d|"
+    r"Construindo|An[áa]lise\s+Abrangente|Relat[óo]rio|Outlook|Performance\s+Data|"
+    r"Vers[ãa]o|Version|Edition|Edi[çc][ãa]o|Boletim|Bulletin|Memo|"
+    r"Florida\s+Chamber|Florida\s+2030|"
+    r"Statistics|Estat[íi]stica|Census|IBISWorld|Statista|IFA|"
+    r"Dhanasar|Matter\s+of|"
+    r"OMB|OSTP|Whitehouse|White\s+House|Federal\s+Register|"
+    r"atualizada?\s+em|updated\s+(?:in|on)|revis[ãa]o\s+em)\b)"
+    r"|(?:^\s*(?:Data|Date)\s*:)"
+    r"|(?:^\s*#{1,3}\s)"
+    r"|(?:em\s+\d{1,2}\s+de\s+\w+\s+de\s+20\d{2}\s*[);,])",
+    re.IGNORECASE | re.MULTILINE,
+)
+
+
+# Bibliographic line pattern — full-line citation/footnote.
+
+# Bibliographic line pattern — full-line citation/footnote.
+FOOTNOTE_LINE = re.compile(r"^\s*\[\^\d+\]\s*:")
 
 
 def is_in_url_context(text: str, position: int, span_len: int) -> bool:
-    """True if the match is within or immediately adjacent to a URL/path."""
-    near = text[max(0, position - 50): position + span_len + 50]
-    return bool(URL_NEAR.search(near))
+    """True if the match is within or immediately adjacent to a URL/citation context.
+
+    Also true if the entire LINE is a footnote/bibliographic entry, OR a header,
+    OR a window dominated by institutional antecedents (USCIS, BLS, Vol., etc),
+    since those are SOURCE references — not petitioner work claims.
+    """
+    near = text[max(0, position - 120): position + span_len + 120]
+    if URL_NEAR.search(near):
+        return True
+    if CITATION_ANTECEDENTS.search(near):
+        return True
+    line_start = text.rfind("\n", 0, position) + 1
+    line_end = text.find("\n", position)
+    if line_end == -1:
+        line_end = len(text)
+    line = text[line_start:line_end]
+    if FOOTNOTE_LINE.match(line):
+        return True
+    # Skip first ~500 chars (document header/metadata zone).
+    if position < 500:
+        return True
+    return False
 
 
 def scan(text: str, timeline: dict):
