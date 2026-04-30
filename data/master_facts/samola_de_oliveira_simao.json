@@ -3,10 +3,6 @@
   "petitioner_name": "Sâmola de Oliveira Simão",
   "visa_type": "EB-2 NIW",
   "soc_target": "11-1021 General and Operations Managers",
-  "soc_alternatives": [
-    "11-3011 Administrative Services Managers",
-    "13-1111 Management Analysts"
-  ],
   "sector": "Integrated Governance & Execution Framework (IGEF) — management framework para PMEs americanas (Apex Executive Governance LLC)",
   "description": "Master facts canônicos do caso Sâmola de Oliveira Simão. Esqueleto inicial — completar required_anchors com dados da V3_ANTEPROJETO após review humano.",
   "source": "V3_ANTEPROJETO_ESTRATÉGICO_EB-2_NIW_Sâmola_de_Oliveira_Simão.pdf + PLANO DE NEGÓCIOS ABRANGENTE APEX EXECUTIVE GOVERNANCE",
@@ -128,5 +124,8 @@
     "company_name": "Apex Executive Governance LLC (Florida) — entidade do endeavor proposto, NÃO indica trabalho remunerado pré-EAD",
     "verification_source": "Samola_Simao_CV_EB2NIW.pdf — toda experiência profissional listada é BRASILEIRA: JAH Açaí (2022-Atual, Brasil), Holding SM (2022-Atual, Brasil), WOLI (2019-2023, Brasil), Solotratores (Brasil), Satis (2019, Brasil), SENAC (2019, Brasil), Uniaraxá (2016-2019, Brasil), IPREM (2014-2016, Brasil), DB Agro (2011-2013, Brasil). Bacharelado UNIPAM 2011 (Brasil), MBA Uniaraxá 2020 (Brasil). Sem trabalho remunerado nos EUA citado.",
     "validation_note": "Caso de processamento consular (CP). Peticionária ainda no Brasil ou recém-chegada sem EAD. Documentos NÃO devem citar TRABALHO REMUNERADO nos EUA antes de futura aprovação I-140 + AOS/EAD. Apex Executive Governance LLC pode ser citada como entidade JURIDICAMENTE constituída (registro estadual da Flórida não exige presença física do dono); o que NÃO pode é narrar trabalho ATIVO/REMUNERADO da Samola dentro dela antes da autorização de trabalho."
-  }
+  },
+  "validation_notes": [
+    "SOC unico 11-1021. NUNCA listar codigos alternativos no Projeto-Base ou Cover Letter — esse comparativo e do Anteprojeto, ja descartado quando cliente escolheu este endeavor (feedback Paulo 2026-04-30)."
+  ]
 }

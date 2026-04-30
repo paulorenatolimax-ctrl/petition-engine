@@ -2719,5 +2719,44 @@
     "active": true,
     "times_triggered": 0,
     "created_at": "2026-04-29T23:30:00Z"
+  },
+  {
+    "id": "r211",
+    "rule_type": "structural",
+    "doc_type": null,
+    "rule_description": "PROJETO-BASE EB-2 NIW / EB-1A NUNCA pode listar SOC codigos alternativos. Form USCIS I-140 aceita UM unico SOC code. Alternativas pertencem ao ANTEPROJETO (3 endeavors com 3 SOCs candidatos para cliente escolher). Apos escolha, Projeto-Base aprofunda apenas o SOC ESCOLHIDO. PROIBIDO: 'SOC alternativos', 'codigos suplementares', 'soc_alternatives', tabelas comparando 13-1111 vs 11-3011 vs 11-1021 dentro do Projeto-Base. Quem comparar = REJEITADO.",
+    "rule_pattern": "\\b(SOC\\s+alternativ|c[oó]digos?\\s+alternativ|c[oó]digos?\\s+suplementar|alternativ.*SOC)",
+    "rule_action": "block",
+    "severity": "critical",
+    "source": "feedback Paulo 2026-04-30 (V1 Samola hibrido)",
+    "active": true,
+    "times_triggered": 0,
+    "created_at": "2026-04-30T01:00:00Z"
+  },
+  {
+    "id": "r212",
+    "rule_type": "structural",
+    "doc_type": null,
+    "rule_description": "PROJETO-BASE EB-2 NIW / EB-1A DEVE conter, em destaque visual no inicio (preferencialmente Sumario Executivo ou secao II/III), uma CAIXA EM LETRAS GARRAFAIS (CAIXA ALTA / UPPERCASE) com EXATAMENTE: (a) CORE BUSINESS (1 frase descrevendo o que e o endeavor), (b) 4-5 SERVICOS OFERECIDOS (linha por servico), (c) 4 MERCADOS-ALVO (linha por mercado, com geografia e segmento). Documento sem essa caixa CAPS LOCK = REJEITADO. Validador estrutural deve verificar presenca via regex de blocos UPPERCASE consecutivos contendo essas 3 categorias.",
+    "rule_pattern": "projeto_base_caps_lock_box_required",
+    "rule_action": "block",
+    "severity": "critical",
+    "source": "feedback Paulo 2026-04-30",
+    "active": true,
+    "times_triggered": 0,
+    "created_at": "2026-04-30T01:00:00Z"
+  },
+  {
+    "id": "r213",
+    "rule_type": "structural",
+    "doc_type": null,
+    "rule_description": "PROJETO-BASE / BUSINESS PLAN: pesquisa de mercado deve ser ROBUSTA. Minimos: 15 footnotes verificaveis (URLs concretas), 5 dominios autoritativos distintos (BLS, Census, DOL, IBISWorld, IFA, USCIS, Florida Chamber, OMB, OSTP, SBA, Statista, Federal Register, etc), 8 dados quantitativos com fonte ([^N] inline) abrangendo: (a) tamanho de mercado, (b) crescimento projetado %, (c) numero de estabelecimentos / firms, (d) salario mediano BLS para SOC, (e) churn / pain rate do setor, (f) regulatorio especifico (ex: 16 CFR 436 para franquias), (g) alinhamento orcamentario federal (FY budget line), (h) demografia / geografia.",
+    "rule_pattern": "research_robustness_minimums",
+    "rule_action": "warn",
+    "severity": "high",
+    "source": "feedback Paulo 2026-04-30",
+    "active": true,
+    "times_triggered": 0,
+    "created_at": "2026-04-30T01:00:00Z"
   }
 ]
