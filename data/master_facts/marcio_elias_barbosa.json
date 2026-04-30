@@ -1,0 +1,115 @@
+{
+  "case_id": "marcio_elias_barbosa",
+  "petitioner_name": "Márcio Elias Barbosa",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "13-1111 Management Analysts",
+  "description": "Master facts canônicos do caso Márcio Elias Barbosa. Timeline US construída a partir da transcrição V1_transcricao_27abr.md (linhas 1929-1947). Endeavor: Implementation of a Proprietary Data-Driven Operational Performance Management Methodology — Simple Shift Consulting, LLC (Flórida).",
+  "source": "Transcrição da reunião de 27/abr/2026 + V3 do Projeto-Base + documentos do cliente",
+  "us_timeline": {
+    "us_entry_date": "2019-08-01",
+    "us_entry_basis": "F-1 student visa (estudante)",
+    "us_aos_approved_date": "2021-12-01",
+    "us_aos_approved_basis": "I-485 ajuste de status approved (EB-2 current na época, aplicado em junho/2021)",
+    "us_first_work_authorization_date": "2022-07-01",
+    "us_first_work_authorization_basis": "EAD/Work Permit emitido aproximadamente 6 meses após AOS approved (relato em transcrição)",
+    "company_formed_date": "2022-XX-XX",
+    "company_name": "Simple Shift Consulting, LLC (Flórida, EUA)",
+    "verification_source": "Transcrição V1_transcricao_27abr.md linhas 1929-1947 — Paulo perguntou 'desde quando pisou nos Estados Unidos, qual que foi o ato?' e Márcio respondeu literalmente",
+    "transcription_excerpt": "A gente entrou com, a gente chegou nos Estados Unidos em 2019, em agosto de 2019, estudante, ficou com estudante até, a gente aplicou o processo em [junho] de 2021. (...) eu apliquei o ajuste de status e o ajuste chegou em dezembro, em janeiro já pedi pra não estudar mais (...). In 2022, I think, we opened a company. (...) When it came to work permit, came from one year or more? Six months later. Six months later, came from work permit."
+  },
+  "anchors": {
+    "us_entry_date": {
+      "value": "Agosto de 2019",
+      "aliases": [
+        "agosto/2019",
+        "August 2019",
+        "August/2019",
+        "08/2019",
+        "2019-08"
+      ],
+      "required_in_letter_types": []
+    },
+    "us_first_work_authorization_date": {
+      "value": "Julho de 2022",
+      "aliases": [
+        "julho/2022",
+        "July 2022",
+        "EAD julho 2022",
+        "work permit julho 2022",
+        "07/2022",
+        "2022-07"
+      ],
+      "required_in_letter_types": []
+    },
+    "soc_target_unique": {
+      "value": "SOC 13-1111 Management Analysts",
+      "aliases": [
+        "13-1111",
+        "Management Analysts",
+        "Management Consulting"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado",
+        "cliente_futuro",
+        "parceiro_estrategico"
+      ]
+    },
+    "petitioning_company": {
+      "value": "Simple Shift Consulting, LLC (Flórida)",
+      "aliases": [
+        "Simple Shift Consulting",
+        "Simple Shift",
+        "Simple Shift LLC"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "advanced_degree_basis": {
+      "value": "Bachelor of Laws (Universidade São Francisco, 1999) + Advanced Degree equivalent in Management Consulting via 8 CFR § 204.5(k)(3)(i)(B)",
+      "aliases": [
+        "Advanced Degree equivalent in Management Consulting",
+        "8 CFR § 204.5(k)(3)(i)(B)",
+        "equivalência por experiência progressiva",
+        "Bacharelado em Direito 1999"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "brazilian_practice_decades": {
+      "value": "Mais de duas décadas de prática profissional brasileira (1992–2019) na Advocacia Elias Barbosa, ambiente extremo (Banco Bradesco, ~3.000 processos, 644 localidades, 153 foros)",
+      "aliases": [
+        "Advocacia Elias Barbosa",
+        "Banco Bradesco",
+        "duas décadas",
+        "três décadas"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "us_implementations": {
+      "value": "Duas implementações americanas pós-EAD (2022+): Collect Call (+26% produtividade em recovery) e Márcio Mendes Advocacia (3 projetos em operações administrativas)",
+      "aliases": [
+        "Collect Call",
+        "Márcio Mendes Advocacia",
+        "+26%",
+        "três projetos Márcio Mendes"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico"
+      ]
+    }
+  },
+  "evidence_bank": [],
+  "validation_notes": [
+    "TODA experiência profissional REMUNERADA NOS EUA citada em qualquer documento (Anteprojeto, Projeto-Base, Resume, Cover Letter, Business Plan, Testimony Letters) DEVE ter data >= us_first_work_authorization_date (2022-07-01).",
+    "Trabalho durante o período F-1 student (2019-08 → 2021-12) só é permitido com CPT/OPT autorização específica. Sem essa autorização documentada, NÃO citar trabalho remunerado nesse período.",
+    "Trabalho durante AOS pendente (junho/2021 → dezembro/2021) requer EAD baseada em I-485 pending — confirmar com documentação antes de citar.",
+    "Implementações Collect Call e Márcio Mendes Advocacia: confirmar com Paulo/Márcio que ambas são pós-julho/2022. Caso anteriores, REMOVER ou marcar como pro-bono não-remunerado se aplicável."
+  ]
+}

@@ -12,6 +12,20 @@ O Résumé EB-1A NÃO é um currículo tradicional. É um **inventário estraté
 2. **Índice de evidências** com metadata estruturada de cada prova documental
 3. **Complemento da Cover Letter** — a CL argumenta juridicamente, o Résumé apresenta os fatos
 
+### 1.1 DESIGN CONSTRAINTS — derivados de auditoria de benchmarks (2026-04-29)
+
+Auditoria comparou os benchmarks **Carlos Avelino, Thiago Fernandes dos Santos V1, Bruno Cipriano VF** contra résumés recentes regredidos (ANDRÉ V10, MARCIO V5, Bruno V5 Engine). Padrões NÃO-NEGOCIÁVEIS extraídos:
+
+| Constraint | Valor | Razão |
+|-----------|-------|-------|
+| `timeline_mode` | **`manual_curated`** | Cronologia narrativa NATIVA da carreira, extraída do material do cliente — NUNCA timeline auto-gerada por template. |
+| `infographic` | **`false`** | Os 3 benchmarks NÃO têm infográfico. Recentes ganharam infográfico auto que diluiu densidade narrativa. (BLOCK rule: r210). |
+| `min_word_count` | **`1200`** (warn) | Piso conservador, abaixo do menor benchmark (Carlos = 984) com margem de segurança. (WARN rule: r208). Bruno VF tinha 1.724 — recente caiu para 1.260 (-27%). |
+| `footer_pagination` | **OBRIGATÓRIO** "Page X of Y" | 3 de 4 recentes perderam footer. (WARN rule: r209). |
+| `soc_in_body` | **PROIBIDO** | SOC code (NN-NNNN) só no header/título — nunca no corpo. |
+
+Validador: `scripts/validate_resume_against_benchmark.py --file <DOCX>`. Score 100/100 = atende a todos os benchmarks.
+
 ### Diferenças Fundamentais: Résumé vs. Cover Letter
 
 | Dimensão | Cover Letter | Résumé |
@@ -573,3 +587,61 @@ Antes de entregar QUALQUER résumé para Paulo:
 ---
 
 *Sistema Résumé EB-1A V2.0 — DNA Visual V4 — 03/mar/2026*
+
+
+---
+
+## EVIDÊNCIAS PROIBIDAS COMO THUMBNAIL/EVIDENCE BLOCK (v1.1 — 2026-04-29)
+
+**REGRA ABSOLUTA — origem: caso Márcio Elias V8.**
+
+### Categoria: Documentação financeira pessoal — PROIBIDA
+NUNCA inserir como thumbnail ou Evidence Block em résumé:
+
+- Declaração de Imposto de Renda Pessoa Física (IRPF) — qualquer ano
+- Recibo de Distribuição de Lucros / Pró-labore
+- Holerite / Contracheque / Recibo de Salário
+- Extrato bancário / Comprovante de saldo
+- Comprovante de renda emitido por empregador
+- Qualquer arquivo com prefixo `*_FIN_*` ou `ANX-XXX_FIN_*` na pasta de evidências
+
+### Razão
+1. **Privacidade.** Documento financeiro pessoal exposto em petição é amador e gera flag.
+2. **Persuasão.** Critério 8 do O-1A é "salário elevado vis-à-vis o mercado", não "renda pessoal alta". Mostrar quanto a pessoa ganha sem comparação com mercado prova `rico`, não `extraordinary`.
+3. **ATLAS/VIBE.** Documentos financeiros pessoais aparecem em rotinas de fraud detection do USCIS e disparam ceticismo automático.
+
+### Substitutos válidos para Critério 8 (Salário elevado)
+- **Benchmark salarial de mercado** (ex.: relatório Vagas, Catho, ABA Salary Survey, ou similares por SOC/profissão/região) — comparativo público e impessoal.
+- **Carta oficial do empregador** atestando remuneração elevada e contextualizando vis-à-vis pares — cabeçalho institucional, sem expor número absoluto se possível.
+- **Atestado de associação/conselho profissional** mostrando posição de liderança remunerada de elite.
+
+Preferível 1 evidência defensável a 3 evidências com 2 problemáticas. Se Critério 8 ficar com só 1 thumbnail (benchmark), está OK.
+
+### Aplicação técnica
+- Hard block ativo em `data/hard_blocks/default.json` v5.1: ids `resume_no_financial_personal_thumbs` + `resume_no_financial_anx_prefix`.
+- Pattern detecta no texto do Evidence Block (cell description) e no nome de arquivo `ANX-XXX_FIN_*`.
+- Severity: critical. Violação = rejeição automática no Quality Gate.
+
+
+---
+
+## REGRA DE IDIOMA — DEFINITIVA (v1.2 — 2026-04-29)
+
+**PROEX produz documentos em PORTUGUÊS-BR como padrão.** O résumé sai em PT-BR. Tradução para inglês acontece em fase posterior do pipeline (tradutor certificado), não na geração.
+
+**TERMOS USCIS PRESERVADOS EM INGLÊS** — não traduzir, NÃO substituir por equivalente em PT, mesmo que pareçam "termos em inglês no meio do texto":
+
+| Categoria | Termos |
+|-----------|--------|
+| Petição | `endeavor`, `proposed endeavor`, `extraordinary ability`, `exceptional ability`, `advanced degree` |
+| Procedimento | `Request for Evidence (RFE)`, `Notice of Intent to Deny (NOID)`, `priority date`, `consular processing`, `adjustment of status` |
+| Categorias | `National Interest Waiver (NIW)`, `EB-1A`, `EB-1B`, `EB-2 NIW`, `O-1A`, `O-1B`, `H-1B`, `L-1` |
+| Formulários | `Form I-140`, `Form I-485`, `Form I-129`, `Form I-130` |
+| Jurisprudência | `Matter of Dhanasar`, `Kazarian two-step`, `8 CFR § 204.5`, `8 CFR § 214.2(o)` |
+| Trabalho | `prevailing wage`, `LCA`, `PERM`, `Department of Labor (DOL)` |
+| Status | `advance parole`, `immigrant intent`, `dual intent`, `country chargeability`, `Visa Bulletin` |
+| Personas | `petitioner`, `beneficiary`, `adjudicator`, `Service Center` |
+
+**Razão:** USCIS é processo administrativo americano. Termos jurídicos/técnicos oficiais NÃO têm tradução portuguesa institucionalizada — qualquer tradução é interpretação que abre flanco para confusão. Manter EN.
+
+**Para revisor (Phase 2):** documentos PROEX em PT-BR com USCIS terms em EN são CORRETOS. NÃO acusar como bloqueante "documento em português" nem "inconsistência de idioma" pelo uso desses termos. Se `endeavor` aparece 18x, isso é CONSISTÊNCIA, não erro.

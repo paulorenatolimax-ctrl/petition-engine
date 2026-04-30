@@ -8,27 +8,68 @@
   "anchors": {
     "years_experience": {
       "value": "14+",
-      "aliases": ["fourteen years", "more than fourteen", "14+ years", "14 anos", "catorze anos"],
-      "required_in_letter_types": ["cliente_futuro", "parceiro_estrategico", "investidor_futuro"]
+      "aliases": [
+        "fourteen years",
+        "more than fourteen",
+        "14+ years",
+        "14 anos",
+        "catorze anos"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
     },
     "prior_role": {
       "value": "CEO RBP Construtora 2015–May 2025",
-      "aliases": ["CEO da RBP", "RBP Construtora", "2015 a maio de 2025", "2015-2025"],
-      "required_in_letter_types": ["contador", "testemunho_passado"]
+      "aliases": [
+        "CEO da RBP",
+        "RBP Construtora",
+        "2015 a maio de 2025",
+        "2015-2025"
+      ],
+      "required_in_letter_types": [
+        "contador",
+        "testemunho_passado"
+      ]
     },
     "current_role": {
       "value": "Senior PM Karins Engineering Group Tampa FL, since June 2025",
-      "aliases": ["Karins Engineering Group", "Tampa", "Senior Project Manager", "June 2025"],
-      "required_in_letter_types": ["cliente_futuro", "parceiro_estrategico", "investidor_futuro"]
+      "aliases": [
+        "Karins Engineering Group",
+        "Tampa",
+        "Senior Project Manager",
+        "June 2025"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
     },
     "pe_channel": {
       "value": "David Karins, PE · FL License 34217",
-      "aliases": ["FL License 34217", "License 34217", "Licença 34217", "David Karins"],
-      "required_in_letter_types": ["cliente_futuro", "parceiro_estrategico", "investidor_futuro", "testemunho_passado"]
+      "aliases": [
+        "FL License 34217",
+        "License 34217",
+        "Licença 34217",
+        "David Karins"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro",
+        "testemunho_passado"
+      ]
     },
     "soc_target": {
       "value": "17-2051 Civil Engineers",
-      "aliases": ["SOC 17-2051", "civil engineer", "structural engineer"],
+      "aliases": [
+        "SOC 17-2051",
+        "civil engineer",
+        "structural engineer"
+      ],
       "required_in_letter_types": []
     }
   },
@@ -51,11 +92,36 @@
     },
     {
       "kind": "regulatory_trigger_us",
-      "values": ["SB 4-D", "LL 126", "NBIS", "FDOT", "IIJA", "FEMA 11:1"]
+      "values": [
+        "SB 4-D",
+        "LL 126",
+        "NBIS",
+        "FDOT",
+        "IIJA",
+        "FEMA 11:1"
+      ]
     },
     {
       "kind": "market_size",
-      "values": ["ARTBA 373B", "IIJA 40B", "FEMA 11:1"]
+      "values": [
+        "ARTBA 373B",
+        "IIJA 40B",
+        "FEMA 11:1"
+      ]
     }
-  ]
+  ],
+  "profession_br": "engenheiro",
+  "profession_br_confidence": "high",
+  "profession_br_subtype": "engenheiro_civil_estrutural",
+  "us_license_active": false,
+  "us_license_type": null,
+  "backfill_metadata": {
+    "method": "manual_paulo_2026-04-28",
+    "source_path": "CREA-GO 6606 confirmado em V1_Anteprojeto + V1_Projeto_Base + BP V2 + benchmark Hirata & Associados Engenharia",
+    "backfilled_at": "2026-04-28",
+    "backfill_version": "1.0-manual",
+    "override_reason": "auto-inference matched advogado boilerplate (false positive); profissão real é engenheiro civil estrutural"
+  },
+  "us_timeline_pending": true,
+  "us_timeline_pending_note": "PREENCHER us_timeline ANTES da próxima geração. Cláusula pétrea (feedback Paulo 2026-04-29 + r206/r207): toda data de trabalho remunerado nos EUA citada em qualquer documento DEVE ser >= us_first_work_authorization_date. Sem este bloco, src/lib/validators/us-entry-date.ts.preGateUSEntryDate retorna 400 e bloqueia API. Campos obrigatórios: us_entry_date (YYYY-MM-DD) + us_first_work_authorization_date (YYYY-MM-DD). Recomendado: us_entry_basis, us_aos_approved_date, us_first_work_authorization_basis, company_formed_date, company_name, verification_source, transcription_excerpt. Ver data/master_facts/marcio_elias_barbosa.json como exemplo canônico."
 }

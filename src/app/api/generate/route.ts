@@ -15,6 +15,17 @@ import {
 const PPTX_GENERATOR = path.join(process.cwd(), 'scripts', 'generate_pptx_v2.py');
 
 import { buildRulesSection as buildRulesSectionFromRepo } from '@/lib/rules/repository';
+import { preGateUSEntryDate, type USTimeline } from '@/lib/validators/us-entry-date';
+
+// case_id é o slug snake_case derivado de client.name. Centralizado pra master_facts/{case_id}.json.
+function deriveCaseId(clientName: string): string {
+  return clientName
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readRules(): any[] {
@@ -131,7 +142,7 @@ const BENCHMARK_THAYSE = BENCHMARK_THAYSE_PATH;
 const BENCHMARK_THIAGO = BENCHMARK_THIAGO_PATH;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function buildAnteprojetoInstruction(client: any, system: any, docType: string, outputDir: string, rulesSection: string, selectedEndeavor?: string, selectedSocCode?: string): string {
+function buildAnteprojetoInstruction(client: any, system: any, docType: string, outputDir: string, rulesSection: string, selectedEndeavor?: string, selectedSocCode?: string, usTimeline?: USTimeline): string {
   const isEB1 = docType.includes('eb1');
   const isProjetoBase = docType.includes('projeto_base');
   const ragsPath = isEB1 ? RAGS_EB1 : RAGS_EB2;
@@ -195,6 +206,32 @@ function buildAnteprojetoInstruction(client: any, system: any, docType: string, 
   lines.push('## DADOS DO CLIENTE');
   lines.push(`Pasta de documentos: ${client.docs_folder_path || 'NAO DEFINIDA'}`);
   lines.push('Leia TODOS os documentos do cliente (CV, certificados, evidencias) ANTES de gerar.');
+
+  if (usTimeline) {
+    lines.push('');
+    lines.push('## TIMELINE NOS EUA — CLAUSULA PETREA (BLOQUEANTE GLOBAL)');
+    lines.push(`Data de entrada do peticionario nos EUA (us_entry_date): **${usTimeline.us_entry_date}** (${usTimeline.us_entry_basis || 'base nao informada'})`);
+    if (usTimeline.us_aos_approved_date) {
+      lines.push(`Ajuste de status approved (AOS I-485): **${usTimeline.us_aos_approved_date}** (${usTimeline.us_aos_approved_basis || ''})`);
+    }
+    lines.push(`Primeira autorizacao legal de trabalho nos EUA (EAD/AOS/H-1B/etc): **${usTimeline.us_first_work_authorization_date}** (${usTimeline.us_first_work_authorization_basis || 'base nao informada'})`);
+    if (usTimeline.company_formed_date && usTimeline.company_name) {
+      lines.push(`Empresa do peticionario formada em: ${usTimeline.company_formed_date} — ${usTimeline.company_name}`);
+    }
+    lines.push('');
+    lines.push('REGRAS BLOQUEANTES DERIVADAS:');
+    lines.push(`- NENHUMA atividade profissional remunerada nos EUA pode ser citada com data ANTERIOR a ${usTimeline.us_first_work_authorization_date}. Trabalhar antes de ter autorizacao legal e ILEGAL e mata a peticao.`);
+    lines.push(`- Toda experiencia profissional do peticionario antes de ${usTimeline.us_entry_date} e BRASILEIRA (ou do pais de origem). Cite com clareza geografica.`);
+    lines.push(`- Implementacoes nos EUA (clientes, projetos, contratos remunerados) DEVEM ter data >= ${usTimeline.us_first_work_authorization_date} OU ser explicitamente classificadas como "trabalho voluntario / pro-bono nao-remunerado em conformidade com termos de visto".`);
+    lines.push('- Em caso de duvida sobre qualquer data, OMITIR a data e descrever a atividade sem datacao especifica em vez de inventar. NUNCA inferir datas plausiveis sem fonte documental.');
+    lines.push('- O sistema rodara scripts/validate_us_entry_date.py no documento gerado. Qualquer violacao = REJEICAO automatica.');
+    lines.push('');
+    if (usTimeline.transcription_excerpt) {
+      lines.push('### Trecho da fonte (transcricao da reuniao):');
+      lines.push(`> "${usTimeline.transcription_excerpt}"`);
+      lines.push('');
+    }
+  }
 
   if (isProjetoBase) {
     lines.push('');
@@ -345,6 +382,22 @@ export async function POST(req: NextRequest) {
   const clientSlug = client.name.replace(/\s+/g, '_');
   const clientBaseDir = client.docs_folder_path || `${DEFAULT_CASES_DIR}${client.name}/`;
   const outputDir = path.join(clientBaseDir, '_Forjado por Petition Engine') + '/';
+
+  // PRÉ-GATE GLOBAL — us_timeline obrigatória para EB-1A / EB-2 NIW / O-1.
+  // Bloqueia ANTES de qualquer geração se master_facts/{case_id}.json estiver
+  // ausente ou sem us_entry_date / us_first_work_authorization_date.
+  const caseId = (client as { case_id?: string }).case_id || deriveCaseId(client.name);
+  const visaType: string = client.visa_type || '';
+  const gate = preGateUSEntryDate(caseId, visaType);
+  if (!gate.ok) {
+    return NextResponse.json({
+      error: gate.reason,
+      hint: `Editar data/master_facts/${caseId}.json e adicionar us_timeline com us_entry_date e us_first_work_authorization_date. Sem isso, qualquer documento gerado pode citar trabalho remunerado nos EUA antes da autorização legal — violação USCIS crítica.`,
+      case_id: caseId,
+      visa_type: visaType,
+    }, { status: 400 });
+  }
+  const usTimeline: USTimeline | undefined = gate.timeline;
 
   // Try to find existing specific instruction first
   const existingInstruction = findExistingInstruction(client.name, doc_type, clientBaseDir);
@@ -503,7 +556,7 @@ export async function POST(req: NextRequest) {
   // Special handling for anteprojeto/projeto-base
   const isAnteprojeto = doc_type.startsWith('anteprojeto_') || doc_type.startsWith('projeto_base_');
   if (isAnteprojeto) {
-    let specialPrompt = buildAnteprojetoInstruction(client, system, doc_type, outputDir, rulesSection, selected_endeavor, selected_soc_code);
+    let specialPrompt = buildAnteprojetoInstruction(client, system, doc_type, outputDir, rulesSection, selected_endeavor, selected_soc_code, usTimeline);
     if (generation_instructions) {
       specialPrompt += '\n\n## INSTRUCOES ESPECIFICAS PARA ESTA GERACAO\n' + generation_instructions + '\n';
     }

@@ -117,5 +117,19 @@
       "example": "Medical Systems (2008-2011) → Walmart.com → iFood → Movile",
       "count_portfolio": "4 empresas comprovadas por testemunhos independentes"
     }
-  ]
+  ],
+  "profession_br": "nao_regulada",
+  "profession_br_confidence": "high",
+  "profession_br_subtype": "CEO_operations_management",
+  "us_license_active": false,
+  "us_license_type": null,
+  "backfill_metadata": {
+    "method": "manual_paulo_2026-04-28",
+    "source_path": "CEO Quantum Decision Network LLC; perfil business/operations confirmado em filing original 2023",
+    "backfilled_at": "2026-04-28",
+    "backfill_version": "1.0-manual",
+    "override_reason": "auto-inferer marcou nao_regulada (correto); explicitando high confidence"
+  },
+  "us_timeline_pending": true,
+  "us_timeline_pending_note": "PREENCHER us_timeline ANTES da próxima geração. Cláusula pétrea (feedback Paulo 2026-04-29 + r206/r207): toda data de trabalho remunerado nos EUA citada em qualquer documento DEVE ser >= us_first_work_authorization_date. Sem este bloco, src/lib/validators/us-entry-date.ts.preGateUSEntryDate retorna 400 e bloqueia API. Campos obrigatórios: us_entry_date (YYYY-MM-DD) + us_first_work_authorization_date (YYYY-MM-DD). Recomendado: us_entry_basis, us_aos_approved_date, us_first_work_authorization_basis, company_formed_date, company_name, verification_source, transcription_excerpt. Ver data/master_facts/marcio_elias_barbosa.json como exemplo canônico."
 }

@@ -1,6 +1,7 @@
 import { readFileSync, existsSync } from 'fs';
 import path from 'path';
 import type { LetterType } from '@/lib/rules/persona-bank';
+import type { USTimeline } from '@/lib/validators/us-entry-date';
 
 export interface AnchorSpec {
   value: string;
@@ -15,8 +16,10 @@ export interface MasterFacts {
   soc_target: string;
   description?: string;
   source?: string;
+  us_timeline?: USTimeline;
   anchors: Record<string, AnchorSpec>;
   evidence_bank: Array<Record<string, unknown>>;
+  validation_notes?: string[];
 }
 
 export interface AnchorPresenceResult {

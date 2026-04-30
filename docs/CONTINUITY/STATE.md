@@ -1,6 +1,6 @@
 # STATE.md — Estado atual do Petition Engine
 
-**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-20T18:05:26Z
+**Auto-atualizado por `scripts/update-state.sh`.** Última atualização: 2026-04-23T01:37:00Z
 
 > Esta página é regenerada a cada commit (via git hook post-commit). Para ver cronologia, consultar `STEPLOG.md`. Para o mapa completo do que existe, `INVENTORY.md`.
 
@@ -8,26 +8,26 @@
 
 | Métrica | Valor |
 |---------|-------|
-| Último commit | `76336dacfcc1b6493d3a128264907002fac6e948` — feat(impacto): 5-phase multi-agent pipeline spec + node builder wrapper |
+| Último commit | `b0b56a76b436e97628f69587f7ed8cbb8de34bdb` — feat(saas): pipeline formal v1.0 + validator + builder genérico + template prompts |
 | Autor | paulorenatolimax-ctrl |
-| Total de commits | 118 |
-| Sincronização | ✅ local = remote |
+| Total de commits | 130 |
+| Sincronização | ⚠️ local (b0b56a76b436e97628f69587f7ed8cbb8de34bdb) vs remote (fad649d5348ea74f4ec87ed804ebd17cd66e3f00) |
 | Último handoff | SESSAO_2026-04-19_RESUMO.md |
 
 ## Saúde operacional
 
 | Métrica | Valor |
 |---------|-------|
-| Daemon `com.paulo.petitionengine.dev` | ✅ running |
+| Daemon `com.paulo.petitionengine.dev` | ✅ loaded (PID 1417) |
 | Port 3000 | ✅ serving |
 
 ## Números do sistema
 
 | Métrica | Valor |
 |---------|-------|
-| error_rules.json | 148 regras |
+| error_rules.json | 149 regras |
 | systems.json | 25 entries |
-| clients.json | 41 clientes cadastrados |
+| clients.json | 43 clientes cadastrados |
 | persona_bank.json | 12 personas |
 | master_facts/ | 2 casos |
 | hard_blocks/ | 3 configs (default + por caso) |
@@ -42,6 +42,7 @@ Ver `STEPLOG.md` seção "Pendências ativas" e o handoff mais recente em `docs/
 
 (auto-detecção simples — revisar manualmente se algo aparecer)
 
+- ⚠️ Repo local divergiu do remote (11 commits ahead). Rodar `git fetch && git status` pra entender.
 
 ## Pointers rápidos (quando precisar encontrar algo)
 

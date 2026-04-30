@@ -1,0 +1,15 @@
+{
+  "case_id": "airton_cardoso_goncalves",
+  "petitioner_name": "Airton Cardoso Gonçalves",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "PREENCHER",
+  "description": "Stub criado em 2026-04-29 — preencher anchors, soc_target e us_timeline antes de qualquer geração.",
+  "source": "Stub gerado automaticamente",
+  "us_timeline_pending": true,
+  "us_timeline_pending_note": "PREENCHER us_timeline ANTES da próxima geração. Cláusula pétrea (feedback Paulo 2026-04-29 + r206/r207): toda data de trabalho remunerado nos EUA citada em qualquer documento DEVE ser >= us_first_work_authorization_date. Sem este bloco, src/lib/validators/us-entry-date.ts.preGateUSEntryDate retorna 400 e bloqueia API. Campos obrigatórios: us_entry_date (YYYY-MM-DD) + us_first_work_authorization_date (YYYY-MM-DD). Recomendado: us_entry_basis, us_aos_approved_date, us_first_work_authorization_basis, company_formed_date, company_name, verification_source, transcription_excerpt. Ver data/master_facts/marcio_elias_barbosa.json como exemplo canônico.",
+  "anchors": {},
+  "evidence_bank": [],
+  "validation_notes": [
+    "STUB pendente de preenchimento humano. Sem us_timeline e anchors, qualquer tentativa de gerar EB-2 NIW / EB-1A / O-1 será bloqueada pelo pré-gate."
+  ]
+}

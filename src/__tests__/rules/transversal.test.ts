@@ -22,7 +22,7 @@ describe('Transversal Rules', () => {
   it('EB2_NIW_SPECIFIC_RULES contains EB-2 NIW terms', () => {
     expect(EB2_NIW_SPECIFIC_RULES).toContain('INGLÊS');
     expect(EB2_NIW_SPECIFIC_RULES).toContain('Dhanasar');
-    expect(EB2_NIW_SPECIFIC_RULES).toContain('anti-Cristine');
+    expect(EB2_NIW_SPECIFIC_RULES).toContain('Anti-Cristine');
   });
 
   it('buildTransversalRules for eb1a includes shared + eb1a specific', () => {

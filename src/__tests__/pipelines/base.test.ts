@@ -13,9 +13,9 @@ import {
 const SLEEPER = path.join(process.cwd(), 'src/__tests__/fixtures/slow-sleeper.sh');
 
 describe('runClaude — timeouts', () => {
-  it('exports sane defaults (45min hard, 10min idle)', () => {
-    expect(RUN_CLAUDE_DEFAULT_TIMEOUT_MS).toBe(45 * 60 * 1000);
-    expect(RUN_CLAUDE_DEFAULT_IDLE_MS).toBe(10 * 60 * 1000);
+  it('exports sane defaults (60min hard, 20min idle)', () => {
+    expect(RUN_CLAUDE_DEFAULT_TIMEOUT_MS).toBe(60 * 60 * 1000);
+    expect(RUN_CLAUDE_DEFAULT_IDLE_MS).toBe(20 * 60 * 1000);
   });
 
   it('hard timeout kills a hung process and reports timeoutKind=hard', async () => {

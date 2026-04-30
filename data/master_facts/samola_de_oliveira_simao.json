@@ -1,0 +1,123 @@
+{
+  "case_id": "samola_de_oliveira_simao",
+  "petitioner_name": "Sâmola de Oliveira Simão",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "11-1021 General and Operations Managers",
+  "soc_alternatives": [
+    "11-3011 Administrative Services Managers",
+    "13-1111 Management Analysts"
+  ],
+  "sector": "Integrated Governance & Execution Framework (IGEF) — management framework para PMEs americanas (Apex Executive Governance LLC)",
+  "description": "Master facts canônicos do caso Sâmola de Oliveira Simão. Esqueleto inicial — completar required_anchors com dados da V3_ANTEPROJETO após review humano.",
+  "source": "V3_ANTEPROJETO_ESTRATÉGICO_EB-2_NIW_Sâmola_de_Oliveira_Simão.pdf + PLANO DE NEGÓCIOS ABRANGENTE APEX EXECUTIVE GOVERNANCE",
+  "client_name": "Sâmola de Oliveira Simão",
+  "anchors": {
+    "years_experience": {
+      "value": "TBD — extrair do CV",
+      "aliases": [],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "prior_role": {
+      "value": "TBD — auditora pública / docente / executiva (ler CV)",
+      "aliases": [],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "current_role": {
+      "value": "Founder/CEO Apex Executive Governance LLC",
+      "aliases": [
+        "Apex Executive Governance",
+        "IGEF"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "framework_proprietary": {
+      "value": "IGEF — Integrated Governance & Execution Framework (5 camadas: Governança Estratégica, Estrutura Financeira, Estrutura Operacional, Estrutura Comercial, Células Executoras)",
+      "aliases": [
+        "IGEF",
+        "Integrated Governance and Execution Framework",
+        "framework de 5 camadas"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "soc_target": {
+      "value": "11-1021 General and Operations Managers",
+      "aliases": [
+        "SOC 11-1021",
+        "General and Operations Manager"
+      ],
+      "required_in_letter_types": []
+    },
+    "sector_market": {
+      "value": "33M PMEs nos EUA, 50% taxa de falência em 5 anos",
+      "aliases": [
+        "small and medium enterprises",
+        "SMEs",
+        "PMEs americanas"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "investidor_futuro"
+      ]
+    }
+  },
+  "evidence_bank": [
+    {
+      "kind": "regulatory_trigger_us",
+      "values": [
+        "SBA loan programs",
+        "SBIR/STTR",
+        "SOX compliance for SMEs"
+      ]
+    },
+    {
+      "kind": "market_size",
+      "values": [
+        "33M SMEs (SBA 2025)",
+        "$13T SME GDP contribution",
+        "50% 5-year failure rate"
+      ]
+    },
+    {
+      "kind": "competitor_benchmark",
+      "values": [
+        "EOS Implementers",
+        "Scaling Up",
+        "Vistage"
+      ]
+    }
+  ],
+  "_pending_human_review": [
+    "Confirmar SOC final (11-1021 vs 11-3011 vs 13-1111) após review do anteprojeto V3 com cliente",
+    "Preencher anchors.years_experience com número exato extraído do CV",
+    "Preencher anchors.prior_role com cargos/empresas/datas reais",
+    "Validar 'Apex Executive Governance LLC' no Texas Secretary of State"
+  ],
+  "profession_br": "nao_regulada",
+  "profession_br_confidence": "high",
+  "profession_br_subtype": "governance_audit_franchise_marketing_education",
+  "us_license_active": false,
+  "us_license_type": null,
+  "backfill_metadata": {
+    "method": "manual_paulo_2026-04-28",
+    "source_path": "Perfil multidisciplinar: auditoria pública + franquia + marketing + comercial + docência (per prompt V2 + CV samola)",
+    "backfilled_at": "2026-04-28",
+    "backfill_version": "1.0-manual",
+    "override_reason": "auto-inference matched médico boilerplate (false positive — talvez de \"medicina\" como exemplo proibido); perfil real é business/management multidisciplinar"
+  },
+  "us_timeline_pending": true,
+  "us_timeline_pending_note": "PREENCHER us_timeline ANTES da próxima geração. Cláusula pétrea (feedback Paulo 2026-04-29 + r206/r207): toda data de trabalho remunerado nos EUA citada em qualquer documento DEVE ser >= us_first_work_authorization_date. Sem este bloco, src/lib/validators/us-entry-date.ts.preGateUSEntryDate retorna 400 e bloqueia API. Campos obrigatórios: us_entry_date (YYYY-MM-DD) + us_first_work_authorization_date (YYYY-MM-DD). Recomendado: us_entry_basis, us_aos_approved_date, us_first_work_authorization_basis, company_formed_date, company_name, verification_source, transcription_excerpt. Ver data/master_facts/marcio_elias_barbosa.json como exemplo canônico."
+}
