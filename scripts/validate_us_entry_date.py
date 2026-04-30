@@ -80,6 +80,13 @@ DATE_PATTERNS = [
 ]
 
 
+VALID_ENTRY_STATUSES = {
+    "in_us_with_work_authorization",
+    "in_us_pending_work_authorization",
+    "consular_processing_outside_us",
+}
+
+
 def load_us_timeline(case_id: str):
     path = os.path.join(MASTER_FACTS_DIR, f"{case_id}.json")
     if not os.path.exists(path):
@@ -89,8 +96,17 @@ def load_us_timeline(case_id: str):
     tl = data.get("us_timeline")
     if not tl:
         return None, f"us_timeline ausente em master_facts/{case_id}.json"
-    if not tl.get("us_entry_date") or not tl.get("us_first_work_authorization_date"):
-        return None, "us_entry_date ou us_first_work_authorization_date ausentes em us_timeline"
+    status = tl.get("entry_status") or "in_us_with_work_authorization"
+    if status not in VALID_ENTRY_STATUSES:
+        return None, f"entry_status inválido: {status}. Valores válidos: {sorted(VALID_ENTRY_STATUSES)}"
+    if status == "in_us_with_work_authorization":
+        if not tl.get("us_entry_date") or not tl.get("us_first_work_authorization_date"):
+            return None, "us_entry_date ou us_first_work_authorization_date ausentes (status in_us_with_work_authorization exige ambas)"
+    elif status == "in_us_pending_work_authorization":
+        if not tl.get("us_entry_date"):
+            return None, "us_entry_date ausente (status in_us_pending_work_authorization exige us_entry_date)"
+    # consular_processing_outside_us: nenhuma data exigida
+    tl["entry_status"] = status
     return tl, None
 
 
@@ -126,8 +142,9 @@ def is_in_url_context(text: str, position: int, span_len: int) -> bool:
 
 
 def scan(text: str, timeline: dict):
-    entry = normalize_iso(timeline["us_entry_date"])
-    work = normalize_iso(timeline["us_first_work_authorization_date"])
+    status = timeline.get("entry_status") or "in_us_with_work_authorization"
+    entry = normalize_iso(timeline["us_entry_date"]) if timeline.get("us_entry_date") else ""
+    work = normalize_iso(timeline["us_first_work_authorization_date"]) if timeline.get("us_first_work_authorization_date") else ""
     violations = []
     seen = set()
     total_us_dates = 0
@@ -150,10 +167,15 @@ def scan(text: str, timeline: dict):
                 continue
             seen.add(key)
             violation = None
-            if iso < entry:
-                violation = "before_entry"
-            elif iso < work:
+            if status == "consular_processing_outside_us":
                 violation = "before_work_authorization"
+            elif status == "in_us_pending_work_authorization":
+                violation = "before_entry" if (entry and iso < entry) else "before_work_authorization"
+            else:
+                if entry and iso < entry:
+                    violation = "before_entry"
+                elif work and iso < work:
+                    violation = "before_work_authorization"
             if not violation:
                 continue
             violations.append({

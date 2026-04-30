@@ -43,6 +43,12 @@ describe('preGateUSEntryDate', () => {
     expect(preGateUSEntryDate(undefined, 'O-1A').ok).toBe(false);
     expect(preGateUSEntryDate(undefined, 'eb-1a').ok).toBe(false);
   });
+
+  it('passes for samola_de_oliveira_simao (consular_processing_outside_us, no dates required)', () => {
+    const r = preGateUSEntryDate('samola_de_oliveira_simao', 'EB-2 NIW');
+    expect(r.ok).toBe(true);
+    expect(r.timeline?.entry_status).toBe('consular_processing_outside_us');
+  });
 });
 
 describe('scanUSEntryDateViolations', () => {
@@ -83,5 +89,27 @@ describe('scanUSEntryDateViolations', () => {
     const text = 'Em janeiro de 2010 o peticionário trabalhou para um cliente no Brasil em São Paulo.';
     const r = scanUSEntryDateViolations(text, TIMELINE);
     expect(r.ok).toBe(true);
+  });
+
+  it('consular_processing_outside_us flags ANY US-work date (no permission ever)', () => {
+    const cpTimeline: USTimeline = { entry_status: 'consular_processing_outside_us' };
+    // CP — pode citar empresa nos EUA mas NÃO pode citar trabalho ativo dela lá
+    const benignText = 'A peticionária constituiu a Apex Executive Governance LLC em Florida.';
+    expect(scanUSEntryDateViolations(benignText, cpTimeline).ok).toBe(true);
+    // Mas qualquer trabalho remunerado nos EUA com data é violação
+    const badText = 'Em março de 2024 a peticionária implementou um projeto para um cliente em Florida.';
+    const r = scanUSEntryDateViolations(badText, cpTimeline);
+    expect(r.ok).toBe(false);
+    expect(r.violations[0].violation_type).toBe('before_work_authorization');
+  });
+
+  it('in_us_pending_work_authorization blocks ALL US-work dates', () => {
+    const pendingTimeline: USTimeline = {
+      entry_status: 'in_us_pending_work_authorization',
+      us_entry_date: '2023-06-01',
+    };
+    const text = 'Em outubro de 2024 o peticionário implementou um projeto para um cliente em Miami.';
+    const r = scanUSEntryDateViolations(text, pendingTimeline);
+    expect(r.ok).toBe(false);
   });
 });

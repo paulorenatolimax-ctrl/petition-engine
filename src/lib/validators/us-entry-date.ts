@@ -1,12 +1,44 @@
 import { readFileSync, existsSync } from 'fs';
 import path from 'path';
 
+/**
+ * Status de entrada do peticionário nos EUA — determina o que o validator exige.
+ *
+ *  - in_us_with_work_authorization
+ *      Caso normal: peticionário está nos EUA com EAD/AOS approved/H-1B/etc.
+ *      EXIGE us_entry_date + us_first_work_authorization_date.
+ *      Validator bloqueia qualquer data US-emprego < us_first_work_authorization_date.
+ *
+ *  - in_us_pending_work_authorization
+ *      Está nos EUA mas SEM autorização de trabalho ainda (ex: F-1 sem CPT/OPT,
+ *      AOS pendente sem EAD). EXIGE us_entry_date. Validator BLOQUEIA QUALQUER
+ *      data em contexto US-emprego (não pode citar trabalho remunerado lá).
+ *
+ *  - consular_processing_outside_us
+ *      Peticionário ainda no país de origem, vai entrar via processo consular.
+ *      NÃO exige datas. Validator BLOQUEIA QUALQUER data em contexto US-emprego
+ *      (ainda não pode ter trabalhado lá legalmente).
+ */
+export type USEntryStatus =
+  | 'in_us_with_work_authorization'
+  | 'in_us_pending_work_authorization'
+  | 'consular_processing_outside_us';
+
 export interface USTimeline {
-  us_entry_date: string;
+  /**
+   * Status que determina o que o validator exige. Default (quando ausente):
+   * 'in_us_with_work_authorization' — preserva comportamento histórico.
+   */
+  entry_status?: USEntryStatus;
+  us_entry_date?: string;
   us_entry_basis?: string;
   us_aos_approved_date?: string;
   us_aos_approved_basis?: string;
-  us_first_work_authorization_date: string;
+  /**
+   * Obrigatório apenas se entry_status === 'in_us_with_work_authorization'.
+   * Para outros status, permanece undefined.
+   */
+  us_first_work_authorization_date?: string;
   us_first_work_authorization_basis?: string;
   company_formed_date?: string;
   company_name?: string;
@@ -43,8 +75,16 @@ export function loadUSTimeline(caseId: string): USTimeline | null {
   try {
     const data = JSON.parse(readFileSync(file, 'utf-8'));
     if (!data.us_timeline) return null;
-    if (!data.us_timeline.us_entry_date || !data.us_timeline.us_first_work_authorization_date) return null;
-    return data.us_timeline as USTimeline;
+    const tl = data.us_timeline as USTimeline;
+    const status: USEntryStatus = tl.entry_status ?? 'in_us_with_work_authorization';
+    // Validação por status:
+    if (status === 'in_us_with_work_authorization') {
+      if (!tl.us_entry_date || !tl.us_first_work_authorization_date) return null;
+    } else if (status === 'in_us_pending_work_authorization') {
+      if (!tl.us_entry_date) return null;
+    }
+    // consular_processing_outside_us: nenhuma data é exigida.
+    return { ...tl, entry_status: status };
   } catch {
     return null;
   }
@@ -156,8 +196,9 @@ export function scanUSEntryDateViolations(text: string, timeline: USTimeline): U
   const violations: USEntryDateScanViolation[] = [];
   const seen = new Set<string>();
   const workContextRegex = /\b(trabalh|contrat|implement|atend|prest|client|contract|hire|employ|engaj|project|projeto|consult|consultor)/i;
-  const entryDate = normalizeIso(timeline.us_entry_date);
-  const workAuthDate = normalizeIso(timeline.us_first_work_authorization_date);
+  const status: USEntryStatus = timeline.entry_status ?? 'in_us_with_work_authorization';
+  const entryDate = timeline.us_entry_date ? normalizeIso(timeline.us_entry_date) : '';
+  const workAuthDate = timeline.us_first_work_authorization_date ? normalizeIso(timeline.us_first_work_authorization_date) : '';
 
   let totalUsContextDates = 0;
 
@@ -179,8 +220,18 @@ export function scanUSEntryDateViolations(text: string, timeline: USTimeline): U
       if (seen.has(key)) continue;
       seen.add(key);
       let violationType: 'before_entry' | 'before_work_authorization' | null = null;
-      if (iso < entryDate) violationType = 'before_entry';
-      else if (iso < workAuthDate) violationType = 'before_work_authorization';
+      if (status === 'consular_processing_outside_us') {
+        // Sem autorização de trabalho NUNCA — toda data US-emprego é violação.
+        violationType = 'before_work_authorization';
+      } else if (status === 'in_us_pending_work_authorization') {
+        // Tem entry_date mas NÃO tem work_auth — qualquer data US-emprego é violação,
+        // exceto se claramente anterior à entrada (aí é trabalho fora dos EUA mal-rotulado).
+        violationType = entryDate && iso < entryDate ? 'before_entry' : 'before_work_authorization';
+      } else {
+        // in_us_with_work_authorization (default histórico).
+        if (entryDate && iso < entryDate) violationType = 'before_entry';
+        else if (workAuthDate && iso < workAuthDate) violationType = 'before_work_authorization';
+      }
       if (!violationType) continue;
       violations.push({
         date_iso: iso,
