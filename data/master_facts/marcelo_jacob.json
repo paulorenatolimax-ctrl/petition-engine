@@ -1,0 +1,156 @@
+{
+  "case_id": "marcelo_jacob",
+  "client_name": "Marcelo Jacob da Silva",
+  "visa_type": "EB-1A",
+  "us_timeline": {
+    "entry_status": "in_us_pending_work_authorization",
+    "_evidence": [
+      "US geo em V3_Resume EB1_MARCELO JACOB[50] - Atualizado em 10 Ago 2025_Batch Compress_1.pdf",
+      "(NOTA: entry_status preservado='in_us_pending_work_authorization'; inferência atual='consular_processing_outside_us')"
+    ],
+    "_candidate_entry_dates": [],
+    "_confidence": "low"
+  },
+  "_provisional": true,
+  "_confidence": "low",
+  "_created_by": "claude-emergency-update",
+  "_created_at": "2026-05-01",
+  "_reason": "Status atualizado de consular_processing → in_us_pending após Paulo confirmar presença em US. Onboarding-wizard deve completar campos restantes (formação, datas via diploma, O*NET, evidências) lendo os documentos da pasta do cliente.",
+  "field_of_expertise": "Doll Fashion Design",
+  "education": [
+    {
+      "tier": "especialização",
+      "field_of_study": "criação",
+      "institution": null,
+      "graduation_date": "2019",
+      "completed": null,
+      "_source": "anteprojeto_pdf_extraction",
+      "_confidence": "low"
+    },
+    {
+      "tier": "especialização",
+      "field_of_study": "moda",
+      "institution": null,
+      "graduation_date": "2017",
+      "completed": null,
+      "_source": "anteprojeto_pdf_extraction",
+      "_confidence": "low"
+    }
+  ],
+  "evidence_inventory": {
+    "path": null,
+    "count": 0,
+    "by_type": {},
+    "files": []
+  },
+  "persona_suggestions": [
+    {
+      "author_id": "dan_gibson_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "Dan Gibson",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/CV Dan Gibson.docx",
+      "source_kind": "cv_pdf",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 10,
+      "_provisional": true,
+      "_confidence": "medium"
+    },
+    {
+      "author_id": "assunto_testemunho_profissional_marcelo_jacob_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "Assunto: Testemunho Profissional – Marcelo Jacob",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/VF Carta de testemunho Luiz Manuel Gómez Pollido.docx",
+      "source_kind": "carta_existing",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 11,
+      "_provisional": true,
+      "_confidence": "medium"
+    },
+    {
+      "author_id": "contact_sharon_marie_wright_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "Contact Sharon Marie Wright",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/CV Sharon Marie Wright .pdf",
+      "source_kind": "cv_pdf",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 12,
+      "_provisional": true,
+      "_confidence": "high"
+    },
+    {
+      "author_id": "to_uscis_united_states_citizenship_and_immigration_services_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "To USCIS (United States Citizenship and Immigration Services)",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/VF Carta de testemunho Marl & B Inc_.docx",
+      "source_kind": "carta_existing",
+      "credential": "CEO / Founder",
+      "firm": "private business",
+      "years_in_field": 38,
+      "_provisional": true,
+      "_confidence": "medium"
+    },
+    {
+      "author_id": "sharon_marie_wright_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "Sharon Marie Wright",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/VF Carta de Recomendação - Sharon Marie Wright_.docx",
+      "source_kind": "carta_existing",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 11,
+      "_provisional": true,
+      "_confidence": "medium"
+    },
+    {
+      "author_id": "contato_maria_margarida_salvado_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "Contato Maria Margarida Salvado",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/CV Maria Margarida Salvado.pdf",
+      "source_kind": "cv_pdf",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 29,
+      "_provisional": true,
+      "_confidence": "high"
+    },
+    {
+      "author_id": "vf_carta_de_recomendac_a_o_jose_euge_nio_rodri_guez_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "VF Carta de Recomendação - José Eugênio Rodríguez",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/VF Carta de Recomendação - José Eugênio Rodríguez.docx",
+      "source_kind": "carta_existing",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 11,
+      "_provisional": true,
+      "_confidence": "medium"
+    },
+    {
+      "author_id": "aos_cuidados_da_ag_ncia_de_imigra_o_dos_eua_marcelo_jacob",
+      "case_id": "marcelo_jacob",
+      "full_name": "Aos cuidados da Agência de Imigração dos EUA,",
+      "source_file": "/Users/paulo1844/Projects/2_PROEX (A COMPLEMENTAR)/_1. APIÁRIO (QUARTA PARTE)/GIU/MARCELO JACOB/1. CARREGUE AQUI SEUS DOCUMENTOS/Cartas/VF Carta de Recomendação - Luiz de Deus.docx",
+      "source_kind": "carta_existing",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 12,
+      "_provisional": true,
+      "_confidence": "medium"
+    }
+  ],
+  "_canonical_sources": [
+    "V4_Resume EB1_MARCELO JACOB[54] - Atualizado em 19 Out 2025.docx",
+    "Documento base para cartas[2] - updated 5 Mar 2025.docx"
+  ],
+  "_review_required": "Campos extraídos via regex de PDFs. Revisar education[]/field_of_expertise/onet_code antes de geração definitiva.",
+  "_enriched_by": "onboarding_extract.py",
+  "_enriched_at": "2026-05-01T21:33:52.351529+00:00",
+  "onet_code": "27-1022.00",
+  "_onet_source": "paulo_manual_override:fashion_designer (creates clothing/costumes for dolls; designer not patternmaker)",
+  "_onet_set_at": "2026-05-01T21:33:52.447764+00:00",
+  "_photo_evidence_mode": true,
+  "_photo_evidence_reason": "Doll Fashion Design — evidência majoritariamente fotográfica (284 .jpg de bonecas/peças). Texto OCR-able só em 76/302. Photo mode permite preflight passar tratando .jpg/.png como image_only."
+}

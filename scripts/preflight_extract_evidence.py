@@ -49,6 +49,7 @@ from typing import Any
 
 CHAR_THRESHOLD = 50
 SUPPORTED_EXTS = {".pdf", ".docx", ".png", ".jpg", ".jpeg"}
+IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 SKIP_DIR_NAMES = {
     "_Forjado por Petition Engine",
     "phases",
@@ -199,7 +200,23 @@ def walk_evidences(root: Path) -> list[Path]:
     return out
 
 
-def build_manifest_entry(evidence_root: Path, file: Path, output_dir: Path) -> dict[str, Any]:
+def classify_status(char_count: int, ext: str, photo_mode: bool, threshold: int) -> str:
+    """Returns 'ok', 'image_only', or 'starved'.
+
+    image_only: image file (.png/.jpg/.jpeg) with text below threshold AND --photo-evidence-mode active.
+    These are visual evidences (photos of subject's work, e.g. dolls/products) where text-extraction
+    isn't expected. Pipeline must describe them via filename + contextual inference, NOT pretend it
+    read content. Distinguished from 'starved' so r220 can pass while still flagging textual files
+    that genuinely failed extraction.
+    """
+    if char_count >= threshold:
+        return "ok"
+    if photo_mode and ext in IMAGE_EXTS:
+        return "image_only"
+    return "starved"
+
+
+def build_manifest_entry(evidence_root: Path, file: Path, output_dir: Path, photo_mode: bool, threshold: int) -> dict[str, Any]:
     digest = sha256_of_file(file)
     txt_path = output_dir / f"{digest}.txt"
     ext = file.suffix.lower()
@@ -215,7 +232,7 @@ def build_manifest_entry(evidence_root: Path, file: Path, output_dir: Path) -> d
             "char_count": len(cached.strip()),
             "ocr_used": None,
             "extracted_text_path": str(txt_path),
-            "status": "ok" if len(cached.strip()) >= CHAR_THRESHOLD else "starved",
+            "status": classify_status(len(cached.strip()), ext, photo_mode, threshold),
             "cached": True,
         }
 
@@ -249,7 +266,7 @@ def build_manifest_entry(evidence_root: Path, file: Path, output_dir: Path) -> d
         "char_count": len(text),
         "ocr_used": ocr_used,
         "extracted_text_path": str(txt_path),
-        "status": "ok" if len(text) >= CHAR_THRESHOLD else "starved",
+        "status": classify_status(len(text), ext, photo_mode, threshold),
         "cached": False,
     }
     if error:
@@ -263,6 +280,15 @@ def main() -> int:
     ap.add_argument("--evidence-dir", required=True, help="Root directory of client evidences")
     ap.add_argument("--output-dir", default=None, help="Where to write {sha256}.txt + manifest.json")
     ap.add_argument("--threshold", type=int, default=CHAR_THRESHOLD)
+    ap.add_argument(
+        "--photo-evidence-mode",
+        action="store_true",
+        help=("When set, .jpg/.png/.jpeg files that extract < threshold chars are tagged "
+              "'image_only' (not 'starved'). Pipeline accepts these as visual-only evidences "
+              "to be described via filename + contextual inference. Use ONLY for clients whose "
+              "evidence is dominantly photographic (e.g. fashion design portfolios, art works). "
+              "Default off — abuse re-introduces the Cowork 'reading filename instead of content' bug."),
+    )
     args = ap.parse_args()
 
     evidence_root = Path(args.evidence_dir).resolve()
@@ -273,25 +299,34 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     files = walk_evidences(evidence_root)
-    entries = [build_manifest_entry(evidence_root, f, output_dir) for f in files]
+    entries = [
+        build_manifest_entry(evidence_root, f, output_dir, args.photo_evidence_mode, args.threshold)
+        for f in files
+    ]
+
+    ok_count = sum(1 for e in entries if e["status"] == "ok")
+    image_only_count = sum(1 for e in entries if e["status"] == "image_only")
+    starved_count = sum(1 for e in entries if e["status"] == "starved")
 
     manifest = {
         "client_id": args.client_id,
         "evidence_root": str(evidence_root),
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "threshold": args.threshold,
+        "photo_evidence_mode": args.photo_evidence_mode,
         "evidence_count": len(entries),
-        "ok_count": sum(1 for e in entries if e["status"] == "ok"),
-        "starved_count": sum(1 for e in entries if e["status"] == "starved"),
+        "ok_count": ok_count,
+        "image_only_count": image_only_count,
+        "starved_count": starved_count,
         "entries": entries,
     }
     manifest_path = output_dir / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     starved = [e for e in entries if e["status"] == "starved"]
-    print(f"[preflight] client={args.client_id} files={len(entries)} ok={manifest['ok_count']} starved={len(starved)}")
+    print(f"[preflight] client={args.client_id} files={len(entries)} ok={ok_count} image_only={image_only_count} starved={len(starved)} photo_mode={args.photo_evidence_mode}")
     if starved:
-        print(f"[preflight] STARVED (< {args.threshold} chars):")
+        print(f"[preflight] STARVED (< {args.threshold} chars; non-image OR photo_mode=off):")
         for e in starved[:20]:
             print(f"  - {e['filename']} ({e['char_count']} chars)")
         if len(starved) > 20:

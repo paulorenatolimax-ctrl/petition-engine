@@ -292,7 +292,7 @@ export interface EvidencePreflightEntry {
   type: string;
   char_count: number;
   ocr_used: boolean | null;
-  status: 'ok' | 'starved';
+  status: 'ok' | 'image_only' | 'starved';
 }
 
 export interface EvidencePreflightResult {
@@ -308,10 +308,28 @@ export interface EvidencePreflightResult {
 const PREFLIGHT_SCRIPT = path.join(process.cwd(), 'scripts', 'preflight_extract_evidence.py');
 const EVIDENCE_EXTRACTED_DIR = path.join(process.cwd(), 'data', 'evidence_extracted');
 
+/**
+ * Reads `_photo_evidence_mode` boolean from data/master_facts/{caseId}.json. When true,
+ * preflight tolerates .jpg/.png/.jpeg files with extraction below threshold (tags them
+ * 'image_only' instead of 'starved'). Use only for clients whose evidence is dominantly
+ * photographic — e.g. fashion design, art portfolios.
+ */
+function readPhotoEvidenceMode(caseId: string): boolean {
+  const mfPath = path.join(process.cwd(), 'data', 'master_facts', `${caseId}.json`);
+  if (!existsSync(mfPath)) return false;
+  try {
+    const data = JSON.parse(readFileSync(mfPath, 'utf-8'));
+    return data._photo_evidence_mode === true;
+  } catch {
+    return false;
+  }
+}
+
 export function runEvidencePreflight(opts: {
   clientId: string;
   evidenceDir: string;
   forceRerun?: boolean;
+  photoEvidenceMode?: boolean;
 }): EvidencePreflightResult {
   const outputDir = path.join(EVIDENCE_EXTRACTED_DIR, opts.clientId);
   const manifestPath = path.join(outputDir, 'manifest.json');
@@ -326,12 +344,15 @@ export function runEvidencePreflight(opts: {
     return { ...empty, error: `preflight script not found: ${PREFLIGHT_SCRIPT}` };
   }
 
+  const photoMode = opts.photoEvidenceMode ?? readPhotoEvidenceMode(opts.clientId);
+  const photoFlag = photoMode ? ' --photo-evidence-mode' : '';
+
   const needsRun = opts.forceRerun || !existsSync(manifestPath);
   if (needsRun) {
     try { mkdirSync(outputDir, { recursive: true }); } catch {}
     try {
       execSync(
-        `python3 "${PREFLIGHT_SCRIPT}" --client-id "${opts.clientId}" --evidence-dir "${opts.evidenceDir}" --output-dir "${outputDir}"`,
+        `python3 "${PREFLIGHT_SCRIPT}" --client-id "${opts.clientId}" --evidence-dir "${opts.evidenceDir}" --output-dir "${outputDir}"${photoFlag}`,
         { encoding: 'utf-8', timeout: 30 * 60 * 1000, maxBuffer: 64 * 1024 * 1024 },
       );
     } catch {
@@ -353,17 +374,32 @@ export function runEvidencePreflight(opts: {
 
   const entries: EvidencePreflightEntry[] = manifest.entries || [];
   const starved = entries.filter(e => e.status === 'starved');
+  const imageOnly = entries.filter(e => e.status === 'image_only');
+  const ok = entries.filter(e => e.status === 'ok');
 
   const lines: string[] = [
     '',
     '## EVIDENCE MANIFEST (preflight extracted — rule r220)',
-    `Client: ${opts.clientId} · Total: ${entries.length} · OK: ${manifest.ok_count ?? entries.length - starved.length} · Starved: ${starved.length}`,
-    'Use APENAS conteúdo extraído em data/evidence_extracted/{client_id}/{sha256}.txt — NUNCA inferir do filename.',
+    `Client: ${opts.clientId} · Total: ${entries.length} · OK (text): ${manifest.ok_count ?? ok.length} · Image-only: ${manifest.image_only_count ?? imageOnly.length} · Starved: ${starved.length}`,
+    'Use APENAS conteúdo extraído em data/evidence_extracted/{client_id}/{sha256}.txt — NUNCA inferir do filename PARA EVIDÊNCIAS TEXTUAIS.',
+    imageOnly.length > 0
+      ? 'Para evidências marcadas IMAGE-ONLY: descrever via filename + contexto inferido do conjunto. NUNCA pretender ter lido conteúdo escrito que não existe.'
+      : '',
     '',
   ];
   for (const e of entries) {
-    const flag = e.status === 'ok' ? '✓' : '✗';
-    const note = e.status === 'ok' ? `${e.char_count} chars` : `STARVED (${e.char_count} chars)`;
+    let flag: string;
+    let note: string;
+    if (e.status === 'ok') {
+      flag = '✓';
+      note = `${e.char_count} chars`;
+    } else if (e.status === 'image_only') {
+      flag = '🖼';
+      note = `IMAGE-ONLY (visual evidence, no text)`;
+    } else {
+      flag = '✗';
+      note = `STARVED (${e.char_count} chars)`;
+    }
     lines.push(`- ${flag} ${e.relative_path} [${e.type}] ${note}${e.ocr_used ? ' (OCR)' : ''}`);
   }
   lines.push('');
@@ -375,7 +411,7 @@ export function runEvidencePreflight(opts: {
     summary: lines.join('\n'),
     starved,
     error: starved.length
-      ? `${starved.length} evidence file(s) starved (< 50 chars): ${starved.slice(0, 5).map(s => s.filename).join(', ')}${starved.length > 5 ? '...' : ''}`
+      ? `${starved.length} evidence file(s) starved (< 50 chars, non-image): ${starved.slice(0, 5).map(s => s.filename).join(', ')}${starved.length > 5 ? '...' : ''}`
       : undefined,
   };
 }
