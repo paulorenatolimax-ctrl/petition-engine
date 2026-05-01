@@ -17,6 +17,7 @@ import {
 } from './base';
 import { scanHardBlocks, renderHardBlockReport } from '@/lib/rules/hard-blocks';
 import { getMasterFacts, checkAnchorsPresence } from '@/lib/rules/master-facts';
+import { buildSystemDigest } from '@/lib/rules/systems-repository';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -278,7 +279,14 @@ export async function runMultiPhasePipeline(
         || (params as { docType?: string; doc_type?: string }).doc_type
         || '';
       const rulesPrefix = docTypeForRules ? buildRulesSectionForDocType(docTypeForRules) : '';
-      const prompt = rulesPrefix + caseContext + interpolate(phase.prompt || '', params);
+      // CHUNK 10 (F3.2) — Embed system_path digest no prompt. Antes só interpolava
+      // a string {systemPath}; sub-claude raramente lia. Agora o digest com
+      // primeiros 4 KB de cada arquivo é incluído inline (controlado por
+      // maxBytesPerFile + maxTotalBytes).
+      const systemDigest = params.systemPath
+        ? `\n\n## SISTEMA CANÔNICO — LEIA ESTE DIGEST ANTES DE GERAR\n\n${buildSystemDigest(params.systemPath, { maxBytesPerFile: 4000, maxTotalBytes: 30000 })}\n\n`
+        : '';
+      const prompt = rulesPrefix + systemDigest + caseContext + interpolate(phase.prompt || '', params);
       send('stage', { stage: 'generating', phase: phase.id, message: `Executando claude -p (fase ${phase.id}${params.caseId ? `, case=${params.caseId}` : ''})...` });
 
       let lastChunkTime = Date.now();

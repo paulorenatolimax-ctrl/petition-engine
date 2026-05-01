@@ -17,7 +17,8 @@
  */
 
 import { execSync } from 'child_process';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
+import path from 'path';
 import type { SendFn } from '@/lib/pipelines/base';
 
 export interface PostGenQualityParams {
@@ -91,8 +92,8 @@ export async function runQualityGateAndLearn(params: PostGenQualityParams): Prom
       documentText: docText,
       docType,
       clientName: clientName || '',
-      visaType: visaType || '',
     });
+    void visaType; // reservado pra futura extensão de QualityInput
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     send('stage', { stage: 'warning', phase: 1.5, message: `Quality Gate falhou: ${msg.slice(0, 200)}` });
@@ -147,6 +148,40 @@ export async function runQualityGateAndLearn(params: PostGenQualityParams): Prom
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       send('stage', { stage: 'warning', phase: 1.55, message: `AutoDebugger falhou: ${msg.slice(0, 200)}` });
+    }
+  }
+
+  // ═══ PHASE 1.6 — Resume vs benchmark (CHUNK 13 / F3.5) ═══
+  // Para resume_eb1a / resume_eb2_niw, rodar validate_resume_against_benchmark.py
+  // e reportar violações estruturais (anti-template, anti-RAG-pollution, etc).
+  if (docType === 'resume_eb1a' || docType === 'resume_eb2_niw') {
+    try {
+      const scriptPath = path.join(process.cwd(), 'scripts', 'validate_resume_against_benchmark.py');
+      if (!existsSync(scriptPath)) {
+        send('stage', { stage: 'info', phase: 1.6, message: 'validate_resume_against_benchmark.py não encontrado — skip' });
+      } else {
+        const out = execSync(
+          `python3 ${JSON.stringify(scriptPath)} --file ${JSON.stringify(docxPath)} --json`,
+          { encoding: 'utf-8', maxBuffer: 5 * 1024 * 1024, timeout: 30_000 },
+        ) || '';
+        try {
+          const parsed = JSON.parse(out);
+          const score = parsed.score ?? 0;
+          const passed = parsed.passed ?? 0;
+          const total = parsed.total ?? 0;
+          const blocking = (parsed.blocking_failures || []) as string[];
+          if (blocking.length > 0) {
+            send('stage', { stage: 'warning', phase: 1.6, message: `Resume benchmark FALHA score=${score}/100 (${passed}/${total}). Bloqueantes: ${blocking.join(', ')}` });
+          } else {
+            send('stage', { stage: 'info', phase: 1.6, message: `Resume benchmark OK score=${score}/100 (${passed}/${total})` });
+          }
+        } catch {
+          // ignore parse error
+        }
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      send('stage', { stage: 'warning', phase: 1.6, message: `validate_resume_against_benchmark falhou: ${msg.slice(0, 200)}` });
     }
   }
 
