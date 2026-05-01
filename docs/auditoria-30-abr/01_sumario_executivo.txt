@@ -1,0 +1,119 @@
+AUDITORIA: POR QUE O SISTEMA DE QUALIDADE NUNCA ACUMULA
+========================================================
+
+DATA: 2026-04-30
+AUDITOR: Claude (Haiku 4.5)
+DURAÇÃO: 45 minutos
+
+ACHADO CRÍTICO
+==============
+
+AutoDebugger está COMPLETAMENTE ÓRFÃO.
+
+De 211 regras em error_rules.json:
+- 0% criadas por auto-debugger-local (0 regras)
+- 100% criadas manualmente (211 regras)
+- 92% nunca foram acionadas (194 de 211 com times_triggered = 0)
+
+O loop de auto-aprendizagem foi desenhado em PHASE 1.55 (execute/route.ts)
+mas NUNCA produziu uma regra. Violações são detectadas, mas não viram regras.
+
+EVIDÊNCIA
+=========
+
+1. ZERO REGRAS AUTO-CRIADAS
+   - Análise: grep 'auto_debugger' em todas as 211 regras = 0 resultados
+   - Conclusão: reportBatch() foi executado mas nunca escreveu regra
+
+2. FILTRO PODE ESTAR BLOQUEANDO SINAIS
+   - Código: v.rule.startsWith('r') filtra violations já em error_rules
+   - Risk: Se TODOS os violations começam com 'r', signals.length = 0 sempre
+   - Resultado: reportBatch nunca é chamado
+
+3. UI /qualidade É READ-ONLY
+   - Mostra stats e gráficos
+   - NÃO tem ação pra criar regra
+   - NÃO permite "aceitar" violação detectada
+
+4. LOGGING É OPACO
+   - Nenhum log obrigatório de "regra criada"
+   - Falhas dentro de reportBatch são silenciadas (try/catch)
+   - Impossível debugar via logs atualmente
+
+STATUS DAS 5 HIPÓTESES
+======================
+
+A. AutoDebugger é Completamente Silencioso
+   Status: ✓ CONFIRMADO
+   Impacto: CRÍTICO
+
+B. Violations Estão Sendo Filtradas
+   Status: ⚠️ POSSÍVEL
+   Impacto: MÉDIO
+
+C. error_rules.json Não É Consultado
+   Status: ❌ REFUTADO
+   Impacto: N/A
+
+D. Regras Estão Inativas (active: false)
+   Status: ❌ REFUTADO
+   Impacto: N/A
+
+E. Sistema Usa Snapshot Antigo
+   Status: ❌ REFUTADO (detalhe: race condition possível)
+   Impacto: BAIXO
+
+ARQUIVOS CRÍTICOS
+=================
+
+src/agents/auto-debugger-local.ts:147 linhas
+  └─ reportBatch(signals) — onde regras deveriam ser criadas
+
+src/app/api/generate/execute/route.ts:1520+
+  └─ PHASE 1.55: AutoDebugger — onde reportBatch é chamado
+
+src/lib/rules/repository.ts
+  └─ readAllRules(), buildRulesSection() — como regras são lidas
+
+src/app/qualidade/page.tsx
+  └─ Dashboard read-only — observatório, não painel de comando
+
+TOP 3 FIXES (PRIORIDADE)
+========================
+
+1. URGENTE: Adicionar logs em auto-debugger-local.ts
+   - Log ao entrar em reportBatch() com signals.length
+   - Log cada iteração de report() com ação tomada
+   - Log ao sair com confirmação de disco
+   → Ver exatamente onde o bloqueio está
+
+2. MÉDIO: Refinar filtro de violations em PHASE 1.55
+   - Problema atual: v.rule.startsWith('r') é muito simples
+   - Violations têm formato "Termo proibido 'X'", não "r123"
+   - Se TODOS começam com 'r', signals.length = 0 sempre
+   → Garantir que novas violations não sejam bloqueadas
+
+3. MÉDIO: Adicionar ação em /qualidade page
+   - Botão "Converter Violação → Regra" via UI
+   - Endpoint POST /api/quality/accept-violation
+   - Permite operador forçar criação de regra manualmente
+   → Fallback quando auto-debugger não funciona
+
+PRÓXIMOS PASSOS
+===============
+
+1. [5 min] Adicionar logs em auto-debugger-local.ts (FIX #1)
+2. [10 min] Rodar uma geração e capturar logs
+3. [5 min] Analisar se signals.length é sempre 0 (FIX #2)
+4. [15 min] Se signals.length = 0: refinar filtro em PHASE 1.55
+5. [30 min] Implementar button em /qualidade (FIX #3)
+6. [10 min] Testar pipeline inteira: geração → violação → regra nova
+
+ESTIMATIVA TOTAL: ~2 horas pra fechar o loop completamente
+
+REFERÊNCIAS
+===========
+
+Relatório Completo: docs/auditoria-30-abr/02_qualidade_acumulativa.md
+
+Contato: paulorenatolima@yahoo.com.br

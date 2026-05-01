@@ -1,0 +1,72 @@
+TIMELINE: CRESCIMENTO DE REGRAS EM error_rules.json
+===================================================
+
+MÊS        TOTAL  NOVAS  ORIGEM
+-----      -----  -----  -----------------------------------
+2026-01       6      6   quality_notes (criação inicial)
+
+2026-02       7      1   quality_notes (1 nova)
+
+2026-03      58     51   Mudança drástica: + 51 regras
+                         Origem: paulo_feedback, quality_calibration, etc
+
+2026-04     211    153   Explosão: + 153 regras (último mês!)
+                         Origem: paulo_feedback (31), retrospectiva Ricardo (23),
+                                  anteprojeto V2 travas (17), quality_calibration (10),
+                                  CATALOGO_V4 (múltiplas), etc
+
+PADRÃO OBSERVADO
+================
+
+Período 1 (Jan-Feb): Regime "inicial" — apenas 7 regras (baseline)
+Período 2 (Mar): Aceleração — +51 regras em 1 mês (Paulo começou agregar feedback)
+Período 3 (Apr): Hiper-aceleração — +153 regras em 30 dias! (1 novo a cada 6 horas)
+
+NOTA: Nenhuma regra tem source='auto_debugger' em nenhum período.
+
+TOP 10 FONTES (TODAS MANUAIS)
+=============================
+
+ 1. paulo_feedback:                            31 regras
+ 2. retrospectiva_ricardo_cowork_2026-04-19:   23 regras
+ 3. anteprojeto V2 travas (Márcio Elias):      17 regras
+ 4. quality_calibration:                       10 regras
+ 5. leandro_deck_engineering_spec:              8 regras
+ 6. quality_notes:                              6 regras
+ 7. v3_skill:                                   6 regras
+ 8. CATALOGO_V4 múltiplas (V17-N01 até V29-N26): 27 regras (agregadas)
+ 9. feedback Paulo 2026-04-29 + 2026-04-30:     4 regras (hoje!)
+10. diagnostico EB-1 hibrido 2026-04-29:        2 regras (hoje!)
+
+DENSIDADE TEMPORAL (ÚLTIMAS 2 SEMANAS)
+======================================
+
+2026-04-19: retrospectiva_ricardo_cowork
+2026-04-20+: CATALOGO_V4 series início
+2026-04-29: diagnostico EB-1 hibrido + feedback Paulo (30 abr)
+2026-04-30: feedback Paulo 2026-04-30 (HOJE - 2 regras)
+
+INSIGHT
+=======
+
+Sistema está sendo "bombeado" com regras MANUALMENTE por Paulo.
+Não há crescimento automático. O pico de Mar → Apr não foi por auto-learning,
+mas por auditorias humanas e feedback manual.
+
+Se auto-debugger estivesse funcionando, seria esperado ver:
+- Baseline de 211 regras (manual) +
+- Crescimento contínuo (auto) proporcional ao # de gerações
+
+Em vez disso, vemos APENAS manual, em pulsos (quando Paulo se dedica a auditar).
+
+CONCLUSÃO
+=========
+
+O sistema é totalmente dependente de FEEDBACK HUMANO manual.
+Auto-learning = 0%. Crescimento = spike humano + estagnação.
+
+Isso explica a regressão 362 → 13:
+- Quando Paulo para de auditar, novos erros não viram regras
+- Violações antigas repetem porque não há loop de aprendizagem
+- Próxima geração ignora erro anterior (não está em rules)
+

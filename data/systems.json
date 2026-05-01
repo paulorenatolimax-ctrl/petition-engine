@@ -82,10 +82,11 @@
     "system_path": "/Users/paulo1844/Documents/5_Z GLOBAL/_PRODUTO NOVO/agents/",
     "version_tag": "1.0",
     "file_count": 9,
-    "is_active": true,
+    "is_active": false,
     "recommended_model": "claude-opus-4",
     "doc_type": "impacto_report",
-    "created_at": "2026-03-20T10:00:00Z"
+    "created_at": "2026-03-20T10:00:00Z",
+    "notes": "symlink systems/impacto -> /5_Z GLOBAL/_PRODUTO NOVO/agents está quebrado (path não existe). Disabled em 2026-04-30 (CHUNK 1 do plano D). Re-ativar quando system_path correto for definido."
   },
   {
     "id": "9",
@@ -130,29 +131,6 @@
     "recommended_model": "claude-sonnet-4",
     "doc_type": "quality_report",
     "created_at": "2026-03-20T10:00:00Z"
-  },
-  {
-    "id": "13",
-    "system_name": "Cartas de Testemunho & Satélite (EB-1)",
-    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
-    "version_tag": "2.0",
-    "file_count": 6,
-    "is_active": true,
-    "recommended_model": "claude-sonnet-4",
-    "doc_type": "recommendation_letters",
-    "note": "Integrado no Sistema Produtor de Cartas EB-1 v2.0",
-    "created_at": "2026-03-24T10:00:00Z"
-  },
-  {
-    "id": "14",
-    "system_name": "Cartas EB-1 v2.0",
-    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
-    "version_tag": "2.0",
-    "file_count": 6,
-    "is_active": true,
-    "recommended_model": "claude-sonnet-4",
-    "doc_type": "eb1_letters",
-    "created_at": "2026-03-24T10:00:00Z"
   },
   {
     "id": "15",
@@ -203,26 +181,22 @@
     "created_at": "2026-03-25T17:00:00Z"
   },
   {
-    "id": "19",
-    "system_name": "Cartas de Testemunho EB-1A",
-    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
-    "version_tag": "3.1",
-    "file_count": 6,
-    "is_active": true,
-    "recommended_model": "claude-sonnet-4",
-    "doc_type": "testimony_letters_eb1a",
-    "created_at": "2026-03-30T14:00:00Z"
-  },
-  {
     "id": "20",
-    "system_name": "Cartas de Testemunho EB-2 NIW",
-    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Mariana Kasza (DIRETO)/eb2-niw-letters/",
-    "version_tag": "1.0",
+    "system_name": "Cartas de Testemunho EB-2 NIW v5.0",
+    "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
+    "version_tag": "5.0.0",
     "file_count": 4,
     "is_active": true,
     "recommended_model": "claude-sonnet-4",
-    "doc_type": "testimony_letters_eb2_niw",
-    "created_at": "2026-03-30T14:00:00Z"
+    "doc_type": "testimony_letter_eb2_niw",
+    "created_at": "2026-03-30T14:00:00Z",
+    "renamed_from": [
+      {
+        "old_name": "Cartas de Testemunho EB-2 NIW",
+        "old_version_tag": "1.0",
+        "date": "2026-04-26"
+      }
+    ]
   },
   {
     "id": "21",
@@ -248,7 +222,7 @@
   },
   {
     "id": "23",
-    "system_name": "Sistema Produtor de Cartas v5.0",
+    "system_name": "Cartas de Testemunho EB-1A v5.0",
     "system_path": "/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/",
     "version_tag": "5.0.0",
     "file_count": 9,
@@ -257,7 +231,14 @@
     "doc_type": "testimony_letter_eb1a",
     "note": "v5: 57 rules + 23 antipatterns + 5 master prompts + hard_block_scrub configurável + persona_bank + master_facts + anti-atlas validator. Base empírica caso Ricardo Augusto. Current symlink points to SKILL_v5.md. v2.0, v3.1, v1.0 preserved in same dir.",
     "active": true,
-    "created_at": "2026-04-19T11:00:00Z"
+    "created_at": "2026-04-19T11:00:00Z",
+    "renamed_from": [
+      {
+        "old_name": "Sistema Produtor de Cartas v5.0",
+        "old_version_tag": "5.0.0",
+        "date": "2026-04-26"
+      }
+    ]
   },
   {
     "id": "24",
