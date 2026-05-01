@@ -1,0 +1,99 @@
+{
+  "case_id": "danielle_cedini",
+  "petitioner_name": "Danielle de Sousa Manfredi Cedini",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "11-3031 Financial Managers",
+  "description": "Master facts canônicos do caso Danielle Cedini (REFILE pós-denial IOE0924895699 de 08/04/2025 que negou Prong 1 e 3 e aprovou Prong 2 + elegibilidade EB-2). Endeavor: SolvencyShield LLC — diagnóstico de saúde financeira e prevenção de insolvência de PMEs nos EUA. Pivô completo do endeavor anterior (D. Cedini Business LLC / Future LLC).",
+  "source": "V3_PROJETO BASE — EB-2 NIW (16/abr/2026) + V4 (21/abr/2026) — feedback Paulo 2026-04-30",
+  "us_timeline": {
+    "entry_status": "in_us_with_work_authorization",
+    "us_entry_date": "2023-01-01",
+    "us_entry_basis": "PROVISÓRIO — Refile EB-2 NIW pós-denial 08/04/2025 indica entrada antes de 2024. CONFIRMAR com Paulo a data exata e o tipo de visto inicial.",
+    "us_aos_approved_date": null,
+    "us_first_work_authorization_date": "2024-04-01",
+    "us_first_work_authorization_basis": "PROVISÓRIO — pode ser EAD via I-485 pendente ou outra base. CONFIRMAR exatamente com Paulo. Master Vacation Homes (FL) é cliente em prospect.",
+    "company_formed_date": "2026-XX-XX",
+    "company_name": "SolvencyShield LLC (Florida)",
+    "verification_source": "V3_PROJETO BASE — EB-2 NIW (16/abr/2026). REFILE pós-denial. Datas migratórias EXATAS pendentes de confirmação humana.",
+    "transcription_excerpt": "Refile EB-2 NIW direto. Endeavor SolvencyShield LLC. Datas de timeline US PROVISÓRIAS — usar como floor; qualquer trabalho US citado anterior a 2024-04-01 será flagged pelo validator."
+  },
+  "anchors": {
+    "endeavor_name": {
+      "value": "SolvencyShield LLC",
+      "aliases": [
+        "SolvencyShield",
+        "Solvency Shield"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "endeavor_focus": {
+      "value": "Diagnóstico de saúde financeira e prevenção de insolvência de PMEs nos EUA via Financial Resilience Score (FRS) e framework replicável",
+      "aliases": [
+        "FRS",
+        "Financial Resilience Score",
+        "prevenção de insolvência",
+        "saúde financeira PMEs"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "soc_unique": {
+      "value": "SOC 11-3031 Financial Managers",
+      "aliases": [
+        "11-3031",
+        "Financial Managers"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado",
+        "cliente_futuro",
+        "parceiro_estrategico"
+      ]
+    },
+    "geo_florida_lab": {
+      "value": "Florida (Middle District) como laboratório empírico para escala nacional, com roadmap de replicação em Texas/GA/AZ/NC/Tennessee em 5 anos",
+      "aliases": [
+        "Middle District of Florida",
+        "Florida 2030"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    },
+    "grupo_larioja_track_record": {
+      "value": "Grupo La Rioja (construção civil, Brasil) — diagnóstico financeiro, controles internos, integração de sistemas, análise de viabilidade, recuperação judicial — track-record direto da peticionária",
+      "aliases": [
+        "Grupo La Rioja",
+        "Construtora Larioja",
+        "La Rioja"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "denial_history": {
+      "value": "Denial IOE0924895699 de 08/04/2025 — Prong 1 (importância nacional) e Prong 3 (waiver) negados; Prong 2 (well positioned) e elegibilidade EB-2 APROVADOS. Refile cirúrgico endereça os 2 prongs negados sem comprometer os aprovados.",
+      "aliases": [
+        "IOE0924895699",
+        "denial 2025",
+        "refile pós-denial"
+      ],
+      "required_in_letter_types": []
+    }
+  },
+  "evidence_bank": [],
+  "validation_notes": [
+    "us_timeline DATAS PROVISÓRIAS — confirmar com Paulo a data EXATA de entrada US (2023-?? actual) e a data de primeira autorização legal de trabalho. Master Vacation Homes (FL) é cliente em prospect, NÃO trabalho remunerado pretérito.",
+    "SOC ÚNICO 11-3031 (Financial Managers). NUNCA listar SOC alternativos no Projeto-Base, Cover Letter, Resume ou Cartas — comparativo é só do Anteprojeto.",
+    "REFILE pós-denial: Prong 2 e elegibilidade EB-2 já aprovados — não reargumentar. Foco cirúrgico no Prong 1 (importância nacional) e Prong 3 (waiver).",
+    "Endeavor pivôtou de D. Cedini Business LLC / Future LLC para SolvencyShield LLC — todos os outputs novos devem usar EXCLUSIVAMENTE SolvencyShield."
+  ]
+}

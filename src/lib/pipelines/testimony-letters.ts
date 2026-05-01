@@ -40,6 +40,9 @@ export interface TestimonyPipelineParams {
   visaType: 'EB-1A' | 'EB-2 NIW' | 'O-1';
   claudeBin: string;
   letterTypes?: LetterType[];
+  /** When provided, restricts the pipeline to a subset of personas by author_id.
+   * Useful to dispatch one persona at a time as workaround for loop instability. */
+  authorIds?: string[];
   send: SendFn;
   genId: string;
 }
@@ -56,8 +59,32 @@ export interface TestimonyPipelineResult {
   report_md: string;
 }
 
+// Sistema canônico de cartas (mapeado em data/systems.json) — caminho absoluto.
+const CARTAS_SYSTEM_DIR = '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1';
+const CARTAS_SKILL_FILE = `${CARTAS_SYSTEM_DIR}/current.md`;
+const CARTAS_REFERENCES_DIR = `${CARTAS_SYSTEM_DIR}/references`;
+
+// Benchmarks aprovados/assinados — pontos de calibração canônica para o sub-claude.
+const BENCHMARK_LETTERS = [
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 1. Ademar Toyonori Hirata.pdf',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 2. Antonio Claret Gama.pdf',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 3. Carlos Eduardo Rocha de Assis.pdf',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 4. David Karins.pdf',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 5. Thiago Avelino.pdf',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Cesar Maçol/1. CARREGUE AQUI SEUS DOCUMENTOS/CARTAS/2 - Cartas de testemunho/1 - Carta assinada - Marcelo Tertuliano (Vulcan) .pdf',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Cesar Maçol/1. CARREGUE AQUI SEUS DOCUMENTOS/CARTAS/2 - Cartas de testemunho/2 - VQF_Carta de recomendação_Kayce Coker_apoio_Cesar Lopes Maçol Costa en-US Assinada.docx',
+];
+
 /**
  * Build per-persona prompt. Each persona yields a unique letter.
+ *
+ * O prompt INSTRUI o sub-claude a LER FISICAMENTE:
+ *   1. SKILL_v5 (current.md) — instruções canônicas da skill de cartas
+ *   2. references/ — formatting-catalog, metricas-e-nexos-causais, jurisprudencia, docx-code-patterns
+ *   3. 7 cartas benchmark (5 Ricardo TENTATIVA 3 aprovadas + 2 Maçol assinadas) — calibração de voz/estrutura
+ *   4. Pasta de evidências do pleiteante
+ *
+ * Sem essa leitura, o pipeline cai em "prompt genérico" — qualidade abaixo de Maçol/Ricardo.
  */
 function buildPersonaPrompt(
   persona: Persona,
@@ -72,11 +99,33 @@ function buildPersonaPrompt(
         .join('\n')
     : '(no master facts for this case)';
 
-  const openingSuggestion = persona.opening_variants[
-    Math.floor(Math.random() * persona.opening_variants.length)
-  ];
+  const benchmarkList = BENCHMARK_LETTERS.map(p => `   - ${p}`).join('\n');
 
   return `# Carta: ${letterTypeHuman(persona.letter_type)}
+
+## PASSO 0 — LEITURA OBRIGATÓRIA ANTES DE ESCREVER QUALQUER LINHA (NÃO PULAR)
+
+O sistema PROEX de cartas tem instruções canônicas DETALHADAS. Você DEVE lê-las inteiramente antes de gerar:
+
+1. **SKILL canônica (LEIA INTEGRALMENTE):**
+   ${CARTAS_SKILL_FILE}
+   Esse arquivo (~32 KB) define estrutura, voz, formatação por tipo de carta, anti-padrões. NÃO escreva nada antes de ler.
+
+2. **References (LEIA TODOS):**
+   ${CARTAS_REFERENCES_DIR}/formatting-catalog.md
+   ${CARTAS_REFERENCES_DIR}/formatting-catalog-v3.md
+   ${CARTAS_REFERENCES_DIR}/docx-code-patterns.md
+   ${CARTAS_REFERENCES_DIR}/docx-code-patterns-v3.md
+   ${CARTAS_REFERENCES_DIR}/metricas-e-nexos-causais.md
+   ${CARTAS_REFERENCES_DIR}/jurisprudencia-e-estrategia-2026.md
+
+3. **BENCHMARKS APROVADOS / ASSINADOS — calibração de voz e estrutura (LEIA pelo menos 3 antes de gerar):**
+${benchmarkList}
+   Essas cartas vieram de casos APROVADOS pelo USCIS (Ricardo Augusto) ou JÁ ASSINADAS por testemunhas reais (Maçol). Sua carta deve atingir esse nível de especificidade, voz pessoal, e ausência de templating. NÃO copiar — calibrar.
+
+4. **Pasta de evidências do pleiteante:**
+   ${clientDocsPath}
+   Faça \`ls -la\` recursivo, identifique CV, certificados, contratos, declarações, fotos do peticionário com a testemunha (se houver), notas fiscais. Cite ART/DOI/ISBN/NFS-e específicos quando os usar.
 
 ## Sua persona (autor da carta)
 - Nome: ${persona.full_name}
@@ -90,23 +139,24 @@ function buildPersonaPrompt(
 - Idioma obrigatório: ${persona.preferred_language === 'en' ? 'English' : 'Português (pt-BR)'}
 - Domínio de expertise (NÃO opinar fora): ${persona.expertise_lock.join(', ')}
 
-## Abertura sugerida (escolha esta OU uma das outras variantes)
-"${openingSuggestion}"
-
-## Fatos-âncora do caso (DEVE ecoar ≥3 destes)
+## Fatos-âncora do caso (DEVE ecoar ≥3 destes COM dados específicos, não aludir genericamente)
 ${anchorLines}
 
-## Pasta de evidências do pleiteante
-${clientDocsPath}
+## ABERTURA — REGRA CRÍTICA (auditoria 30/abr identificou esse padrão como o pior gap)
+**NÃO USE** abertura template-genérica do tipo "In my capacity as...", "Over the course of...", "I have direct knowledge of...".
+Cartas Maçol/Ricardo abrem com **fato CONCRETO específico** do testemunhador e do peticionário ("On 14 March 2018 I personally inspected the structural reports prepared by..."). Você deve fazer o mesmo: comece com cena real, datada, verificável. Os \`opening_variants\` da persona são apenas fallback se você não conseguir ancorar em uma cena concreta da pasta de evidências.
 
 ## Regras invioláveis (SKILL v5)
 - Voz em PRIMEIRA PESSOA do autor (não do pleiteante)
 - Tom: ${persona.emotional_register}
 - Zero jargão imigratório (NUNCA: EB-1, EB-2, NIW, Dhanasar, USCIS, visa, petition, i-140, green card)
 - Zero hyperbole (NUNCA: unique, sole, only, unparalleled, one-of-a-kind)
-- Cada afirmação com evidência numerada (ART nº, DOI, ISBN, NFS-e, norma técnica)
-- 1-3 cenas técnicas concretas, específicas à cadeira do autor
-- Juízo qualificado APENAS dentro do expertise_lock
+- **Zero RAG-pollution / infraestrutura interna** (NUNCA: "system", "automated", "AI-generated", "based on the system", "the framework", "PROEX", "RAG", "Petition Engine", "Forjado por") — auditoria identificou "system"/"automated" como red flags em cartas anteriores. Use linguagem de PROFISSIONAL HUMANO real.
+- Cada afirmação com evidência numerada (ART nº, DOI, ISBN, NFS-e, norma técnica) — sem "many", "several", "various"
+- **≥5 cenas técnicas concretas** (datadas, com nome de projeto/processo/cliente, valores quantitativos quando aplicável). Sem essas cenas a carta vira retórica vazia — o adjudicador percebe.
+- **Idiossincrasias** — cada persona escreve diferente. O verbo-assinatura "${persona.signature_verb}" deve aparecer ao menos 1× no fechamento. Tom técnico ${persona.emotional_register} deve permear o vocabulário (não só ser enunciado).
+- Juízo qualificado APENAS dentro do expertise_lock — fora dele, descrever observação sem opinar
+- Nunca dizer "I observed" + "I noticed" + "I witnessed" repetidamente — varie verbos de percepção (testemunhei, presenciei, acompanhei, supervisionei, validei, aferi)
 
 ## Tipo de carta: ${persona.letter_type}
 ${letterTypeInstructions(persona.letter_type, visaType)}
@@ -115,8 +165,15 @@ ${letterTypeInstructions(persona.letter_type, visaType)}
 Gerar UM arquivo .docx em ${outputDir}
 Naming: ${persona.author_id}_${persona.letter_type}.docx
 
-Use python-docx para o arquivo (NÃO .md). Aplique formatação por tipo
-conforme SEÇÃO 2 Categoria F do SKILL v5 current.md (/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/PROMPTs/_Sistema Produtor de Cartas EB-1/current.md).
+Use python-docx para o arquivo (NÃO .md). Aplique formatação por tipo conforme SKILL_v5 + references/ que VOCÊ JÁ LEU NO PASSO 0.
+
+## VALIDAÇÃO ANTES DE SALVAR (autoavaliação)
+Antes de salvar, releia a carta e responda mentalmente:
+- Se eu remover o nome do testemunhador, dá pra confundir com outra carta? Se sim, ESTÁ TEMPLATÉ — reescreva.
+- Tem ≥5 cenas concretas e datadas? Se não, adicione.
+- Aparece "system", "automated" ou similar? Se sim, REMOVA antes de salvar.
+- A abertura começa com fato concreto? Se não, reescreva.
+- O verbo-assinatura "${persona.signature_verb}" aparece no fechamento? Se não, ajuste.
 `;
 }
 
@@ -208,7 +265,10 @@ export async function runTestimonyLettersPipeline(params: TestimonyPipelineParam
   send('stage', { stage: 'phase', phase: 1, message: 'FASE 1: Carregando personas do caso' });
   const personas = caseId ? getAllPersonas(caseId) : [];
   const requestedTypes = letterTypes && letterTypes.length > 0 ? letterTypes : DEFAULT_LETTER_TYPES;
-  const personasToRun = personas.filter(p => requestedTypes.includes(p.letter_type));
+  const authorFilter = params.authorIds && params.authorIds.length > 0 ? new Set(params.authorIds) : null;
+  const personasToRun = personas
+    .filter(p => requestedTypes.includes(p.letter_type))
+    .filter(p => !authorFilter || authorFilter.has(p.author_id));
 
   if (personasToRun.length === 0) {
     const msg = `Nenhuma persona encontrada para caseId=${caseId} com letter_types=${requestedTypes.join(',')}. Cadastre em data/persona_bank.json.`;

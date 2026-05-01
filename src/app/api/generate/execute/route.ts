@@ -18,7 +18,7 @@ import { runTestimonyLettersPipeline } from '@/lib/pipelines/testimony-letters';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { prompt_file, client_name, doc_type, client_id } = body;
+  const { prompt_file, client_name, doc_type, client_id, letter_types, author_ids } = body;
   const encoder = new TextEncoder();
   const startTime = Date.now();
   const genId = `gen_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
           try {
             const cs = readClients();
             const cl = cs.find((c: { id: string; case_id?: string; name?: string }) => c.id === client_id);
-            caseId = cl?.case_id || (cl?.name ? cl.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : undefined);
+            caseId = cl?.case_id || (cl?.name ? cl.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') :undefined);
           } catch {}
         }
 
@@ -217,7 +217,7 @@ export async function POST(req: NextRequest) {
           const cs = readClients();
           const cl = cs.find((c: { id: string; docs_folder_path?: string; case_id?: string; name?: string }) => c.id === client_id);
           if (cl?.docs_folder_path) clientDocsPath = cl.docs_folder_path;
-          caseId = cl?.case_id || (cl?.name ? cl.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : '');
+          caseId = cl?.case_id || (cl?.name ? cl.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') :'');
         }
 
         if (!caseId) {
@@ -239,6 +239,8 @@ export async function POST(req: NextRequest) {
             claudeBin,
             send,
             genId,
+            ...(Array.isArray(letter_types) && letter_types.length > 0 ? { letterTypes: letter_types } : {}),
+            ...(Array.isArray(author_ids) && author_ids.length > 0 ? { authorIds: author_ids } : {}),
           });
 
           send('complete', {

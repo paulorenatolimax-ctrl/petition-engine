@@ -1,0 +1,64 @@
+{
+  "case_id": "fernando_george_breve",
+  "petitioner_name": "Fernando George Breve",
+  "visa_type": "EB-2 NIW",
+  "soc_target": "PREENCHER — sugerido SOC 15-1241 Computer Network Architects ou 11-3021 Computer & Information Systems Managers (Architect of HPE Solutions, 26 anos)",
+  "description": "Master facts iniciais Fernando George Breve. CV indica residência em Orlando-FL (7245 Harbor Heights Cir, 32835), 48 anos, casado, brasileiro, trabalha remotamente para MICROSUL (Brasil) desde 10/2006 como Gerente de Pré-vendas / Arquiteto de Soluções HPE. Status migratório PRECISO ainda não documentado — manter entry_status conservador até confirmação humana.",
+  "source": "CV - FGB -MAR-26.pdf + Anteprojeto V1 + reunião 31/mar/2026 (PDF transcrição com extração corrompida — re-revisar)",
+  "us_timeline": {
+    "entry_status": "in_us_pending_work_authorization",
+    "us_entry_date": "2018-01-01",
+    "us_entry_basis": "PROVISÓRIO — CV indica residência atual em Orlando-FL (7245 Harbor Heights Cir 32835, tel +1 407). Data de entrada exata NÃO documentada na pasta. CONFIRMAR com Paulo: quando entrou nos EUA, com qual visto inicial.",
+    "us_aos_approved_date": null,
+    "us_first_work_authorization_date": null,
+    "us_first_work_authorization_basis": "PROVISÓRIO — sem evidência de EAD/AOS approved/H-1B/etc na pasta atual. Mantido como null = bloqueia QUALQUER claim de trabalho remunerado nos EUA.",
+    "company_formed_date": null,
+    "company_name": "MICROSUL COM. SERV. DE EQUIP. P/ INF LTDA. (Brasil) — empregador brasileiro, trabalho remoto",
+    "verification_source": "CV - FGB -MAR-26.pdf (residência Orlando-FL declarada); pendente confirmação manual de status migratório.",
+    "transcription_excerpt": "PDF transcrição de 31/mar/2026 com extração corrompida; nada conclusivo sobre status migratório foi extraído."
+  },
+  "anchors": {
+    "current_role": {
+      "value": "Gerente de Pré-vendas e Arquiteto de Soluções HPE — MICROSUL (Out/2006-Atual)",
+      "aliases": [
+        "MICROSUL",
+        "HPE Solutions Architect",
+        "Pré-vendas HPE"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado",
+        "cliente_futuro",
+        "parceiro_estrategico"
+      ]
+    },
+    "years_experience": {
+      "value": "26 anos com produtos HPE; 19 anos como Arquiteto de Soluções",
+      "aliases": [
+        "26 anos HPE",
+        "19 anos Arquiteto",
+        "duas décadas"
+      ],
+      "required_in_letter_types": [
+        "testemunho_passado"
+      ]
+    },
+    "geo_orlando_fl": {
+      "value": "Residência em Orlando, Florida (7245 Harbor Heights Cir, 32835)",
+      "aliases": [
+        "Orlando-FL",
+        "Florida 32835"
+      ],
+      "required_in_letter_types": [
+        "cliente_futuro",
+        "parceiro_estrategico",
+        "investidor_futuro"
+      ]
+    }
+  },
+  "evidence_bank": [],
+  "validation_notes": [
+    "us_timeline DATAS CONSERVADORAS — entry_status=in_us_pending_work_authorization bloqueia QUALQUER claim de trabalho remunerado nos EUA. Atualizar quando Paulo confirmar datas reais (us_entry_date exato, tipo de visto inicial, e se há EAD/AOS approved).",
+    "SOC ainda PRECISA SER DEFINIDO no anteprojeto antes de avançar pra projeto-base. Sugestões: 15-1241 Computer Network Architects (alta compatibilidade com 'Arquiteto de Soluções') ou 11-3021 Computer & Information Systems Managers.",
+    "Trabalho ATUAL declarado é remoto pra MICROSUL (Brasil) — empregador brasileiro, residência americana. Não citar trabalho remunerado dentro de empresas americanas pretérito sem documentar autorização."
+  ]
+}

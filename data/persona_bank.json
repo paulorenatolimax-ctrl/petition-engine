@@ -1,6 +1,6 @@
 {
   "description": "Persona bank — engineered voices for satellite letter arsenals. Each author has distinct signature_verb, opening variants, expertise_lock, tone. Used by testimony_letters pipeline to prevent ATLAS.",
-  "source": "SKILL_v5 Section 2 Category C + RETROSPECTIVA_RICARDO_COWORK.md personas",
+  "source": "SKILL_v5 Section 2 Category C + RETROSPECTIVA_RICARDO_COWORK.md personas | + 5 personas Cedini extraídas dos CVs originais (30/abr/2026) | + 6 personas Sâmola extraídas das cartas em pasta Cartas/ (30/abr/2026, post-Cedini)",
   "personas": [
     {
       "author_id": "ademar_hirata",
@@ -302,6 +302,270 @@
       "sentence_length_distribution": "medium_formal",
       "preferred_language": "pt",
       "letter_type": "investidor_futuro"
+    },
+    {
+      "author_id": "vanderlei_masson_cedini",
+      "case_id": "danielle_cedini",
+      "full_name": "José Vanderlei Masson dos Santos",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 38,
+      "relationship_to_petitioner": "professional counterpart during petitioner's tenure at Grupo La Rioja (2009-2022) — relationship verifiable via CV evidence and contemporaneous documentation",
+      "signature_verb": "registre-se",
+      "opening_variants": [
+        "In my capacity as Senior Professional at Brazil-based practice, I have direct knowledge of",
+        "Over the course of more than 38 years in senior professional practice",
+        "I write in my professional capacity to attest to my direct observation of"
+      ],
+      "expertise_lock": [
+        "senior professional practice",
+        "industry expertise"
+      ],
+      "emotional_register": "formal-técnico sênior",
+      "sentence_length_distribution": "long_sentences_enumerativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "paulo_reszka_cedini",
+      "case_id": "danielle_cedini",
+      "full_name": "Paulo Reszka",
+      "credential": "AFRE — Auditor Fiscal da Receita Estadual",
+      "firm": "Secretaria da Fazenda do Estado de São Paulo",
+      "years_in_field": 21,
+      "relationship_to_petitioner": "professional counterpart during petitioner's tenure at Grupo La Rioja (2009-2022) — relationship verifiable via CV evidence and contemporaneous documentation",
+      "signature_verb": "atesto",
+      "opening_variants": [
+        "In my capacity as AFRE — Auditor Fiscal da Receita Estadual at Secretaria da Fazenda do Estado de São Paulo, I have direct knowledge of",
+        "Over the course of more than 21 years in fiscal audit",
+        "I write in my professional capacity to attest to my direct observation of"
+      ],
+      "expertise_lock": [
+        "fiscal audit",
+        "state revenue",
+        "tax compliance",
+        "fiscal scrutiny"
+      ],
+      "emotional_register": "formal-fiscalizador",
+      "sentence_length_distribution": "short_sentences_assertivas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "gustavo_vieira_ribeiro_cedini",
+      "case_id": "danielle_cedini",
+      "full_name": "Gustavo Vieira Ribeiro",
+      "credential": "Senior Professional",
+      "firm": "Brazil-based practice",
+      "years_in_field": 25,
+      "relationship_to_petitioner": "professional counterpart during petitioner's tenure at Grupo La Rioja (2009-2022) — relationship verifiable via CV evidence and contemporaneous documentation",
+      "signature_verb": "declaro",
+      "opening_variants": [
+        "In my capacity as Senior Professional at Brazil-based practice, I have direct knowledge of",
+        "Over the course of more than 25 years in senior professional practice",
+        "I write in my professional capacity to attest to my direct observation of"
+      ],
+      "expertise_lock": [
+        "senior professional practice",
+        "industry expertise"
+      ],
+      "emotional_register": "formal-executivo",
+      "sentence_length_distribution": "medium_sentences_narrativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "luiz_carlos_perez_cedini",
+      "case_id": "danielle_cedini",
+      "full_name": "Luiz Carlos Perez",
+      "credential": "CEO/Founder",
+      "firm": "Fegaro / private business",
+      "years_in_field": 21,
+      "relationship_to_petitioner": "professional counterpart during petitioner's tenure at Grupo La Rioja (2009-2022) — relationship verifiable via CV evidence and contemporaneous documentation",
+      "signature_verb": "certifico",
+      "opening_variants": [
+        "In my capacity as CEO/Founder at Fegaro / private business, I have direct knowledge of",
+        "Over the course of more than 21 years in executive continuity",
+        "I write in my professional capacity to attest to my direct observation of"
+      ],
+      "expertise_lock": [
+        "executive continuity",
+        "operational stewardship",
+        "business administration"
+      ],
+      "emotional_register": "formal-empreendedor",
+      "sentence_length_distribution": "medium_sentences_diretas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "solon_andrade_cedini",
+      "case_id": "danielle_cedini",
+      "full_name": "Solon Andrade",
+      "credential": "Lawyer & Accounting Partner",
+      "firm": "L&S Contabilidade Empresarial LTDA",
+      "years_in_field": 31,
+      "relationship_to_petitioner": "professional counterpart during petitioner's tenure at Grupo La Rioja (2009-2022) — relationship verifiable via CV evidence and contemporaneous documentation",
+      "signature_verb": "ratifico",
+      "opening_variants": [
+        "In my capacity as Lawyer & Accounting Partner at L&S Contabilidade Empresarial LTDA, I have direct knowledge of",
+        "Over the course of more than 31 years in accounting partnership",
+        "I write in my professional capacity to attest to my direct observation of"
+      ],
+      "expertise_lock": [
+        "accounting partnership",
+        "tax compliance",
+        "corporate accounting",
+        "books integrity"
+      ],
+      "emotional_register": "formal-jurídico",
+      "sentence_length_distribution": "long_sentences_argumentativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "wagner_woli_samola",
+      "case_id": "samola_de_oliveira_simao",
+      "full_name": "Wagner [Woli]",
+      "credential": "Senior Professional",
+      "firm": "WOLI",
+      "years_in_field": 10,
+      "relationship_to_petitioner": "Direct professional counterpart of Sâmola during her tenure related to WOLI; relationship verifiable via the existing draft letter in client folder (file: Carta Wagner - Woli.pdf).",
+      "signature_verb": "registre-se",
+      "opening_variants": [
+        "In my capacity as a senior counterpart at WOLI, I have direct knowledge of",
+        "Over the course of my professional collaboration with the petitioner at WOLI",
+        "I write in support of Sâmola de Oliveira Simão based on direct observation while at WOLI"
+      ],
+      "expertise_lock": [
+        "marketing strategy",
+        "brand repositioning",
+        "communication coordination"
+      ],
+      "emotional_register": "formal-técnico sênior",
+      "sentence_length_distribution": "long_sentences_enumerativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "thiago_nunes_samola",
+      "case_id": "samola_de_oliveira_simao",
+      "full_name": "Thiago Nunes",
+      "credential": "Senior Professional",
+      "firm": "Solotratores / Technical Counterpart",
+      "years_in_field": 12,
+      "relationship_to_petitioner": "Direct professional counterpart of Sâmola during her tenure related to Solotratores / Technical Counterpart; relationship verifiable via the existing draft letter in client folder (file: Carta Thiago Nunes - TÉCNICO.pdf).",
+      "signature_verb": "atesto",
+      "opening_variants": [
+        "In my capacity as a senior counterpart at Solotratores / Technical Counterpart, I have direct knowledge of",
+        "Over the course of my professional collaboration with the petitioner at Solotratores / Technical Counterpart",
+        "I write in support of Sâmola de Oliveira Simão based on direct observation while at Solotratores / Technical Counterpart"
+      ],
+      "expertise_lock": [
+        "technical event coordination",
+        "technical alignment",
+        "industrial branding"
+      ],
+      "emotional_register": "formal-fiscalizador conciso",
+      "sentence_length_distribution": "short_sentences_assertivas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "gabriela_oliveira_samola",
+      "case_id": "samola_de_oliveira_simao",
+      "full_name": "Gabriela Oliveira",
+      "credential": "Senior Professional",
+      "firm": "Satis",
+      "years_in_field": 14,
+      "relationship_to_petitioner": "Direct professional counterpart of Sâmola during her tenure related to Satis; relationship verifiable via the existing draft letter in client folder (file: Carta Gabriela Oliveira - Satis.pdf).",
+      "signature_verb": "declaro",
+      "opening_variants": [
+        "In my capacity as a senior counterpart at Satis, I have direct knowledge of",
+        "Over the course of my professional collaboration with the petitioner at Satis",
+        "I write in support of Sâmola de Oliveira Simão based on direct observation while at Satis"
+      ],
+      "expertise_lock": [
+        "trade marketing",
+        "internal communication",
+        "promotional materials"
+      ],
+      "emotional_register": "formal-comercial caloroso",
+      "sentence_length_distribution": "medium_sentences_narrativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "janete_nunes_samola",
+      "case_id": "samola_de_oliveira_simao",
+      "full_name": "Janete Nunes",
+      "credential": "Senior Professional",
+      "firm": "Uniaraxá",
+      "years_in_field": 16,
+      "relationship_to_petitioner": "Direct professional counterpart of Sâmola during her tenure related to Uniaraxá; relationship verifiable via the existing draft letter in client folder (file: Carta Janete Nunes - UNIARAXA.pdf).",
+      "signature_verb": "certifico",
+      "opening_variants": [
+        "In my capacity as a senior counterpart at Uniaraxá, I have direct knowledge of",
+        "Over the course of my professional collaboration with the petitioner at Uniaraxá",
+        "I write in support of Sâmola de Oliveira Simão based on direct observation while at Uniaraxá"
+      ],
+      "expertise_lock": [
+        "commercial supervision",
+        "academic-commercial liaison",
+        "team management"
+      ],
+      "emotional_register": "formal-acadêmico estruturado",
+      "sentence_length_distribution": "medium_sentences_diretas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "miriam_iprem_samola",
+      "case_id": "samola_de_oliveira_simao",
+      "full_name": "Miriam",
+      "credential": "Senior Professional",
+      "firm": "IPREM (Instituto de Previdência Municipal)",
+      "years_in_field": 18,
+      "relationship_to_petitioner": "Direct professional counterpart of Sâmola during her tenure related to IPREM (Instituto de Previdência Municipal); relationship verifiable via the existing draft letter in client folder (file: Carta Miriam - IPREM.pdf).",
+      "signature_verb": "ratifico",
+      "opening_variants": [
+        "In my capacity as a senior counterpart at IPREM (Instituto de Previdência Municipal), I have direct knowledge of",
+        "Over the course of my professional collaboration with the petitioner at IPREM (Instituto de Previdência Municipal)",
+        "I write in support of Sâmola de Oliveira Simão based on direct observation while at IPREM (Instituto de Previdência Municipal)"
+      ],
+      "expertise_lock": [
+        "internal audit",
+        "public compliance",
+        "financial reporting"
+      ],
+      "emotional_register": "formal-jurídico-institucional",
+      "sentence_length_distribution": "long_sentences_argumentativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
+    },
+    {
+      "author_id": "breno_teixeira_samola",
+      "case_id": "samola_de_oliveira_simao",
+      "full_name": "Breno Teixeira",
+      "credential": "Senior Professional",
+      "firm": "DB DANBRED",
+      "years_in_field": 20,
+      "relationship_to_petitioner": "Direct professional counterpart of Sâmola during her tenure related to DB DANBRED; relationship verifiable via the existing draft letter in client folder (file: Carta Breno Teixeira - DB DANBRED.pdf).",
+      "signature_verb": "subscrevo",
+      "opening_variants": [
+        "In my capacity as a senior counterpart at DB DANBRED, I have direct knowledge of",
+        "Over the course of my professional collaboration with the petitioner at DB DANBRED",
+        "I write in support of Sâmola de Oliveira Simão based on direct observation while at DB DANBRED"
+      ],
+      "expertise_lock": [
+        "agribusiness marketing",
+        "events and communication",
+        "rural sector branding"
+      ],
+      "emotional_register": "formal-empreendedor empático",
+      "sentence_length_distribution": "medium_sentences_recordativas",
+      "preferred_language": "en",
+      "letter_type": "testemunho_passado"
     }
   ]
 }
