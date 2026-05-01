@@ -2758,5 +2758,124 @@
     "active": true,
     "times_triggered": 0,
     "created_at": "2026-04-30T01:00:00Z"
+  },
+  {
+    "id": "r214",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw"
+    ],
+    "severity": "critical",
+    "action": "BLOCK",
+    "pattern": "(mais de uma década|doze anos|dez anos|uma década|over a decade|twelve years)",
+    "message": "Linguagem temporal inflada — usar datas absolutas ('desde 2018', 'ao longo do período 2016-2026')",
+    "source": "vitoria_quality_review_2026-05-01",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "content"
+  },
+  {
+    "id": "r215",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw",
+      "resume_eb1a",
+      "resume_eb2_niw"
+    ],
+    "severity": "critical",
+    "action": "BLOCK",
+    "pattern": "\\b(11-14111\\.00|11-1411\\.00|99-9999\\.00)\\b",
+    "message": "Código O*NET inexistente — validar contra onetonline.org antes de inserir",
+    "source": "vitoria_O_NET_11-14111",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "content"
+  },
+  {
+    "id": "r216",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw"
+    ],
+    "severity": "high",
+    "action": "WARN",
+    "pattern": "(graduação em Psicologia|formação dupla|dupla formação|duas graduações|dupla graduação)",
+    "message": "Verificar se formação foi efetivamente CONCLUÍDA — checar master_facts.education[].completed=true",
+    "source": "vitoria_psicologia_incompleta",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "content"
+  },
+  {
+    "id": "r217",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw"
+    ],
+    "severity": "high",
+    "action": "WARN",
+    "pattern": "\\b(UTI|CRN|CRM|CFM|CFN|CRO|OAB)\\b(?!\\s*\\([A-Z][^)]+\\))",
+    "message": "Sigla brasileira sem expansão EN na primeira menção — formato 'UTI (Intensive Care Unit — ICU)'",
+    "source": "vitoria_UTI_sem_traducao",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "content"
+  },
+  {
+    "id": "r218",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw"
+    ],
+    "severity": "critical",
+    "action": "BLOCK",
+    "check": "cross_validation:eligibility_table_vs_evidence_summary",
+    "message": "Ranges da tabela de elegibilidade DEVEM bater 1:1 com numeração do Sumário de Evidências",
+    "source": "vitoria_tabela_desync",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "structural"
+  },
+  {
+    "id": "r219",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw"
+    ],
+    "severity": "critical",
+    "action": "BLOCK",
+    "check": "image_evidence_mapping_integrity",
+    "message": "Toda image rId no XML deve mapear pra um evidence_id; toda Evidência mencionada deve ter image rId correspondente",
+    "source": "vitoria_imagens_trocadas_ev34-42",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "structural"
+  },
+  {
+    "id": "r220",
+    "doc_type": "*",
+    "severity": "critical",
+    "action": "BLOCK",
+    "check": "evidence_extracted_manifest_exists",
+    "message": "Pre-flight: cada evidência citada PRECISA ter texto extraído (pdfplumber/OCR/python-docx) com ≥50 chars antes de gerar",
+    "source": "cowork_lendo_filename_ao_inves_de_conteudo",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "structural"
+  },
+  {
+    "id": "r221",
+    "doc_type": [
+      "cover_letter_eb1a",
+      "cover_letter_eb2_niw"
+    ],
+    "severity": "high",
+    "action": "WARN",
+    "check": "date_consistency_with_master_facts",
+    "message": "Datas de formação no documento DEVEM bater com master_facts.education[].graduation_date (extraído do diploma real)",
+    "source": "vitoria_UCB_Unyleya_datas",
+    "active": true,
+    "created_at": "2026-05-01",
+    "rule_type": "structural"
   }
 ]

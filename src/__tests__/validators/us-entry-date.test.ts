@@ -49,6 +49,39 @@ describe('preGateUSEntryDate', () => {
     expect(r.ok).toBe(true);
     expect(r.timeline?.entry_status).toBe('consular_processing_outside_us');
   });
+
+  it('skips gate for non-allowed docType (testimony, methodology, RFE, etc.)', () => {
+    // Even with a missing master_facts, gate is bypassed for non-allowed docTypes
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-2 NIW', 'testimony_letter').ok).toBe(true);
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-1A', 'methodology').ok).toBe(true);
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-2 NIW', 'rfe_response').ok).toBe(true);
+    expect(preGateUSEntryDate(undefined, 'EB-2 NIW', 'photo_report').ok).toBe(true);
+  });
+
+  it('still gates for allowed docType with missing master_facts', () => {
+    const r = preGateUSEntryDate('nonexistent_xyz', 'EB-2 NIW', 'cover_letter_eb2_niw');
+    expect(r.ok).toBe(false);
+    expect(r.reason).toMatch(/ausente OU sem us_timeline/);
+  });
+
+  it('still gates for allowed docType business_plan / resume_eb1a / anteprojeto', () => {
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-2 NIW', 'business_plan').ok).toBe(false);
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-1A', 'resume_eb1a').ok).toBe(false);
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-2 NIW', 'anteprojeto_eb2_niw').ok).toBe(false);
+    expect(preGateUSEntryDate('nonexistent_xyz', 'EB-1A', 'projeto_base_eb1a').ok).toBe(false);
+  });
+
+  it('passes for allowed docType when master_facts is valid', () => {
+    const r = preGateUSEntryDate('marcio_elias_barbosa', 'EB-2 NIW', 'cover_letter_eb2_niw');
+    expect(r.ok).toBe(true);
+    expect(r.timeline?.us_entry_date).toBe('2019-08-01');
+  });
+
+  it('docType undefined preserves legacy behavior (visaType-only gate)', () => {
+    // Backward compat for callers not yet passing docType
+    expect(preGateUSEntryDate(undefined, 'EB-2 NIW').ok).toBe(false);
+    expect(preGateUSEntryDate('marcio_elias_barbosa', 'EB-2 NIW').ok).toBe(true);
+  });
 });
 
 describe('scanUSEntryDateViolations', () => {

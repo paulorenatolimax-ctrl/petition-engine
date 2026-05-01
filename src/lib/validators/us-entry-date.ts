@@ -100,11 +100,44 @@ const VISA_TYPES_REQUIRING_US_TIMELINE = new Set([
 ]);
 
 /**
+ * Doc types where the US_ENTRY_DATE pre-gate is enforced. Any docType outside
+ * this list (testimony letters, methodology dossiers, RFE responses, photo
+ * reports, etc.) skips the gate — they don't claim US-employment timelines, so
+ * blocking them on missing us_timeline is wrong.
+ *
+ * Cláusula pétrea preservada onde importa: cover letters, BPs, résumés,
+ * anteprojetos e projetos-base ainda gateiam.
+ */
+export const ALLOWED_DOC_TYPES_FOR_US_ENTRY_GATE = new Set<string>([
+  'cover_letter_eb1a',
+  'cover_letter_eb2_niw',
+  'business_plan',
+  'resume_eb1a',
+  'resume_eb2_niw',
+  'anteprojeto_eb1a',
+  'anteprojeto_eb2_niw',
+  'projeto_base_eb1a',
+  'projeto_base_eb2_niw',
+]);
+
+/**
  * Pre-gate before any document generation. If the visa type requires US timeline
  * tracking (EB-1A/EB-2 NIW/O-1) and master_facts/{caseId}.json lacks us_timeline,
  * returns ok=false with a reason. Generators MUST refuse to proceed.
+ *
+ * docType (optional): when provided AND not in ALLOWED_DOC_TYPES_FOR_US_ENTRY_GATE,
+ * the gate is skipped (return ok:true). When undefined, the gate runs based on
+ * visaType alone — preserves backward-compatible behavior for callers not yet
+ * passing docType.
  */
-export function preGateUSEntryDate(caseId: string | undefined, visaType: string | undefined): USEntryDateGateResult {
+export function preGateUSEntryDate(
+  caseId: string | undefined,
+  visaType: string | undefined,
+  docType?: string,
+): USEntryDateGateResult {
+  if (docType && !ALLOWED_DOC_TYPES_FOR_US_ENTRY_GATE.has(docType)) {
+    return { ok: true };
+  }
   if (!visaType) return { ok: true };
   const normalized = visaType.toUpperCase().replace(/\s+/g, ' ').trim();
   const requires = Array.from(VISA_TYPES_REQUIRING_US_TIMELINE).some(v => normalized.includes(v.toUpperCase()));

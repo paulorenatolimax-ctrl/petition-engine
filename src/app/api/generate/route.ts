@@ -38,9 +38,18 @@ function buildRulesSection(docType: string): string {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rules = readRules().filter((r: any) => r.active);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const global = rules.filter((r: any) => !r.doc_type);
+  const isGlobal = (r: any) =>
+    !r.doc_type || r.doc_type === '*' || (Array.isArray(r.doc_type) && r.doc_type.length === 0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const specific = rules.filter((r: any) => r.doc_type === docType);
+  const isSpecific = (r: any) => {
+    if (Array.isArray(r.doc_type)) return r.doc_type.includes(docType);
+    if (typeof r.doc_type === 'string' && r.doc_type !== '*') return r.doc_type === docType;
+    return false;
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const global = rules.filter((r: any) => isGlobal(r));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const specific = rules.filter((r: any) => isSpecific(r));
   const all = [...global, ...specific];
 
   const lines = [
@@ -100,8 +109,13 @@ function buildRulesSection(docType: string): string {
     lines.push('RESPEITE TODAS. Violacao de regra BLOCK = rejeicao automatica.');
     lines.push('');
     for (const r of all) {
-      const prefix = r.rule_action === 'block' ? 'BLOCK' : r.rule_action === 'auto_fix' ? 'AUTO-FIX' : 'WARN';
-      lines.push(`- [${r.severity.toUpperCase()}/${prefix}] ${r.rule_description}${r.rule_pattern ? ` (regex: ${r.rule_pattern})` : ''}`);
+      const rawAction = (r.rule_action || r.action || 'warn').toString().toLowerCase();
+      const prefix = rawAction === 'block' ? 'BLOCK' : rawAction === 'auto_fix' ? 'AUTO-FIX' : 'WARN';
+      const sev = (r.severity || 'medium').toString().toUpperCase();
+      const desc = r.rule_description || r.message || '';
+      const pat = r.rule_pattern || r.pattern;
+      const checkSuffix = r.check ? ` [check:${r.check}]` : '';
+      lines.push(`- [${sev}/${prefix}] ${desc}${pat ? ` (regex: ${pat})` : ''}${checkSuffix}`);
     }
     lines.push('');
   }
@@ -392,7 +406,7 @@ export async function POST(req: NextRequest) {
   // ausente ou sem us_entry_date / us_first_work_authorization_date.
   const caseId = (client as { case_id?: string }).case_id || deriveCaseId(client.name);
   const visaType: string = client.visa_type || '';
-  const gate = preGateUSEntryDate(caseId, visaType);
+  const gate = preGateUSEntryDate(caseId, visaType, doc_type);
   if (!gate.ok) {
     return NextResponse.json({
       error: gate.reason,

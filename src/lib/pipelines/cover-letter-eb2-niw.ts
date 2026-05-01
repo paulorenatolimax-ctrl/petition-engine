@@ -14,6 +14,7 @@ import path from 'path';
 import { EB2_NIW_SYSTEM_PATH as EB2_NIW_SYS_PATH, RAGS_EB2 as RAGS_EB2_PATH, INSERT_THUMBNAILS_PATH, SOC_PATH, QUALITY_PATH } from '@/lib/config/paths';
 import {
   upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult, buildRulesSectionForDocType,
+  runEvidencePreflight, deriveCaseId,
 } from './base';
 
 const EB2_NIW_SYSTEM_PATH = EB2_NIW_SYS_PATH;
@@ -98,6 +99,35 @@ async function runCoverLetterEB2NIWPipeline(
 
   const phaseResults: PhaseResult[] = [];
   const allFiles: string[] = [];
+
+  // ═══ PHASE 0-PRE: EVIDENCE PREFLIGHT EXTRACTION (rule r220) ═══
+  // Antes de QUALQUER build de prompt: extrai texto de cada evidência (.pdf/.docx/.png/.jpg).
+  // Aborta se algum arquivo render < 50 chars. Sem isso, sessões anteriores escreviam
+  // sobre evidências lendo o filename ao invés do conteúdo.
+  send('stage', { stage: 'phase', phase: '0-pre', message: 'FASE 0-PRE: PREFLIGHT EXTRAÇÃO DE EVIDÊNCIAS' });
+  send('stage', { stage: 'loading', phase: '0-pre', message: 'Extraindo texto via pdfplumber/python-docx/OCR…' });
+  const caseId = deriveCaseId(clientName);
+  const preflight = runEvidencePreflight({ clientId: caseId, evidenceDir: clientDocsPath });
+  const manifestSummary = preflight.summary;
+  if (!preflight.ok) {
+    const reason = preflight.error || `${preflight.starved.length} evidências starved`;
+    send('stage', { stage: 'error', phase: '0-pre', message: `Preflight ABORTOU: ${reason}` });
+    phaseResults.push({
+      phase: '0-pre', label: 'Preflight extração',
+      success: false, duration_seconds: 0, files_created: [],
+      error: reason,
+    });
+    return { success: false, phaseResults, allFiles };
+  }
+  const okCount = preflight.manifest?.ok_count ?? 0;
+  const totalCount = preflight.manifest?.evidence_count ?? 0;
+  send('stage', { stage: 'gen_complete', phase: '0-pre', message: `Preflight OK: ${okCount}/${totalCount} evidências (manifest em ${preflight.manifestPath})` });
+  phaseResults.push({
+    phase: '0-pre', label: 'Preflight extração',
+    success: true, duration_seconds: 0,
+    files_created: [preflight.manifestPath],
+  });
+
   const totalPhases = 11; // 0, 0.5, 1, 2A, 2B, 3A, 3B, 4, 5, 5.5(thumbnails), 6(consolidation)
 
   // Helper: run a single phase
@@ -114,8 +144,9 @@ async function runCoverLetterEB2NIWPipeline(
     upsertGeneration({ id: genId, current_phase: `phase_${phaseId}`, current_phase_label: phaseLabel });
 
     // CHUNK 3 (F1.2) — injetar regras ATIVAS de error_rules.json em cada fase
+    // r220 — injetar manifest de evidências pre-extraídas em cada fase
     const rulesPrefix = buildRulesSectionForDocType('cover_letter_eb2_niw');
-    const instructionWithRules = rulesPrefix + instruction;
+    const instructionWithRules = rulesPrefix + manifestSummary + instruction;
 
     let lastChunkTime = Date.now();
     const result = await runClaude(claudeBin, instructionWithRules,

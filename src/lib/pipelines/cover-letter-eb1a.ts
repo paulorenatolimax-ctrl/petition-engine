@@ -14,6 +14,7 @@ import path from 'path';
 import { EB1A_SYSTEM_PATH, INSERT_THUMBNAILS_PATH, SOC_PATH, QUALITY_PATH } from '@/lib/config/paths';
 import {
   upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult, buildRulesSectionForDocType,
+  runEvidencePreflight, deriveCaseId,
 } from './base';
 
 const ORCHESTRATOR_SPEC_PATH = path.join(process.cwd(), 'systems', 'cover-letter-eb1a-orchestrator', 'ORCHESTRATOR_COVER_LETTER_EB1A.md');
@@ -154,8 +155,37 @@ async function runCoverLetterEB1APipeline(
   }
   if (!existsSync(phasesDir)) mkdirSync(phasesDir, { recursive: true });
 
+  // ═══ PHASE 0-PRE: EVIDENCE PREFLIGHT EXTRACTION (rule r220) ═══
+  // Antes de QUALQUER build de prompt: extrai texto de cada evidência (.pdf/.docx/.png/.jpg)
+  // Aborta se algum arquivo render < 50 chars — Cowork (sessões anteriores) escrevia
+  // sobre evidências lendo o filename ao invés do conteúdo. r220 mata isso.
   const phaseResults: PhaseResult[] = [];
   const allFiles: string[] = [];
+  send('stage', { stage: 'phase', phase: '0-pre', message: 'FASE 0-PRE: PREFLIGHT EXTRAÇÃO DE EVIDÊNCIAS' });
+  send('stage', { stage: 'loading', phase: '0-pre', message: 'Extraindo texto via pdfplumber/python-docx/OCR…' });
+  const caseId = deriveCaseId(clientName);
+  const preflightDir = existsSync(evidenceDir) && readdirSync(evidenceDir).length > 0 ? evidenceDir : clientDocsPath;
+  const preflight = runEvidencePreflight({ clientId: caseId, evidenceDir: preflightDir });
+  const manifestSummary = preflight.summary;
+  if (!preflight.ok) {
+    const reason = preflight.error || `${preflight.starved.length} evidências com texto starved (< 50 chars)`;
+    send('stage', { stage: 'error', phase: '0-pre', message: `Preflight ABORTOU: ${reason}` });
+    phaseResults.push({
+      phase: '0-pre', label: 'Preflight extração',
+      success: false, duration_seconds: 0, files_created: [],
+      error: reason,
+    });
+    return { success: false, phaseResults, allFiles };
+  }
+  const okCount = preflight.manifest?.ok_count ?? 0;
+  const totalCount = preflight.manifest?.evidence_count ?? 0;
+  send('stage', { stage: 'gen_complete', phase: '0-pre', message: `Preflight OK: ${okCount}/${totalCount} evidências extraídas (manifest em ${preflight.manifestPath})` });
+  phaseResults.push({
+    phase: '0-pre', label: 'Preflight extração',
+    success: true, duration_seconds: 0,
+    files_created: [preflight.manifestPath],
+  });
+
   let totalPhases = 10; // Will update after we know criteria count
 
   // Helper: run a single phase
@@ -172,8 +202,9 @@ async function runCoverLetterEB1APipeline(
     upsertGeneration({ id: genId, current_phase: `phase_${phaseId}`, current_phase_label: phaseLabel });
 
     // CHUNK 3 (F1.2) — injetar regras ATIVAS de error_rules.json em cada fase
+    // r220 — injetar manifest de evidências pre-extraídas em cada fase
     const rulesPrefix = buildRulesSectionForDocType('cover_letter_eb1a');
-    const instructionWithRules = rulesPrefix + instruction;
+    const instructionWithRules = rulesPrefix + manifestSummary + instruction;
 
     let lastChunkTime = Date.now();
     const result = await runClaude(claudeBin, instructionWithRules,
