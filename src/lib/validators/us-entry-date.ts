@@ -78,12 +78,18 @@ export function loadUSTimeline(caseId: string): USTimeline | null {
     const tl = data.us_timeline as USTimeline;
     const status: USEntryStatus = tl.entry_status ?? 'in_us_with_work_authorization';
     // Validação por status:
+    //   - with_work_authorization: cliente reivindica trabalho US legal → exige
+    //     us_entry_date + us_first_work_authorization_date.
+    //   - pending_work_authorization: cliente está em US mas SEM EAD. Por
+    //     definição, us_first_work_authorization_date é null. us_entry_date é
+    //     desejável mas opcional (passport stamps podem não ser OCR'áveis).
+    //     Cláusula pétrea continua valendo via scanUSEntryDateViolations, que
+    //     bloqueia EM RUNTIME qualquer reivindicação de trabalho-US.
+    //   - consular_processing_outside_us: cliente fora dos EUA, datas opcionais.
     if (status === 'in_us_with_work_authorization') {
       if (!tl.us_entry_date || !tl.us_first_work_authorization_date) return null;
-    } else if (status === 'in_us_pending_work_authorization') {
-      if (!tl.us_entry_date) return null;
     }
-    // consular_processing_outside_us: nenhuma data é exigida.
+    // pending e consular: pré-gate aceita; cláusula pétrea opera via NEGAÇÃO em runtime.
     return { ...tl, entry_status: status };
   } catch {
     return null;
@@ -153,7 +159,7 @@ export function preGateUSEntryDate(
     return {
       ok: false,
       caseId,
-      reason: `BLOQUEADO: data/master_facts/${caseId}.json ausente OU sem us_timeline.us_entry_date e us_first_work_authorization_date. CRIAR antes de gerar qualquer documento. Visto ${visaType} requer trilha temporal completa pra evitar atribuir trabalho dos EUA antes da autorização legal.`,
+      reason: `BLOQUEADO: data/master_facts/${caseId}.json ausente OU sem us_timeline.entry_status. Para entry_status='in_us_with_work_authorization' são exigidas us_entry_date + us_first_work_authorization_date; para 'in_us_pending_work_authorization' e 'consular_processing_outside_us' basta entry_status definido (cláusula pétrea opera em runtime via scanUSEntryDateViolations). Visto ${visaType}.`,
     };
   }
   return { ok: true, caseId, timeline };

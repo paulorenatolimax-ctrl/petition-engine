@@ -82,6 +82,22 @@ describe('preGateUSEntryDate', () => {
     expect(preGateUSEntryDate(undefined, 'EB-2 NIW').ok).toBe(false);
     expect(preGateUSEntryDate('marcio_elias_barbosa', 'EB-2 NIW').ok).toBe(true);
   });
+
+  it('passes for in_us_pending_work_authorization with both dates null', () => {
+    // Gustavo's case: status pending, no entry stamps OCR'able, no EAD yet.
+    // Pré-gate must accept; cláusula pétrea operates at runtime via scanUSEntryDateViolations.
+    const r = preGateUSEntryDate('gustavo_nelson_sales_chaves', 'EB-1A', 'cover_letter_eb1a');
+    expect(r.ok).toBe(true);
+    expect(r.timeline?.entry_status).toBe('in_us_pending_work_authorization');
+    expect(r.timeline?.us_first_work_authorization_date).toBeFalsy();
+  });
+
+  it('passes for in_us_pending_work_authorization with us_entry_date null', () => {
+    // Marcelo's case: status pending, no EAD (status definition), no entry date OCR'd.
+    const r = preGateUSEntryDate('marcelo_jacob', 'EB-1A', 'cover_letter_eb1a');
+    expect(r.ok).toBe(true);
+    expect(r.timeline?.entry_status).toBe('in_us_pending_work_authorization');
+  });
 });
 
 describe('scanUSEntryDateViolations', () => {
