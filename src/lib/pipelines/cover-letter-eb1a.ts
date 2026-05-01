@@ -13,7 +13,7 @@ import { readFileSync, existsSync, readdirSync, mkdirSync, statSync, writeFileSy
 import path from 'path';
 import { EB1A_SYSTEM_PATH, INSERT_THUMBNAILS_PATH, SOC_PATH, QUALITY_PATH } from '@/lib/config/paths';
 import {
-  upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult,
+  upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult, buildRulesSectionForDocType,
 } from './base';
 
 const ORCHESTRATOR_SPEC_PATH = path.join(process.cwd(), 'systems', 'cover-letter-eb1a-orchestrator', 'ORCHESTRATOR_COVER_LETTER_EB1A.md');
@@ -34,7 +34,7 @@ R6: Inventário exaustivo com contagem de evidências, tabelas, subseções
 R7: Validação mecânica antes de entregar (forbidden content, evidence bold, cores, borders)
 R8: Buscar nas evidências do cliente — NUNCA inventar dados
 
-### FORBIDDEN CONTENT (11 categorias — ZERO TOLERANCE):
+### FORBIDDEN CONTENT (12 categorias — ZERO TOLERANCE):
 Cat 0:  NUNCA "satisfeito/satisfaz/satisfies" sobre critérios (juízo de valor)
 Cat 1:  NUNCA nomes proibidos (PROEX, Carlos Avelino, Bruno Cipriano, Renato Silveira, "Loper Light")
 Cat 2:  NUNCA 3ª pessoa no corpo argumentativo ("o beneficiário") — SEMPRE 1ª pessoa ("apresento", "meu")
@@ -49,6 +49,12 @@ Cat 8:  Proporções: Intro 8-18%, Step 1 35-55%, Step 2 ≥25% (mín 30% ideal)
 Cat 9:  ZERO artefatos de produção (EXPANSÃO:, TODO:, ████, contagem de palavras, meta-instruções)
 Cat 10: ZERO URLs inventadas/truncadas
 Cat 11: Substituição NUNCA é cega — verificar contexto antes de substituir
+Cat 12: ANTI-RAG-POLLUTION (CHUNK 4 / auditoria 30/abr): ZERO ocorrências de "system",
+        "automated", "AI-generated", "framework", "based on the system", "the framework",
+        "Petition Engine", "Forjado por", "RAG", "RAGs", "PROEX". Auditoria identificou
+        "system"/"automated" como red flags em cartas anteriores — sintoma de prompt-leak.
+        O documento DEVE parecer escrito por um ESPECIALISTA HUMANO real. Use linguagem
+        regulatória/probatória técnica, não linguagem de produto/sistema/AI.
 
 ### FORMATAÇÃO OBRIGATÓRIA:
 - Garamond 100% (NUNCA Arial, Calibri, Times)
@@ -165,8 +171,12 @@ async function runCoverLetterEB1APipeline(
     send('stage', { stage: 'loading', phase: phaseId, message: `Iniciando fase ${phaseId}...` });
     upsertGeneration({ id: genId, current_phase: `phase_${phaseId}`, current_phase_label: phaseLabel });
 
+    // CHUNK 3 (F1.2) — injetar regras ATIVAS de error_rules.json em cada fase
+    const rulesPrefix = buildRulesSectionForDocType('cover_letter_eb1a');
+    const instructionWithRules = rulesPrefix + instruction;
+
     let lastChunkTime = Date.now();
-    const result = await runClaude(claudeBin, instruction,
+    const result = await runClaude(claudeBin, instructionWithRules,
       (chunk) => {
         const now = Date.now();
         if (now - lastChunkTime > 8000) {

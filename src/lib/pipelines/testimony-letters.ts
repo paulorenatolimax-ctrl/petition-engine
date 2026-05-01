@@ -18,7 +18,7 @@
 import { execSync } from 'child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import path from 'path';
-import { runClaude, findNewDocx, upsertGeneration, SendFn, PhaseResult } from './base';
+import { runClaude, findNewDocx, upsertGeneration, SendFn, PhaseResult, buildRulesSectionForDocType } from './base';
 import { getAllPersonas, getPersonasForType, Persona, LetterType } from '@/lib/rules/persona-bank';
 import { getMasterFacts, checkAnchorsPresence, requiredAnchorsMissing, MasterFacts } from '@/lib/rules/master-facts';
 import { scanHardBlocks, renderHardBlockReport, HardBlockScrubResult } from '@/lib/rules/hard-blocks';
@@ -298,10 +298,17 @@ export async function runTestimonyLettersPipeline(params: TestimonyPipelineParam
   send('stage', { stage: 'phase', phase: 3, message: `FASE 3: Gerando ${personasToRun.length} cartas (uma por persona)` });
   if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
 
+  // CHUNK 3 (F1.2) — Injetar regras ATIVAS de error_rules.json em cada prompt.
+  // Resolve a regressão "passo 363 → 13": antes, regras criadas pelo auto-debugger
+  // ficavam em disco mas não eram consumidas pelos pipelines. Agora cada geração
+  // entra com o aprendizado acumulado embutido no prompt.
+  const rulesSection = buildRulesSectionForDocType(visaType === 'EB-1A' ? 'testimony_letter_eb1a' : 'testimony_letter_eb2_niw');
+
   for (const persona of personasToRun) {
     const phaseStart = Date.now();
     send('stage', { stage: 'generating', phase: 3, message: `  → ${persona.full_name} (${persona.letter_type})` });
-    const prompt = buildPersonaPrompt(persona, masterFacts, clientDocsPath, outputDir, visaType);
+    const personaPrompt = buildPersonaPrompt(persona, masterFacts, clientDocsPath, outputDir, visaType);
+    const prompt = rulesSection + personaPrompt;
     const genResult = await runClaude(claudeBin, prompt, undefined, undefined, {
       timeoutMs: 25 * 60 * 1000,
       idleTimeoutMs: 7 * 60 * 1000,

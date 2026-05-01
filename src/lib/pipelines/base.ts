@@ -78,8 +78,8 @@ export interface RunClaudeResult {
   timeoutKind?: 'hard' | 'idle';
 }
 
-export const RUN_CLAUDE_DEFAULT_TIMEOUT_MS = 45 * 60 * 1000;
-export const RUN_CLAUDE_DEFAULT_IDLE_MS = 10 * 60 * 1000;
+export const RUN_CLAUDE_DEFAULT_TIMEOUT_MS = 60 * 60 * 1000; // 60min hard wall (was 45min)
+export const RUN_CLAUDE_DEFAULT_IDLE_MS = 20 * 60 * 1000;    // 20min idle (was 10min) — Fase 1 lê RAGs+benchmarks pesados
 
 export function runClaude(
   claudeBin: string,
@@ -265,4 +265,49 @@ export interface PhaseResult {
   duration_seconds: number;
   files_created: string[];
   error?: string;
+}
+
+// CHUNK 3 (F1.2) — Helper central para injetar regras ATIVAS de error_rules.json
+// em qualquer prompt antes de despachar ao claude. Sem isto, pipelines não
+// consomem o aprendizado acumulado em error_rules.json — sintoma chave da
+// regressão "passo 363 → passo 13" identificada na auditoria 30/abr.
+//
+// Uso (em qualquer pipeline):
+//   import { buildRulesSectionForDocType } from './base';
+//   const rulesBlock = buildRulesSectionForDocType(docType);
+//   const fullPrompt = rulesBlock + originalPrompt;
+//
+// Lê data/error_rules.json a cada chamada (sem cache) — o file é pequeno
+// (~120 KB) e a frequência de chamada é baixa (1× por geração); sem
+// otimização prematura.
+export function buildRulesSectionForDocType(docType: string): string {
+  const RULES_FILE = path.join(process.cwd(), 'data', 'error_rules.json');
+  if (!existsSync(RULES_FILE)) return '';
+  let rules: Array<Record<string, unknown>> = [];
+  try {
+    rules = JSON.parse(readFileSync(RULES_FILE, 'utf-8'));
+  } catch { return ''; }
+  const active = rules.filter(r => r.active === true);
+  const global = active.filter(r => !r.doc_type);
+  const specific = active.filter(r => r.doc_type === docType);
+  const all = [...global, ...specific];
+  if (all.length === 0) return '';
+
+  const lines: string[] = [
+    '',
+    '## REGRAS DE ERRO ATIVAS — auto-learning (INJETADAS PELO PIPELINE)',
+    `Total: ${all.length} regras (${global.length} globais + ${specific.length} específicas para ${docType})`,
+    'RESPEITE TODAS. Violação de regra com severidade BLOCK = rejeição automática.',
+    '',
+  ];
+  for (const r of all) {
+    const action = (r.rule_action as string) || 'warn';
+    const prefix = action === 'block' ? 'BLOCK' : action === 'auto_fix' ? 'AUTO-FIX' : 'WARN';
+    const severity = ((r.severity as string) || 'medium').toUpperCase();
+    const desc = (r.rule_description as string) || '';
+    const pat = r.rule_pattern as string | undefined;
+    lines.push(`- [${severity}/${prefix}] ${desc}${pat ? ` (regex: ${pat})` : ''}`);
+  }
+  lines.push('');
+  return lines.join('\n');
 }

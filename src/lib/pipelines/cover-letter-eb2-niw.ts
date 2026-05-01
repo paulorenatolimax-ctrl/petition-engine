@@ -13,7 +13,7 @@ import { readFileSync, existsSync, readdirSync, mkdirSync, statSync, writeFileSy
 import path from 'path';
 import { EB2_NIW_SYSTEM_PATH as EB2_NIW_SYS_PATH, RAGS_EB2 as RAGS_EB2_PATH, INSERT_THUMBNAILS_PATH, SOC_PATH, QUALITY_PATH } from '@/lib/config/paths';
 import {
-  upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult,
+  upsertGeneration, runClaude, findNewDocx, SendFn, PhaseResult, buildRulesSectionForDocType,
 } from './base';
 
 const EB2_NIW_SYSTEM_PATH = EB2_NIW_SYS_PATH;
@@ -70,6 +70,14 @@ BLOCK 1: NUNCA descrever endeavor como "standardized system" ou "replicable meth
 BLOCK 2: NUNCA sugerir que o endeavor funciona SEM o beneficiário ("self-sustaining", "plug-and-play")
 BLOCK 3: NUNCA usar "turnkey solution" ou "scalable without the founder"
 BLOCK 4: TODO parágrafo sobre o endeavor DEVE responder: "Por que isso não acontece sem ESTA PESSOA?"
+
+### ANTI-RAG-POLLUTION HARD BLOCKS (CHUNK 4 / auditoria 30/abr):
+BLOCK 5: ZERO ocorrências de "system", "automated", "AI-generated", "framework", "based on the
+         system", "the framework", "Petition Engine", "Forjado por", "RAG", "RAGs". Auditoria
+         identificou "system"/"automated" como red flags reais — sintoma de prompt-leak.
+BLOCK 6: O documento DEVE parecer escrito por um ESPECIALISTA HUMANO real (advogado/consultor
+         senior com >10 anos de prática). Use linguagem regulatória/probatória técnica, não
+         linguagem de produto/sistema/AI/automation.
 `;
 
 async function runCoverLetterEB2NIWPipeline(
@@ -105,8 +113,12 @@ async function runCoverLetterEB2NIWPipeline(
     send('stage', { stage: 'loading', phase: phaseId, message: `Iniciando fase ${phaseId}...` });
     upsertGeneration({ id: genId, current_phase: `phase_${phaseId}`, current_phase_label: phaseLabel });
 
+    // CHUNK 3 (F1.2) — injetar regras ATIVAS de error_rules.json em cada fase
+    const rulesPrefix = buildRulesSectionForDocType('cover_letter_eb2_niw');
+    const instructionWithRules = rulesPrefix + instruction;
+
     let lastChunkTime = Date.now();
-    const result = await runClaude(claudeBin, instruction,
+    const result = await runClaude(claudeBin, instructionWithRules,
       (chunk) => {
         const now = Date.now();
         if (now - lastChunkTime > 8000) {

@@ -16,6 +16,7 @@ const PPTX_GENERATOR = path.join(process.cwd(), 'scripts', 'generate_pptx_v2.py'
 
 import { buildRulesSection as buildRulesSectionFromRepo } from '@/lib/rules/repository';
 import { preGateUSEntryDate, type USTimeline } from '@/lib/validators/us-entry-date';
+import { getPipelineType } from '@/lib/pipelines/registry';
 
 // case_id é o slug snake_case derivado de client.name. Centralizado pra master_facts/{case_id}.json.
 function deriveCaseId(clientName: string): string {
@@ -1000,6 +1001,14 @@ export async function POST(req: NextRequest) {
 
   const claudeCommand = `claude -p "Leia ${promptPath} e execute tudo." --allowedTools Bash,Read,Write,Edit,Glob,Grep`;
 
+  // CHUNK 2 (F1.1) — Factory routing: consulta registry de pipelines reais.
+  // Quando o doc_type tem pipeline dedicado (multi-voice, multi-phase, etc),
+  // o chamador DEVE usar /api/generate/execute em vez do claude_command genérico —
+  // senão cai num prompt builder que não exercita as regras específicas do pipeline
+  // (persona_bank, anti-atlas, hard_blocks, multi-phase orchestration).
+  const pipelineType = getPipelineType(doc_type);
+  const isRealPipeline = pipelineType !== 'generic';
+
   return NextResponse.json({
     data: {
       prompt,
@@ -1020,6 +1029,11 @@ export async function POST(req: NextRequest) {
         rulesInjected: readRules().filter((r: any) => r.active && (!r.doc_type || r.doc_type === doc_type)).length,
         pipeline: ['generation', 'separation_of_concerns'],
         soc_enabled: true,
+        pipeline_type: pipelineType,
+        recommended_endpoint: isRealPipeline ? '/api/generate/execute' : null,
+        ...(isRealPipeline ? {
+          pipeline_warning: `doc_type "${doc_type}" tem pipeline dedicado "${pipelineType}". Disparar via /api/generate/execute em vez de executar claude_command genérico — senão pula multi-voice/anti-atlas/persona_bank/multi-phase orchestration.`,
+        } : {}),
       },
       prompt_path: promptPath,
       prompt_file: promptPath,

@@ -13,7 +13,7 @@ import { readFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'fs';
 import path from 'path';
 import {
   upsertGeneration, runClaude, findNewDocx, autoVersionExisting,
-  SendFn, PhaseResult,
+  SendFn, PhaseResult, buildRulesSectionForDocType,
 } from './base';
 import { scanHardBlocks, renderHardBlockReport } from '@/lib/rules/hard-blocks';
 import { getMasterFacts, checkAnchorsPresence } from '@/lib/rules/master-facts';
@@ -271,7 +271,14 @@ export async function runMultiPhasePipeline(
       // Inject case context (hard_blocks + master_facts) at top when caseId is set.
       // Backward-compatible: no caseId → caseContext is '' and prompt is unchanged.
       const caseContext = buildCaseContext(params.caseId);
-      const prompt = caseContext + interpolate(phase.prompt || '', params);
+      // CHUNK 3 (F1.2) — Injetar regras ATIVAS de error_rules.json (params.docType
+      // ou doc_type quando disponível). Sem isto, pipelines genéricos não exercitam
+      // o aprendizado acumulado em error_rules.json.
+      const docTypeForRules = (params as { docType?: string; doc_type?: string }).docType
+        || (params as { docType?: string; doc_type?: string }).doc_type
+        || '';
+      const rulesPrefix = docTypeForRules ? buildRulesSectionForDocType(docTypeForRules) : '';
+      const prompt = rulesPrefix + caseContext + interpolate(phase.prompt || '', params);
       send('stage', { stage: 'generating', phase: phase.id, message: `Executando claude -p (fase ${phase.id}${params.caseId ? `, case=${params.caseId}` : ''})...` });
 
       let lastChunkTime = Date.now();
