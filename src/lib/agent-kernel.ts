@@ -186,34 +186,71 @@ export async function runAgent<TInput, TOutput>(id: string, input: TInput, sys?:
 // ────────────────────────────────────────────────────────────────────────────
 
 /**
- * Registra os agentes do diretório src/agents/* como specs canônicos.
- * Wrap fino — não muda o comportamento, só ganha tipagem + rastreabilidade.
+ * Registra os agentes do diretório src/agents/* como specs canônicos com
+ * handlers REAIS — invocam as funções legadas via dynamic import.
  *
- * Migração progressiva: cada agent legado pode ser refatorado pra usar
- * `Syscalls` internamente em vez de fs/child_process direto. Quando todos
- * estiverem migrados, vira o caminho único.
+ * CHUNK 14+16 (F4.1+F4.3) — Antes os handlers eram stubs que jogavam erro
+ * dizendo "migrar para Syscalls". Agora cada handler invoca o agent legado
+ * via dynamic import. Os agents continuam usando fs/execSync direto —
+ * Syscalls injection é migração futura — mas o runtime passa a funcionar:
+ * `runAgent('quality-local.v1', input)` chama runQualityLocal de verdade.
+ *
+ * Isso liga o registry ao runtime sem mexer em código de domínio.
  */
 export function registerCoreAgents(): void {
-  // Lazy require — agentes legados ainda usam fs/child_process direto e
-  // injection seria uma migração. Aqui apenas referenciamos os entry points.
   const baseDir = path.join('src', 'agents');
-  const core: Array<Omit<AgentSpec, 'handler'>> = [
-    { id: 'extractor.v1', name: 'Extractor', layer: 'extractor', version: '1.0', description: 'Extrai dados estruturados de PDFs/DOCX do cliente.', dependencies: [], source_path: path.join(baseDir, 'extractor.ts') },
-    { id: 'writer.v1', name: 'Writer', layer: 'writer', version: '1.0', description: 'Escreve documentos baseados em prompts + benchmarks.', dependencies: ['extractor.v1'], source_path: path.join(baseDir, 'writer.ts') },
-    { id: 'quality.v1', name: 'Quality (remote)', layer: 'quality', version: '1.0', description: 'Quality gate via Claude API remota.', dependencies: ['writer.v1'], source_path: path.join(baseDir, 'quality.ts') },
-    { id: 'quality-local.v1', name: 'Quality (local)', layer: 'quality', version: '1.0', description: 'Quality gate determinístico local.', dependencies: ['writer.v1'], source_path: path.join(baseDir, 'quality-local.ts') },
-    { id: 'uscis-reviewer.v1', name: 'USCIS Reviewer', layer: 'reviewer', version: '1.0', description: 'Build prompt de revisão consoante USCIS PM e Dhanasar.', dependencies: ['writer.v1'], source_path: path.join(baseDir, 'uscis-reviewer.ts') },
-    { id: 'auto-debugger.v1', name: 'AutoDebugger (remote)', layer: 'debugger', version: '1.0', description: 'Aprende novas regras a partir de erros recorrentes (remote).', dependencies: ['quality.v1'], source_path: path.join(baseDir, 'auto-debugger.ts') },
-    { id: 'auto-debugger-local.v1', name: 'AutoDebugger (local)', layer: 'debugger', version: '1.0', description: 'Aprende novas regras localmente, sem rede.', dependencies: ['quality-local.v1'], source_path: path.join(baseDir, 'auto-debugger-local.ts') },
-    { id: 'system-updater.v1', name: 'System Updater', layer: 'updater', version: '1.0', description: 'Propõe atualizações ao próprio sistema (rules, prompts).', dependencies: ['auto-debugger-local.v1'], source_path: path.join(baseDir, 'system-updater.ts') },
-  ];
-  for (const meta of core) {
-    if (REGISTRY.has(meta.id)) continue;
-    REGISTRY.set(meta.id, {
-      ...meta,
-      handler: async () => {
-        throw new Error(`${meta.id} ainda usa import direto em src/agents/${path.basename(meta.source_path)}. Migrar para Syscalls antes de invocar via runAgent.`);
+  const core: Array<{
+    spec: Omit<AgentSpec, 'handler'>;
+    invoke: (input: unknown) => Promise<unknown>;
+  }> = [
+    {
+      spec: { id: 'extractor.v1', name: 'Extractor', layer: 'extractor', version: '1.0', description: 'Extrai dados estruturados de PDFs/DOCX do cliente.', dependencies: [], source_path: path.join(baseDir, 'extractor.ts') },
+      invoke: async (input) => (await import('@/agents/extractor')).runExtractor(input as Parameters<typeof import('@/agents/extractor').runExtractor>[0]),
+    },
+    {
+      spec: { id: 'writer.v1', name: 'Writer', layer: 'writer', version: '1.0', description: 'Escreve documentos baseados em prompts + benchmarks.', dependencies: ['extractor.v1'], source_path: path.join(baseDir, 'writer.ts') },
+      invoke: async (input) => (await import('@/agents/writer')).runWriter(input as Parameters<typeof import('@/agents/writer').runWriter>[0]),
+    },
+    {
+      spec: { id: 'quality.v1', name: 'Quality (remote)', layer: 'quality', version: '1.0', description: 'Quality gate via Claude API remota.', dependencies: ['writer.v1'], source_path: path.join(baseDir, 'quality.ts') },
+      invoke: async (input) => (await import('@/agents/quality')).runQuality(input as Parameters<typeof import('@/agents/quality').runQuality>[0]),
+    },
+    {
+      spec: { id: 'quality-local.v1', name: 'Quality (local)', layer: 'quality', version: '1.0', description: 'Quality gate determinístico local.', dependencies: ['writer.v1'], source_path: path.join(baseDir, 'quality-local.ts') },
+      invoke: async (input) => (await import('@/agents/quality-local')).runQualityLocal(input as Parameters<typeof import('@/agents/quality-local').runQualityLocal>[0]),
+    },
+    {
+      spec: { id: 'uscis-reviewer.v1', name: 'USCIS Reviewer', layer: 'reviewer', version: '1.0', description: 'Build prompt de revisão consoante USCIS PM e Dhanasar.', dependencies: ['writer.v1'], source_path: path.join(baseDir, 'uscis-reviewer.ts') },
+      invoke: async (input) => (await import('@/agents/uscis-reviewer')).buildUSCISReviewPrompt(input as Parameters<typeof import('@/agents/uscis-reviewer').buildUSCISReviewPrompt>[0]),
+    },
+    {
+      spec: { id: 'auto-debugger.v1', name: 'AutoDebugger (remote)', layer: 'debugger', version: '1.0', description: 'Aprende novas regras a partir de erros recorrentes (remote).', dependencies: ['quality.v1'], source_path: path.join(baseDir, 'auto-debugger.ts') },
+      invoke: async (input) => (await import('@/agents/auto-debugger')).reportError(input as Parameters<typeof import('@/agents/auto-debugger').reportError>[0]),
+    },
+    {
+      spec: { id: 'auto-debugger-local.v1', name: 'AutoDebugger (local)', layer: 'debugger', version: '1.0', description: 'Aprende novas regras localmente, sem rede.', dependencies: ['quality-local.v1'], source_path: path.join(baseDir, 'auto-debugger-local.ts') },
+      invoke: async (input) => (await import('@/agents/auto-debugger-local')).reportBatch(input as Parameters<typeof import('@/agents/auto-debugger-local').reportBatch>[0]),
+    },
+    {
+      spec: { id: 'system-updater.v1', name: 'System Updater', layer: 'updater', version: '1.0', description: 'Propõe atualizações ao próprio sistema (rules, prompts).', dependencies: ['auto-debugger-local.v1'], source_path: path.join(baseDir, 'system-updater.ts') },
+      invoke: async () => { throw new Error('system-updater.v1 não tem entry function exposta — invocar via API /api/systems/[name]/propose-update'); },
+    },
+    {
+      spec: { id: 'onboarding-wizard.v1', name: 'Onboarding Wizard', layer: 'extractor', version: '1.0', description: 'Extrai personas + us_timeline iniciais de uma pasta cliente (sugestões com _provisional).', dependencies: [], source_path: path.join(baseDir, 'onboarding-wizard.ts') },
+      invoke: async (input) => {
+        const inp = input as { mode: 'personas' | 'us_timeline'; caseId: string; docsPath: string };
+        const mod = await import('@/agents/onboarding-wizard');
+        if (inp.mode === 'personas') return mod.extractTestimonyPersonasFromFolder(inp.caseId, inp.docsPath);
+        if (inp.mode === 'us_timeline') return mod.inferUSTimelineFromFolder(inp.caseId, inp.docsPath);
+        throw new Error(`onboarding-wizard.v1: mode "${inp.mode}" desconhecido. Use 'personas' ou 'us_timeline'.`);
       },
+    },
+  ];
+  for (const item of core) {
+    if (REGISTRY.has(item.spec.id)) continue;
+    REGISTRY.set(item.spec.id, {
+      ...item.spec,
+      handler: async (input) => item.invoke(input),
     } as AgentSpec<unknown, unknown>);
   }
 }

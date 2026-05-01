@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CheckCircle2, XCircle, FileText } from 'lucide-react';
+import { CheckCircle2, XCircle, FileText, Plus } from 'lucide-react';
 
 interface QualityStats {
   total_documents: number;
@@ -37,6 +37,44 @@ export default function QualidadePage() {
   const [stats, setStats] = useState<QualityStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [, setError] = useState(false);
+  // CHUNK 8 (F2.3) — formulário inline pra aceitar violação manual e criar regra
+  const [showAcceptForm, setShowAcceptForm] = useState(false);
+  const [violationDesc, setViolationDesc] = useState('');
+  const [violationDocType, setViolationDocType] = useState('');
+  const [violationSeverity, setViolationSeverity] = useState<'critical' | 'high' | 'medium' | 'low'>('medium');
+  const [acceptResult, setAcceptResult] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  async function submitViolation() {
+    if (violationDesc.length < 5) {
+      setAcceptResult('descrição precisa de ≥5 caracteres');
+      return;
+    }
+    setSubmitting(true);
+    setAcceptResult(null);
+    try {
+      const r = await fetch('/api/quality/accept-violation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          errorDescription: violationDesc,
+          docType: violationDocType || null,
+          severity: violationSeverity,
+        }),
+      });
+      const data = await r.json();
+      if (data.error) {
+        setAcceptResult(`erro: ${data.error}`);
+      } else {
+        setAcceptResult(`✓ ${data.action} — ${data.rule_id}: ${data.message}`);
+        setViolationDesc('');
+      }
+    } catch (e) {
+      setAcceptResult(`erro: ${(e as Error).message}`);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     fetch('/api/quality/stats')
@@ -93,6 +131,53 @@ export default function QualidadePage() {
               </div>
             ))}
          </div>
+      </div>
+
+      {/* CHUNK 8 (F2.3) — Aceitar violação manual → criar regra */}
+      <div className="v2-card p-6 relative overflow-hidden group">
+         <div className="flex items-center justify-between mb-4">
+           <h2 className="section-title v2-section-header text-[#e2e8f0] w-max">Aprendizado Manual</h2>
+           <button onClick={() => setShowAcceptForm(s => !s)} className="flex items-center gap-2 px-4 py-2 bg-[#101e30] border border-[#00eaff]/30 hover:border-[#00eaff] rounded-lg text-[#00eaff] text-xs font-mono uppercase tracking-wider transition">
+             <Plus className="w-4 h-4" />
+             {showAcceptForm ? 'Fechar' : 'Aceitar Violação → Criar Regra'}
+           </button>
+         </div>
+         {showAcceptForm && (
+           <div className="flex flex-col gap-3 bg-[#0a121f] border border-[#ffffff0a] rounded p-4">
+             <textarea
+               value={violationDesc}
+               onChange={e => setViolationDesc(e.target.value)}
+               placeholder="Descrição da violação (ex: 'Termo proibido X encontrado em parágrafo Y')"
+               className="bg-[#05090f] border border-[#ffffff10] rounded p-3 text-[#e2e8f0] text-sm font-mono"
+               rows={3}
+             />
+             <div className="flex gap-3">
+               <input
+                 type="text"
+                 value={violationDocType}
+                 onChange={e => setViolationDocType(e.target.value)}
+                 placeholder="doc_type (opcional, ex: testimony_letter_eb2_niw)"
+                 className="flex-1 bg-[#05090f] border border-[#ffffff10] rounded p-2 text-[#e2e8f0] text-xs font-mono"
+               />
+               <select
+                 value={violationSeverity}
+                 onChange={e => setViolationSeverity(e.target.value as 'critical'|'high'|'medium'|'low')}
+                 className="bg-[#05090f] border border-[#ffffff10] rounded p-2 text-[#e2e8f0] text-xs font-mono"
+               >
+                 <option value="critical">critical</option>
+                 <option value="high">high</option>
+                 <option value="medium">medium</option>
+                 <option value="low">low</option>
+               </select>
+               <button onClick={submitViolation} disabled={submitting} className="px-4 py-2 bg-[#00eaff]/10 border border-[#00eaff] rounded text-[#00eaff] text-xs font-mono uppercase hover:bg-[#00eaff]/20 transition disabled:opacity-50">
+                 {submitting ? '...' : 'Criar Regra'}
+               </button>
+             </div>
+             {acceptResult && (
+               <div className="text-xs font-mono text-[#a1b1cc] bg-[#101e30] p-2 rounded">{acceptResult}</div>
+             )}
+           </div>
+         )}
       </div>
 
       <div className="v2-card p-6 relative overflow-hidden group">

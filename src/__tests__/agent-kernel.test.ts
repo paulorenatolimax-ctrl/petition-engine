@@ -62,13 +62,14 @@ describe('Agent Kernel — registry', () => {
 describe('Agent Kernel — core agents + dependency graph', () => {
   beforeEach(() => clearRegistry());
 
-  it('registers all 8 core agents from src/agents/', () => {
+  it('registers all 9 core agents from src/agents/', () => {
     registerCoreAgents();
     const ids = listAgents().map(a => a.id).sort();
     expect(ids).toEqual([
       'auto-debugger-local.v1',
       'auto-debugger.v1',
       'extractor.v1',
+      'onboarding-wizard.v1',
       'quality-local.v1',
       'quality.v1',
       'system-updater.v1',
@@ -86,9 +87,9 @@ describe('Agent Kernel — core agents + dependency graph', () => {
     expect(extractorEdges).toHaveLength(0);
   });
 
-  it('runAgent on un-migrated core agent throws explicit migration error', async () => {
+  it('system-updater.v1 throws explicit guidance error (no entry function)', async () => {
     registerCoreAgents();
-    await expect(runAgent('extractor.v1', {})).rejects.toThrow(/Migrar para Syscalls/);
+    await expect(runAgent('system-updater.v1', {})).rejects.toThrow(/system-updater.v1/);
   });
 });
 
