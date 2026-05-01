@@ -65,6 +65,8 @@ const CARTAS_SKILL_FILE = `${CARTAS_SYSTEM_DIR}/current.md`;
 const CARTAS_REFERENCES_DIR = `${CARTAS_SYSTEM_DIR}/references`;
 
 // Benchmarks aprovados/assinados — pontos de calibração canônica para o sub-claude.
+// CHUNK 9 — Adicionada pasta Tiago Fernandes dos Santos (EB-1) que Paulo afirmou ser
+// "o primeiro résumé/cartas EB-1 mais bem feito" (referência histórica).
 const BENCHMARK_LETTERS = [
   '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 1. Ademar Toyonori Hirata.pdf',
   '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 2. Antonio Claret Gama.pdf',
@@ -73,6 +75,9 @@ const BENCHMARK_LETTERS = [
   '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2024/Ricardo Augusto Borges Porfirio Pereira (EB-2NIW)/CARTAS/TENTATIVA 3/CARTA 5. Thiago Avelino.pdf',
   '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Cesar Maçol/1. CARREGUE AQUI SEUS DOCUMENTOS/CARTAS/2 - Cartas de testemunho/1 - Carta assinada - Marcelo Tertuliano (Vulcan) .pdf',
   '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Cesar Maçol/1. CARREGUE AQUI SEUS DOCUMENTOS/CARTAS/2 - Cartas de testemunho/2 - VQF_Carta de recomendação_Kayce Coker_apoio_Cesar Lopes Maçol Costa en-US Assinada.docx',
+  // 8º benchmark — Tiago FS (EB-1) é referência histórica de qualidade conforme Paulo
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/Cartas/VF_Editados_23-abr-2026/VF_CARTA_AGRADECIMENTO_2.docx',
+  '/Users/paulo1844/Documents/2_PROEX (A COMPLEMENTAR)/_2. MEUS CASOS/2026/Thiago Fernandes dos Santos (EB-1)/Cartas/VF_Editados_23-abr-2026/VF_CARTA_AGRADECIMENTO_3.docx',
 ];
 
 /**

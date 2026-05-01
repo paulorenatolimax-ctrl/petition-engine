@@ -95,6 +95,10 @@ function nextRuleId(rules: Array<{ id?: string }>): string {
 
 /**
  * Proposes a rule for the observed error. Avoids duplicates by description similarity.
+ *
+ * CHUNK 5 — Adicionado console.log estruturado pra observabilidade. Auditoria
+ * 30/abr identificou que 0 de 211 regras foram criadas pelo auto-debugger
+ * (sintoma silencioso). Agora cada decisão é logada.
  */
 export function reportErrorLocal(signal: ErrorSignal): AutoDebuggerResult {
   const rules = readRules();
@@ -108,6 +112,7 @@ export function reportErrorLocal(signal: ErrorSignal): AutoDebuggerResult {
   if (existing) {
     existing.times_triggered = (existing.times_triggered || 0) + 1;
     writeRules(rules);
+    console.log(`[auto-debugger] DUP rule=${existing.id} times_triggered=${existing.times_triggered} desc=${signal.errorDescription.slice(0, 60)}`);
     return {
       action: 'existing_rule_updated',
       rule_id: existing.id,
@@ -131,6 +136,7 @@ export function reportErrorLocal(signal: ErrorSignal): AutoDebuggerResult {
 
   rules.push(rule);
   writeRules(rules);
+  console.log(`[auto-debugger] NEW rule=${rule.id} severity=${rule.severity} type=${rule.rule_type} doc_type=${rule.doc_type} desc=${rule.rule_description.slice(0, 80)}`);
   return {
     action: 'new_rule_created',
     rule_id: rule.id,
@@ -141,7 +147,18 @@ export function reportErrorLocal(signal: ErrorSignal): AutoDebuggerResult {
 
 /**
  * Batch: process multiple quality-gate violations at once.
+ *
+ * CHUNK 5 — Logs entrada/saída pra observabilidade do loop de aprendizado.
  */
 export function reportBatch(signals: ErrorSignal[]): AutoDebuggerResult[] {
-  return signals.map(reportErrorLocal);
+  console.log(`[auto-debugger] reportBatch — recebidos ${signals.length} signal(s)`);
+  if (signals.length === 0) {
+    console.log('[auto-debugger] reportBatch — exit early (0 signals)');
+    return [];
+  }
+  const results = signals.map(reportErrorLocal);
+  const newCount = results.filter(r => r.action === 'new_rule_created').length;
+  const updCount = results.filter(r => r.action === 'existing_rule_updated').length;
+  console.log(`[auto-debugger] reportBatch — done. new=${newCount} updated=${updCount}`);
+  return results;
 }

@@ -243,6 +243,29 @@ export async function POST(req: NextRequest) {
             ...(Array.isArray(author_ids) && author_ids.length > 0 ? { authorIds: author_ids } : {}),
           });
 
+          // CHUNK 6+7 (F2.5) — Quality Gate + AutoDebugger pra cada carta gerada.
+          // Antes deste chunk, testimony-letters pipeline NÃO chamava Quality Gate
+          // — daí "0 de 211 regras criadas pelo auto-debugger" (auditoria 02).
+          // Agora cada carta passa por Quality Gate; signals viram regras novas
+          // que blindam próximas gerações (loop de aprendizado fechado).
+          try {
+            const { runQualityGateAndLearn } = await import('@/lib/quality/post-gen-quality');
+            for (const letterPath of result.letters_generated) {
+              await runQualityGateAndLearn({
+                docxPath: letterPath,
+                docType: doc_type,
+                caseId,
+                clientName: client_name || '',
+                visaType: visa,
+                genId,
+                send,
+              });
+            }
+          } catch (qgErr: unknown) {
+            const msg = qgErr instanceof Error ? qgErr.message : String(qgErr);
+            send('stage', { stage: 'warning', phase: 1.5, message: `Quality Gate falhou (testimony): ${msg.slice(0, 200)}` });
+          }
+
           send('complete', {
             success: result.success,
             pipeline: true,
@@ -307,6 +330,21 @@ export async function POST(req: NextRequest) {
             output_files: pipelineResult.allFiles.map(f => path.basename(f)),
             error_message: pipelineResult.success ? null : `${failed} fases falharam`,
           });
+
+          // CHUNK 6+7 (F2.5) — Quality Gate + AutoDebugger pra cover-letter EB-1A.
+          try {
+            const { runQualityGateAndLearn } = await import('@/lib/quality/post-gen-quality');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const cidForQG = (() => { try { const cs = readClients(); const cl = cs.find((c: any) => c.id === client_id); return cl?.case_id || (cl?.name ? cl.name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : undefined); } catch { return undefined; } })();
+            for (const f of pipelineResult.allFiles) {
+              if (f.endsWith('.docx') || f.endsWith('.md')) {
+                await runQualityGateAndLearn({ docxPath: f, docType: 'cover_letter_eb1a', caseId: cidForQG, clientName: client_name || '', visaType: 'EB-1A', genId, send });
+              }
+            }
+          } catch (qgErr: unknown) {
+            const msg = qgErr instanceof Error ? qgErr.message : String(qgErr);
+            send('stage', { stage: 'warning', phase: 1.5, message: `Quality Gate falhou (cover-letter-eb1a): ${msg.slice(0, 200)}` });
+          }
 
           send('complete', {
             success: pipelineResult.success,
@@ -397,6 +435,21 @@ export async function POST(req: NextRequest) {
             output_files: pipelineResult.allFiles.map(f => path.basename(f)),
             error_message: pipelineResult.success ? null : `${failed} fases falharam`,
           });
+
+          // CHUNK 6+7 (F2.5) — Quality Gate + AutoDebugger pra cover-letter EB-2 NIW.
+          try {
+            const { runQualityGateAndLearn } = await import('@/lib/quality/post-gen-quality');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const cidForQG = (() => { try { const cs = readClients(); const cl = cs.find((c: any) => c.id === client_id); return cl?.case_id || (cl?.name ? cl.name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') : undefined); } catch { return undefined; } })();
+            for (const f of pipelineResult.allFiles) {
+              if (f.endsWith('.docx') || f.endsWith('.md')) {
+                await runQualityGateAndLearn({ docxPath: f, docType: 'cover_letter_eb2_niw', caseId: cidForQG, clientName: client_name || '', visaType: 'EB-2 NIW', genId, send });
+              }
+            }
+          } catch (qgErr: unknown) {
+            const msg = qgErr instanceof Error ? qgErr.message : String(qgErr);
+            send('stage', { stage: 'warning', phase: 1.5, message: `Quality Gate falhou (cover-letter-eb2-niw): ${msg.slice(0, 200)}` });
+          }
 
           send('complete', {
             success: pipelineResult.success,
